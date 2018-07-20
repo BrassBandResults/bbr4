@@ -18,3 +18,8 @@ variable "zones" {
       "eu-west-2" = "eu-west-2a"
     }
 }
+
+variable "db_password" {
+    type = "string"
+    default = "ThisIsTheDefaultDatabasePassword947362"
+}
