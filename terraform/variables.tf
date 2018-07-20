@@ -9,7 +9,7 @@ variable "region" {
 
 variable "prefix" {
     type = "string"
-    default = "bbr4"
+    default = "bbr"
 }
 
 variable "zones" {
