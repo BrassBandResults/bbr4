@@ -26,6 +26,13 @@ variable "ec2ami" {
     }
 }
 
+variable "keypair" {
+    type = "map"
+    default = {
+        "eu-west-2" = "bbr-london"
+    }
+}
+
 variable "db_password" {
     type = "string"
     default = "ThisIsTheDefaultDatabasePassword947362"

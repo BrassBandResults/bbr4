@@ -4,4 +4,8 @@ This is the source code for the BrassBandResults.co.uk project.  This version is
 ## Platform
 Amazon Web Services
 * S3 for file uploads and static media
-* RDS (PostgreSQL with PostGIS) for data storage - v10.3
+* RDS (PostgreSQL with PostGIS) for data storage
+* EC2 instance for web server tier
+
+## Documentation
+The development wiki for this project contains more information, see https://github.com/BrassBandResults/bbr4/wiki

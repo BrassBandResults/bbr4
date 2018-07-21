@@ -12,7 +12,7 @@ resource "aws_db_instance" "bbr-db" {
     identifier = "${var.prefix}-db"
     instance_class = "db.t2.micro"
     name = "${var.prefix}"
-    username = "bbr"
+    username = "bbradmin"
     password = "${var.db_password}"
     publicly_accessible = false
     skip_final_snapshot = false
