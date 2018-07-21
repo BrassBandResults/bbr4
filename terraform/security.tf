@@ -35,3 +35,22 @@ resource "aws_security_group" "admin_access" {
         cidr_blocks = ["${var.local_ip}/32"]
     }
 }
+
+resource "aws_security_group" "db_traffic" {
+    name="db-traffic-security-group"
+    description="Allow access from the database from the web tier"
+
+    ingress {
+        from_port = 5432
+        to_port = 5432
+        protocol = "tcp"
+        security_groups = ["${aws_security_group.web_traffic.id}"]
+    }
+
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+  }
+}
