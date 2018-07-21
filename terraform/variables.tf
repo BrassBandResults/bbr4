@@ -19,6 +19,13 @@ variable "zones" {
     }
 }
 
+variable "ec2ami" {
+    type = "map"
+    default = {
+        "eu-west-2" = "ami-b8b45ddf"
+    }
+}
+
 variable "db_password" {
     type = "string"
     default = "ThisIsTheDefaultDatabasePassword947362"
