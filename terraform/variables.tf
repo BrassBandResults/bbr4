@@ -22,7 +22,7 @@ variable "zones" {
 variable "ec2ami" {
     type = "map"
     default = {
-        "eu-west-2" = "ami-b8b45ddf"
+        "eu-west-2" = "ami-ba0ae1dd"
     }
 }
 
@@ -33,7 +33,14 @@ variable "keypair" {
     }
 }
 
+variable "ec2_private_key" {
+    type = "string"
+}
+
 variable "db_password" {
     type = "string"
-    default = "ThisIsTheDefaultDatabasePassword947362"
+}
+
+variable "web_ssh_password" {
+    type = "string"
 }

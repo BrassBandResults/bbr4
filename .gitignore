@@ -186,6 +186,8 @@ GitHub.sublime-settings
 *.tfstate
 *.tfstate.*
 
+terraform.tfvars
+
 # Crash log files
 crash.log
 
