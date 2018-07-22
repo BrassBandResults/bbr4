@@ -1,3 +1,15 @@
+data "template_file" "pgpass" {
+    template = "$${pg_host}:$${pg_port}:$${pg_dbname}:$${pg_username}:$${pg_password}"
+
+    vars {
+      pg_host = "${aws_db_instance.bbr-db.address}"
+      pg_port = "${aws_db_instance.bbr-db.port}"
+      pg_dbname = "${aws_db_instance.bbr-db.name}"
+      pg_username = "bbradmin"
+      pg_password = "${var.db_password}"
+    }
+}
+
 resource "aws_instance" "bbr-web" {
     ami = "${lookup(var.ec2ami, var.region)}"
     instance_type = "t2.micro"
@@ -11,6 +23,11 @@ resource "aws_instance" "bbr-web" {
     tags {
         Name = "bbr-web"    
     }
+
+    provisioner "file" {
+        content = "${data.template_file.pgpass.rendered}"
+        destination = ".pgpass"
+    }
     
     provisioner "file" {
         source = "../web/puppet/bootstrap.pp"
@@ -21,6 +38,7 @@ resource "aws_instance" "bbr-web" {
         inline = [
             "sudo apt-get update",
             "sudo apt-get upgrade",
+
             "sudo addgroup ${var.prefix}",
             "sudo adduser ${var.prefix} --ingroup ${var.prefix} --disabled-password --gecos \"\"",
             "sudo bash -c echo ${var.prefix}:${var.web_ssh_password} | chpasswd",
@@ -28,7 +46,12 @@ resource "aws_instance" "bbr-web" {
             "sudo cp ~/.ssh/authorized_keys /home/${var.prefix}/.ssh",
             "sudo chown -R ${var.prefix}:${var.prefix} /home/${var.prefix}/.ssh",
 
-            "sudo apt-get install puppet -y",
+            "chmod 600 .pgpass",
+            "sudo cp ~/.pgpass /home/${var.prefix}",
+            "sudo chown -R ${var.prefix}:${var.prefix} /home/${var.prefix}/.pgpass",
+
+            "sudo apt-get install puppet git postgresql-client -y",
+            "sudo puppet module install puppetlabs/vcsrepo",
             "sudo puppet apply ~/bootstrap.pp",
         ]
     }
