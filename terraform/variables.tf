@@ -19,6 +19,13 @@ variable "zones" {
     }
 }
 
+variable "zones_secondary" {
+    type = "map"
+    default = {
+      "eu-west-2" = "eu-west-2b"
+    }
+}
+
 variable "ec2ami" {
     type = "map"
     default = {

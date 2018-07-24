@@ -15,6 +15,13 @@ resource "aws_db_instance" "bbr-db" {
     username = "bbradmin"
     password = "${var.db_password}"
     publicly_accessible = false
+    db_subnet_group_name = "${aws_db_subnet_group.db-subnet-group.name}"
+    multi_az = false
     skip_final_snapshot = false
     vpc_security_group_ids = ["${aws_security_group.db_traffic.id}"]
+}
+
+resource "aws_db_subnet_group" "db-subnet-group"{
+    name = "db-subnet-group"
+    subnet_ids = ["${aws_subnet.private-subnet.id}", "${aws_subnet.private-subnet-secondary.id}"]
 }

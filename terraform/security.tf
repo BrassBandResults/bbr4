@@ -1,6 +1,11 @@
 resource "aws_security_group" "web_traffic" {
     name="web-traffic-security-group"
     description="Allow access from the internet to the application"
+    vpc_id = "${aws_vpc.bbr-vpc.id}"
+
+    tags {
+        "Name"="Web Traffic"
+    }
 }
  
 resource "aws_security_group_rule" "http_inbound" {
@@ -33,6 +38,11 @@ resource "aws_security_group_rule" "web_outbound" {
 resource "aws_security_group" "admin_access" {
     name="admin-access-security-group"
     description="Allow access from the defined home ip address to ssh"
+    vpc_id = "${aws_vpc.bbr-vpc.id}"
+
+    tags {
+        "Name"="SSH Traffic"
+    }
 }
  
 resource "aws_security_group_rule" "ssh_inbound" {
@@ -47,6 +57,11 @@ resource "aws_security_group_rule" "ssh_inbound" {
 resource "aws_security_group" "db_traffic" {
     name="db-traffic-security-group"
     description="Allow access from the database from the web tier"
+    vpc_id = "${aws_vpc.bbr-vpc.id}"
+
+    tags {
+        "Name"="Database Traffic"
+    }
 }
  
 resource "aws_security_group_rule" "db_inbound" {
