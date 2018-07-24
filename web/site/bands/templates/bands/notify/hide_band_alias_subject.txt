@@ -1,0 +1,1 @@
+Band Alias Hidden: {{ThingNew.old_name|safe}}

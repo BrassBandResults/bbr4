@@ -1,0 +1,25 @@
+A new band has been added to the database.
+
+Name: {{ThingNew.name|safe}}
+Status: {{ThingNew.get_status_display}}
+
+Region: {{ThingNew.region.name}}
+Postcode: {{ThingNew.postcode}}
+Latitude: {{ThingNew.latitude}}
+Longitude: {{ThingNew.longitude}}
+Rehearsals: {{ThingNew.rehearsal_night_1}} {{ThingNew.rehearsal_night_2}}
+
+Email: {{ThingNew.contact_email}}
+Website: {{ThingNew.website}}
+Twitter: {{ThingNew.twitter_name}}
+
+Start Date: {{ThingNew.start_date}}
+End Date: {{ThingNew.end_date}}
+Scratch Band: {{ThingNew.scratch_band}}
+
+Notes: {{ThingNew.notes|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bands/{{ThingNew.slug}}/

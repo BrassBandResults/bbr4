@@ -1,0 +1,37 @@
+#!/home/tjs/.venv/bbr3/bin/python
+# (c) 2012, 2018 Tim Sawyer, All Rights Reserved
+
+import sys, os, re
+from datetime import datetime, timedelta
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr3.settingslive'
+
+import django
+django.setup()
+
+from django.contrib.auth.models import User
+from contests.tasks import notification as contest_notification
+from contests.models import ContestEvent
+from audit.models import AuditEntry
+
+print ("Running daily notification tasks")
+lTjsUser = User.objects.filter(username='tjs')[0]
+lToday = datetime.today()
+
+# delete audit entries over a month old
+lOldAudit = AuditEntry.objects.filter(created__lt=lToday - timedelta(days=31)).delete()
+
+# notify to event owner for events that have taken place two and three days ago but have no results yet
+lTwoDaysAgo = lToday - timedelta(days=2)
+lThreeDaysAgo = lToday - timedelta(days=3)
+lTwoAndThreeDaysAgoEvents = ContestEvent.objects.filter(date_of_event__gte=lThreeDaysAgo, date_of_event__lte=lTwoDaysAgo).select_related('contest')
+for event in lTwoAndThreeDaysAgoEvents:
+	lResults = event.contestresult_set.all()
+	lComplete = True
+	for result in lResults:
+		if result.results_position == 9999:
+			lComplete = False
+			
+	if not lComplete:
+		contest_notification.delay(None, event, 'contest', 'results_missing', lTjsUser, ('127.0.0.1','Notify'))
+		

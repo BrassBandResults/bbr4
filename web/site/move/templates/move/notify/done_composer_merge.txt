@@ -1,0 +1,12 @@
+Composer Merge Done
+
+Source (deleted): {{ThingNew.source_composer.name|safe}}
+http://brassbandresults.co.uk/composers/{{ThingNew.source_composer.slug}}/
+ 
+Destination: {{ThingNew.destination_composer.name|safe}}
+http://brassbandresults.co.uk/composers/{{ThingNew.destination_composer.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/composers/

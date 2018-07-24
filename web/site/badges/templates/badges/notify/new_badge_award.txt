@@ -1,0 +1,3 @@
+The {{ThingNew.type.name}} badge has been awarded to user {{ThingNew.user.username}}
+
+https://brassbandresults.co.uk/users/{{ThingNew.user.username}}/ 

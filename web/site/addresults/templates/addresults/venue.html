@@ -1,0 +1,84 @@
+{% extends "template.html" %}
+
+{% block title %}Venue - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+lData = [{% for result in Data %}{ "name" : "{{result}}" }{% if not forloop.last%},{%endif%}{% endfor %}];
+
+function startsWith(pLookIn, pLookFor) {
+  lRegEx = new RegExp(pLookFor, 'i')
+  lMatch = pLookIn.match(lRegEx)
+  if (lMatch) {
+    return lMatch[0].toLowerCase()==pLookFor.toLowerCase();
+  } else {
+      return false;
+  }
+}
+
+function showSuggestionBox(inputString){
+  lHtml = ""
+  for (var i=0; i<lData.length; i++) {
+    if (startsWith(lData[i].name, inputString)) {
+      lHtml += '<li onclick=\'fill("'+lData[i].name+'");\'>'+lData[i].name+'</li>\n';
+    }
+  }
+  
+  if (lHtml.length > 0) {
+    $('#suggestions').show();
+    $('#autoSuggestionsList').html(lHtml);
+  } else {
+    $('#suggestions').hide();
+  }    
+}
+
+function lookup(inputString)
+{
+  if(inputString.length == 0) {
+    $('#suggestions').hide();
+  } else {
+    showSuggestionBox(inputString);
+  }
+} // lookup
+
+function fill(thisValue) {
+    $('#venue').val(thisValue);
+    $('#suggestions').hide();
+}	
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<div id="helpbox">
+<p>Enter the name of the venue for this contest in the form <i>Venue, Town</i>.  This field will be filled in with the venue for the last time this contest was run.</p>
+</div>
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+{% if ContestEvent.contest_type.test_piece %}  
+	<tr><th>Test Piece:</th><td>{{ContestEvent.test_piece.name}}</td></tr>
+	<tr><th>Composer:</th><td>{{ContestEvent.test_piece.composer.name}}{% if ContestEvent.test_piece.arranger%} arranged {{ContestEvent.test_piece.arranger.name}}{%endif%}</td></tr>
+{% else %}
+    <tr><th>Format:</th><td>{{ContestEvent.contest_type_link.name}}</td></tr>
+{% endif %}	
+	<tr>
+		<th>Venue:</th>
+		<td>
+		  <input type="text" id="venue" name="Venue" value="{{PreviousVenue}}" onkeyup="lookup(this.value);" maxlength="100" autofocus="autofocus">&nbsp;&nbsp;<input type="submit" value="Submit" />
+		  <div class="suggestionsBox" id="suggestions" style="display: none;">
+		    <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+            <div class="suggestionList" id="autoSuggestionsList"></div>
+		  </div>
+        </td>
+	</tr>
+</table>
+</form>
+</div>
+{% endblock %}

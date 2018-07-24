@@ -1,0 +1,1 @@
+Contest Result Deleted: {{ThingNew.band_name|safe}}

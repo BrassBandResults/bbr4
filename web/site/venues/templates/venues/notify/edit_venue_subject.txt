@@ -1,0 +1,1 @@
+Edit Venue: {{ThingNew.name|safe}}

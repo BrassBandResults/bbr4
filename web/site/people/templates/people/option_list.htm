@@ -1,0 +1,2 @@
+{% for person in People %}<option value="{{person.id}}">{{person.surname}}, {{person.first_names}}{% if person.bandname%} ({{person.bandname}}){%endif%}</option>
+{% endfor %}

@@ -1,0 +1,89 @@
+{% extends "template.html" %}
+{% load gravatar %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{ContestEvent.name}} - {{ContestEvent.event_date}}{% endblock %}
+
+{%block keywords %}{{ContestEvent.name}} {{ContestEvent.event_date}}{% endblock %}
+
+{%block description%}Details about the brass band contest {{ContestEvent.name}} on {{ContestEvent.event_date}}{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest-event"><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{{ContestEvent.name}}</a> Form Guide</h1>
+<h2>{{ContestEvent.event_date_with_day}}</h2>
+<p><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">&lt;&lt;Back to results</a></p>
+<div id="form-guide">
+{% for band in FormGuideBands %}
+<h4>{{band.band_name}}</h4>
+<div class="band-form-content">
+<p>
+{% if band.appearances_this_contest > 0 %}
+{% if ContestEvent.contest.group_id %}
+Competed at this contest <a href="/bands/{{band.slug}}/{{ContestEvent.contest.group.actual_slug}}/">{{band.appearances_this_contest}} time{{band.appearances_this_contest|pluralize}}</a> prior to {{ContestEvent.date_of_event|date:"Y"}}{% if band.debut_appearance %}, first recorded <a href="/contests/{{band.debut_appearance.contest_event.contest.slug}}/{{band.debut_appearance.contest_event.date_of_event|date:"Y-m-d"}}/">in {{band.debut_appearance.contest_event.date_of_event|date:"Y"}}</a>{%endif%}.
+{% else %}
+Competed at this contest <a href="/bands/{{band.slug}}/{{ContestEvent.contest.slug}}/">{{band.appearances_this_contest}} time{{band.appearances_this_contest|pluralize}}</a> prior to {{ContestEvent.date_of_event|date:"Y"}}{% if band.debut_appearance %}, first recorded <a href="/contests/{{band.debut_appearance.contest_event.contest.slug}}/{{band.debut_appearance.contest_event.date_of_event|date:"Y-m-d"}}/">in {{band.debut_appearance.contest_event.date_of_event|date:"Y"}}</a>{%endif%}.
+{% endif %}
+{% else %}
+{% trans "Not competed at this contest before."%}
+{% endif %}
+{% if band.conductor.name == 'Unknown' %}
+{% trans "Conductor at this contest is"%} <font color="red">{% trans "Unknown, do you know?"%}</font>
+{% else %}
+{% trans "Conductor at this contest is"%} <a href="/people/{{band.person_conducting.slug}}">{{band.person_conducting.name}}</a>.
+{% endif %}
+</p>
+<h3>{{ContestEvent.short_name}} {% trans "History"%}</h3>
+<table class="white">
+{% for result in band.this_contest_history %}
+<tr>
+  <td><a href="/contests/{{result.contest_event.contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.date_of_event|date:"Y"}}</a> {{result.short_name}}</td>
+  <td>{{result.results_position_display_long|ordinal}}</td>
+  {% if result.results_position < 9000 %}
+  <td>{% ifequal result.conductor.name "Unknown" %}
+      <font color="red">{% trans "Unknown, do you know?"%}</font>
+    {% else %}  
+      <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
+    {% endifequal %}
+  </td>
+  {% else %}
+  <td></td>
+  {% endif %}
+  <td>{% if result.contest_event.test_piece %}<a href="/pieces/{{result.contest_event.test_piece.slug}}/">{{result.contest_event.test_piece.name}}</a>{% endif %}</td>
+  <td>{% if result.test_piece %}<a href="/pieces/{{result.test_piece.slug}}/">{{result.test_piece.name}}</a>{% endif %}</td>
+</tr>
+{% empty %}
+<tr><td>{% trans "None in last 10 years"%}</td></tr>
+{% endfor %}
+
+</table>
+
+<h3>{% trans "Recent Form"%}</h3>
+<ul>
+{% for result in band.other_contest_history %}
+<li>
+  <a href="/contests/{{result.contest_event.contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.event_date}}</a>:
+  {{result.results_position_display|ordinal}} - {{result.contest_event.contest.name}}{% if result.results_position < 9000 %}, conductor 
+    {% if result.conductor.name == "Unknown" %}
+     <font color="red">{% trans "Unknown, do you know?"%}</font>
+    {% else %}  
+     <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>.
+    {% endif %}     
+    {% endif %}
+</li>
+{% empty %}
+<li>None</li>    
+{% endfor %}
+</ul>
+</div> <!-- end each band details -->
+{% endfor %}
+</div> <!-- end form guide -->
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+	$('#form-guide').accordion();
+</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "template.html" %}
+
+{%block title %}Search Results{% endblock %}
+
+{%block description %}Search Results Blank{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#results").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Search Results</h1>
+<p class="errorlist">You seemed to have searched for empty string, that isn't going to match any results, sorry!</p>
+</div>
+{% endblock %}

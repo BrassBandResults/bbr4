@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+
+{% block title %}Contest Type - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{%block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Please choose the type of contest.  Pick the closest and send us feedback to correct if the one you need is not listed.</p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr>
+		<th>Contest Name:</th><td>{{Contest.name}}</td>
+	</tr>
+	<tr>
+		<th>Contest Type:</th>
+		<td>{{form.contest_type_link}}&nbsp;&nbsp;<input type="submit" value="Submit"/></td>
+	</tr>
+</table>
+</form>
+</div>
+{% endblock %}

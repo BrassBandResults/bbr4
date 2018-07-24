@@ -1,0 +1,74 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Compare {{BandOne.name}} with {{BandTwo.name}}{% endblock %}
+
+{%block keywords %}Compare Bands {{BandOne.name}} {{BandTwo.name}}{% endblock %}
+
+{%block description%}Compare the results of {{BandOne.name}} and {{BandTwo.name}} {%endblock%}
+
+{%block bands-compare-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter%}
+<script">
+  $(document).ready(function(){
+    $("#results-compare").tablesorter();
+  });
+</script>
+{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Compare"%} <a href="/bands/{{BandOne.slug}}/">{{BandOne.name}}</a> {% trans "with"%} <a href="/bands/{{BandTwo.slug}}/">{{BandTwo.name}}</a></h1>
+{% if Filter %}
+<p class="filter_notify">This page is filtered to show only results from <a href="/contests/{{ContestSlug}}/">{{ContestName}}</a>.  [<a href="/compare/bands/{{BandOne.slug}}/{{BandTwo.slug}}/">Remove Filter</a>].</p>
+{% endif %}
+{% if CompareResults %}
+<p>{% trans "This table lists results from contests where the two bands have competed against each other."%}  {{BandOne.name}} {% trans "have been better"%} {{BandOneWins}} {% trans "times"%}, {{BandTwo.name}} {% trans "have been better"%} {{BandTwoWins}} {% trans "times"%}.</p>
+<table width="100%">
+	<tr>
+		<td class="BandOneBar border border-dark" width="{{BandOnePercent}}%">{{BandOneWins}}&nbsp;({{BandOnePercent}}%)</td>
+		<td class="BandTwoBar border border-dark" width="{{BandTwoPercent}}%">{{BandTwoWins}}&nbsp;({{BandTwoPercent}}%)</td>
+	</tr>
+</table>
+<table id="results-compare" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{{BandOne.name}}</th>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Contest"%}</th>
+			<th>{{BandTwo.name}}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in CompareResults %}
+	<tr>
+{% ifequal result.band_one 9999 %}
+		<td>{% trans "Unknown"%}</td>
+{% else %}
+		<td>{{result.band_one|safe}}</td>
+{% endifequal %}
+		<td><a href="/contests/{{result.slug}}/{{result.date|date:"Y-m-d"}}/">{{result.event_date}}</a></td>
+		<td>{% if not Filter %}<a class="hourglass" href="/compare/bands/{{BandOne.slug}}/{{BandTwo.slug}}/{{result.slug}}/" title="{% trans "Click to filter to"%} {{result.name}}"><img src="/site_media/icons/magnifier.png" border="0"/></a> {%endif%}{{result.name}}</td>
+{% ifequal result.band_two 9999 %}
+		<td>{% trans "Unknown"%}</td>
+{% else %}
+		<td>{{result.band_two|safe}}</td> 
+{% endifequal %}		
+	</tr>
+{% endfor %}
+	</tbody>
+</table>	
+{% else %}
+<p>{% trans "These two bands have not competed against each other."%}</p>
+{% if DidYouMean %}
+<p>Did you mean?</p>
+<ul>
+{% for result in DidYouMean %}
+<li>Compare <a href="/compare/bands/{{result.bandOne.slug}}/{{result.bandTwo.slug}}/">{{result.bandOne.name}} with {{result.bandTwo.name}}</a>?</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endif %}
+</div>
+{% endblock %}

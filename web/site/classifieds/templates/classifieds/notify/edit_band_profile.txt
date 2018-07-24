@@ -1,0 +1,21 @@
+Edit Band Classified Profile for {{ThingNew.band.name}} 
+
+Logo: {{ThingNew.logo}}{% ifnotequal ThingNew.logo ThingOld.logo %} [was {{ThingOld.logo}}]{%endifnotequal%}
+Facebook: {{ThingNew.facebook_url}}{% ifnotequal ThingNew.facebook_url ThingOld.facebook_url %} [was {{ThingOld.facebook_url}}]{%endifnotequal%}
+Contact Name: {{ThingNew.band_contact_name}}{% ifnotequal ThingNew.band_contact_name ThingOld.band_contact_name %} [was {{ThingOld.band_contact_name}}]{%endifnotequal%}
+Contact Email: {{ThingNew.band_contact_email}}{% ifnotequal ThingNew.band_contact_email ThingOld.band_contact_email %} [was {{ThingOld.band_contact_email}}]{%endifnotequal%}
+Contact Phone: {{ThingNew.band_contact_telephone}}{% ifnotequal ThingNew.band_contact_telephone ThingOld.band_contact_telephone %} [was {{ThingOld.band_contact_telephone}}]{%endifnotequal%}
+Contact Address: {{ThingNew.band_contact_address}}{% ifnotequal ThingNew.band_contact_address ThingOld.band_contact_address %} [was {{ThingOld.band_contact_address}}]{%endifnotequal%}
+Rehearsal Address: {{ThingNew.band_rehearsal_address}}{% ifnotequal ThingNew.band_rehearsal_address ThingOld.band_rehearsal_address %} [was {{ThingOld.band_rehearsal_address}}]{%endifnotequal%}
+
+Visible: {{ThingNew.visible}}
+Status: {{ThingNew.status}}
+
+Profile Diff:
+{{ProfileDiff|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bbradmin/classifieds/classifiedband/{{ThingNew.id}}/
+

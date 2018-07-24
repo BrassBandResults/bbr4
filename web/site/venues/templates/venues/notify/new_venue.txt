@@ -1,0 +1,13 @@
+A new venue has been added to the database.
+
+Name: {{ThingNew.name|safe}}
+Country: {{ThingNew.country.name|safe}}
+Latitude: {{ThingNew.latitude}}
+Longitude: {{ThingNew.longitude}}
+Postcode: {{ThingNew.postcode}}
+Exact: {{ThingNew.exact}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/venues/{{ThingNew.slug}}/

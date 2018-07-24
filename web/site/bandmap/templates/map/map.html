@@ -1,0 +1,150 @@
+{% extends "template.html" %}
+
+{%block title %}Brass Bands Map{% endblock %}
+
+{%block keywords %}Map{% endblock %}
+
+{%block description %}Brass Bands Map{% endblock %}
+
+{%block bands-map-selected%}{% if not VacanciesOnly %}class="selected"{%endif%}{%endblock%}
+{%block bands-mapvacancies-selected%}{% if VacanciesOnly %}class="selected"{%endif%}{%endblock%}
+
+{%block head %}
+<script src="/site_media/map/js/infobubble-compiled.js"></script>
+{% if Band %}
+  <script src="/map/band/{{Band.slug}}/map_script.js"></script>
+  {% else %}
+    {% if Venue %}
+  <script src="/map/venue/{{Venue.slug}}/map_script.js"></script>
+    {% else %}
+  <script src="/map/map_script.js"></script>
+    {% endif %}
+  {% endif %}
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Brass Band Map</h1>
+<p>[<a href="/map/search/">Search The Map</a>]</p>
+<p>This map is intended to give a general indication of where a band rehearses.  Please contact the band directly to obtain full directions.</p>
+<!--[if IE]> 
+<p><font color="red">The map doesn't work in older versions of Internet Explorer, please upgrade to IE8 or later.</font></p>
+<![endif]-->
+<p>
+[<a href="#" id="clear_all">clear all</a>] [<a href="#" id="select_all">select all</a>]<br/>
+<input type="checkbox" checked="checked" id="champ_checkbox">Championship/Elite
+<input type="checkbox" checked="checked" id="first_checkbox">1
+<input type="checkbox" checked="checked" id="second_checkbox">2
+<input type="checkbox" checked="checked" id="third_checkbox">3
+<input type="checkbox" checked="checked" id="fourth_checkbox">4
+<input type="checkbox" checked="checked" id="fifth_checkbox">5
+<input type="checkbox" checked="checked" id="youth_checkbox">Youth
+<input type="checkbox" checked="checked" id="a_checkbox">A
+<input type="checkbox" checked="checked" id="b_checkbox">B
+<input type="checkbox" checked="checked" id="c_checkbox">C
+<input type="checkbox" checked="checked" id="d_checkbox">D<br/>
+<input type="checkbox" checked="checked" id="non_competing_checkbox">Non-competing
+<input type="checkbox" checked="checked" id="sa_checkbox">Salvation Army
+<input type="checkbox" id="extinct_checkbox"{% if ShowExtinct%} checked="checked"{%endif%}>Extinct
+<input type="checkbox" checked="checked" id="others_checkbox">Others
+</p> 
+<div id="map_canvas" style="width: 100%; height: 500px"></div>
+<p>[<a href="/map/addband/">My Band isn't on this map</a>] [<a href="/map/coordwrong/">My Band is in the wrong place</a>]</p>
+</div>
+{% endblock %}
+
+{%block scriptfooter%}
+<script type="text/javascript">
+$('#venues_checkbox').click(function(){
+	var lChecked = $('#venues_checkbox').prop('checked');
+	toggle_venue_markers(lChecked);
+});
+
+function toggle_section_markers(pChecked, pSectionName) {
+	for (var i=0; i<lBandDetails.length; i++){
+   		if (lBandDetails[i] && lBandDetails[i].section === pSectionName){
+  			var lMarker = lBandDetails[i].marker 
+	   		lMarker.setVisible(pChecked);
+   		}
+  	}
+}
+
+function processCheckboxes() {
+	toggle_section_markers($('#champ_checkbox').prop('checked'), 'championship'); 
+	toggle_section_markers($('#champ_checkbox').prop('checked'), 'elite'); 
+	toggle_section_markers($('#champ_checkbox').prop('checked'), 'excellence');
+	toggle_section_markers($('#first_checkbox').prop('checked'), 'first'); 
+	toggle_section_markers($('#second_checkbox').prop('checked'), 'second');
+	toggle_section_markers($('#third_checkbox').prop('checked'), 'third'); 
+	toggle_section_markers($('#fourth_checkbox').prop('checked'), 'fourth'); 
+	toggle_section_markers($('#fifth_checkbox').prop('checked'), 'fifth'); 
+	toggle_section_markers($('#youth_checkbox').prop('checked'), 'youth');
+	toggle_section_markers($('#a_checkbox').prop('checked'), 'a_grade'); 
+    toggle_section_markers($('#b_checkbox').prop('checked'), 'b_grade');
+    toggle_section_markers($('#c_checkbox').prop('checked'), 'c_grade'); 
+    toggle_section_markers($('#d_checkbox').prop('checked'), 'd_grade'); 
+    toggle_section_markers($('#non_competing_checkbox').prop('checked'), 'non_competing');
+	toggle_section_markers($('#sa_checkbox').prop('checked'), 'sa');
+	toggle_section_markers($('#extinct_checkbox').prop('checked'), 'extinct');
+	toggle_section_markers($('#others_checkbox').prop('checked'), 'band');
+}
+
+$('#clear_all').click(function(){
+	$('#champ_checkbox').prop('checked', '');
+	$('#first_checkbox').prop('checked', '');
+	$('#second_checkbox').prop('checked', '');
+	$('#third_checkbox').prop('checked', '');
+	$('#fourth_checkbox').prop('checked', '');
+	$('#fifth_checkbox').prop('checked', '');
+	$('#youth_checkbox').prop('checked', '');
+	$('#a_checkbox').prop('checked', '');
+    $('#b_checkbox').prop('checked', '');
+    $('#c_checkbox').prop('checked', '');
+    $('#d_checkbox').prop('checked', '');
+    $('#non_competing_checkbox').prop('checked', '');
+	$('#sa_checkbox').prop('checked', '');
+	$('#extinct_checkbox').prop('checked', '');
+	$('#others_checkbox').prop('checked', '');
+	processCheckboxes();
+	return false; 
+});
+
+$('#select_all').click(function(){
+	$('#champ_checkbox').prop('checked', 'checked');
+	$('#first_checkbox').prop('checked', 'checked');
+	$('#second_checkbox').prop('checked', 'checked');
+	$('#third_checkbox').prop('checked', 'checked');
+	$('#fourth_checkbox').prop('checked', 'checked');
+	$('#fifth_checkbox').prop('checked', 'checked');
+	$('#youth_checkbox').prop('checked', 'checked');
+	$('#a_checkbox').prop('checked', 'checked');
+    $('#b_checkbox').prop('checked', 'checked');
+    $('#c_checkbox').prop('checked', 'checked');
+    $('#d_checkbox').prop('checked', 'checked');
+	$('#non_competing_checkbox').prop('checked', 'checked');
+	$('#sa_checkbox').prop('checked', 'checked');
+	$('#extinct_checkbox').prop('checked', 'checked');
+	$('#others_checkbox').prop('checked', 'checked');
+	processCheckboxes();
+	return false; 
+});
+
+
+$('#champ_checkbox').click(function(){ processCheckboxes(); });
+$('#first_checkbox').click(function(){ processCheckboxes(); });
+$('#second_checkbox').click(function(){ processCheckboxes(); });
+$('#third_checkbox').click(function(){ processCheckboxes(); });
+$('#fourth_checkbox').click(function(){ processCheckboxes(); });
+$('#fifth_checkbox').click(function(){ processCheckboxes(); });
+$('#youth_checkbox').click(function(){ processCheckboxes(); });
+$('#a_checkbox').click(function(){ processCheckboxes(); });
+$('#b_checkbox').click(function(){ processCheckboxes(); });
+$('#c_checkbox').click(function(){ processCheckboxes(); });
+$('#d_checkbox').click(function(){ processCheckboxes(); });
+$('#non_competing_checkbox').click(function(){ processCheckboxes(); });
+$('#sa_checkbox').click(function(){ processCheckboxes(); });
+$('#extinct_checkbox').click(function(){ processCheckboxes(); });
+$('#others_checkbox').click(function(){ processCheckboxes(); });
+</script>
+{%endblock%}

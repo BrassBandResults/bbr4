@@ -1,0 +1,248 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Piece.name}} - Test Piece{% endblock %}
+
+{%block keywords %}{{Piece.name|lower}} test piece percussion needed required{% endblock %}
+
+{%block description %}Details of the brass band test piece {{Piece.name}} by {{Piece.composer}}{% endblock %}
+
+{%block pieces-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#testpieces").tablesorter({widgets: ['zebra']});
+	$("#ownchoice").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="test-piece">{{Piece.name}}{% if Piece.year%} ({{Piece.year}}){%endif%}, <a href="/people/{{Piece.composer.slug}}/">{{Piece.composer.name}}</a>{% if Piece.arranger %} arranged <a href="/people/{{Piece.arranger.slug}}/">{{Piece.arranger.name}}</a>{%endif%} 
+{% if ShowEdit %} [<a href="/pieces/edit/{{Piece.slug}}/" title="Edit this test piece's details">{% trans "edit"%}</a>]{%endif%}
+{% if user.is_staff and perms.pieces.change_testpiece %} [<a href="/bbradmin/pieces/testpiece/{{Piece.id}}/" title="Edit this piece in the admin site">admin</a>]{% endif %}
+</h1>
+
+{% if DownloadAlbums %}
+<h2>Recordings</h2>
+<div id="recordings">
+<ul>
+{% for album in DownloadAlbums %}
+<li>
+  <a href="{{album.link|safe}}"><img src="{{album.thumbnail.url_100x100}}" title="{% if album.type == 'download'%}Download: {%endif%}{% if album.type == 'cd'%}CD: {%endif%}{{album.title}} - {{album.band_name}}"/></a>
+  <span class="recording-icon"><img src="/site_media/icons/recording-{{album.type}}.png"/></span>
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% if UserResultsForThisPiece %}
+<h2>{% trans "Your Performances"%} ({{UserResultsForThisPieceCount}})</h2>
+<table id="contest-history" class="table table-hover">
+  <thead>
+    <tr>
+      <th>{% trans "Date"%}</th>
+      <th>{% trans "Contest"%}</th>
+      <th>{% trans "Band"%}</th>
+      <th>{% trans "Conductor"%}</th>
+      <th>{% trans "Result"%}</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for result in UserResultsForThisPiece %}
+    <tr class="result-{{result.results_position_display}} year-{{result.contest_event.date_of_event|date:"Y"}}">
+      <td><a href="/contests/{{result.contest_event.contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.event_date}}</a></td>
+      <td>{{result.contest_event.contest.name}}</td>
+      <td><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
+      <td><a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a></td>
+      <td>{{result.results_position_display}}</td>
+    </tr>
+{% endfor %}    
+  </tbody>
+</table>
+{% endif %}
+
+<h2>{% trans "Contest Test Pieces"%} ({{UsageSetTest.count}})</h2>
+<table id="testpieces" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Contest"%}</th>
+			<th>{% trans "Winner"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in UsageSetTest %}
+		<tr>
+			<td class="contest-event"><a href="/contests/{{event.contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+			<td>{{event.name}}</td>
+			<td class="band"><a href="/bands/{{event.band_slug}}/" title="{{event.current_band_name}}">{{event.band_name}}</a></td>
+		</tr>
+{% empty %}
+    <tr><td colspan="3">{% trans "None"%}</td></tr>
+{% endfor %}
+	</tbody>
+</table>
+
+{% if UsageOwnChoice.count > 1 or UsageSetTest.count > 1 %}
+<h2>Usage</h2>
+<br/>
+{% if user.profile.pro_member %}
+<div id="flot_chart"></div>
+{% else %}
+<a href="/accounts/upgrade/"><img src="/site_media/upgrade_to_pro_for_charts.jpg"/></a>
+{% endif %}
+{% endif %}
+
+<div class="bannerad">
+<div class="banner_slot">
+{% if not user.profile.pro_member %}
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Brass Band Results Mid Rectangle -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-5087204743199130"
+     data-ad-slot="9371852405"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endif %}
+</div>
+</div>
+
+<h2>{% trans "Own Choice Test Pieces"%} ({{UsageOwnChoiceCount}})</h2>
+<p class="screenonly">[<a class="hide_highlights">{% trans "Hide Gold/Silver/Bronze Highlight"%}</a>]</p>
+<table id="ownchoice" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Contest"%}</th>
+			<th>{% trans "Band"%}</th>
+			<th>{% trans "Position"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in UsageOwnChoice %}
+		<tr class="result-{{result.results_position_display}}">
+			<td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.event_date}}</a></td>
+			<td>{{result.contest_event.name}}</td>
+			<td class="band"><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
+			<td>{{result.results_position_display}}</td>
+		</tr>
+{% empty %}
+    <tr><td colspan="4">{% trans "None"%}</td></tr>
+{% endfor %}
+	</tbody>
+</table>
+
+{% if Piece.notes %}
+<h2>{% trans "Notes"%}</h2>
+<p>{{Piece.notes|safe}}</p>
+{% endif %}
+
+{% if user.profile.superuser %}
+<form action="/move/pieces/{{Piece.slug}}/move_pieces/" method="post">{%csrf_token%}
+<p><input type="checkbox" id="move_pieces"/> {% trans "Request merge with"%} <span id="piece_to_move_to">{% trans "another piece"%}.</span></p>
+</form>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+  $(document).on('click', '.hide_highlights', function(){
+    $('.tablesorter tr.result-1').addClass('result-off-1').removeClass('result-1');
+    $('.tablesorter tr.result-2').addClass('result-off-2').removeClass('result-2');
+    $('.tablesorter tr.result-3').addClass('result-off-3').removeClass('result-3');
+    $('.hide_highlights').removeClass('hide_highlights').addClass('show_highlights').html('{% trans "Show Gold/Silver/Bronze Highlight"%}');
+  });
+  $(document).on('click', '.show_highlights', function(){
+    $('.tablesorter tr.result-off-1').addClass('result-1').removeClass('result-off-1');
+    $('.tablesorter tr.result-off-2').addClass('result-2').removeClass('result-off-2');
+    $('.tablesorter tr.result-off-3').addClass('result-3').removeClass('result-off-3');
+    $('.show_highlights').removeClass('show_highlights').addClass('hide_highlights').html('{% trans "Hide Gold/Silver/Bronze Highlight"%}');
+  });
+
+{% if user.profile.superuser %}
+  $('#move_pieces').click(function(){
+    var lChecked = $('#move_pieces').prop('checked');
+    if (lChecked) {
+      var lHtml = '<select name="moveToPiece"><option>{% trans "loading"%}...</option></select>';
+      $('#piece_to_move_to').html(lHtml);  
+      $.get('/pieces/options/?exclude={{Piece.id}}', function(data){
+          lHtml = '<select name="moveToPiece">' + data + '</select><input type="submit" value="{% trans "Move Pieces"%}"/>';
+          $('#piece_to_move_to').html(lHtml);  
+      });
+    } else {
+      $('#piece_to_move_to').html("{% trans "another piece"%}.");
+    }
+  });
+{% endif %}
+
+var lFlotData = [ 
+  {
+    label: "lines",
+    lines:  { show: true },
+    color: '#99ccff',
+    hoverable: false, 
+    clickable: false,
+    data: [ {{SetTestChartData|safe}} ] 
+  },
+  {
+    label: [ ],
+    points: { show: true, fillColor: "#3d7dbd" },
+    color: '#99ccff',
+    hoverable: true, 
+    clickable: false,
+    data: [ {{SetTestChartData|safe }} ] 
+  },
+    {
+    label: "lines",
+    lines:  { show: true },
+    color: '#3d7dbd',
+    hoverable: false, 
+    clickable: false,
+    data: [ {{OwnChoiceChartData|safe}} ] 
+  },
+  {
+    label: [ ],
+    points: { show: true, fillColor: "#3d7dbd" },
+    color: '#3d7dbd',
+    hoverable: true, 
+    clickable: false,
+    data: [ {{OwnChoiceChartData|safe }} ] 
+  }
+  ];
+
+var lFlotOptions = { 
+                grid: {
+                          hoverable: true, 
+                          clickable: false,
+                          autoHighlight: true,
+                          borderWidth: 0
+                },
+                legend: {
+                           show: false
+                },
+                yaxis: {
+                           color: "#000000",
+                           tickFormatter: function suffixFormatter(val, axis) {
+                             return (val.toFixed(0));
+                           }
+                },
+                xaxis: { 
+                           color: "#000000",
+                           tickFormatter: function suffixFormatter(val, axis) {
+                             return (val.toFixed(0));
+                           }
+                }
+           };
+                 
+                 
+plot = $.plot($("#flot_chart"), lFlotData, lFlotOptions);
+</script>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{% trans "Venues"%}{% endblock %}
+
+{%block keywords %}Venues{% endblock %}
+
+{%block description %}List of brass band contest venues{% endblock %}
+
+{%block venues-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#venues").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#venues').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Venues"%}</h1>
+{% if user.profile.enhanced_functionality %}
+<p>[<a href="/venues/add/">{% trans "Add New Venue"%}</a>]</p>
+{% endif %}
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="venues" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Venue"%}</th>
+            <th>{% trans "Country"%}</th>
+			<th>{% trans "Events"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for venue in Venues %}
+    	<tr>
+    		<td class="venue"><a href="/venues/{{venue.slug}}/">{{venue.name}}</a></td>
+            <td class="region">
+                {% if venue.country%}<img src="/site_media/flags/{{venue.country.country_code}}.png"> 
+                <a href="/regions/{{venue.country.slug}}/">{{venue.country.name}}</a>{%endif%}
+            </td>
+		    <td>{{venue.eventcount}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

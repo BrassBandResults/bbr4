@@ -1,0 +1,35 @@
+{% extends "template.html" %}
+
+{%block title %}- Regions - {{Region.name}}{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#bands").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 class="region">{{Region.name}} {% if user.is_staff %} [<a href="/bbradmin/regions/region/{{Region.id}}/">edit</a>]{% endif %}</h1>
+<p>
+{% for region in Regions %}
+<div class="region"><a href="/regions/{{region.slug}}/">{{region.name}}</a></div>
+{% endfor %}
+</p> 
+<h2>Bands</h2>
+<table id="bands" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Band</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for band in Region.band_set.all %}
+		<tr>
+			<td class="band"><a href="/bands/{{band.slug}}/">{{band.name}}</a></td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

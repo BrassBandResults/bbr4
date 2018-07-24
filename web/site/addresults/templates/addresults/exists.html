@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+
+{% block title %}Contest - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Already Entered</h1>
+<p>The contest {{ContestEvent.contest.name}} on {{ContestEvent.event_date}} is already in the database, though it might not have full results.  <a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">Click here to see the details</a>.  If you can add any more information, please do so or let us know using the feedback box.</p>
+</div>
+{% endblock %}

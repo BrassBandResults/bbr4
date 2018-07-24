@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+
+{%block title %}Maintain Band Profile Vacancies{% endblock %}
+
+{%block keywords %}profile{% endblock %}
+
+{%block description%}Mantain vacancies for {{Profile.name}}{%endblock%}
+
+{% block adbar %}<br/>{% endblock %}
+{% block adbarBottom %}<br/>{% endblock %}
+{% block feedback %}{% endblock %}
+
+{% block content %}
+<h1>{{Profile.name}} Vacancies</h1>
+<form action="." method="POST">{%csrf_token%}
+<table>
+{% for position in PlayerPositions %}
+<tr>
+  {% if position.enabled %}
+  <td><input type="checkbox" name="position-{{position.id}}" checked="checked"></input></td>
+  {% else %}
+  <td><input type="checkbox" name="position-{{position.id}}"></input></td>
+  {% endif %}
+  <td>{{position.name}}</td>
+</tr>
+{% endfor %}
+</table>
+<input type="submit" value="Save Vacancies"/>
+</form>
+{% endblock %}

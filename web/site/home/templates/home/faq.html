@@ -1,0 +1,21 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "FAQ"%}{% endblock %}
+
+{%block description%}FAQ{%endblock%}
+
+{%block faq-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Frequently Asked Questions"%}</h1>
+{% for section in Sections %}
+<h3>{{section.name}}</h3>
+ {% for question in section.faqentry_set.all %}
+  <h5>{{question.question}} {% if user.is_staff and perms.home.change_faqentry %}[<a href="/bbradmin/home/faqentry/{{question.id}}/">admin</a>]{%endif%}</p></h5>
+  <p class="answer">{{question.answer|safe|linebreaksbr}}</p>
+ {% endfor %}
+{% endfor %}
+</div>
+{% endblock %}

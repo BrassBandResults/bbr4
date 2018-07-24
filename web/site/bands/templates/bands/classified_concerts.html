@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{ClassifiedBand.band.name}} - {% trans "Concerts"%}{% endblock %}
+
+{%block keywords %}Band {{ClassifiedBand.band.name}} Concerts Events{% endblock %}
+
+{%block description%}Concerts for the brass band {{ClassifiedBand.band.name}}{%endblock%}
+
+{%block bands-selected%}class="selected"{%endblock%}
+
+
+{% block content %}
+<h1 class="band"><a href="/bands/{{ClassifiedBand.band.slug}}/">{{ClassifiedBand.band.name}}</a> {% trans "Concerts"%}</h1>
+<dl id="classified_concerts">
+{% for concert in Concerts %}
+<dt>{{concert.date_of_event|date:"l, jS F Y"}}</dt>
+<dd>{{concert.title}}</dd>
+<dd>{{concert.location}}</dd>
+<dd>{{concert.time}}</dd>
+<dd>{{concert.postcode}}</dd>
+<dd>{{concert.tickets}}</dd>
+{% endfor %}
+</dl>
+{% endblock %}

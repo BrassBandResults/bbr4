@@ -1,0 +1,117 @@
+{% extends "template.html" %}
+
+{% block title %}Adjudicators - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+lData = [{% for result in Data %}{"name":"{{result}}"}{% if not forloop.last%},{%endif%}{% endfor %}];
+
+function startsWith(pLookIn, pLookFor) {
+  var lRegEx = new RegExp(pLookFor, 'i')
+  var lMatch = pLookIn.match(lRegEx)
+  if (lMatch) {
+    return lMatch[0].toLowerCase()==pLookFor.toLowerCase();
+  } else {
+      return false;
+  }
+}
+
+function showSuggestionBox(inputString){
+  var lHtml = ""
+  for (var i=0; i<lData.length; i++) {
+    if (startsWith(lData[i].name, inputString)) {
+      lHtml += '<li onclick=\'fill("'+lData[i].name+'");\'>'+lData[i].name+'</li>\n';
+    }
+  }
+  
+  if (lHtml.length > 0) {
+    $('#suggestions').show();
+    $('#autoSuggestionsList').html(lHtml);
+  } else {
+    $('#suggestions').hide();
+  }    
+}
+
+function lookup(pInputString)
+{
+  if(pInputString.length == 0) {
+    $('#suggestions').hide();
+  } else {
+    showSuggestionBox(pInputString);
+  }
+} // lookup
+
+function fill(pValue) {
+    $('#adjudicator').val(pValue);
+    $('#suggestions').hide();
+}	
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<div id="helpbox">
+<p>Add each adjudicator.  As you type, you will be prompted with the name of adjudicators already on the system, please click on these to pick them.  When all adjudicators are added, click done.</p>
+</div>
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+{% if ContestEvent.contest_type.test_piece %}	
+	<tr><th>Test Piece:</th><td>{{ContestEvent.test_piece.name}}</td></tr>
+	<tr><th>Composer:</th><td>{{ContestEvent.test_piece.composer.name}}{% if ContestEvent.test_piece.arranger%} arranged {{ContestEvent.test_piece.arranger.name}}{%endif%}</td></tr>
+{% else %}
+    <tr><th>Format:</th><td>{{ContestEvent.contest_type_link.name}}</td></tr>
+{% endif %}	
+	<tr><th>Venue:</th><td>{{ContestEvent.venue_link.name}}</td></tr>
+	<tr><th>Adjudicators:</th>
+	    <td>{% for contestadjudicator in ContestEvent.contestadjudicator_set.all %}
+		    <a href="/addresults/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/6/remove_adjudicator/{{contestadjudicator.id}}/" title="Remove {{ contestadjudicator.person.name }}">X</a> {{ contestadjudicator.person.name }}{% if not forloop.last %}, {% endif %}
+		    {% endfor %}
+		</td></tr>
+	<tr>
+		<th>&nbsp;</th>
+		<td><input type="text" id="adjudicator" name="AdjudicatorName" onkeyup="lookup(this.value);" maxlength="100" autofocus="autofocus">&nbsp;&nbsp;<input type="submit" value="Add" /> <a href="/addresults/{{Contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/7/">Done</a>
+		  <div class="suggestionsBox" id="suggestions" style="display: none;">
+		    <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+            <div class="suggestionList" id="autoSuggestionsList"></div>
+		  </div>
+        </td>
+	</tr>
+</table>
+<table id="results" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Position</th>
+			<th>Band</th>
+			<th>Conductor</th>
+			<th>Draw</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in ContestEvent.contestresult_set.all %}
+      <tr>
+      	<td>{{result.results_position_display}}</td>
+			  <td>{{result.band_name}}</td>
+			  <td>{{result.person_conducting.name}}</td>
+			  <td>{{result.draw}}</td>
+			  <td>{% if result.points %}{{result.points_display}}{% endif %}</td>
+      </tr>
+{% empty %}
+ {% if Contest.prevent_future_bands %}
+      <tr>
+        <td colspan="5">The owner of this contest has asked that we don't list bands taking part until after the contest has taken place.</td>
+      </tr>      
+ {% endif %}      
+{% endfor %}
+	</tbody>
+</table>
+</form>
+</div>
+{% endblock %}

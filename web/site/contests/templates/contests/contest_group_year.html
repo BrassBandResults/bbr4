@@ -1,0 +1,74 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{ContestGroup.name}} - Contest Group{% endblock %}
+
+{%block description%}Details about the brass band contest {{ContestGroup.name}}{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  	$("#contests").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1><a href="/contests/{{ContestGroup.actual_slug}}/">{{ContestGroup.name}}</a> {{Year}} 
+  {% if user.is_staff and perms.contests.change_contestgroup %}[<a href="/bbradmin/contests/contestgroup/{{ContestGroup.id}}/">admin</a>]{%endif%}
+</h1>
+<table class="next-previous" width="100%">
+  <tr>
+    <td align="left">
+      {% if PreviousEvent %}
+      <img src="/site_media/icons/arrow_left.png"/> <a href="/contests/{{ContestGroup.actual_slug}}/{{PreviousEvent.date_of_event.year}}/">{{PreviousEvent.date_of_event.year}}</a>
+      {% endif %}
+    </td>
+    <td align="right">
+     {% if NextEvent %}
+      <a href="/contests/{{ContestGroup.actual_slug}}/{{NextEvent.date_of_event.year}}/">{{NextEvent.date_of_event.year}}</a> <img src="/site_media/icons/arrow_right.png"/>
+      {% endif %}      
+    </td>
+  </tr>
+</table>
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+      <th>{% trans "Date"%}</th>
+      <th>{% trans "Name"%}</th>
+      <th>{% trans "Winner"%}</th>
+      <th>{% trans "Test Piece"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in Events %}
+      <tr>
+        <td class="contest-event"><a href="/contests/{{event.contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+        <td class="contest">{{event.name}}</td>
+{% if event.no_contest %}
+        <td>{% trans "No contest took place"%}</td>
+{% else %}        
+        <td>
+          {% for winner in event.winners %}
+            <div class="band"><img src="/site_media/flags/{{winner.band.region.country_code|lower}}.png" title="{{winner.band.region.name}}"> <a href="/bands/{{winner.band.slug}}/" title="{{winner.band.name}}">{{winner.band_name}}</a></div>
+          {% endfor %}
+        </td>
+{% endif %}        
+        <td>
+          {% if event.test_piece %}
+          <div class="piece"><a href="/pieces/{{event.test_piece.slug}}/">{{event.test_piece.name }}</a></div></td>
+          {% else %}
+            {% for winner in event.winners %}
+              <div class="piece">{% if winner.test_piece %}<a href="/pieces/{{winner.test_piece.slug}}/">{{winner.test_piece.name}}</a>{% endif %}</div>
+            {% endfor %}
+          
+          {% endif %}
+    </tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "template.html" %}
+{% load gravatar %}
+
+{% block title %}{{User.username}} - User Profile{% endblock %}
+
+{%block description %}User {{User.username}}{% endblock %}
+
+{%block profile-selected%}class="selected"{%endblock%}
+
+{% block adbar %}<br/>{%endblock%}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<div id="UserProfile">
+<h1>{{User.username}}</h1>
+<span class="screenonly">
+ [<a href="/users/{{User.username}}/change_password/">change password</a>]
+{% if user.is_authenticated and user.profile.superuser %}
+ [<a href="/users/{{User.username}}/talk/">talk</a>]
+{% endif %} 
+{% if user.is_superuser %}
+ [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
+ [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
+{%endif%}
+</span>
+<div id="avatar" class="float-right">
+  {% gravatar User 80 %}<br/>
+  <b>{{Profile.points}}</b><br/>
+  reputation<br/>
+</div>
+<table>
+  <tr><th>Member For:</th><td>{{User.date_joined|timesince}}</td></tr>
+  <tr><th>Last Seen:</th><td>{{User.last_login|timesince}} ago</td></tr>
+</table>
+
+<br/><br/><br/><br/><br/>
+
+<div class="clear"></div>
+<div id="tabs">
+  <ul>
+    <li><a href="/users/{{User.username}}/" title="Feedback sent">Feedback{%if FeedbackCount%} ({{FeedbackCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/feedback_sent/" title="Feedback sent">Sent{%if SentFeedbackCount%} ({{SentFeedbackCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/results_added/" title="Results Added to Site">Results{% if ContestCount %} ({{ContestCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/contest_history/" title="Personal Contest History">Performances{% if PerformanceCount %} ({{PerformanceCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/messages/" title="Site Messages">Messages{% if MessageCount%} ({{MessageCount}}){%endif%}</a></li>
+    <li class="selected">Classifieds</a></li>
+  </ul>
+</div>
+
+<div id="Classifieds">
+
+<h2>People</h2>
+<table class="table table-hover">
+<tr>
+  <th>Name</th>
+  <th>Status</th>
+  <th></th>
+</tr>  
+{% for profile in ClassifiedProfiles %}
+<tr>
+  <td><a href="/users/{{User.username}}/edit_profile/{{profile.id}}/">Edit {{profile.name}} profile</a></td>
+  <td>{{profile.get_status_display}}</td>
+  <td>[<a href="/people/{{profile.person.slug}}/">view</a>]</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+</div>
+{%endblock%}

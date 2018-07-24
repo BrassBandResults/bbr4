@@ -1,0 +1,178 @@
+#!/home/tjs/.venv/bbr3/bin/python
+# (c) 2011, 2018 Tim Sawyer, All Rights Reserved
+
+import sys, os
+from datetime import date, timedelta
+
+print (sys.path)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr3.settingslive'
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settings'
+
+import django
+django.setup()
+
+from contests.models import ContestResult, CurrentChampion, ContestAchievementAward, ContestProgrammeCover, ContestEvent, Contest
+from bands.models import Band
+from users.models import UserBadge, PersonalContestHistory
+from django.db import connection
+
+# Go through last 14 months contest result and pick out current champions for each contest
+print ("Populating current champions table...")
+lToday = date.today()
+lFourteenMonthsAgo = lToday - timedelta(days=14 * 31)
+lFirstPlaces = ContestResult.objects.filter(contest_event__date_of_event__gt=lFourteenMonthsAgo, results_position=1).order_by('contest_event__date_of_event').select_related()
+lChampions = {}
+for first_place in lFirstPlaces:
+  lChampions[first_place.contest_event.contest.slug] = first_place
+lSixtyMonthsAgo = lToday - timedelta(days=60 * 31)
+lFirstPlacesForContestsThatDontRunEveryYear = ContestResult.objects.filter(contest_event__date_of_event__gt=lSixtyMonthsAgo, contest_event__contest__period__isnull=False, results_position=1).order_by('contest_event__date_of_event').select_related()
+for first_place in lFirstPlacesForContestsThatDontRunEveryYear:
+  lChampions[first_place.contest_event.contest.slug] = first_place    
+    
+CurrentChampion.objects.all().delete()
+for result in lChampions.values():
+  lDataRow = CurrentChampion()
+  lDataRow.contest = result.contest_event.contest
+  lDataRow.contest_event = result.contest_event
+  lDataRow.band = result.band
+  lDataRow.conductor = result.person_conducting
+  lDataRow.save()
+  print (".", end='')
+print ("Done")
+
+print ("Looking for runs of results...")
+# take all contest result first places, and look for runs
+lAllFirstPlaces = ContestResult.objects.filter(results_position=1).select_related('contest_event','contest_event__contest').order_by('contest_event__contest','contest_event__date_of_event')
+ContestAchievementAward.objects.all().delete()
+
+# lAllBandWinners is a dict of band slug -> array of wins
+lAllBandWinners = {}
+print ("looking through first places for bands...")
+for lFirstPlaceResult in lAllFirstPlaces:
+    try:
+        lBandResults = lAllBandWinners[lFirstPlaceResult.band.slug]
+    except KeyError:
+        lBandResults = []
+
+    lBandResults.append(lFirstPlaceResult)
+    lAllBandWinners[lFirstPlaceResult.band.slug] = lBandResults
+
+print ("looking through each band's wins for runs...")
+for lBandSlug, lBandWins in lAllBandWinners.items():
+    # lContestWon is a dict of contest slug -> array of wins for this band
+    lContestsWon = {}
+    for win in lBandWins:
+        try:
+            lWinsThisContest = lContestsWon[win.contest_event.contest.slug]
+        except KeyError:
+            lWinsThisContest = []
+
+        lWinsThisContest.append(win)
+        lContestsWon[win.contest_event.contest.slug] = lWinsThisContest
+
+    for lContestKey, lWins in lContestsWon.items():
+        if len(lWins) < 3:
+            continue
+        print ("Looking at contest %s for band %s" % (lContestKey, lBandSlug))
+        lWinYears = []
+        for win in lWins:
+            lYear = win.contest_event.date_of_event.year
+            lWinYears.append(lYear)
+
+        lWinYears.append(9999) # end of list marker so we always do end of run processing
+        print (lWinYears)
+        
+        lYearsOfRun = ""
+        lPreviousWinYear = 0
+        for lWinYear in lWinYears:
+            lDiff = lWinYear - lPreviousWinYear
+            print ("Years: %s %s %s" % (lPreviousWinYear, lWinYear, lDiff))
+            if lDiff == 1:
+                # build up a run
+                if len(lYearsOfRun) == 0:
+                    lYearsOfRun = "%d %d" % (lPreviousWinYear, lWinYear)
+                else:
+                    lYearsOfRun += " %d" % (lWinYear)
+                print (lYearsOfRun)
+            else:
+                if len(lYearsOfRun) > 10:
+                    # save run
+                    print ("  %s %s %s" % (lYearsOfRun, lContestKey, lBandSlug))
+                    lLastYearOfRun = lYearsOfRun[-4:]
+                    lLastResultInRun = ContestResult.objects.filter(band__slug=lBandSlug, contest_event__contest__slug=lContestKey, contest_event__date_of_event__year=lLastYearOfRun)[0]
+                    lBandName = lLastResultInRun.band_name
+                    lContestAward = ContestAchievementAward()
+                    lContestAward.contest = Contest.objects.filter(slug=lContestKey)[0]
+                    lContestAward.contest_event = None
+                    lContestAward.band = Band.objects.filter(slug=lBandSlug)[0]
+                    lContestAward.band_name = lBandName
+                    lContestAward.conductor = None
+                    lContestAward.year_of_award = lYearsOfRun
+                    lContestAward.award = "run"
+                    lContestAward.save()
+                # reset and look again
+                lYearsOfRun = ""
+            lPreviousWinYear = lWinYear
+
+print ("...done")
+	
+	
+print ("Looking for double and grand slams...")
+lBritishOpenWins = lAllFirstPlaces.filter(contest_event__contest__slug='british-open')
+lUkNationalWins = lAllFirstPlaces.filter(contest_event__contest__slug='national-finals-championship-section')
+lEuropeanWins = lAllFirstPlaces.filter(contest_event__contest__slug='european-championships')
+
+lWinners = {}
+for result in lBritishOpenWins:
+	lWinners[result.contest_event.date_of_event.year] = (result,)
+	
+for result in lUkNationalWins:
+	try:
+		lCurrentWinners = lWinners[result.contest_event.date_of_event.year]
+		lCurrentWinners = (lCurrentWinners[0], result)
+		lWinners[result.contest_event.date_of_event.year] = lCurrentWinners
+	except KeyError:
+		lWinners[result.contest_event.date_of_event.year] = (None, result)
+	
+for result in lEuropeanWins:
+	try:
+		lCurrentWinners = lWinners[result.contest_event.date_of_event.year]
+		lCurrentWinners = (lCurrentWinners[0], lCurrentWinners[1], result)
+		lWinners[result.contest_event.date_of_event.year] = lCurrentWinners
+	except KeyError:
+		lWinners[result.contest_event.date_of_event.year] = (None, None, result)
+		
+for key, row in lWinners.items():
+	if len(row) == 3 and row[0] and row[1] and row[2] and row[0].band.slug == row[1].band.slug == row[2].band.slug:
+		print ("  Grand Slam %s %s" % (row[0].band.slug, key))
+		lContestAward = ContestAchievementAward()
+		lContestAward.band = row[2].band
+		lContestAward.year_of_award = key
+		lContestAward.award = "Grand Slam"
+		lContestAward.conductor = row[2].person_conducting
+		lContestAward.contest_event = row[2].contest_event
+		lContestAward.contest = row[2].contest_event.contest
+		lContestAward.save()
+	elif len(row) > 1 and row[0] and row[1] and row[0].band.slug == row[1].band.slug:
+		print ("  Double %s %s" % (row[0].band.slug, key))
+		lContestAward = ContestAchievementAward()
+		lContestAward.band = row[0].band
+		lContestAward.year_of_award = key
+		lContestAward.award = "Double"
+		lContestAward.conductor = row[0].person_conducting
+		lContestAward.contest_event = row[0].contest_event
+		lContestAward.contest = row[0].contest_event.contest
+		lContestAward.save()
+		
+print ("...done")
+
+print ("Checking for users with Won Contest badge but no first result in their contest history...")
+lWonContestBadges = UserBadge.objects.filter(type__id=1)
+for contest_winner in lWonContestBadges:
+	try:
+		lPersonalContestHistory = PersonalContestHistory.objects.filter(user=contest_winner.user, result__results_position=1)[0]
+	except IndexError:
+		print ("No wins - removing from %s" % contest_winner.user.username)
+		contest_winner.delete()
+
+print ("...done")

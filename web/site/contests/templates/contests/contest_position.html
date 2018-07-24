@@ -1,0 +1,70 @@
+{% extends "template.html" %}
+{% load gravatar %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{Contest.name}} - Placed {{Position}}{% endblock %}
+
+{%block keywords %}{{Contest.name}} Placed {{Position}}{% endblock %}
+
+{%block description%}Details about the brass band contest {{Contest.name}} for bands placed {{Position}}{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest"><a href="/contests/{{Contest.slug}}/">{{Contest.name}}</a> Bands placed {{Position}}</h1>
+<table id="results" class="table table-hover">
+	<thead>
+		<tr>
+		  <th>{% trans "Date"%}</th>
+          <th>{% trans "Placing"%}</th>
+		  <th>{% trans "Band"%}</th>
+		  <th>{% trans "Conductor"%}</th>
+		  <th>{% trans "Draw"%}</th>
+		  <th>{% trans "Points"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in Results %}
+      <tr class="result-{{result.results_position_display}}">
+        <td><a href="/contests/{{Contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.event_date}}</a></td>
+  		<td class="band-contest-position">{{result.results_position_display}}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="/site_media/icons/comment.png" border="0"/></a>{%endif%}</td>
+		<td class="band"><img src="/site_media/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
+  	    <td class="conductor">
+{% ifnotequal result.results_position_display "W" %}
+{% ifequal result.conductor.name "Unknown" %}
+				<font color="red">{% trans "Unknown, do you know?"%}</font>
+{% else %}			
+				<a href="/person/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
+{% endifequal %}
+{% endifnotequal %}				
+		</td>
+		<td class="draw">{% if result.draw %}{{result.draw}}{%endif%}</td>
+		<td class="points">{{result.points_display}}</td>
+  	  </tr>
+{% endfor %}
+	</tbody>
+</table>
+<p class="screenonly">[<a class="hide_highlights">{% trans "Hide Gold/Silver/Bronze Highlight"%}</a>]</p>
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+	$(document).on('click', '.hide_highlights', function(){
+		$('.tablesorter tr.result-1').addClass('result-off-1').removeClass('result-1');
+		$('.tablesorter tr.result-2').addClass('result-off-2').removeClass('result-2');
+		$('.tablesorter tr.result-3').addClass('result-off-3').removeClass('result-3');
+		$('.hide_highlights').removeClass('hide_highlights').addClass('show_highlights').html('Show Gold/Silver/Bronze Highlight');
+	});
+	$(document).on('click', '.show_highlights', function(){
+		$('.tablesorter tr.result-off-1').addClass('result-1').removeClass('result-off-1');
+		$('.tablesorter tr.result-off-2').addClass('result-2').removeClass('result-off-2');
+		$('.tablesorter tr.result-off-3').addClass('result-3').removeClass('result-off-3');
+		$('.show_highlights').removeClass('show_highlights').addClass('hide_highlights').html('Hide Gold/Silver/Bronze Highlight');
+	});
+	$('#results').tablesorter({widgets: ['zebra']});
+	
+</script>
+{% endblock %}

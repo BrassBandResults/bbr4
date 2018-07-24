@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Compare {{ConductorOne.name}} with {{ConductorTwo.name}}{% endblock %}
+
+{%block keywords %}Compare Conductors {{ConductorOne.name}} {{ConductorTwo.name}}{% endblock %}
+
+{%block description%}Compare the results of {{ConductorOne.name}} and {{ConductorTwo.name}} {%endblock%}
+
+{%block conductors-compare-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Can't Compare"%}</h1>
+<p>{% trans "Sorry, you can't compare a conductor with themselves!"%} <a href="/compare/bands/">{% trans "Try again"%}</a>.</p>
+</div>
+{% endblock %}

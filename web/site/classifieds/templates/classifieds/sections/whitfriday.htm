@@ -1,0 +1,30 @@
+<div id="whitfriday-tab">
+<h2 class="printonly">Whit Friday</h2>
+<p>[<a class="hide_highlights">Hide Gold/Silver/Bronze Highlight</a>]</p>
+<table id="whitfriday" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Contest</th>
+      <th>Band</th>
+      <th>Position</th>
+{% if user.is_staff and perms.contests.change_contestresult  %}
+      <th></th>
+{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+{% for result in WhitFridayResults %}
+   <tr class="result-{{result.results_position_display}}">
+        <td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{ result.contest_event.date_of_event|date:"Y-m-d" }}/">{{ result.contest_event.event_date }}</a></td>
+    <td class="contest-event-name">{{ result.contest_event.name }}</td>
+    <td class="band"><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{ result.band_name }}</a></td>
+    <td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}</td>
+{% if user.is_staff and perms.contests.change_contestresult  %}
+      <td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>      
+{% endif %}   
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div> <!-- whitfriday-tab -->

@@ -1,0 +1,18 @@
+An edit has been made to the test piece {{ThingNew.name|safe}}. 
+
+Name: {{ThingNew.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
+Composer: {{ThingNew.composer.name|safe}}{% ifnotequal ThingNew.composer.name ThingOld.composer.name %} [was {{ThingOld.composer.name|safe}}]{%endifnotequal%}
+Arranger: {{ThingNew.arranger.name|safe}}{% ifnotequal ThingNew.arranger.name ThingOld.arranger.name %} [was {{ThingOld.arranger.name|safe}}]{%endifnotequal%}
+
+Percussion: {{ThingNew.percussion_required|safe}}
+
+{% ifnotequal ThingNew.percussion_required ThingOld.percussion_required %} [was {{ThingOld.percussion_required|safe}}]{%endifnotequal%}
+
+Notes: {{ThingNew.notes|safe}}
+
+{% ifnotequal ThingNew.notes ThingOld.notes %} [was {{ThingOld.notes|safe}}]{%endifnotequal%}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}}{% ifnotequal ThingNew.lastChangedBy.username ThingOld.lastChangedBy.username %} [was {{ThingOld.lastChangedBy.username}}]{%endifnotequal%} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}{% ifnotequal ThingNew.owner.username ThingOld.owner.username %} [was  {{ThingOld.owner.username}}]{%endifnotequal%}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/pieces/{{ThingNew.slug}}/

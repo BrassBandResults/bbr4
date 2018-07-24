@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block title %}Activate{% endblock %}
+
+{%block register-selected%}class="selected"{%endblock%}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Account Activated</h1>
+{% if account %}
+<p>Your account for user <b>{{account.username}}</b> has been activated.</p>
+<p>Get started adding contests using the Contest Results link on the right.  Thanks for helping.</p>
+{% else %}
+<p>Your account could not be activated. Please contact us for more details.</p>
+{% endif %}
+</div>
+{% endblock %}

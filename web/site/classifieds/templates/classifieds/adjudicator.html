@@ -1,0 +1,116 @@
+{% extends "template.html" %}
+{% load bbrize %}
+
+{%block title %}{{Adjudicator.name}} - Adjudicator{% endblock %}
+
+{%block keywords %}Adjudicator {{Adjudicator.name}}{% endblock %}
+
+{%block description%}Details about the brass band contest adjudicator {{Adjudicator.name}}{%endblock%}
+
+{% block adbar %}<br/>{% endblock %}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{%block adjudicators-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#contests").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+    $("#whitfriday").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+    $("#adjudications").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+    $("#pieces").tablesorter({widgets: ['zebra']});
+{% if ShowTabs %}    
+    $("#tabs").tabs();
+{% endif %}
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 class="adjudicator">{% if Profile.title %} {{Profile.title}} {%endif%}{{Adjudicator.name}} <span id="postfix_letters">{{Profile.qualifications}}</span>
+  {% if user.is_staff and perms.adjudicators.change_adjudicator and perms.classifieds.change_classifiedprofile %} [<a href="/bbradmin/adjudicators/adjudicator/{{Adjudicator.id}}/">admin</a>]
+                         [<a href="/bbradmin/classifieds/classifiedprofile/{{Profile.id}}/">admin classified</a>]
+  {% endif %}
+</h1>
+{% if Profile.picture %}<img src="{{Profile.picture.url_200x200}}" id="ProfileImage"/>{% endif %}
+<table>
+  {% if Profile.email %}<tr><th>Email:</th><td><script type="text/javascript"><!--
+              var name='{{Profile.email_mailbox}}';
+              var domain='{{Profile.email_domain}}';
+              var addy=name+'@'+domain;
+              document.write('<'+'a href="mailto:'+addy+'">'+addy+'<'+'/a'+'>'); //-->
+              </script></td></tr> {%endif%}
+  {% if Profile.website %}<tr><th>Website:</th><td><a href="{{Profile.website}}">{{Profile.website}}</a></td></tr>{%endif%}
+  {% if Profile.address %}<tr><th>Address:</th><td>{{Profile.address|linebreaksbr}}</td></tr>{%endif%}
+  {% if Profile.home_phone %}<tr><th>Telephone:</th><td>{{Profile.home_phone}}</td></tr>{%endif%}
+  {% if Profile.mobile_phone %}<tr><th>Mobile:</th><td>{{Profile.mobile_phone}}</td></tr>{%endif%}
+</table>
+<p>[<a href="#adjudications">Jump to adjudications</a>]</p>
+<p>{{Profile.profile|linebreaksbr|bbrize}}</p>
+<a name="adjudications">&nbsp;</a>
+<h2 class="screenonly">Contest Adjudications</h2>
+<br/>
+{% if ShowTabs %}
+<div id="tabs">
+    <ul class="screenonly">
+{% if Adjudicator %}
+        <li><a href="#adjudicator-tab">Adjudications</a></li>
+{% endif %}        
+{% if ContestResults %}
+        <li><a href="#contests-tab">Results</a></li>
+{% endif %}
+{% if WhitFridayResults %}        
+        <li><a href="#whitfriday-tab">Whit Friday</a></li>
+{% endif %}
+{% if Composer %}        
+        <li><a href="#composer-tab">Compositions</a></li>
+{% endif %}
+    </ul>
+{% endif %}
+
+{% if Adjudicator %}
+  {% include "classifieds/sections/adjudications.htm" %}
+{% endif %}
+
+{% if ContestResults %}
+  {% include "classifieds/sections/results.htm" %}
+{% endif %}
+
+{% if WhitFridayResults %}
+  {% include "classifieds/sections/whitfriday.htm" %}
+{% endif %}
+
+{% if Composer %}
+  {% include "classifieds/sections/compositions.htm" %}
+{% endif %}
+
+{% if ShowTabs %}
+</div> <!-- tab div -->
+{% endif %}
+
+{% if UserAdjudications %}
+<br/>
+<h2>Your Adjudications ({{UserAdjudicationsCount}})</h2>
+<p></p>
+<table id="yourcontests" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Contest</th>
+      <th>Band</th>
+      <th>Position</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for contest_history in UserAdjudications %}
+      <tr class="result-{{contest_history.results_position}}">
+        <td class="contest-event"><a href="/contests/{{contest_history.contest_event.contest.slug}}/{{ contest_history.contest_event.date_of_event|date:"Y-m-d" }}/">{{ contest_history.contest_event.event_date }}</a></td>
+        <td class="contest">{{contest_history.contest_event.name}}</td>
+        <td class="band"><a href="/bands/{{ contest_history.band.slug }}/" title="{{contest_history.band.name}}">{{ contest_history.band_name }}</a></td>
+        <td>{{contest_history.results_position}}</td>
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

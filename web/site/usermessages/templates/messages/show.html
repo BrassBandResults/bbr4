@@ -1,0 +1,16 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div id="messagepage">
+<h1>{{Message.title}}</h1>
+<table>
+  <tr><th>From:</th><td>{{Message.from_user.username}}</td></tr>
+  <tr><th>To:</th><td>{{Message.to_user.username}}</td></tr>
+  <tr><th>Subject:</th><td>{{Message.title}}</td></tr>
+  <tr><th>Date:</th><td>{{Message.created|date:"jS F Y, P"}}</td></tr>
+  <tr><th>Message:</td><td>&nbsp;</td></tr>
+  <tr><td colspan="2">{{Message.text}}</td></tr>
+  <tr><td colspan="2">[<a href="/messages/create/{{Message.from_user.username}}/Re: {{Message.title}}/">reply</a>] [<a href="/messages/delete/{{Message.id}}/">delete</a>]</td></tr>
+</table>
+</div>
+{% endblock %}

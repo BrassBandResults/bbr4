@@ -1,0 +1,17 @@
+Hello {{DateRange.user.username}},
+
+A new contest has been added at https://brassbandresults.co.uk/ that matches one of your date ranges.
+
+Contest: {{ContestEvent.contest.name|safe}}
+Date: {{ContestEvent.date_of_event|date:"jS M Y"}}
+Band: {{ContestResult.band.name|safe}}
+{% if ContestResult.results_position < 9000 %}Placing: {{ContestResult.results_position}}{% endif %}
+
+Full details can be found at https://brassbandresults.co.uk/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/  
+
+We've already added this contest to your list, but you need to approve it.  Use the "I played at this contest" link on the contest, or just click [approve] in your personal contest history page.
+
+Regards,
+
+The Brass Band Results Team
+https://brassbandresults.co.uk/

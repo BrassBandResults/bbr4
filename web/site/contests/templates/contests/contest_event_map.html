@@ -1,0 +1,55 @@
+{% extends "template.html" %}
+{% load gravatar %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{ContestEvent.name}} - {{ContestEvent.event_date}} Map{% endblock %}
+
+{%block keywords %}{{ContestEvent.name}} {{ContestEvent.event_date}} Map{% endblock %}
+
+{%block description%}Map of the brass band contest {{ContestEvent.name}} on {{ContestEvent.event_date}}{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?v=3.1&sensor=true"></script>
+<script type="text/javascript" src="/site_media/infobubble-compiled.js"></script>
+<script type="text/javascript" src="/map/contest/event/{{ContestEvent.id}}/map_script.js"></script>
+</script>
+{% endblock %}
+
+{% block bodyattrib %}{% if ContestEvent.venue_link.latitude %}onload="initialize();{%endif%}"{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest-event"><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{{ContestEvent.name}} Map</a></h1>
+<h2>{{ContestEvent.event_date_with_day}}</h2>
+<p><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">&lt;&lt;Back to results</a></p>
+<br/>
+<div id="map">
+<!--[if IE]> 
+<p><font color="red">The map doesn't work in older versions of Internet Explorer, please upgrade to IE8 or later.</font></p>
+<![endif]-->
+<div id="map_canvas" style="width: 100%; height: 500px"></div>
+</div>
+
+
+<table class="table table-hover" id="geodata">
+  <thead>
+    <tr>
+      <td>Band</td>
+      <td>Distance</td>
+    </tr>
+  </thead>
+{% for band in GeoBands %}
+  <tr>
+    <td>{{band.band_name}}</td>
+    <td>{{band.distance.mi|floatformat}} mi / {{band.distance.km|floatformat}} km</td>
+  </tr>
+{% endfor %}  
+  <tbody>
+  </tbody>
+</table>
+<p>Average distance: {{GeoAverageDistanceMi|floatformat}} mi / {{GeoAverageDistanceKm|floatformat}} km</p>
+</div>
+{% endblock %}

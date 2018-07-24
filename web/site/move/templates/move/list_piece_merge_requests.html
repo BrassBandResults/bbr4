@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+
+{% block title %}Test Piece Merge Requests{% endblock %}
+
+{%block description%}Test Piece Merge Requests{%endblock%}
+
+{% block head %}
+<script type="text/javascript">
+  function reject_merge(pMergeRequestSerial)
+  {
+  $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
+    $('#blanket').bind('click', function(){
+      $('#popup').remove();
+      $('#blanket').remove();
+    });
+    var lLeft = 50;
+    var lTop = 50;
+    var lInputDialog = '<h1>Rejection Reason (send to original submitter)</h1><textarea name="extra" id="reason-text" cols="100" rows="12"></textarea><input type="submit" value="Reject" id="submit-rejection"/>';
+    $('#popup').css('top',lTop).css('left',lLeft).html(lInputDialog);
+    $('#submit-rejection').click(function(){
+      $('#mergeRequestRow-' + pMergeRequestSerial).html('<td>Processing...</td>');
+      var lUrl = "/move/pieces/reject_merge/" + pMergeRequestSerial + "/";
+      var lExtraInfo = $('#reason-text').val()
+      $.post(lUrl, {'reason' : lExtraInfo}, function(){
+        $('#mergeRequestRow-' + pMergeRequestSerial).html('<td>Rejected</td>');
+      });
+      $('#blanket').click();
+    });
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Test Piece Merge Requests</h1>
+<table class="table table-hover">
+{% for mergeRequest in MergeRequests %}
+  <tr id="mergeRequestRow-{{mergeRequest.id}}">
+    <td>
+      <table class="table table-hover">
+        <tr><td>From: <a href="/users/{{mergeRequest.owner}}/">{{mergeRequest.owner}}</a></td><th>To Delete</th><th>Destination</th></tr>
+        <tr><th>Name:</th><td><a href="/pieces/{{mergeRequest.source_piece.slug}}/">{{mergeRequest.source_piece.name}}</a></td><td><a href="/pieces/{{mergeRequest.destination_piece.slug}}/">{{mergeRequest.destination_piece.name}}</a></td></tr>
+        <tr><th>Test Piece:</th><td>{{mergeRequest.source_piece.contestevent_set.count}}</td><td>{{mergeRequest.destination_piece.contestevent_set.count}}</td></tr>
+        <tr><th>Own Choice:</th><td>{{mergeRequest.source_piece.contestresult_set.count}}</td><td>{{mergeRequest.destination_piece.contestresult_set.count}}</td></tr>
+      </table>
+    </td>
+    <td>
+      &nbsp;[<a href="/move/pieces/merge/{{mergeRequest.id}}/">merge&nbsp;now</a>]<br/><br/><br/>
+      
+      &nbsp;[<a href="javascript:reject_merge({{mergeRequest.id}});">reject</a>]
+    </td>
+  </tr>
+{% empty %}
+  <tr><td>None Outstanding</td></tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

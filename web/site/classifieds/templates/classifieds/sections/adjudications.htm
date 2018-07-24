@@ -1,0 +1,25 @@
+<div id="adjudicator-tab">
+<h2 class="printonly">Adjudications</h2> 
+<table id="adjudications" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Contest</th>
+      <th>Winner</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for adjudication in Adjudications %}
+      <tr>
+        <td class="contest-event"><a href="/contests/{{adjudication.contest_slug}}/{{ adjudication.date_of_event|date:"Y-m-d" }}/">{{ adjudication.event_date }}</a></td>
+    <td>{{ adjudication.event_name }}</td>
+{% if adjudication.band_name %}
+    <td class="band"><a href="/bands/{{ adjudication.band_slug }}/">{{ adjudication.band_name }}</a></td>
+{% else %}
+        <td></td>
+{% endif %}   
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div> <!-- adjudicator-tab -->

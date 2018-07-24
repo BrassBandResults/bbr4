@@ -1,0 +1,20 @@
+Your request to merge composer 
+
+{{ThingNew.source_composer.name|safe}}
+http://brassbandresults.co.uk/composers/{{ThingNew.source_composer.slug}}/ 
+
+to 
+
+{{ThingNew.destination_composer.name|safe}}
+http://brassbandresults.co.uk/composers/{{ThingNew.destination_composer.slug}}/ 
+
+has been declined.  {%if Reason%}The reason for this:{%endif%}
+
+{{Reason|safe}}
+
+Thanks for your support of the site - please reply to this email if you disagree and we'll look into it again.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

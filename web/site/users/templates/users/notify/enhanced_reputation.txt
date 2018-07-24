@@ -1,0 +1,25 @@
+User {{ThingNew.user.username}} has reached 100 points.
+
+http://brassbandresults.co.uk/users/{{ThingNew.user.username}}/
+
+Suggested email mailto:{{ThingNew.user.email}} 
+
+Hello,
+
+As you've added many results on
+http://brassbandresults.co.uk/, we've added a little extra
+functionality for you.
+
+You should now be able to:
+- Delete results you entered
+- Add new bands and edit bands you created
+- Add new conductors and edit conductors you created
+- Add new test pieces and edit test pieces you created
+- All sorts of other little bits around the site
+
+Any problems, let us know.
+
+Enjoy!
+
+Tim & Sharon
+The Brass Band Results Team 

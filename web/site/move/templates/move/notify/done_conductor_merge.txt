@@ -1,0 +1,12 @@
+Conductor Merge Done
+
+Source (deleted): {{ThingNew.source_conductor.name|safe}}
+http://brassbandresults.co.uk/conductors/{{ThingNew.source_conductor.slug}}/
+ 
+Destination: {{ThingNew.destination_conductor.name|safe}}
+http://brassbandresults.co.uk/conductors/{{ThingNew.destination_conductor.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/conductors/

@@ -1,0 +1,19 @@
+An edit has been made to person {{ThingNew.name|safe}}. 
+
+Name: {{ThingNew.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
+First Name: {{ThingNew.first_names|safe}}{% ifnotequal ThingNew.first_names ThingOld.first_names %} [was {{ThingOld.first_names|safe}}]{%endifnotequal%}
+Surname: {{ThingNew.surname|safe}}{% ifnotequal ThingNew.surname ThingOld.surname %} [was {{ThingOld.surname|safe}}]{%endifnotequal%}
+Band Name: {{ThingNew.band_name|safe}}{% ifnotequal ThingNew.band_name ThingOld.band_name %} [was {{ThingOld.band_name|safe}}]{%endifnotequal%}
+Deceased: {{ThingNew.deceased}}{% ifnotequal ThingNew.deceased ThingOld.deceased %} [was {{ThingOld.deceased}}]{%endifnotequal%}
+Start date: {{ThingNew.start_date}}{% ifnotequal ThingNew.start_date ThingOld.start_date %} [was {{ThingOld.start_date}}]{%endifnotequal%}
+End date: {{ThingNew.end_date}}{% ifnotequal ThingNew.end_date ThingOld.end_date %} [was {{ThingOld.end_date}}]{%endifnotequal%}
+Email: {{ThingNew.contact_email}}{% ifnotequal ThingNew.contact_email ThingOld.contact_email %} [was {{ThingOld.contact_email}}]{%endifnotequal%}
+
+Notes: {{ThingNew.notes|safe}}
+
+{% ifnotequal ThingNew.notes ThingOld.notes %} [was {{ThingOld.notes|safe}}]{%endifnotequal%}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}}{% ifnotequal ThingNew.lastChangedBy.username ThingOld.lastChangedBy.username %} [was {{ThingOld.lastChangedBy.username}}]{%endifnotequal%} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}{% ifnotequal ThingNew.owner.username ThingOld.owner.username %} [was  {{ThingOld.owner.username}}]{%endifnotequal%}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/people/{{ThingNew.slug}}/

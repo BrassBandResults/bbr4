@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+
+{% block title %}Whit Friday - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-whitfriday-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Whit Friday Results</h1>
+<div id="helpbox">
+<p>Select which Whit Friday area you want to add results for.</p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<p>{{ form.contest.errors }}</p>
+<table>
+	<tr>
+		<th>Contest Area:</th>
+		<td>{{form.contest}}&nbsp;&nbsp;<input type="submit" value="Submit" />
+        </td>
+	</tr>
+</table>
+</form>
+</div>
+{% endblock %}

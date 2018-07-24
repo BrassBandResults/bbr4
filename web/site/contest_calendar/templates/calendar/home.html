@@ -1,0 +1,57 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Calendar{% endblock %}
+
+{%block keywords %}calendar{% endblock %}
+
+{%block description%}Calendar of Brass Band Contests{%endblock%}
+
+{%block calendar-selected%}class="selected"{%endblock%}
+
+{%block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Calendar"%}</h1>
+<table width="100%">
+    <tr>
+        <td width="20%" align="left">&lt;&lt; <a href="/calendar/{{PreviousYear}}/{{PreviousMonth}}/">{{PreviousMonthName}} {{PreviousYear}}</a></td>
+        <td width="20%" align="left">&lt;&lt; <a href="/calendar/{{YearBeforeThis}}/{{Month}}/">{{MonthName}} {{YearBeforeThis}}</a></td>
+        <td width="20%" align="center"><a href="/calendar">{% trans "Today"%}</a></td>
+        <td width="20%" align="right"><a href="/calendar/{{YearAfterThis}}/{{Month}}/">{{MonthName}} {{YearAfterThis}}</a> &gt;&gt;</td>
+        <td width="20%" align="right"><a href="/calendar/{{NextYear}}/{{NextMonth}}/">{{NextMonthName}} {{NextYear}}</a> &gt;&gt;</td>
+    </tr>
+</table>
+<ul>
+  {% for event in ContestsThisMonth %}
+  <li><a href="{{event.get_absolute_url}}">{{event.contest.name}}</a></li>
+  {% endfor %}
+</ul>
+<div id="calendar">
+{{Calendar}}
+</div>
+<table width="100%">
+    <tr>
+        <td width="20%" align="left">&lt;&lt; <a href="/calendar/{{PreviousYear}}/{{PreviousMonth}}/">{{PreviousMonthName}} {{PreviousYear}}</a></td>
+        <td width="20%" align="left">&lt;&lt; <a href="/calendar/{{YearBeforeThis}}/{{Month}}/">{{MonthName}} {{YearBeforeThis}}</a></td>
+        <td width="20%" align="center"><a href="/calendar">{% trans "Today"%}</a></td>
+        <td width="20%" align="right"><a href="/calendar/{{YearAfterThis}}/{{Month}}/">{{MonthName}} {{YearAfterThis}}</a> &gt;&gt;</td>
+        <td width="20%" align="right"><a href="/calendar/{{NextYear}}/{{NextMonth}}/">{{NextMonthName}} {{NextYear}}</a> &gt;&gt;</td>
+    </tr>
+</table>
+{% if ContestsThisYear %}
+<h2>Other Contests of {{Year}}</h2>
+<p>These contests also took place in {{Year}} but we do not have a specific date.</p> 
+<ul>
+  {% for event in ContestsThisYear %}
+  <li><a href="{{event.get_absolute_url}}">{{event.contest.name}}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+{% endblock %}

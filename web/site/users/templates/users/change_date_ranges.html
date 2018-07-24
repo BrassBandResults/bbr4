@@ -1,0 +1,59 @@
+{% extends "template.html" %}
+
+{%block title %}Users{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#contests").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Date Ranges</h1>
+<p>&lt;&lt;&lt;<a href="/users/{{user.username}}/contest_history/">back to your profile</a></p>
+<p>Use this page to specify a band and a date range for when you started and left.</p>
+<h2>Your Band History</h2>
+{% if DateRanges %}
+<p>Use the import link to look for contests in the specific date range.</p>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Band</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Import Results</th>
+			<th>Delete Range</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for daterange in DateRanges %}
+      <tr>
+      	<td><a href="/bands/{{daterange.band.slug}}/">{{daterange.band.name}}</a></td>
+		<td>{{daterange.start_date|date:"jS M Y"}}</td>
+		<td>{{daterange.end_date|date:"jS M Y"}}</td>
+		<td>{% if not daterange.imported %}[<a href="/users/{{user.username}}/contesthistory/{{daterange.id}}/import/">import</a>]{%endif%}</td>
+		<td>[<a href="/users/{{user.username}}/contesthistory/{{daterange.id}}/delete/">delete</a>]</td>
+      </tr>
+{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<p>You have not set up any date ranges.</p>
+{% endif %}
+<h2>Add New</h2>
+<form action="." method="post">{% csrf_token %}
+<table>
+	<tr><td>{{form.band.errors }}<label for="id_band">Band:</label></td><td>{{form.band}}</td></tr>
+	<tr><td>{{form.start_date.errors }}<label for="id_start_date">Start Date:</label></td><td>{{form.start_date}} (dd/mm/yyyy)</td></tr>
+	<tr><td>{{form.end_date.errors }}<label for="id_end_date">End Date:</label></td><td>{{form.end_date}} (dd/mm/yyyy)</td></tr>
+    <tr><td></td><td><input type="submit" value="Add Date Range"></td></tr>
+</table>
+</form>
+</div>
+{% endblock %}
+
+{%block scriptfooter%}
+{%endblock%}

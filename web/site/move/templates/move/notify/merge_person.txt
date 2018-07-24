@@ -1,0 +1,11 @@
+Your request to merge person {{ThingNew.source_person.name|safe}} into
+
+{{ThingNew.destination_person.name|safe}}
+http://brassbandresults.co.uk/people/{{ThingNew.destination_person.slug}}/ 
+
+has been approved.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

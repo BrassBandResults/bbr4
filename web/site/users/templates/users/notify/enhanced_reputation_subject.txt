@@ -1,0 +1,1 @@
+{{ThingNew.user.username}} 100 points

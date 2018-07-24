@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+{% load humanize %}
+{% load bbrize %}
+{% load i18n %}
+
+{% block title %}{% trans "Tags"%}{% endblock %}
+
+{%block keywords %}Brass Band Contest Tags{% endblock %}
+
+{%block description%}Tags attached to contests and contest groups at brass band results{%endblock%}
+
+{%block contest-tags-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+	  $("#contests").tablesorter({widgets: ['zebra'], sortList: [[0,0]]});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{{ContestTag.name}}</h1>
+<p><a href="/tags">&lt;&lt;&lt; Back to tags list</a></p>
+<table id="contests" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Contest</th>
+      <th>Type</th>
+{% if user.profile.superuser or user.profile.regional_superuser %}      
+      <th></th>
+{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+{% for contestGroup in ContestGroups %}
+  <tr>
+    <td><a href="/contests/{{contestGroup.actual_slug}}/">{{contestGroup.name}}</a></td>
+    <td>Group</td>
+{% if user.profile.superuser or user.profile.regional_superuser %}    
+    <td>[<a href="/tags/{{ContestTag.slug}}/remove/group/{{contestGroup.slug}}/">remove</a>]</td>
+{% endif %}    
+  </tr>
+{% endfor %}
+{% for contest in Contests %}
+  <tr>
+    <td><a href="/contests/{{contest.slug}}/">{{contest.name}}</a></td>
+    <td>Contest</td>
+{% if user.profile.superuser or user.profile.regional_superuser %}    
+    <td>[<a href="/tags/{{ContestTag.slug}}/remove/contest/{{contest.slug}}/">remove</a>]</td>
+{% endif %}
+  </tr>
+{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

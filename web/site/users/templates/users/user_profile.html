@@ -1,0 +1,382 @@
+{% extends "template.html" %}
+{% load gravatar %}
+
+{% block title %}{{User.username}} - User{% endblock %}
+
+{%block description %}User {{User.username}}{% endblock %}
+
+{%block profile-selected%}class="selected"{%endblock%}
+
+{% block adbar %}<br/>{%endblock%}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  	$("#tabs").tabs();
+    $("#contests").tablesorter({widgets: ['zebra']});
+	  $("#feedback").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+	  $("#all-feedback").tablesorter({widgets: ['zebra']});
+	  
+{% if ResultsWithPosition > 0 %}
+{% if Wins > 0 or TopSixNotWin > 0 %}
+  var lPieData = [
+    { label: "Wins", data: {{Wins}}, color: "#ffc600" },  
+    { label: "Top Six", data: {{TopSixNotWin}}, color: "#99ccff" },
+    { label: "Unplaced", data: {{Unplaced}}, color: "#316497" }
+    ];
+  $.plot($("#flot_pie"), lPieData,
+  {
+      series: {
+        pie: {
+          show: true,
+          label: {
+            formatter: function(label, series){
+              return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+label+'<br/>'+series.data[0][1]+" (" +Math.round(series.percent)+'%)</div>';
+            }
+          }
+        }
+      },
+      legend: {
+          show: false
+      }
+  });
+{% endif %}       
+{% endif %}   
+  });
+  
+  function mark_fixed(pFeedbackSerial)
+  {
+    var lUrl = "/users/{{User.username}}/feedbackdone/" + pFeedbackSerial + "/";
+    $.get(lUrl, function(){
+        $('#feedback-' + pFeedbackSerial).html('done');
+    });
+  }
+  
+  function release_to_queue(pFeedbackSerial)
+  {
+    var lUrl = "/users/{{User.username}}/queue/" + pFeedbackSerial + "/";
+    $.get(lUrl, function(){
+        $('#feedback-' + pFeedbackSerial).html('queued');
+    });
+  }
+  
+  function send_to_admin_queue(pFeedbackSerial)
+  {
+    $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
+    $('#blanket').bind('click', function(){
+      $('#popup').remove();
+      $('#blanket').remove();
+    });
+    var lLeft = 50;
+    var lTop = 50;
+    var lInputDialog = '<h1>Extra Comments</h1><textarea name="extra" id="feedback-extra" cols="100" rows="12"></textarea><input type="submit" value="Send To Site Owners" id="submit-inconclusive"/>';
+    $('#popup').css('top',lTop).css('left',lLeft).html(lInputDialog);
+    $('#submit-inconclusive').click(function(){
+      $('#feedback-' + pFeedbackSerial).html('processing...');
+      var lUrl = "/users/{{User.username}}/admin/" + pFeedbackSerial + "/";
+      var lExtraInfo = $('#feedback-extra').val()
+      $.post(lUrl, {'extra' : lExtraInfo}, function(){
+        $('#feedback-' + pFeedbackSerial).html('sent to site owners');
+      });
+      $('#blanket').click();
+    })
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{{User.username}}
+{% if user.is_superuser %}
+ [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
+ [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
+{%endif%}
+</h1>
+<span style="float: right; text-align:right;"><a href="/faq/#avatar" title="Click for FAQ on how to change this Gravatar">{% gravatar User 80 %}</a></span>
+<table>
+  <tr><th>Date Joined:</th><td id="DateJoined">{{User.date_joined|date:"jS M Y"}}</td></tr>
+  <tr><th>Last Login:</th><td id="LastLogin">{{User.last_login|date:"jS M Y"}} ({{User.last_login|timesince}} ago)</td></tr>
+  <tr><th>Total Contests Added:</th><td id="ContestEventsAdded">{{ContestCount}}</td></tr>
+  <tr><th>Total Results Added:</th><td id="ContestEventsAdded">{{ResultCount}}</td></tr>
+</table>
+{% if ClassifiedProfiles %}
+<h2>Classified Profiles</h2>
+<table class="table table-hover">
+<tr>
+  <th>Name</th>
+  <th>Status</th>
+  <th>Conductor</th>
+  <th>Adjudicator</th>
+</tr>  
+{% for profile in ClassifiedProfiles %}
+<tr>
+  <td><a href="/users/{{User.username}}/edit_profile/{{profile.id}}/">Edit {{profile.name}} profile</a></td>
+  <td>{{profile.get_status_display}}</td>
+  <td>{% if profile.person %}<a href="/people/{{profile.conductor.slug}}/">person</a>{%endif%}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+<br/>
+<div id="tabs">
+	<ul class="screenonly">
+		<li><a href="#feedback-tab">Outstanding Feedback</a></li>
+    <li><a href="#sentfeedback-tab">Feedback Sent</a></li>
+		<li><a href="#allfeedback-tab">Feedback Done</a></li>
+		<li><a href="#contests-tab">Contests Added</a></li>
+		<li><a href="#user-contests-tab">Your Contest History</a></li>
+        <li><a href="#inbox-tab">Inbox</a></li>
+	</ul>
+<div id="feedback-tab">
+{% if OutstandingFeedback %}
+<p>Feedback not done will automatically be released to a queue after seven days.</p> 
+<table id="feedback" class="table table-hover">
+	<thead>
+		<tr>
+	    <th>Date</th>
+			<th>Feedback</th>
+      <th>Reporter</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for feedback in OutstandingFeedback %}
+		<tr>
+{% if feedback.claim_date %}			
+      <td>{{feedback.created|date:"jS M Y"}}</td>
+{% else %}
+	  <td><b>{{feedback.created|date:"jS M Y"}}</b></td>
+{% endif %}      
+			<td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+      <td>{% if feedback.reporter%}<a href="/users/{{feedback.reporter.username}}/">{{feedback.reporter.username}}</a>{%endif%}</td>
+			<td id="feedback-{{feedback.id}}">
+			  [<a onclick="javascript:mark_fixed('{{feedback.id}}');" href="javascript:void(0);">mark&nbsp;fixed</a>] 
+        [<a onclick="javascript:release_to_queue('{{feedback.id}}');" href="javascript:void(0);">send&nbsp;to&nbsp;admin</a>]
+{% if user.profile.superuser %}
+        [<a onclick="javascript:send_to_admin_queue('{{feedback.id}}');" href="javascript:void(0);">send&nbsp;to&nbsp;site&nbsp;owners</a>]
+{% endif %}        
+      </td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<p>No outstanding feedback on your site entries.</p>
+{% endif %}
+</div>
+
+<div id="sentfeedback-tab">
+{% if SentFeedback %}
+<p>This tab lists feedbacks you have sent, up to a maximum of 50.</p> 
+<table id="sentfeedback" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Feedback</th>
+      <th>With</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for feedback in SentFeedback %}
+    <tr>
+      <td>{{feedback.created|date:"jS M Y"}}</td>
+      <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+      <td>{% if feedback.owner%}<a href="/users/{{feedback.owner.username}}/">{{feedback.owner.username}}</a>{%endif%}</td>
+      <td id="feedback-{{feedback.id}}">{{feedback.status_display}}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have not sent any feedback</p>
+{% endif %}
+</div>
+
+<div id="allfeedback-tab">
+{% if AllFeedback %}
+<p>This tab shows your last 30 completed feedbacks.</p> 
+<table id="all-feedback" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Feedback</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for feedback in AllFeedback %}
+		<tr>
+			<td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+			<td>{%ifequal feedback.status_display "Done"%} [<a href="/users/{{User.username}}/feedbacknotdone/{{feedback.id}}/">mark&nbsp;not&nbsp;fixed</a>]{%endifequal%}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<p>No feedback submitted on your site entries.</p>
+{% endif %}
+</div>
+<div id="contests-tab">
+{% if Paginate %}
+<div id="years">
+{%for year in Years %}
+<h3 class="expand-link"><span class="year">{{ year.year }}</span> - ({{year.count}} Contests) - <span class="label">Show</span></h3>
+<div class="year-contents"></div>
+{%endfor%}
+</div>
+{% else %}
+	<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Contest</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in ContestEvents %}
+		<tr>
+  		<td class="EventDate"><a href="/contests/{{event.contest_slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+			<td class="EventName">{{event.name}}</td>
+		</tr>
+{% endfor %}
+    </tbody>
+</table>
+{% endif %}
+</div>
+<div id="user-contests-tab">
+<h2>Privacy Settings</h2>
+<p>Who do you want to be able to see your contest history?</p>
+<form action="." method="post">{% csrf_token %}
+<table>
+	<tr><td><input type="radio" name="privacy" value="public"{% ifequal ContestHistoryVisibility "public" %} checked="checked"{%endifequal%}/></td><td>Anyone who looks at <a href="http://brassbandresults.co.uk/myresults/{{user.username}}/">http://brassbandresults.co.uk/myresults/{{user.username}}/</a></td></tr>
+	<tr><td><input type="radio" name="privacy" value="site"{% ifequal ContestHistoryVisibility "site" %} checked="checked"{%endifequal%}/></td><td>Anyone who looks at http://brassbandresults.co.uk/users/{{user.username}}/ and is logged into brassbandresults.</td></tr>
+	<tr><td><input type="radio" name="privacy" value="private"{% ifequal ContestHistoryVisibility "private" %} checked="checked"{%endifequal%}/></td><td>Hide it so that only I can see it.</td></tr>
+	<tr><td></td><td><input type="submit" value="Update Privacy Settings"></td></tr>
+</table>
+</form>
+<h2>Date Ranges</h2>
+{% if DateRanges %}
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Band</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for daterange in DateRanges %}
+      <tr>
+      	<td><a href="/bands/{{daterange.band.slug}}/">{{daterange.band.name}}</a></td>
+		<td>{{daterange.start_date|date:"jS M Y"}}</td>
+		<td>{{daterange.end_date|date:"jS M Y"}}</td>
+      </tr>
+{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<p>You have not set up any date ranges.</p>
+{% endif %}
+<p>[<a href="/users/{{User.username}}/contesthistory/">Change Your Date Ranges</a>]</p>
+<h2>Contest History</h2>
+{% if ImportedCount %}
+<p><font color="green">{{ImportedCount}} new results imported into the list.</font></p>
+{% endif %}
+{% if ContestHistory %}
+<table width="100%">
+  <tr>
+    <td width="60%" valign="top">
+      <p>You have competed in {{HistoryContestCount}} contests, for {{BandCount}} bands.</p>
+    </td>
+    <td width="40%"><div id="contest-history-pie"><div id="flot_pie"></div></div></td>
+  </tr>
+</table>
+<table id="contest-history" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Contest</th>
+			<th>Band</th>
+			<th>Conductor</th>
+			<th>Result</th>
+			<th>Remove</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in ContestHistory %}
+		<tr>
+			<td><a href="/contests/{{result.result.contest_event.contest.slug}}/{{result.result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.result.contest_event.event_date}}</a></td>
+			<td>{{result.result.contest_event.contest.name}}</td>
+			<td><a href="/bands/{{result.result.band.slug}}/" title="{{result.result.band.name}}">{{result.result.band_name}}</a></td>
+      <td>
+{% ifequal result.result.conductor.name "Unknown" %}
+        <font color="red">Unknown, do you know?</font>
+{% else %}      
+        <a href="/people/{{result.result.person_conducting.slug}}/">{{result.result.person_conducting.name}}</a>
+{% endifequal %}
+      </td>
+			<td>{{result.result.results_position_display}}</td>
+			<td>[<a href="/users/{{user.username}}/contesthistory/{{result.id}}/remove_contest/">remove</a>]</td>
+		</tr>
+{% endfor %}		
+	</tbody>
+</table>
+<p>To add individual contests to this list, click the "I played at this contest" link on any contest results page.  To add multiple contests, create a date range above.</p>
+{% else %}
+<p>Using this page you can build up your own personal contest history.  Use the "I played at this contest" link on any contest results page to get started.</p>
+{% endif %}
+</div>
+<div id="inbox-tab">
+    {% if Messages %}
+<table id="messages" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>From</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for message in Messages %}
+  <tr>
+  	{% if message.read %}
+    <td><a href="/messages/{{message.id}}/" title="View Message">{{message.title}}</a></td>
+    <td>{{message.from_user.username}}</td>
+    <td>{{message.created|date:"jS F Y, P"}}</td>
+  	{% else %}
+    <td><a href="/messages/{{message.id}}/" title="View Message">{{message.title}}</a></td>
+	  <td><b>{{message.from_user.username}}</a></b></td>
+    <td><b>{{message.created|date:"jS F Y, P"}}</b></td>
+	{% endif %}
+  </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Your inbox is empty</p>
+{% endif %}
+</div>
+</div>
+</div>
+{% endblock %}
+
+{%block scriptfooter%}
+<script type="application/javascript">
+	$('#years h3').bind('click', function(){
+		if ($(this).find('.label').text() === 'Show'){
+			var lHeadNode = $(this)
+			lHeadNode.find('.label').text('Loading...');
+			var lUrl = '/users/{{User.username}}/year/' + lHeadNode.find('.year').text() + '/';
+			var lNode = $(this).next('.year-contents');
+			lNode.load(lUrl, function(){
+				lHeadNode.find('.label').text('Close');	
+			});
+			
+		} else {
+			$(this).next('.year-contents').html('');
+			$(this).find('.label').text('Show');
+		}
+	});
+</script>
+{%endblock%}

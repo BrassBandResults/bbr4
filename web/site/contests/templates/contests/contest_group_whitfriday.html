@@ -1,0 +1,101 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{ContestGroup.name}} - Contest Group{% endblock %}
+
+{%block description%}Details about the brass band contest {{ContestGroup.name}}{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  	$("#results").tablesorter({widgets: ['zebra']});
+  	$("#contests").tablesorter({widgets: ['zebra']});
+    $("#extinctcontests").tablesorter({widgets: ['zebra']});
+    $('#tabs').tabs();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{{ContestGroup.name}}
+  {% if user.is_staff and perms.contests.change_contestgroup %}[<a href="/bbradmin/contests/contestgroup/{{ContestGroup.id}}/">admin</a>]{%endif%}
+</h1>
+<h2>{% trans "Overall Results"%}</h2>
+<table id="results" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Winner"%}</th>
+      <th>{% trans "Bands Competing"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in ContestGroup.winners %}	    
+  		<tr>
+  		    <td><a href="/contests/{{ContestGroup.actual_slug}}/{{result.date|date:"Y-m-d"}}/">{{result.event_date}}</a></td>
+  		    <td><a href="/bands/{{result.winner.slug}}/">{{result.winner.band}}</a></td>
+            <td>{{result.bands_competing}}</td>
+		</tr>
+{% endfor %}        
+	</tbody>
+</table>
+<h2>{% trans "Individual Contests"%}</h2>
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Events on Site"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in Contests %}
+  		<tr>
+  			<td class="contest"><a href="/contests/{{contest.actual_slug}}/">{{contest.name}}</a></td>
+			<td>{{contest.count}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% if ExtinctContests %}
+<h2>{% trans "Old Contest Sections"%}</h2>
+<table id="extinctcontests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Events on Site"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in ExtinctContests %}
+  		<tr>
+  			<td class="contest"><a href="/contests/{{contest.actual_slug}}/">{{contest.name}}</a></td>
+			<td>{{contest.count}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+<div id="tags">
+  {% for tag in ContestGroup.tag_list %}<a href="/tags/{{tag.slug}}/">{{tag.name}}</a> {%endfor%}<br/>
+  {% if user.profile.superuser or user.profile.regional_superuser %}  
+  <p>
+    <form method="post" action="/tags/new/">{% csrf_token %}
+      <input type="hidden" name="type" value="group"/>
+      <input type="hidden" name="slug" value="{{ContestGroup.actual_slug}}"/>
+      <input type="text" name="name" placeholder="Enter New Tag" maxlength="255"/>
+      <input type="submit" value="Add Tag">
+    </form>
+  </p>
+  {% endif %} 
+</div>
+
+{% if ContestGroup.notes %}
+<h2>{% trans "Notes"%}</h2>
+<p>{{ContestGroup.notes|safe|linebreaksbr}}</p>
+{% endif %}
+</div>
+{% endblock %}

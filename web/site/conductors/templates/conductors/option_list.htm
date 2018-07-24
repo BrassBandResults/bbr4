@@ -1,0 +1,2 @@
+{% for conductor in Conductors %}<option value="{{conductor.id}}">{{conductor.surname}}, {{conductor.first_names}}{% if conductor.bandname%} ({{conductor.bandname}}){%endif%}</option>
+{% endfor %}

@@ -1,0 +1,2 @@
+{{BandName}} have a vacancy for {{Position}}.
+

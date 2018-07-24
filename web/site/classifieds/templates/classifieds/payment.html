@@ -1,0 +1,21 @@
+{% extends "template.html" %}
+
+{%block title %}Create Profile{% endblock %}
+
+{%block keywords %}profile{% endblock %}
+
+{%block description%}Create a profile for {{Object.name}}{%endblock%}
+
+{% block adbar %}<br/>{% endblock %}
+{% block adbarBottom %}<br/>{% endblock %}
+{% block feedback %}{% endblock %}
+
+{% block content %}
+<h1>Payment</h1>
+<p>Thanks, we've saved your profile.</p>
+{% if not AllowProfileForFree %}
+<p>Please use the following button to pay your first year's subscription.  You can pay using a PayPal account, or a credit or debit card.</p>
+<p>Once you've paid, use the provided link to return to BrassBandResults.  This will make your profile visible - if you don't do this, it may take a couple of days.</p>
+{{PayPalButton.code|safe}}
+{% endif %}
+{% endblock %}

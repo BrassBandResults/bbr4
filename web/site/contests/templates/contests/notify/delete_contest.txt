@@ -1,0 +1,6 @@
+Contest {{ThingOld.name|safe}} deleted.
+
+Last Changed By: {{ThingOld.lastChangedBy.username}} on {{ThingOld.last_modified}}
+Owner: {{ThingOld.owner.username}}, created {{ThingOld.created}}
+
+https://brassbandresults.co.uk/contests/{{ThingOld.slug}}/

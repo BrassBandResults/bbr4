@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{%block title %}{{ContestEvent.name}} - Add To Contest History{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Select Band"%}</h1>
+<p>{% trans "You can select the contests you took part in and build up your own contest history on the site.  This will be available from your" %} <a href="/users/{{user.username}}/">{% trans "user profile"%}</a>{% trans ", although you can elect to hide the history from other users if you want to."%}</p>
+<h2>{{ContestEvent.name}} {{ContestEvent.event_date}}</h2>  
+<p>{% trans "Please select the band you played with at this contest."%}</p>
+
+{% if user.profile.pro_member %}
+<p>Position played: <select id="positionDropList">
+{% for position in PlayerPositions %}
+  <option value="{{position.id}}">{{position.name}}</option>
+{% endfor %}
+</select></p>
+{% endif %} 
+
+<ul>
+{% for result in ContestEvent.contestresult_set.all %}
+  <li>{{result.results_position_display}} <a class="resultlink" href="javascript:submitLink('{{result.id}}')">{{result.band_name}}</a></li>
+{% endfor %}
+</ul>
+{% if ContestEvent.not_complete %}
+<p>{% trans "Is the result you're looking for missing?"%}  <a href="/addresults/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/5/">{% trans "Add More Results"%}</a>.</p>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block feedback %}{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+function submitLink(pResult){
+	var lPosition = $('#positionDropList').val();
+	location.replace('/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/AddToContestHistory/' + pResult + '/?position=' + lPosition);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+Your request to merge band {{ThingNew.source_band.name|safe}} into
+
+{{ThingNew.destination_band.name|safe}}
+http://brassbandresults.co.uk/bands/{{ThingNew.destination_band.slug}}/ 
+
+has been approved.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

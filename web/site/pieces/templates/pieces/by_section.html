@@ -1,0 +1,185 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Test Pieces By Section{% endblock %}
+
+{%block keywords %}Test Pieces Section{% endblock %}
+
+{%block pieces-section-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#tabs").tabs();
+	
+    $("#pieces-champ").tablesorter();
+	$("#pieces-first").tablesorter();
+	$("#pieces-second").tablesorter();
+	$("#pieces-third").tablesorter();
+	$("#pieces-fourth").tablesorter();
+
+    $('#reset-champ').click(function(){
+      $('#pieces-champ').trigger('sortReset');
+      return false;
+    });
+    $('#reset-first').click(function(){
+      $('#pieces-first').trigger('sortReset');
+      return false;
+    });
+    $('#reset-second').click(function(){
+      $('#pieces-second').trigger('sortReset');
+      return false;
+    });
+    $('#reset-third').click(function(){
+      $('#pieces-third').trigger('sortReset');
+      return false;
+    });
+    $('#reset-fourth').click(function(){
+      $('#pieces-fourth').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Test Pieces By Section"%}</h1>
+<p>{% trans "This page shows test pieces that have been used as the set work for contests in particular sections in the last thirty years.  You can also see the"%} <a href="/pieces/">{% trans "full list of testpieces</a> that have been used at contests on this site."%}</p>
+<p>{% trans "Set Test and Own Choice numbers here are limited to nationally graded contests at the section specified."%}</p>
+<div id="tabs">
+	<ul class="screenonly">
+		<li><a href="#championship-tab">{% trans "Championship"%}</a></li>
+		<li><a href="#first-tab">{% trans "First"%}</a></li>
+		<li><a href="#second-tab">{% trans "Second"%}</a></li>
+		<li><a href="#third-tab">{% trans "Third"%}</a></li>
+		<li><a href="#fourth-tab">{% trans "Fourth"%}</a></li>
+	</ul>
+<div id="championship-tab">
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1" id="reset-champ">Reset Sort</button>
+<table id="pieces-champ" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Composer"%}</th>
+			<th>{% trans "Arranger"%}</th>
+      <th>{% trans "Set Test"%}</th>
+      <th>{% trans "Own Choice"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for piece in ChampionshipPieces %}
+    	<tr>
+    	  <td class="test-piece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+    	  <td>{% if piece.composer %}<a href="/people/{{piece.composer.slug}}/">{{piece.composer.combined_name}}</a>{%endif%}</td>
+    	  <td>{% if piece.arranger %}<a href="/people/{{piece.arranger.slug}}/">{{piece.arranger.combined_name}}</a>{%endif%}</td>
+    	  <td>{{piece.set_test_count}}</td>
+    	  <td>{{piece.own_choice_count}}</td>
+    	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+<div id="first-tab">
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1" id="reset-first">Reset Sort</button>
+<table id="pieces-first" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Composer"%}</th>
+			<th>{% trans "Arranger"%}</th>
+      <th>{% trans "Set Test"%}</th>
+      <th>{% trans "Own Choice"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for piece in FirstPieces %}
+    	<tr>
+    	  <td class="test-piece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+    	  <td>{% if piece.composer %}<a href="/people/{{piece.composer.slug}}/">{{piece.composer.combined_name}}</a>{%endif%}</td>
+    	  <td>{% if piece.arranger %}<a href="/people/{{piece.arranger.slug}}/">{{piece.arranger.combined_name}}</a>{%endif%}</td>
+    	  <td>{{piece.set_test_count}}</td>
+        <td>{{piece.own_choice_count}}</td>
+    	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+<div id="second-tab">
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1" id="reset-second">Reset Sort</button>
+<table id="pieces-second" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Composer"%}</th>
+			<th>{% trans "Arranger"%}</th>
+      <th>{% trans "Set Test"%}</th>
+      <th>{% trans "Own Choice"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for piece in SecondPieces %}
+    	<tr>
+    	  <td class="test-piece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+    	  <td>{% if piece.composer %}<a href="/people/{{piece.composer.slug}}/">{{piece.composer.combined_name}}</a>{%endif%}</td>
+    	  <td>{% if piece.arranger %}<a href="/people/{{piece.arranger.slug}}/">{{piece.arranger.combined_name}}</a>{%endif%}</td>
+    	  <td>{{piece.set_test_count}}</td>
+        <td>{{piece.own_choice_count}}</td>
+    	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+<div id="third-tab">
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1" id="reset-third">Reset Sort</button>
+<table id="pieces-third" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Composer"%}</th>
+			<th>{% trans "Arranger"%}</th>
+      <th>{% trans "Set Test"%}</th>
+      <th>{% trans "Own Choice"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for piece in ThirdPieces %}
+    	<tr>
+    	  <td class="test-piece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+    	  <td>{% if piece.composer %}<a href="/people/{{piece.composer.slug}}/">{{piece.composer.combined_name}}</a>{%endif%}</td>
+    	  <td>{% if piece.arranger %}<a href="/people/{{piece.arranger.slug}}/">{{piece.arranger.combined_name}}</a>{%endif%}</td>
+    	  <td>{{piece.set_test_count}}</td>
+        <td>{{piece.own_choice_count}}</td>
+    	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+<div id="fourth-tab">
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1" id="reset-fourth">Reset Sort</button>    
+<table id="pieces-fourth" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Composer"%}</th>
+			<th>{% trans "Arranger"%}</th>
+			<th>{% trans "Set Test"%}</th>
+			<th>{% trans "Own Choice"%}</th>
+	  </tr>
+	</thead>
+	<tbody>
+{% for piece in FourthPieces %}
+    	<tr>
+    	  <td class="test-piece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+    	  <td>{% if piece.composer %}<a href="/people/{{piece.composer.slug}}/">{{piece.composer.combined_name}}</a>{%endif%}</td>
+    	  <td>{% if piece.arranger %}<a href="/people/{{piece.arranger.slug}}/">{{piece.arranger.combined_name}}</a>{%endif%}</td>
+    	  <td>{{piece.set_test_count}}</td>
+        <td>{{piece.own_choice_count}}</td>
+    	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}

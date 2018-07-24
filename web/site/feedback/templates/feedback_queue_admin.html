@@ -1,0 +1,81 @@
+{% extends "template.html" %}
+
+{% block title %}Site Owner Feedback Queue{% endblock %}
+
+{%block description%}Site Owner Feedback Queue{%endblock%}
+
+{%block admin-feedback-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#feedback").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#feedback').trigger('sortReset');
+      return false;
+    });
+  });
+  
+  function claim(pFeedbackSerial)
+  {
+    var lUrl = "/users/{{user.username}}/claim/" + pFeedbackSerial + "/";
+    $.get(lUrl, function(){
+        $('#feedback-' + pFeedbackSerial).html('claimed');
+    });
+  }
+  
+  function mark_inconclusive(pFeedbackSerial)
+  {
+  $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
+    $('#blanket').bind('click', function(){
+      $('#popup').remove();
+      $('#blanket').remove();
+    });
+    var lLeft = 50;
+    var lTop = 50;
+    var lInputDialog = '<h1>Extra Comments</h1><textarea name="extra" id="feedback-extra" cols="100" rows="12"></textarea><input type="submit" value="Mark Inconclusive" id="submit-inconclusive"/>';
+    $('#popup').css('top',lTop).css('left',lLeft).html(lInputDialog);
+    $('#submit-inconclusive').click(function(){
+      $('#feedback-' + pFeedbackSerial).html('processing...');
+      var lUrl = "/users/{{user.username}}/inconclusive/" + pFeedbackSerial + "/";
+      var lExtraInfo = $('#feedback-extra').val()
+      $.post(lUrl, {'extra' : lExtraInfo}, function(){
+        $('#feedback-' + pFeedbackSerial).html('inconclusive');
+      });
+      $('#blanket').click();
+    })
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Site Owner Feedback Queue</h1>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="feedback" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Feedback</th>
+      <th>From</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+{% for feedback in Feedback %}
+    <tr>
+      <td><a href="/feedback/detail/{{feedback.id}}/">{{feedback.created|date:"jS M Y"}}</a></td>
+      <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}{% if feedback.additional_comments%}<br/><b>{{feedback.additional_comments}}</b>{%endif%}</td>
+      <td>{% if feedback.reporter %}<a href="/users/{{feedback.reporter.username}}">{{feedback.reporter.username}}</a>{%endif%}</td>
+      <td id="feedback-{{feedback.id}}">[<a onclick="javascript:claim('{{feedback.id}}');" href="javascript:void(0);">claim</a>] [<a onclick="javascript:mark_inconclusive('{{feedback.id}}');" href="javascript:void(0);">inconclusive</a>]</td>
+    </tr>
+{% empty %}
+    <tr><td colspan="4">No Feedback in Queue</td></tr>    
+{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

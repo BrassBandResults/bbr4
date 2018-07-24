@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Band.name}}{% endblock %}
+
+{%block keywords %}{{Band.name}}{% endblock %}
+
+{%block description%}Details about the brass band {{Band.name}}{%endblock%}
+
+{%block bands-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+	$("#tabs").tabs();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Embed Results for"%} {{Band.name}}</h1>
+<p>{% trans "This page allows you to embed live results from Brass Band Results for this band onto the band's own website.  This will render as a html table with four columns: date, contest, results position and conductor.  Conductor and Date will be links which, when clicked, will call through to full results on this website."%}</p>
+<p>{% trans "To use this, copy and paste the following code into the HTML of a page on your website"%}:</p>
+<blockquote>
+<textarea cols="80" rows="20">&lt;!-- Start http://brassbandresults.co.uk/ embedding code v2 --&gt;
+&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;{% trans "Date"%}&lt;/th&gt;
+      &lt;th&gt;{% trans "Contest"%}&lt;/th&gt;
+      &lt;th&gt;{% trans "Position"%}&lt;/th&gt;
+      &lt;th&gt;{% trans "Conductor"%}&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+&lt;tbody id="bbr-{{Band.slug}}-results"&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;script type="text/javascript"&gt;
+function bbr_embed_{{BandSlugUnderscores}}_jsonp(data)
+{
+  var lTable = "";
+  for (var i=0; i&lt;data.length; i++)
+  {
+    lTable += "&lt;tr&gt;";
+    lTable += "&lt;td&gt;&lt;a href='https://brassbandresults.co.uk/contests/" + data[i].contest_slug + "/" + data[i].date + "/' title='{% trans "Click here to view full results for this contest on www.brassbandresults.co.uk"%}' target='_blank'&gt;" + data[i].date_display + "&lt;/a&gt;&lt;/td&gt;";
+    lTable += "&lt;td&gt;" + data[i].contest_name + "&lt;/td&gt;";
+    lTable += "&lt;td&gt;" + data[i].result + "&lt;/td&gt;";
+    lTable += "&lt;td&gt;&lt;a href='https://brassbandresults.co.uk/people/" + data[i].conductor_slug + "/' title='{% trans "Click here to view all results for this conductor on www.brassbandresults.co.uk"%}' target='_blank'&gt;" + data[i].conductor_name + "&lt;/a&gt;&lt;/td&gt;";
+    lTable += "&lt;/tr&gt;\n";
+  }
+  jQuery("#bbr-{{Band.slug}}-results").html(lTable);
+}
+&lt;/script&gt;
+&lt;br/&gt;&lt;font size="-1"&gt;{% trans "Results provided by"%} &lt;a href="https://brassbandresults.co.uk/"&gt;https://brassbandresults.co.uk&lt;/a&gt;&lt;/font&gt;
+&lt;script src="https://brassbandresults.co.uk/embed/band/{{Band.slug}}/results/2/" type="text/javascript"&gt;&lt;/script&gt;
+&lt;!-- End https://brassbandresults.co.uk/ embedding code v2 --&gt;</textarea>
+</blockquote>
+<p>Any problems, let us know in the feedback box below.</p>
+{% endblock %}

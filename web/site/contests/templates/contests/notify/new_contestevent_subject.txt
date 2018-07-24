@@ -1,0 +1,1 @@
+New: {{ThingNew.date_of_event|date:"Y-m-d"}} : {{ThingNew.contest.name|safe}}

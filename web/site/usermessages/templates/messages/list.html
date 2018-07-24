@@ -1,0 +1,44 @@
+{% extends "template.html" %}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#messages").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="messagepage">
+<h1>Messages</h1>
+<h2>Inbox</h2>
+{% if Messages %}
+<table id="messages" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>From</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for message in Messages %}
+  <tr>
+  	{% if message.read %}
+    <td>{{message.created|date:"jS F Y, P"}}</td>
+  	<td>{{message.from_user.username}}</td>
+    <td><a href="/messages/{{message.id}}/">{{message.title}}</a></td>
+	{% else %}
+    <td><b>{{message.created|date:"jS F Y, P"}}</b></td>
+	<td><b>{{message.from_user.username}}</a></b></td>
+    <td><a href="/messages/{{message.id}}/">{{message.title}}</a></td>
+	{% endif %}
+  </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Your inbox is empty</p>
+{% endif %}
+</div>
+{% endblock %}

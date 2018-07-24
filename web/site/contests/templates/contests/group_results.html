@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{ContestGroup.name}} - Overall Results{% endblock %}
+
+{%block description%}Overall results for the brass band contest {{ContestGroup.name}} on {{ContestDate}}{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest-group"><a href="/contests/{{ContestGroup.actual_slug}}/">{{ContestGroup.name}}</a> {% trans "Overall Results"%} {{ContestDate.year}}</h1>
+<table id="results" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Position"%}</th>
+			<th>{% trans "Band"%}</th>
+			<th>{% trans "Points"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in Results %}
+  		<tr>
+  			<td>{%ifchanged result.points%}{{result.position}}{%endifchanged%}</td>
+			<td class="band"><a href="/bands/{{result.slug}}/">{{result.band}}</a></div></td>
+			<td>{{result.display_points}}</td> <!-- {{result.points}} {{result.tiebreak}} -->
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+  $("#results").tablesorter({widgets: ['zebra']});
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{{TweetContents}}
+
+Latitude was {{ThingOld.latitude}}, now {{ThingNew.latitude}}
+Longitude was {{ThingOld.longitude}}, now {{ThingNew.longitude}}
+Postcode was {{ThingOld.postcode}}, now {{ThingNew.postcode}}
+Rehearsal Night 1 was {{ThingOld.rehearsal_night_1}}, now {{ThingNew.rehearsal_night_1}}
+Rehearsal Night 2 was {{ThingOld.rehearsal_night_2}}, now {{ThingNew.rehearsal_night_2}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}}{% ifnotequal ThingNew.lastChangedBy.username ThingOld.lastChangedBy.username %} [was {{ThingOld.lastChangedBy.username}}]{%endifnotequal%} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}{% ifnotequal ThingNew.owner.username ThingOld.owner.username %} [was  {{ThingOld.owner.username}}]{%endifnotequal%}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bands/{{ThingNew.slug}}/
+

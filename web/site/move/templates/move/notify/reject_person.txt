@@ -1,0 +1,20 @@
+Your request to merge person 
+
+{{ThingNew.source_person.name|safe}}
+http://brassbandresults.co.uk/people/{{ThingNew.source_person.slug}}/ 
+
+to 
+
+{{ThingNew.destination_person.name|safe}}
+http://brassbandresults.co.uk/conductors/{{ThingNew.destination_person.slug}}/ 
+
+has been declined.  {%if Reason%}The reason for this:{%endif%}
+
+{{Reason|safe}}
+
+Thanks for your support of the site - please reply to this email if you disagree and we'll look into it again.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

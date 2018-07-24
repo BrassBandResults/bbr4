@@ -1,0 +1,11 @@
+Some feedback has been queued, as the user it was with ({{QueuedFrom.username}}) has done nothing with it for seven days.
+
+Feedback:
+{{ ThingNew.comment|safe }}
+
+Page: {{ Url }}
+{% if ThingNew.reporter.username %}
+User: https://brassbandresults.co.uk/users/{{ ThingNew.reporter.username }}/
+
+You can message this user at https://brassbandresults.co.uk/messages/create/{{ThingNew.reporter.username}}/
+{% endif %}

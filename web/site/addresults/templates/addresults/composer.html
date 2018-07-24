@@ -1,0 +1,90 @@
+{% extends "template.html" %}
+
+{% block title %}Composer - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+var lData = [{% for result in Data %}{"name":"{{result}}" }{% if not forloop.last%},{%endif%}{% endfor %}];
+
+function startsWith(pLookIn, pLookFor) {
+  var lRegEx = new RegExp(pLookFor, 'i')
+  var lMatch = pLookIn.match(lRegEx)
+  if (lMatch) {
+    return lMatch[0].toLowerCase()==pLookFor.toLowerCase();
+  } else {
+      return false;
+  }
+}
+
+function showSuggestionBox(pType, pInputString){
+  var lHtml = ""
+  for (var i=0; i<lData.length; i++) {
+    if (startsWith(lData[i].name, pInputString)) {
+      lHtml += '<li onclick=\'fill("' + pType + '", "'+lData[i].name+'");\'>'+lData[i].name+'</li>\n';
+    }
+  }
+  
+  if (lHtml.length > 0) {
+    $('#' + pType + 'Suggestions').show();
+    $('#' + pType + 'AutoSuggestionsList').html(lHtml);
+  } else {
+    $('#' + pType + 'Suggestions').hide();
+  }    
+}
+
+function lookup(pType, pInputString)
+{
+  if(pInputString.length == 0) {
+    $('#' + pType + 'Suggestions').hide();
+  } else {
+    showSuggestionBox(pType, pInputString);
+  }
+} // lookup
+
+function fill(pType, thisValue) {
+    $('#' + pType).val(thisValue);
+    $('#' + pType + 'Suggestions').hide();
+} 
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Enter the name of the composer, surname last, e.g. <i>Gilbert Vinter</i></p>
+<p>Then enter the name of the arranger, if any.  Again, please enter surname last, e.g. <i>Frank Wright</i></p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+	<tr><th>Test Piece:</th><td>{{ContestEvent.test_piece.name}}</td></tr>
+	<tr>
+		<th>Composer:</th>
+		<td>
+		  <input type="text" id="Composer" name="Composer" onkeyup="lookup('Composer', this.value);" value="{{ContestEvent.test_piece.composer.name}}" maxlength="100" autofocus="autofocus">
+      <div class="suggestionsBox" id="ComposerSuggestions" style="display: none;">
+        <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+            <div class="suggestionList" id="ComposerAutoSuggestionsList"></div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>Arranger:</th>
+    <td>
+      <input type="text" id="Arranger" name="Arranger" onkeyup="lookup('Arranger', this.value);" value="{{ContestEvent.test_piece.arranger.name}}" maxlength="100">&nbsp;&nbsp;<input type="submit" value="Submit" />
+      <div class="suggestionsBox" id="ArrangerSuggestions" style="display: none;">
+        <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+            <div class="suggestionList" id="ArrangerAutoSuggestionsList"></div>
+      </div>
+    </td>    
+	</tr>
+</table>
+</form>
+</div>
+{% endblock %}

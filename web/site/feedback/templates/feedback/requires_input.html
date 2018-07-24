@@ -1,0 +1,20 @@
+{% extends "template.html" %}
+
+{% block title %}Results To Enter{% endblock %}
+
+{%block description%}Results to enter{%endblock%}
+
+{%block results-to-enter-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<h1>Help Enter Results</h1>
+<p>We have a number of contest programmes scanned, and these often have results, draws and quite often previous years results too.  We'd like your help to enter these into the database and make them visible to web searches and listed with the appropriate band.</p>
+<p>If you can, please have a look at the programmes for the contests listed below and see if you can enter any results.  If you just find a list of bands, please add them too - just put the position as 0.  That way it'll turn up on the band's list, and they will hopefully be able to find out where they came.  Thanks.</p>
+<ul>
+{% for event in Events %}
+<li><a href="/contests/{{event.contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/programme/"/>{{event.contest.name}} - {{event.event_date}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+{%block feedback %}{%endblock%}

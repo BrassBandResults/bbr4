@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+
+{% block title %}Feedback From Ip Address {{IpAddress}}{% endblock %}
+
+{%block description%}Feedback From Ip Address {{IpAddress}}{%endblock%}
+
+{%block feedback-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#feedback").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Feedback for {{IpAddress}}</h1>
+<table id="feedback" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Feedback</th>
+      <th>From</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for feedback in Feedback %}
+    <tr>
+        <td><a href="/feedback/detail/{{feedback.id}}/">{{feedback.created|date:"jS M Y"}}</a></td>
+      <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+      <td>{% if feedback.reporter %}<a href="/users/{{feedback.reporter.username}}">{{feedback.reporter.username}}</a>{%endif%}</td>
+    </tr>
+{% empty %}
+    <tr><td colspan="3">No Matching Feedback</td></tr>    
+{% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

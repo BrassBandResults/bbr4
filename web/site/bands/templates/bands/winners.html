@@ -1,0 +1,54 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Winning Conductors{% endblock %}
+
+{%block description%}List of people who have won brass band competitions{%endblock%}
+
+{%block head %}
+<script src="https://d3js.org/d3.v3.js" charset="utf-8"></script>
+{%endblock%}
+
+{%block scriptfooter%}
+<script>
+  $(document).ready(function(){
+    $("#people").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#people').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Contest Winning Bands</h1>
+<p>These statistics do not include Whit Friday.</p>
+<p>These are based on results entered into this site site only.  There is a bias towards the top placings - often we only have results for top three at a particular contest event.  This will lead to some anomalies in the percentage wins.</p>
+<p>Contests column only lists results that we have a position for.</p>
+
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="people" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Wins"%}</th>
+      <th>{% trans "Percentage"%}</th>
+      <th>{% trans "Contests"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for band in Bands %}
+ 		<tr>
+ 			<td class="band"><a href="/bands/{{band.slug}}/">{{band.name}}</a></td>
+			<td>{{band.wins}}</td>	
+      <td>{{band.percent_win}}%</td>
+      <td>{{band.contests}}</td>  
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

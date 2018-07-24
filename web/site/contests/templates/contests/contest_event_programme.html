@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+{% load gravatar %}
+{% load i18n %}
+
+{%block title %}{{ContestEvent.name}} - {{ContestEvent.event_date}} Programme Pages{% endblock %}
+
+{%block keywords %}{{ContestEvent.name}} {{ContestEvent.event_date}} programme{% endblock %}
+
+{%block description%}Programme of the brass band contest {{ContestEvent.name}} on {{ContestEvent.event_date}}{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest-event"><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{{ContestEvent.name}}</a> 
+    {% if user.is_staff and perms.contests.change_contestevent %}[<a href="/bbradmin/contests/contestevent/{{ContestEvent.id}}/">admin</a>]{% endif %}
+</h1>
+<h2>{{ContestEvent.event_date_with_day}}</h2>
+<div id="all-pages">
+  <a href="{{ContestProgrammeCover.image.url_800x1200}}" title="{{ContestEvent.name}} Programme Cover, {{ContestEvent.event_date}} " data-lightbox="programme" data-title="{{ContestEvent.name}} Programme Cover, {{ContestEvent.event_date}}"><img src="{{ContestProgrammeCover.image.url_80x100}}"/></a>
+  {% for page in ContestProgrammePages %}
+    <a href="{{page.image.url_800x1200}}" title="{{page.description}}"><img src="{{page.image.url_80x100}}"/></a>
+  {% endfor %}
+</div>
+<p>&lt;&lt;&lt; <a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{% trans "Back to Results"%}</a></p>
+</div>
+{% endblock %}

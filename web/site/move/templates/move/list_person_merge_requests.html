@@ -1,0 +1,66 @@
+{% extends "template.html" %}
+
+{% block title %}Person Merge Requests{% endblock %}
+
+{%block description%}Person Merge Requests{%endblock%}
+
+{% block head %}
+<script type="text/javascript">
+  function reject_merge(pMergeRequestSerial)
+  {
+  $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
+    $('#blanket').bind('click', function(){
+      $('#popup').remove();
+      $('#blanket').remove();
+    });
+    var lLeft = 50;
+    var lTop = 50;
+    var lInputDialog = '<h3>Rejection Reason (send to original submitter)</h3><textarea name="extra" id="reason-text" cols="100" rows="8"></textarea><input type="submit" value="Reject" id="submit-rejection"/>';
+    $('#popup').css('top',lTop).css('left',lLeft).html(lInputDialog);
+    $('#submit-rejection').click(function(){
+      $('#mergeRequestRow-' + pMergeRequestSerial).html('<td>Processing...</td>');
+      var lUrl = "/move/people/reject_merge/" + pMergeRequestSerial + "/";
+      var lExtraInfo = $('#reason-text').val()
+      $.post(lUrl, {'reason' : lExtraInfo}, function(){
+        $('#mergeRequestRow-' + pMergeRequestSerial).html('<td>Rejected</td>');
+      });
+      $('#blanket').click();
+    });
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Person Merge Requests</h1>
+<table class="table table-hover">
+{% for mergeRequest in MergeRequests %}
+  <tr id="mergeRequestRow-{{mergeRequest.id}}">
+    <td>
+      <table class="table table-hover">
+        <tr><td>From: <a href="/users/{{mergeRequest.owner}}/">{{mergeRequest.owner}}</a></td><th>To Delete</th><th>Destination</th></tr>
+        <tr><th>Name:</th><td><a href="/people/{{mergeRequest.source_person.slug}}/">{{mergeRequest.source_person.name}}</a></td><td><a href="/people/{{mergeRequest.destination_person.slug}}/">{{mergeRequest.destination_person.name}}</a></td></tr>
+        <tr><th>Email:</th><td>{% if mergeRequest.source_person.email %}{{mergeRequest.source_person.email}}{% endif %}</td><td>{% if mergeRequest.destination_person.email %}{{mergeRequest.destination_person.email}}{% endif %}</td></tr>
+        <tr><th>Band Name:</th><td>{% if mergeRequest.source_person.band_name %}{{mergeRequest.source_person.band_name}}{% endif %}</td><td>{% if mergeRequest.destination_person.email %}{{mergeRequest.destination_person.band_name}}{% endif %}</td></tr>
+        <tr><th>Deceased:</th><td>{{mergeRequest.source_person.deceased}}</td><td>{{mergeRequest.destination_person.deceased}}</td></tr>
+        <tr><th>Start Date:</th><td>{% if mergeRequest.source_person.start_date %}{{mergeRequest.source_person.start_date}}{% endif %}</td><td>{% if mergeRequest.destination_person.start_date %}{{mergeRequest.destination_person.start_date}}{% endif %}</td></tr>
+        <tr><th>End Date:</th><td>{% if mergeRequest.source_person.end_date %}{{mergeRequest.source_person.end_date}}{% endif %}</td><td>{% if mergeRequest.destination_person.end_date %}{{mergeRequest.destination_person.end_date}}{% endif %}</td></tr>
+        <tr><th>Conducting:</th><td>{{mergeRequest.source_person.results_count}}</td><td>{{mergeRequest.destination_person.results_count}}</td></tr>
+        <tr><th>Adjudications:</th><td>{{mergeRequest.from_adjuducations_count}}</td><td>{{mergeRequest.to_adjuducations_count}}</td></tr>
+        <tr><th>Compositions:<td>{{mergeRequest.from_compositions_count}}</td><td>{{mergeRequest.to_compositions_count}}</td></tr>
+        <tr><th>Arrangements:<td>{{mergeRequest.from_arranger_count}}</td><td>{{mergeRequest.to_arranger_count}}</td></tr>
+        <tr><th>Notes:</th><td>{% if mergeRequest.source_person.notes %}{{mergeRequest.source_person.notes}}{% endif %}</td><td>{% if mergeRequest.destination_person.notes %}{{mergeRequest.destination_person.notes}}{% endif %}</td></tr>
+      </table>
+    </td>
+    <td>
+      &nbsp;[<a href="/move/people/merge/{{mergeRequest.id}}/">merge&nbsp;now</a>]<br/><br/><br/>
+      
+      &nbsp;[<a href="javascript:reject_merge({{mergeRequest.id}});">reject</a>]
+    </td>
+  </tr>
+{% empty %}
+  <tr><td>None Outstanding</td></tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

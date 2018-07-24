@@ -1,0 +1,14 @@
+bbr_embed_{{BandSlugUnderscore}}_jsonp([
+{% for result in ContestResults %}
+	{
+		"id" : {{result.id}},
+		"contest_slug" : "{{result.contest_event.contest.slug}}",
+		"date" : "{{ result.contest_event.date_of_event|date:"Y-m-d" }}",
+		"date_display" : "{{ result.contest_event.date_of_event|date:"jS M Y" }}",
+		"contest_name" : "{{ result.contest_event.name }}",
+		"result" : "{{ result.results_position_display }}",
+		"conductor_slug" : "{{result.conductor.slug}}",
+		"conductor_name" : "{{result.conductor.name}}"
+	}{% if not forloop.last %},{% endif %}
+{% endfor %}
+]);

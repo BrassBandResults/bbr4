@@ -1,0 +1,34 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Change Password"%}{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans 'Email Invalid'%}</h1>
+<p>{% trans "Your email address is invalid, and we've had trouble contacting you.  Please enter a new email address below." %}</p>
+<form action="" method="post">{% csrf_token %}
+{% if form.errors %}
+    <p class="errornote">Please correct the errors below.</p>
+{% endif %}
+
+<table>
+<tr>
+    <td>{{ form.email.errors }}<label for="id_email" class="required">{% trans 'New email' %}:</label></td><td>{{ form.email }}</td>
+</tr>
+<tr>
+    <td>{{ form.email_confirm.errors }}<label for="id_email_confirm" class="required">{% trans 'Confirm email' %}:</label></td><td>{{ form.email_confirm }}</td>
+</tr>
+<tr><td></td><td><input type="submit" value="Save New Email"/></td></tr>
+</table>
+</form>
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}

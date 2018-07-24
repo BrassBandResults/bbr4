@@ -1,0 +1,1 @@
+Future Event: {{ThingNew.contest.name|safe}}

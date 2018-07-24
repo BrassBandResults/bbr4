@@ -1,0 +1,14 @@
+A new contest has been added to the database.
+
+Name: {{ThingNew.name|safe}}
+Composer: {{ThingNew.composer.name|safe}}
+Arranger: {{ThingNew.arranger.name|safe}}
+
+Percussion: {{ThingNew.percussion_required|safe}}
+
+Notes: {{ThingNew.notes|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/pieces/{{ThingNew.slug}}/

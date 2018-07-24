@@ -1,0 +1,51 @@
+{% extends "template.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{Band.name}} - {% trans "Band Aliases"%}{% endblock %}
+
+{%block keywords %}Band {{Band.name}}{% endblock %}
+
+{%block description%}Details about the brass band {{Band.name}}{%endblock%}
+
+{%block bands-selected%}class="selected"{%endblock%}
+
+
+{% block content %}
+<h1 class="band">{{Band.name}} {% trans "Aliases"%}</h1>
+<p>&lt;&lt;&lt; {% trans "Back to"%} <a href="/bands/{{Band.slug}}/">{{Band.name}}</a></p>
+<form action="." method="post">{% csrf_token %}
+<table id="aliases" class="table table-hover">
+<thead>
+ <tr>
+  <th>{% trans "Alias Name"%}</th>
+  <th>{% trans "Hidden"%}</th>
+  <th></th>
+ </tr>
+</thead>
+<tbody>
+{%for alias in Aliases%}
+ <tr>
+  <td>{{alias.old_name}}</td>
+  <td>{{alias.hidden}}</td>
+  <td>
+{% if user.profile.superuser %}  
+    [<a href="/bands/{{Band.slug}}/aliases/{{alias.id}}/delete/">{% trans "delete"%}</a>]
+{% endif %}  
+{% if alias.hidden %}
+    [<a href="/bands/{{Band.slug}}/aliases/{{alias.id}}/show/">{% trans "show"%}</a>]
+{% else %}
+    [<a href="/bands/{{Band.slug}}/aliases/{{alias.id}}/hide/">{% trans "hide"%}</a>]
+{% endif %}  
+  </td>
+ </tr>
+{%endfor%}
+</tbody>
+<tfoot>
+  <tr>
+    <td colspan="3"><input type="text" name="new_alias_name"/> <input type="submit" value="{% trans "Save New Alias"%}"/></td>
+  </tr>
+</tfoot>
+</table>
+</form>
+{% endblock %}

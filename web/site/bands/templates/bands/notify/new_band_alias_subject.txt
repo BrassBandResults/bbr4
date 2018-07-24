@@ -1,0 +1,1 @@
+New Band Alias: {{ThingNew.old_name|safe}}

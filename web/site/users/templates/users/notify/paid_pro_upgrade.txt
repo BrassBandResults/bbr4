@@ -1,0 +1,1 @@
+User {{ThingOld.username}} has upgraded to a Pro Account.  Please check they have actually paid!

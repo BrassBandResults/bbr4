@@ -1,0 +1,12 @@
+Band Merge Done
+
+Source (deleted): {{ThingNew.source_band.name|safe}}
+http://brassbandresults.co.uk/bands/{{ThingNew.source_band.slug}}/
+ 
+Destination: {{ThingNew.destination_band.name|safe}}
+http://brassbandresults.co.uk/bands/{{ThingNew.destination_band.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/bands/

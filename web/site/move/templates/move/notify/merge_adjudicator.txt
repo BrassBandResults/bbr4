@@ -1,0 +1,11 @@
+Your request to merge adjudicator {{ThingNew.source_adjudicator.name|safe}} into
+
+{{ThingNew.destination_adjudicator.name|safe}}
+http://brassbandresults.co.uk/adjudicators/{{ThingNew.destination_adjudicator.slug}}/ 
+
+has been approved.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

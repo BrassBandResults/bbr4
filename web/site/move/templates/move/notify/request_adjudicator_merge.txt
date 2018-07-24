@@ -1,0 +1,12 @@
+Adjudicator Merge Request
+
+Source (to be deleted): {{ThingNew.source_adjudicator.name|safe}}
+http://brassbandresults.co.uk/adjudicators/{{ThingNew.source_adjudicator.slug}}/
+ 
+Destination: {{ThingNew.destination_adjudicator.name|safe}}
+http://brassbandresults.co.uk/adjudicators/{{ThingNew.destination_adjudicator.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/adjudicators/

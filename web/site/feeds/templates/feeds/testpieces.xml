@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<TestPieces>
+{% for piece in TestPieces %}
+  <Piece><Name>{{piece.name}}</Name><Composer>{{piece.composer}}</Composer><Slug>{{piece.slug}}</Slug></Piece>{% endfor %}
+</TestPieces>

@@ -1,0 +1,14 @@
+A new contest has been added to the database.
+
+Name: {{ThingNew.name|safe}}
+Region: {{ThingNew.region.name|safe}}
+Section: {{ThingNew.section.name}}
+Ordering: {{ThingNew.ordering}}
+Contest Type: {{ThingNew.contest_type_link.name}}
+Extinct: {{ThingNew.extinct}}
+All Events Added: {{ThingNew.all_events_added}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/contests/{{ThingNew.slug}}/

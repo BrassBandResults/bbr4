@@ -1,0 +1,12 @@
+Hello {{ThingNew.to_user.username}}
+ 
+You've received a new private message from {{ThingNew.from_user.username}} on https://brassbandresults.co.uk/
+ 
+The message is:
+
+{{ThingNew.text|safe}}
+
+Regards,
+ 
+The Brass Band Results Team
+

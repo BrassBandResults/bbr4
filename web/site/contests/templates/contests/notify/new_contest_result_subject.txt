@@ -1,0 +1,1 @@
+New Contest Result: {{ThingNew.band_name|safe}}

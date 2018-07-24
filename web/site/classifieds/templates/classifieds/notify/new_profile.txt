@@ -1,0 +1,22 @@
+New Classified Profile 
+
+Title: {{ThingNew.title}}
+Qualifications: {{ThingNew.qualifications}}
+Email: {{ThingNew.email}}
+Website: {{ThingNew.website}}
+Home phone: {{ThingNew.home_phone}}
+Mobile phone: {{ThingNew.mobile_phone}}
+Address: {{ThingNew.address|safe}}
+Photo: {{ThingNew.picture}}
+Conductor: {{ThingNew.conductor.name}}
+Adjudicator: {{ThingNew.adjudicator.name}}
+Visible: {{ThingNew.visible}}
+Status: {{ThingNew.status}}
+
+Profile:    
+{{ThingNew.profile|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bbradmin/classifieds/classifiedprofile/{{ThingNew.id}}/

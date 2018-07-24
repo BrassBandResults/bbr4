@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Compare {{BandOne.name}} with {{BandTwo.name}}{% endblock %}
+
+{%block keywords %}Compare Bands {{BandOne.name}} {{BandTwo.name}}{% endblock %}
+
+{%block description%}Compare the results of {{BandOne.name}} and {{BandTwo.name}} {%endblock%}
+
+{%block bands-compare-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Can't Compare"%}</h1>
+<p>{% trans "Sorry, you can't compare a band with itself!"%} <a href="/compare/bands/">{% trans "Try again"%}</a>.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "template.html" %}
+{% load gravatar %}
+
+{% block title %}{{User.username}} - User Profile{% endblock %}
+
+{%block description %}User {{User.username}}{% endblock %}
+
+{%block profile-selected%}class="selected"{%endblock%}
+
+{% block adbar %}<br/>{%endblock%}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<div id="UserProfile">
+<h1>{{User.username}}</h1>
+<span class="screenonly">
+ [<a href="/users/{{User.username}}/change_password/">change password</a>]
+{% if user.is_authenticated and user.profile.superuser %}
+ [<a href="/users/{{User.username}}/talk/">talk</a>]
+{% endif %} 
+{% if user.is_superuser %}
+ [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
+ [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
+{%endif%}
+</span>
+<div id="avatar" class="float-right">
+  {% gravatar User 80 %}<br/>
+  <b>{{Profile.points}}</b><br/>
+  reputation<br/>
+</div>
+<table>
+  <tr><th>Member For:</th><td>{{User.date_joined|timesince}}</td></tr>
+  <tr><th>Last Seen:</th><td>{{User.last_login|timesince}} ago</td></tr>
+</table>
+
+<br/><br/><br/><br/><br/>
+
+<div class="clear"></div>
+<div id="tabs">
+  <ul>
+    <li><a href="/users/{{User.username}}/" title="Feedback sent">Feedback{%if FeedbackCount%} ({{FeedbackCount}}){%endif%}</a></li>
+    <li class="selected">Sent{%if SentFeedbackCount%} ({{SentFeedbackCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/results_added/" title="Results Added to Site">Results{% if ContestCount %} ({{ContestCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/contest_history/" title="Personal Contest History">Performances{% if PerformanceCount %} ({{PerformanceCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/messages/" title="Site Messages">Messages{% if MessageCount%} ({{MessageCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/classifieds/" title="Classified Profiles">Classifieds</a></li>
+  </ul>
+</div>
+
+<div id="SentFeedback">
+{% if SentFeedback %}
+<p>This tab lists feedbacks you have sent, up to a maximum of 50.</p> 
+<table id="sentfeedback" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Feedback</th>
+      <th>With User</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for feedback in SentFeedback %}
+    <tr>
+      <td>{{feedback.created|date:"jS M Y"}}</td>
+      <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+      <td>{% if feedback.owner%}<a href="/users/{{feedback.owner.username}}/">{{feedback.owner.username}}</a>{%endif%}</td>
+      <td id="feedback-{{feedback.id}}">{{feedback.status_display}}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have not sent any feedback</p>
+{% endif %}
+</div>
+</div>
+</div>
+{%endblock%}

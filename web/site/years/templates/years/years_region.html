@@ -1,0 +1,107 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{% trans "Years"%}{% endblock %}
+
+{%block description %}List of years with contest results{% endblock %}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#events").tablesorter({widgets: ['zebra']});
+  
+{% if user.profile.pro_member %}    
+    lBarData = [
+        {
+          label: '{% trans "Competing Bands"%}', 
+          data: [{%for year in Years%}[{{forloop.counter}},{{year.competing_bands_count}}]{% if not forloop.last%},{%endif%}{%endfor%}],
+          tooltip: [{%for year in Years%}'{{year.year}} = {{year.competing_bands_count}} bands'{% if not forloop.last%},{%endif%}{%endfor%}]
+        },
+        {
+          label: '{% trans "Contests Competed In"%}', 
+          data: [{%for year in Years%}[{{forloop.counter}},{{year.contest_count}}]{% if not forloop.last%},{%endif%}{%endfor%}],
+          tooltip: [{%for year in Years%}'{{year.year}} = {{year.contest_count}} {% trans "contests competed at"%}'{% if not forloop.last%},{%endif%}{%endfor%}]
+        },
+        {
+            label: '{% trans "Contests In Region"%}', 
+            data: [{%for year in Years%}[{{forloop.counter}},{{year.region_contest_count}}]{% if not forloop.last%},{%endif%}{%endfor%}],
+            tooltip: [{%for year in Years%}'{{year.year}} = {{year.region_contest_count}} {% trans "contests in region"%}'{% if not forloop.last%},{%endif%}{%endfor%}]
+        },        
+    ];
+    
+    lOptions = {
+        grid :  {
+                 hoverable: true,
+                },
+        legend: {
+                 position: "nw",
+                },
+        series: {
+                 lines: {show: false, steps: false },
+                 bars: {show: true, barWidth: 0.9, align: 'center',},
+                },
+        xaxis:  {
+                  ticks: [{%for year in Years%}{% if forloop.counter|divisibleby:10 %}[{{forloop.counter}},'{{year.year}}']{% if not forloop.last%},{%endif%}{%endif%}{%endfor%}],
+                  transform: function (v) { return -v; },
+                  inverseTransform: function (v) { return -v; },
+                 },
+    };
+    
+    
+    
+    $.plot($('#barchart'), lBarData, lOptions);
+    $("#barchart").bind("plothover", function (event, pos, item) {
+      if (item) {
+        $("#flot_chart_tooltip").remove();
+        showTooltip(item.pageX, item.pageY, item.series.tooltip[item.dataIndex]);
+      } else {
+        $("#flot_chart_tooltip").remove();
+      }
+    });
+{% endif %}     
+  });
+  
+{% if user.profile.pro_member %}    
+function showTooltip(x, y, contents) {
+  $('<div id="flot_chart_tooltip">' + contents + '</div>').css( {
+    top: y + 5,
+    left: x + 5,
+  }).appendTo("body").fadeIn(200);
+}{% endif %}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Year List"%}</h1>
+<p>The <b>Bands Competing</b> figure is the number of bands from {{Region.name}} that have posted one or more results in that year.</p>
+<p>The <b>Contests Competed In</b> figure is the count of contests bands from {{Region.name}} competed in</p>
+<p>The <b>Contests In Region</b> figure is the number of contests that took part in this region</p>  
+<p>These figures only reflect contest results entered onto this site.</p>
+<p><b>This list is filtered to the {{Region.name}} region.</b> <a href="/years/">Back to Full List</a></p>
+{% if user.profile.pro_member %}
+<div id="barchart" style="width:100%;height:200px;"></div>
+{% endif %}
+<table id="events" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Year"%}</th>
+            <th>{% trans "Bands Competing"%}</th>
+            <th>{% trans "Contests Competed In"%}</th>
+            <th>{% trans "Contests In Region" %}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for year in Years %}
+    	<tr>
+    		<td><a href="/years/{{year.year}}/region/{{Region.slug}}/">{{year.year}}</a></td>
+    		<td>{{year.competing_bands_count}}</td>
+		    <td>{{year.contest_count}}</td>
+		    <td>{{year.region_contest_count}}</td>
+        
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

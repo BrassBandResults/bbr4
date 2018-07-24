@@ -1,0 +1,1 @@
+Band Alias Deleted: {{ThingNew.old_name|safe}}

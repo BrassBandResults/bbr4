@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+
+{%block title %}Brass Bands Map{% endblock %}
+
+{%block keywords %}Map{% endblock %}
+
+{%block head %}{% endblock %}
+
+{%block bands-map-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<h1>Add Band To Map</h1>
+<p>If you can find your band in this list, then please select it from this droplist, then click the "This Is My Band" button.</p>
+<form action="." method="post">{% csrf_token %}
+<select name="band">
+{% for band in Bands %}
+  <option value="{{band.slug}}">{{band.name}}</option>
+{% endfor %}
+</select>
+<input type="Submit" value="This Is My Band"></input>
+</form>
+<p>If your band is not in this list, then please fill in the feedback box below with:
+<ul>
+	<li>Your Band Name</li>
+	<li>Your Band URL</li>
+	<li>Latitude and Longitude of your rehearsal room</li>
+	<li>Band contact email</li>
+	<li>Nights you rehearse</li>
+</ul>
+and we'll add it for you.  Thanks.
+</p>
+{% endblock %}

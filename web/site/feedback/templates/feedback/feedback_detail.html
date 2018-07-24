@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+
+{% block title %}Feedback Detail{% endblock %}
+
+{%block description%}Feedback Detail{%endblock%}
+
+{%block feedback-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<h1>Feedback Detail{% if user.is_staff and perms.feedback.change_sitefeedback %} [<a href="/bbradmin/feedback/sitefeedback/{{Feedback.id}}/">admin</a>]{%endif%}</h1>
+<table>
+  <tr>
+    <th>Submitter:</th>
+    {% if Feedback.reporter %}
+      <td><a href="/users/{{Feedback.reporter.username}}/">{{Feedback.reporter.username}}</a></td>
+    {% else %}
+      <td>Anonymous</td>
+    {% endif %}
+  </tr>
+  <tr><th>Created:</th><td>{{Feedback.created|date:"jS F Y, H:i"}}</td></tr>
+  <tr><th>Last Modified:</th><td>{{Feedback.last_modified|date:"jS F Y, H:i"}}</td></tr>
+  <tr><th>Page:</th><td><a href="{{Feedback.url|safe}}">{{Feedback.url}}</a></td></tr>
+  <tr><th>Status:</th><td>{{Feedback.status}}</td></tr>
+  <tr><th>Claim Date:</th><td>{{Feedback.claim_date|date:"jS F Y, H:i"}}</td></tr>
+  <tr><th>IP Address:</th><td><a href="/feedback/ip/{{Feedback.ip}}/">{{Feedback.ip}}</a></td></tr>
+  <tr><th>Browser:</th><td>{{Feedback.browser_id}}</td></tr>
+  <tr><th>Last Changed By:</th><td><a href="/users/{{Feedback.lastChangedBy.username}}/">{{Feedback.lastChangedBy.username}}</a></td></tr>
+  <tr><th>Owner:</th><td><a href="/users/{{Feedback.owner.username}}/">{{Feedback.owner.username}}</a></td></tr>
+</table>
+<h2>Comment</h2>
+<p>{{Feedback.comment|linebreaksbr}}</p>
+<h2>Additional Comments</h2>
+<p>{{Feedback.additional_comments|linebreaksbr}}</p>
+<h2>Audit Log</h2>
+<p>{{Feedback.audit_log|linebreaksbr}}</p>
+
+{% endblock %}
+
+{%block feedback %}{%endblock%}

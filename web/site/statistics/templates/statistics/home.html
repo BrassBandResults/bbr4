@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% load humanize %}
+{% load bbrize %}
+{% load i18n %}
+
+{% block title %}{% trans "Statistics"%}{% endblock %}
+
+{%block keywords %}Brass Band Contest Statistics{% endblock %}
+
+{%block description%}Statistics about the database at brass band results{%endblock%}
+
+{%block statistics-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Statistics</h1>
+<h2>Site</h2>
+<ul>
+  <li>{{BandCount|intcomma}} <a href="/bands/">{% trans "bands"%}</a>, {% trans "latest is"%} <a href="/bands/{{LatestBand.slug}}/">{{LatestBand.name}}</a>.</li>
+  <ul>
+    <li>{{CompetedLastYear|intcomma}} {% trans "bands competed last year."%}</li>
+    <li>{{WithWebsiteCount|intcomma}} {% trans "have a website listed, including"%} <a href="{{WebsiteUrl}}" target="_blank">{{WebsiteName}}</a>.</li>
+    <li>{{BandsMapped|intcomma}} ({% trans "of which"%} {{ExtinctBandsMapped|intcomma}} {% trans "are extinct"%}) {% trans "appear"%} <a href="/map/">{% trans "on the map"%}</a>.</li>
+  </ul>
+  <li>{{PeopleCount|intcomma}} <a href="/people/">{% trans "people"%}</a>, {% trans "latest is"%} <a href="/people/{{LatestPerson.slug}}/">{{LatestPerson.name}}</a>.</li>
+  <li>{{ResultsCount|intcomma}} {% trans "results"%}, of which {{ResultsWithPlacingsCount|intcomma}} have placings.</li>
+  <li>{{EventsCount|intcomma}} {% trans "events"%}</li>
+  <li>{{ContestCount|intcomma}} <a href="/contests/">{% trans "contests"%}</a>.</li>
+  <li>{{TestPieceCount|intcomma}} <a href="/pieces/">{% trans "test pieces"%}</a></li>
+  <li>{{VenueCount|intcomma}} <a href="/venues/">venues</a>, of which {{VenueMapCount|intcomma}} appear <a href="/map/">{% trans "on the map"%}</a>.</li>
+</ul>
+<h2>Band Rehearsals</h2>
+<ul>
+  <li>{{MondayBandCount}} bands ({{MondayBandPercent|floatformat}}%) rehearse on a Monday</li>
+  <li>{{TuesdayBandCount}} bands ({{TuesdayBandPercent|floatformat}}%) rehearse on a Tuesday</li>
+  <li>{{WednesdayBandCount}} bands ({{WednesdayBandPercent|floatformat}}%) rehearse on a Wednesday</li>
+  <li>{{ThursdayBandCount}} bands ({{ThursdayBandPercent|floatformat}}%) rehearse on a Thursday</li>
+  <li>{{FridayBandCount}} bands ({{FridayBandPercent|floatformat}}%) rehearse on a Friday</li>
+  <li>{{SaturdayBandCount}} bands ({{SaturdayBandPercent|floatformat}}%) rehearse on a Saturday</li>
+  <li>{{SundayBandCount}} bands ({{SundayBandPercent|floatformat}}%) rehearse on a Sunday</li>
+</ul>  
+</div>
+{% endblock %}

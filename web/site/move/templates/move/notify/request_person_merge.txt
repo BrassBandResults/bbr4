@@ -1,0 +1,12 @@
+Person Merge Request
+
+Source (to be deleted): {{ThingNew.source_person.name|safe}}
+http://brassbandresults.co.uk/people/{{ThingNew.source_conductor.slug}}/
+ 
+Destination: {{ThingNew.destination_person.name|safe}}
+http://brassbandresults.co.uk/people/{{ThingNew.destination_person.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/people/

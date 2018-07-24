@@ -1,0 +1,1 @@
+New Classified: {{ThingNew.name|safe}}

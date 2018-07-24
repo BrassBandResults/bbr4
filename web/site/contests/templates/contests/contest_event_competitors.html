@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+{% load gravatar %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{ContestEvent.name}} - {{ContestEvent.event_date}} Competitors{% endblock %}
+
+{%block keywords %}{{ContestEvent.name}} {{ContestEvent.event_date}} Competitors{% endblock %}
+
+{%block description%}Competitors at the brass band contest {{ContestEvent.name}} on {{ContestEvent.event_date}}{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest-event"><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{{ContestEvent.name}}</a> Competitors</h1>
+<h2>{{ContestEvent.event_date_with_day}}</h2>
+<p><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">&lt;&lt;Back to results</a></p>
+{% if not Competitiors %}
+<p>None of our users competed at this contest.</p>
+{% endif %}
+
+{% for competitor in Competitors %}
+{% ifchanged competitor.result.band_name %}
+<h2>{{competitor.result.results_position_display}} {{competitor.result.band_name}}</h2>
+{% endifchanged %}
+{% if competitor.display_name != 'private' %}
+<p><a href="/myresults/{{competitor.user.username}}/">{{competitor.display_name}}</a>{% if competitor.instrument %} ({{competitor.instrument.name}}){%endif%}</p>
+{% else %}
+<p>Private User</p>
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+Your request to merge band 
+
+{{ThingNew.source_band.name|safe}}
+http://brassbandresults.co.uk/bands/{{ThingNew.source_band.slug}}/ 
+
+to 
+
+{{ThingNew.destination_band.name|safe}}
+http://brassbandresults.co.uk/bands/{{ThingNew.destination_band.slug}}/ 
+
+has been declined.  {%if Reason%}The reason for this:{%endif%}
+
+{{Reason|safe}}
+
+Thanks for your support of the site - please reply to this email if you disagree and we'll look into it again.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

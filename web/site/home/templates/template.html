@@ -1,0 +1,251 @@
+{%load badges %}{% load i18n %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="AUTHOR" content="Tim Sawyer" />
+  <link rel="shortcut icon" href="/site_media/favicon.ico" >
+  <meta name="Description" content="Brass Band Results: Project to build a comprehensive database of contest results. {% block description %}{% endblock %}." />
+  <meta name="Keywords" content="Brass,Band,Contest,Music,Competition,Group,Results,{% block keywords %}{% endblock %}" />
+  <title>{% block title %}{% endblock %} - Brass Band Results</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" href="/site_media/css2017/bbr3.css"/>
+  <link rel="stylesheet" href="/site_media/css2017/bbr3-print.css" media="print"/>
+  <link rel="stylesheet" href="/site_media/js/tablesorter/theme.bootstrap_4.css">
+  <link rel="stylesheet" href="/site_media/jqueryui/jquery-ui.min.css">
+
+  {% if not user.profile.pro_member %}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+  <script>
+    window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":"https://brassbandresults.co.uk/privacy/","theme":"dark-bottom"};
+  </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+<!-- End Cookie Consent plugin -->
+  {% endif %}
+
+    {% block head %}{% endblock %}
+</head>
+<body {% block bodyattrib %}{% endblock %}>
+
+<nav class="navbar navbar-expand-xl bg-dark navbar-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bbrnav" aria-controls="bbrnav" aria-expanded="false" aria-label="Toggle Navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand text-info" href="/">Brass Band Results</a>
+  <div class="collapse navbar-collapse" id="bbrnav">
+    <div class="navbar-nav mr-auto">
+
+      <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="bandsDropdown" aria-haspopup="true" aria-expanded="false">Bands</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/">List Bands</a>
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/regions/">Regions</a>
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/sections/">Sections</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map/">Band Map</a>
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/map/search/">Search Map</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/compare/bands/">Compare Bands</a>
+          <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/winners/">Winning Bands</a>
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="contestsDropdown" aria-haspopup="true" aria-expanded="false">Contests</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/">List Contests</a>
+{% if request.user.profile.superuser %} 
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/groups/">Groups</a></li>
+{% endif %}
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/">Calendar</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/">Years</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/">List Venues</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/map/venues/">Venue Map</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/programmes/">Programmes</a></li>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addresults/">Add Results</a></li>
+{% if request.user.profile.enhanced_functionality %}
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/upload/programme/">Upload Programme</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addwhitfriday/">Add Whit Friday</a></li>
+{% endif %}                         
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="peopleDropdown" aria-haspopup="true" aria-expanded="false">People</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/">List People</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/compare/conductors/">Compare Conductors</a>
+          <a class="dropdown-item" aria-labelledby="peopleDropdown" href="/people/winners/">Winning Conductors</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="piecesDropdown" aria-haspopup="true" aria-expanded="false">Pieces</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/">List Pieces</a>
+          <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BySection/">By Section</a>
+          <a class="dropdown-item" aria-labelledby="piecesDropdown" href="/pieces/BestOwnChoice/">Successful</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="siteDropdown" aria-haspopup="true" aria-expanded="false">Site</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/tags/">List Tags</a>
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/leaderboard/">Leaderboard</a>
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/badges/">Badges</a>
+          <div class="dropdown-divider"></div>
+{% if request.user.profile.superuser %}
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/queue/">Feedback Queue</a>
+{% endif %}
+{% if request.user.is_superuser %}
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/feedback/admin/">Owner Queue</a>
+{% endif %}
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/statistics/">Statistics</a>
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/faq/">FAQ</a>
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/aboutus/">Who We Are</a>
+          <a class="dropdown-item" aria-labelledby="siteDropdown" href="/privacy/">Privacy Policy</a>
+        </div>
+      </div>
+
+{% if request.user.profile.superuser %}
+      <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="mergesDropdown" aria-haspopup="true" aria-expanded="false">Merges</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/bands/">Bands</a>
+          <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/people/">People</a>
+          <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/venues/">Venues</a>
+          <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/pieces/">Pieces</a>
+        </div>
+      </div>
+{% endif %}   
+
+{% if not request.user.is_authenticated %}
+      <a class="nav-item nav-link" href="/account/register/">Create Account</a>
+{% ifequal request.path "/accounts/logout/" %}            
+      <a class="nav-item nav-link"  href="/accounts/login/?next=/">Sign In</a>
+{% else %}
+      <a class="nav-item nav-link"  href="/accounts/login/?next={{request.path}}">Sign In</a>
+{% endifequal %}
+{% else %}
+      <a class="nav-item nav-link"  href="/users/{{user.username}}/">Profile</a>
+      <a class="nav-item nav-link"  href="/accounts/logout/">Logout</a>         
+{% endif %}
+
+    </div>
+
+    <form class="form-inline" role="search" action="/search/">
+      <input type="text" class="form-control" placeholder="Search" name="q">
+      <button type="submit" class="btn btn-default search"><img src="/site_media/search.png"/></button>
+    </form>
+
+  </div>
+</nav>
+
+<div class="clear"></div>
+<br/>
+{% if user.is_authenticated %}
+{% badge_notifications_for_user user %}
+{% endif %}
+
+{% block adbar %}  
+<div id="adBarTop"> 
+{% if not user.profile.pro_member %}
+<div class="container pt-1">
+<!-- BrassBandResults Header -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5087204743199130"
+     data-ad-slot="3029222401"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<p class="center">[<a href="/accounts/upgrade/">Upgrade to pro and remove adverts</a>]</p>
+</div>
+{% endif %}
+  </div>
+{% endblock %}
+
+{% block content%}
+<h1>Content</h1>
+<p>You'll be wanting to override block content</p>
+{% endblock %}
+
+<br/><br/>
+<footer class="bg-dark text-white pt-2 pb-2" role="contentinfo">
+{% block feedback %}
+<div class="footer-bottom">
+ <div id="commentbox" class="container">
+  <br/>
+  <h2>{% trans "Comments or Corrections?"%}</h2>
+  <p>{% trans "Is something on this page incorrect?  Tell us what's wrong in the box below and click send.  Include your email address if you like.  If you're including contest results please remember to include the date, and as much detail about the contest as you can (conductor, adjudicators, set test piece etc.).  Don't forget you can always register and add missing results yourself!"%}</p>
+  <form action="/feedback/" method="post">{% csrf_token %}
+    <p><textarea class="form-control" name="feedback" rows="4"></textarea>
+  <script>
+    document.write('<input ');
+    document.write('   type="hidden" ');
+    document.write('   name="x_url" ');
+    document.write('   value="' + document.URL + '">');
+    document.write('<input ');
+    document.write('   type="hidden" ');
+    document.write('   name="x_owner" ');
+    document.write('   value="{{OwnerId}}">');
+  </script>
+  <noscript> <!-- for non-JavaScript browsers --> 
+  {% trans "Copy the URL in your browser's address bar and paste it here."%}<br>
+  <input type="text" name="x_url" size="19">
+  <br>
+  </noscript>
+  <br/><span class="shhh"><input type="text" name="url"/></span><input type="submit" value="Send Feedback" /></p>
+  </form>
+ </div>
+ </div>
+  {% endblock %}
+  <p class="text-center bg-inverse">Copyright © 2018 Brass Band Results &amp; Tim Sawyer, All Rights Reserved</p>
+</footer>
+
+<p class="printonly"><br/><br/>Printed from https://brassbandresults.co.uk/</p>
+
+{% block adbarBottom %}  
+{% if request.user.is_anonymous %}
+<br/>
+<div id="adBarBottom">
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-5087204743199130"
+     data-ad-slot="6711458397"></ins>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+{% endif %}
+{% endblock %}
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-15246910-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script src="/site_media/js/tablesorter/jquery.tablesorter.min.js"></script>
+<script src="/site_media/jqueryui/jquery-ui.min.js"></script>
+<script src="/site_media/js/flot/jquery.flot.min.js"></script>
+<script src="/site_media/js/flot/jquery.flot.time.min.js"></script>
+<script src="/site_media/js/flot/jquery.flot.resize.min.js"></script>
+<script src="/site_media/js/flot/jquery.flot.pie.min.js"></script>
+{%block scriptfooter%}{%endblock%}
+</body>
+</html>

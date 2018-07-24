@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+
+{% block title %}Band Placings - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-whitfriday-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Select the contests in the order you have results using the droplists.  Then, enter results in the large box at the bottom in the following format - one line per band:</p>
+<p><b><code>Black Dyke Band, 1, 2, 3, 0, 3, 2, 1</code></b></p>
+<p>where the values are the band name followed by the positions at the contests in the same order as the droplists.  Use zero for position if the band did not compete at this contest.</p>
+</div>
+<p>{{form.non_field_errors}}</p>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr><th>Contest Area:</th><td>{{ContestGroup.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestDate|date:"jS F Y"}}</td></tr>
+    <tr><th>Event Names:</th><td>1: {{form.event_1}}<br/>
+                                 2: {{form.event_2}}<br/>
+                                 3: {{form.event_3}}<br/>
+                                 4: {{form.event_4}}<br/>
+                                 5: {{form.event_5}}<br/>
+                                 6: {{form.event_6}}<br/>
+                                 7: {{form.event_7}}<br/>
+                                 8: {{form.event_8}}<br/>
+                                 9: {{form.event_9}}<br/>
+                                 10: {{form.event_10}}<br/>
+                                 11: {{form.event_11}}<br/>
+                                 12: {{form.event_12}}<br/>
+                              </td></tr>
+    <tr><th>Check this if entering points, not placings:</th><td>{{form.entering_points}}</td></tr>
+    <tr><td colspan="2">{{ form.results.errors }} {{ HowToCorrectErrors|safe }}<br/><input type="submit" value="Submit" /><br/>
+	    {{ form.results }}
+    </td></tr>
+	<tr><td colspan="2"><input type="submit" value="Submit" /></td></tr>
+</table>
+</form>
+</div>
+{% endblock %}

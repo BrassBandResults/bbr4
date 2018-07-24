@@ -1,0 +1,1 @@
+[{% for adjudicator in Adjudicators %}{"id":"{{adjudicator.id}}","name":"{{adjudicator.surname}}, {{adjudicator.first_names}}"}{% if not forloop.last %},{% endif %}{% endfor %}]

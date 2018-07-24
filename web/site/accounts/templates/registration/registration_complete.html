@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block title %}Registration Complete{% endblock %}
+
+{%block register-selected%}class="selected"{%endblock%}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+{% if form.errors %}
+<p>Invalid username/password. Please try again.</p>
+{% endif %}
+
+<h1>Activate Account</h1>
+<p>Your account has been created, but you need to activate it.</p>
+<p>You have been sent an email, click the link inside this email so that you can login and start adding contests.</p>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

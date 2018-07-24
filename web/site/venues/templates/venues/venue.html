@@ -1,0 +1,96 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Venue.name}} - {% trans "Venue"%}{% endblock %}
+
+{%block keywords %}{{Venue.name}} Venue{% endblock %}
+
+{%block description %}Details of the brass band contesting venue {{Venue.name}}{% endblock %}
+
+{%block venues-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+	$("#contests").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 class="venue">{{Venue.name}}
+{% if user.profile.enhanced_functionality %}
+{%if ShowEdit %} [<a href="/venues/edit/{{Venue.slug}}/" title="{% trans "Edit this venue's details"%}">edit</a>]{%endif%}
+{%endif%}
+{% if user.profile.superuser %} [<a href="/venues/{{Venue.slug}}/aliases/">edit aliases</a>]{% endif %}
+{% if user.is_staff and perms.contests.change_venue %} [<a href="/bbradmin/contests/venue/{{Venue.id}}/">admin</a>]{% endif %}
+</h1>
+{% if Aliases %}
+<p class="alias"><b>{% trans "Also known as"%}:</b> {%for alias in Aliases%}{{alias.name}}{% if alias.alias_start_date %} ({% if alias.show_start_date %}{{alias.alias_start_date|date:"Y"}}{%endif%}-{{alias.alias_end_date|date:"Y"}}){%endif%}{%if not forloop.last%}, {%endif%}{%endfor%}</p>
+{% endif %}
+{% if Venue.parent %}
+<p>in <a href="/venues/{{Venue.parent.slug}}/">{{Venue.parent.name}}</a></p>
+{% endif %}
+{% if ContainsVenues %}
+<p>contains {% for venue in ContainsVenues %}<a href="/venues/{{venue.slug}}/">{{venue.name}}</a>{% if not forloop.last%}, {%endif%}{% endfor %}</p>
+{% endif %}
+
+{% if Venue.latitude and Venue.longitude %}
+<div id="link_buttons">
+  <a href="/map/venue/{{Venue.slug}}/">{% trans "View On Map"%}</a>
+  <a href="/map/search/?location={{Venue.name}}&lat={{Venue.latitude}}&lng={{Venue.longitude}}&distance=20&type=mi&from=venue&driving=Y">{% trans "Nearby Bands"%}</a>
+</div>
+{% endif %}
+
+{% if Contests %}
+<h2>{% trans "Contests"%}</h2>
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Contest"%}</th>
+			<th>{% trans "Events at Venue"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in Contests %}
+  		<tr>
+  			<td class="contest"><a href="/venues/{{Venue.slug}}/{{contest.slug}}/">{{contest.name}}</a></td>
+			<td>{{contest.count}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+{% if Venue.notes %}
+<h2>Notes</h2>
+<p>{{Venue.notes|linebreaksbr}}</p>
+{% endif %}
+
+{% if user.profile.superuser %}
+<form action="/move/venues/{{Venue.slug}}/move_contests/" method="post">{%csrf_token%}
+<p><input type="checkbox" id="move_contests"/> {% trans "Request move all of these contests to"%} <span id="venue_to_move_to">{% trans "another venue"%}.</span></p>
+</form>
+{% endif %}
+
+{% endblock %}
+
+{% block scriptfooter %}
+{% if user.profile.superuser %}
+<script type="text/javascript">
+  $('#move_contests').click(function(){
+    var lChecked = $('#move_contests').prop('checked');
+    if (lChecked) {
+      var lHtml = '<select name="moveToVenue"><option>{% trans "loading"%}...</option></select>';
+      $('#venue_to_move_to').html(lHtml);  
+      $.get('/venues/options/?exclude={{Venue.id}}', function(data){
+          lHtml = '<select name="moveToVenue">' + data + '</select><input type="submit" value="{% trans "Move Contests"%}"/>';
+          $('#venue_to_move_to').html(lHtml);  
+      });
+    } else {
+      $('#venue_to_move_to').html("{% trans "another venue"%}.");
+    }
+  });
+</script>
+{% endif %}
+{%endblock%}

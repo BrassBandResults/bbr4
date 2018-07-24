@@ -1,0 +1,12 @@
+Test Piece Merge Done
+
+Source (deleted): {{ThingNew.source_piece.name|safe}}
+http://brassbandresults.co.uk/pieces/{{ThingNew.source_piece.slug}}/
+ 
+Destination: {{ThingNew.destination_piece.name|safe}}
+http://brassbandresults.co.uk/pieces/{{ThingNew.destination_piece.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/pieces/

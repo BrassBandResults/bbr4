@@ -1,0 +1,1 @@
+CONCERT:{{ThingNew.date_of_event|date:"d-m-Y"}} https://brassbandresults.co.uk/bands/{{ThingNew.band.slug}}/concerts/ {{ThingNew.band.name}}, {{ThingNew.title}}, {{ThingNew.location}}, {{ThingNew.time}}  

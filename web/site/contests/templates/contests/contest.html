@@ -1,0 +1,261 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Contest.name}} - Contest{% endblock %}
+
+{%block description%}Details about the brass band contest {{Contest.name}}{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest">
+{% if Contest.group %}
+<a href="/contests/{{Contest.group.slug|upper}}/">{{Contest.name_name_only}}</a> {{Contest.name_section_only}}
+{% else %}
+	{{Contest.name}} 
+{% endif %}	
+    {% if user.profile.superuser %}
+     [<a href="/contests/edit/{{Contest.slug}}/">edit</a>]
+     [<a href="/contests/{{Contest.slug}}/talk/" title="{% trans "Contest Talk Page"%}">{% trans "talk"%}</a>]
+    {% endif %}
+    {% if user.profile.superuser and Contest.count == 0  %} [<a href="/contests/delete/{{Contest.slug}}/">delete</a>]{% endif %}
+	{% if user.is_staff and perms.contests.change_contest %} [<a href="/bbradmin/contests/contest/{{Contest.id}}/">admin</a>]{% endif %}
+</h1>
+{% if Contest.qualifies_for %}
+<p class="alias">{% trans "Qualifying contest for"%} <a href="/contests/{{Contest.qualifies_for.slug}}/">{{Contest.qualifies_for.name}}</a></p>
+{% endif %}
+{% if ContestQualifiesFrom %}
+<p class="alias">{% trans "Bands qualify for this contest from"%} {% for contest in ContestQualifiesFrom%}<a href="/contests/{{contest.slug}}/">{{contest.name}}</a>{% if not forloop.last%}, {%else%}.{%endif%}{%endfor%}</p>
+{% endif %}
+{% if Contest.description %}{% ifnotequal Contest.description Contest.name%}<p>{{Contest.description|safe|linebreaksbr}}</p>{%endifnotequal%}{%endif%}
+{% if Contest.contact_info %}
+<h2>{% trans "Contact Info"%}</h2>
+<p>{{Contest.contact_info}}</p>
+<p>{% trans "If these contact details are incorrect, please let us know via the comments box below."%}</p>
+{% endif %}
+<p></p>
+<table class="next-previous" width="100%">
+ <tr>
+    <td align="left">
+      {% if PreviousContestSection %}
+      <img src="/site_media/icons/arrow_up.png"/> <a href="/contests/{{PreviousContestSection.slug}}/">{{PreviousContestSection.name}}</a>
+      {% endif %}
+    </td>
+    <td align="right">
+     {% if NextContestSection %}
+      <a href="/contests/{{NextContestSection.slug}}/">{{NextContestSection.name}}</a> <img src="/site_media/icons/arrow_down.png"/>
+      {% endif %}      
+    </td>
+  </tr>
+</table>
+<div id="tabs">
+{% if ShowTabs %}
+  <ul class="screenonly">
+	<li><a href="#result-tab">{% trans "Results"%}</a></li>
+{% if OwnChoicePieceResults %}	
+	<li><a href="#pieces-tab">{% trans "Own Choice Pieces Used"%}</a></li>
+{% endif %}
+{% if WinRuns %}	
+	<li><a href="#winruns-tab">{% trans "Runs"%}</a></li>
+{% endif %}
+{% if ProgrammeCovers %}
+    <li><a href="#programmes-tab">{% trans "Programmes"%}</a></li>
+{% endif %}
+  </ul>
+{% endif %}
+
+<div id="result-tab">
+{% if not Contest.extinct %}
+<h2>{% trans "Future Events"%}</h2>
+{% if FutureEvents %}
+<ul>
+{% for event in FutureEvents %}
+  <li>We believe this contest will be run on <a href="/contests/{{Contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a>{% if event.venue_link %} at <a href="/venues/{{event.venue_link.slug}}/">{{event.venue_link.name}}</a>{%endif%}.{%if event.test_piece%}  The testpiece will be <a href="/pieces/{{event.test_piece.slug}}/">{{event.test_piece.name}}</a>.{%endif%}  {% ifequal user event.owner %}[<a href="/contests/{{Contest.slug}}/deletefuture/{{event.id}}/">Delete</a>]{%endifequal%}</li>
+{% endfor %}
+</ul>
+{% endif %}
+<p>[<a href="/contests/{{Contest.slug}}/addfuture/">{% trans "Add a Future Event for this Contest"%}</a>]</p>
+{% endif %}
+<h2>Past Results</h2>
+{% if Events %}
+{% if Contest.all_events_added and Contest.extinct %}
+<p>{% trans "All events have been added for this extinct contest."%}</p>
+{% else %}
+<p><font color="red">Do you know more results for this contest?  If so, please <a href="/addresults/{{Contest.slug}}/">add them to the site</a> today!</font></p>
+{% endif %}
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Winner"%}</th>
+			<th>{% trans "Conductor"%}</th>
+{% if Contest.contest_type_link.test_piece %}      
+			<th>{% trans "Test Piece"%}</th>
+{% endif %}      
+		</tr>
+	</thead>
+	<tbody>
+{% for event in Events %}
+  		<tr>
+{% if event.no_contest %}
+            <td nowrap="nowrap">{{event.event_date}}</td>
+            <td colspan="3"><strong>{% trans "No Contest."%}</strong>  {{event.notes}}</td>
+{% else %}
+{% if event.link_type == 'LINK' %}
+			<td nowrap="nowrap"><a href="/contests/{{event.contest_slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+            <td>         
+			  {% for winner in event.winners %}
+			    <div class="band">{% if winner.region.country_code %}<img src="/site_media/flags/{{winner.region.country_code|lower}}.png" title="{{winner.region.name}}">{%endif%} <a href="/bands/{{winner.slug}}/" title="{{winner.name}}">{{winner.band_name}}</a></div>
+			  {% endfor %}<i>{{event.name}}</i>  
+			</td>
+            
+{% else %}
+            <td class="contest-event" nowrap="nowrap"><a href="/contests/{{Contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+            <td>
+			  {% for winner in event.winners %}
+			    <div class="band">{% if winner.region.country_code %}<img src="/site_media/flags/{{winner.region.country_code|lower}}.png" title="{{winner.region.name}}">{%endif%} <a href="/bands/{{winner.slug}}/" title="{{winner.name}}">{{winner.band_name}}</a></div>
+			  {% endfor %}
+			</td>
+{% endif %}
+			<td>
+			  {% for winner in event.winners %}
+			    <div class="conductor">
+			      {% ifequal winner.conductor_name "Unknown Unknown" %}
+			        <font color="red">{% trans "Unknown, do you know?"%}</font>
+			      {% else %}
+			        <a href="/people/{{winner.conductor_slug}}/">{{winner.conductor_name}}</a>
+  			      {% endifequal %}
+			  </div>
+			  {%endfor%}
+			</td>
+{% if Contest.contest_type_link.test_piece %}          
+			<td>
+			{% if event.test_piece%}
+			  <div id="piece"><a href="/pieces/{{event.test_piece.slug}}/">{{event.test_piece.name}}</a></div>
+			{% else %}
+			  {% for winner in event.winners %}
+			    <div id="piece"><a href="/pieces/{{winner.test_piece.slug}}/">{{winner.test_piece.name}}</a></div>
+			  {% endfor %}
+			{% endif %}
+			</td>
+{% endif %}
+{% endif %}
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<p><font color="red">{% trans "We have no results for this contest.  If you know some, please"%} <a href="/addresults/{{Contest.slug}}/">{% trans "add them to the site"%}</a> {% trans "today!"%}</font></p>
+{% endif %}
+</div>
+
+
+{% if OwnChoicePieceResults %}
+<div id="pieces-tab">
+{% if not user.profile.pro_member %}
+<p><a href="/accounts/upgrade/">Upgrade to a pro member account</a> and see which own choice pieces have been used at this contest.</p>
+{% else %}
+<table id="pieces" class="table table-hover">
+<thead>
+  <tr>
+    <th>{% trans "Date"%}</th>
+    <th>{% trans "Band"%}</th>
+    <th>{% trans "Piece"%}</th>
+  </tr>
+</thead>
+<tbody>
+{% for result in OwnChoicePieceResults %}
+<tr>
+  <td><a href="/contests/{{result.contest_event.contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.event_date}}</a></td>
+  <td><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
+  <td><a href="/pieces/{{result.test_piece.slug}}/">{{result.test_piece.name}}</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+</div>
+{% endif %}
+
+
+{% if WinRuns %}
+<div id="winruns-tab">
+<table class="table table-hover" id="hatricks">
+ <thead>
+  <tr>
+    <th>{% trans "Years"%}</th>
+    <th>{% trans "Band"%}</th>
+  </tr>
+ </thead>
+ <tbody>
+{% for achievement in WinRuns %}
+  <tr>
+    <td>{{achievement.year_of_award}}</td>
+    <td><a href="/bands/{{achievement.band.slug}}/" title="{{achievement.band.name}}">{{achievement.band_name}}</a></td>
+  </tr>
+{% endfor %}
+ </tbody>
+</table>
+</div>
+{%endif %}
+
+
+{% if ProgrammeCovers %}
+<div id="programmes-tab">
+{% for cover in ProgrammeCovers %}
+<a href="/contests/{{cover.contest.slug}}/{{cover.contest_event.date_of_event|date:"Y-m-d"}}/" title="{{cover.contest.name}} {{cover.contest_event.date_of_event|date:"Y"}}" data-lightbox="programme" data-title="{{cover.contest.name}} {{cover.contest_event.date_of_event|date:"Y"}}"><img src="{{cover.image.url_80x100}}"/></a>
+{% endfor %}
+</div>
+{% endif %} 
+
+
+</div> <!-- tabs -->
+
+<br/>
+<div id="tags">
+  {% for tag in Contest.tag_list %}<a href="/tags/{{tag.slug}}/">{{tag.name}}</a> {%endfor%}
+  {% if user.profile.superuser or user.profile.regional_superuser %}  
+  <p>
+    <form method="post" action="/tags/new/">{% csrf_token %}
+      <input type="hidden" name="type" value="contest"/>
+      <input type="hidden" name="slug" value="{{Contest.slug}}"/>
+      <input type="text" name="name" placeholder="Enter New Tag" maxlength="255"/>
+      <input type="submit" value="Add Tag">
+    </form>
+  </p>
+  {% endif %} 
+</div>
+
+
+{% if Contest.links %}
+<h2>{% trans "See Also"%}</h2>
+<table>
+{% for link in Contest.links %}
+<tr><td>{{link.name}}:</td><td><a href="{{link.website_url}}">{{link.website_url}}</a></td></tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if Contest.notes %}
+<h2>{% trans "Notes"%}</h2>
+<p>{{Contest.notes|safe|linebreaksbr}}</p>
+{% endif %}	
+
+{% if Contest.group and Contest.group.notes %}
+<h2>{% trans "Contest Group Notes"%}</h2>
+<p>{{Contest.group.notes|safe|linebreaksbr}}</p>
+{% endif %}	
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script type="text/javascript">
+  $("#contests").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+  $("#hatricks").tablesorter({widgets: ['zebra']});
+{% if ShowTabs %}  
+  $('#tabs').tabs();
+{% endif %} 
+{% if OwnChoicePieceResults %}
+  $("#pieces").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+{% endif %} 
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "template.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<form method="post" action=".">{% csrf_token %}
+<h1>Sign In</h1>
+<p>Not joined yet?  <a href="/account/register/">Register here</a> to create your account.</p>
+{% if form.errors %}
+<p><font color="red">Invalid username/password. Please try again.</font></p>
+{% endif %}
+<table>
+  <tr><td><label for="id_username">Username:</label></td><td>{{form.username}}</td></tr>
+  <tr><td><label for="id_password">Password:</label></td><td>{{form.password}}</td></tr>
+  <tr><td>&nbsp;</td><td><input type="submit" value="Sign In" /><input type="hidden" name="next" value="{{ next|escape }}" /></td></tr>
+</table>
+</form>
+<p><a href="/accounts/forgottenpassword/">Forgotten your login?</a></p>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}
+{% block adbar %}{%endblock%}
+{% block adbarBottom %}{%endblock%}  

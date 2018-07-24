@@ -1,0 +1,1 @@
+{{ThingNew.type.name}} badge to {{ThingNew.user.username}} 

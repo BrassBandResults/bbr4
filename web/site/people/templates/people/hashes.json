@@ -1,0 +1,4 @@
+[
+{% for letter, hash in Hashes.items %}
+  { "letter" : {{letter}}, "hash" : {{hash}} }{%if not forloop.last%},{%endif%}{% endfor %}
+]

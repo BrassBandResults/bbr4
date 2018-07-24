@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+{% load i18n %}
+{% load bbrize %}
+
+{% block title %}{{ObjectLink.name}} {% trans "Talk Page"%}{% endblock %}
+
+{% block content %}
+<h1>Talk for <a href="/{{Offset}}/{% firstof ObjectLink.actual_slug ObjectLink.slug %}/">{{ObjectLink.name}}</a> [<a href="/{{Offset}}/{% firstof ObjectLink.actual_slug ObjectLink.slug %}/talk/edit/">edit</a>]</h1>
+{% if Talk %}
+{{Talk.text|safe}}
+<p class="small">Last Modified {{Talk.last_modified}} by <a href="/users/{{Talk.lastChangedBy.username}}/">{{Talk.lastChangedBy.username}}</a></p>
+{% else %}
+<p>This page is blank</p>
+{% endif%}
+<h2>Recent Talk Changes</h2>
+<ul>
+{% for talk in RecentTalkChanges %}
+{% if talk.object_link.name %}
+  <li><a href="{{talk.get_absolute_url}}">{{talk.object_link.name}}</a> by <a href="/users/{{talk.lastChangedBy.username}}/talk/">{{talk.lastChangedBy.username}}</a> on {{talk.last_modified}}</li>
+{% else %}
+  <li><a href="{{talk.get_absolute_url}}">{{talk.owner.username}}</a> by <a href="/users/{{talk.lastChangedBy.username}}/talk/">{{talk.lastChangedBy.username}}</a> on {{talk.last_modified}}</li>
+{% endif %}
+   
+{% endfor %}
+</ul> 
+{% endblock %}
+
+{% block scriptfooter %}
+{% endblock %}

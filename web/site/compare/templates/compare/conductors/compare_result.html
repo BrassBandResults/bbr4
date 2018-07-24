@@ -1,0 +1,70 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Compare {{ConductorOne.name}} with {{ConductorTwo.name}}{% endblock %}
+
+{%block keywords %}Compare Conductors {{ConductorOne.name}} {{ConductorTwo.name}}{% endblock %}
+
+{%block description%}Compare the results of {{ConductorOne.name}} and {{ConductorTwo.name}} {%endblock%}
+
+{%block conductors-compare-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter%}
+<script>
+  $(document).ready(function(){
+    $("#results-compare").tablesorter({headers:{1: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+  });
+</script>
+{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Compare"%} <a href="/people/{{ConductorOne.slug}}/">{{ConductorOne.name}}</a> {% trans "with"%} <a href="/people/{{ConductorTwo.slug}}/">{{ConductorTwo.name}}</a></h1>
+{% if Filter %}
+<p class="filter_notify">This page is filtered to show only results from <a href="/contests/{{ContestSlug}}/">{{ContestName}}</a>.  [<a href="/compare/conductors/{{ConductorOne.slug}}/{{ConductorTwo.slug}}/">Remove Filter</a>].</p>
+{% endif %}
+{% if CompareResults %}
+<p>{% trans "This table lists results from contests where the two conductors have competed against each other."%}  {{ConductorOne.name}} {% trans "has been better"%} {{ConductorOneWins}} {% trans "times"%}, {{ConductorTwo.name}} {% trans "has been better"%} {{ConductorTwoWins}} {% trans "times"%}.</p>
+<table width="100%">
+	<tr>
+		<td class="BandOneBar border border-dark" width="{{ConductorOnePercent}}%">{{ConductorOneWins}}&nbsp;({{ConductorOnePercent}}%)</td>
+		<td class="BandTwoBar border border-dark" width="{{ConductorTwoPercent}}%">{{ConductorTwoWins}}&nbsp;({{ConductorTwoPercent}}%)</td>
+	</tr>
+</table>
+<table id="results-compare" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{{ConductorOne.name}}</th>
+			<th>{% trans "Band"%}</th>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Contest"%}</th>
+			<th>{% trans "Band"%}</th>
+			<th>{{ConductorTwo.name}}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in CompareResults %}
+	<tr>
+{% ifequal result.conductor_one 9999 %}
+		<td>{% trans "Unknown"%}</td>
+{% else %}
+		<td>{{result.conductor_one|safe}}</td>
+		<td>{{result.conductor_one_band_name}}</td>
+{% endifequal %}
+		<td><a href="/contests/{{result.slug}}/{{result.date|date:"Y-m-d"}}/">{{result.event_date}}</a></td>
+		<td>{% if not Filter %}<a class="hourglass" href="/compare/conductors/{{ConductorOne.slug}}/{{ConductorTwo.slug}}/{{result.slug}}/" title="{% trans "Click to filter to"%} {{result.name}}"><img src="/site_media/icons/magnifier.png" border="0"/></a> {%endif%}{{result.name}}</td>
+{% ifequal result.conductor_two 9999 %}
+		<td>{% trans "Unknown"%}</td>
+{% else %}
+    <td>{{result.conductor_two_band_name}}</td>
+		<td>{{result.conductor_two|safe}}</td> 
+{% endifequal %}		
+	</tr>
+{% endfor %}
+	</tbody>
+</table>	
+{% else %}
+<p>{% trans "These two conductors have not competed against each other."%}</p>
+{% endif %}
+</div>
+{% endblock %}

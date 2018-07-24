@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+
+{% block title %}Create Account{% endblock %}
+
+{%block register-selected%}class="selected"{%endblock%}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<form method="post" action=".">{% csrf_token %}
+<h1>Account Registration</h1>
+<p>Please fill in the details below to create your new account.</p>
+<table>
+  <tr><th>Username:</th><td>{{form.username.errors}} {{form.username}} (spaces not allowed)</td></tr>
+  <tr><th>Email Address:</th><td>{{form.email.errors}} {{form.email}}</td></tr>
+  <tr><th>Password:</th><td>{{form.password1.errors}} {{form.password1}}</td></tr>
+  <tr><th>Password (again):</th><td>{{form.password2.errors}} {{form.password2}}</td></tr>
+  <tr><td>&nbsp;</td><td>{{form.non_field_errors}}<input type="submit" value="Register" /></td></tr>
+</table>
+</form>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

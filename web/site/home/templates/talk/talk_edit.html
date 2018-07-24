@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Band Talk Page"%}{% endblock %}
+
+ {% block head %}
+ <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+ {% endblock %}
+
+{% block content %}
+<h1>Edit Talk for {{ObjectLink.name}}</h1>
+<form action="." method="post">{%csrf_token%}
+<table>
+<tr><td>{{form.text}}</td></tr>
+<tr><td><input type="submit" value="Save Changes"/></td></tr>
+</table>
+</form>
+{% endblock %}
+
+{% block scriptfooter %}
+<script>
+tinymce.init({selector:'textarea',relative_urls: false, resize: "both"});
+</script>
+{% endblock %}
+
+{% block feedback %}
+{% endblock %}

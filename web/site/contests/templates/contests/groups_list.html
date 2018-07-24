@@ -1,0 +1,54 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Contest Groups{% endblock %}
+
+{%block description%}List of brass band contests groups{%endblock%}
+
+{%block contestgroup-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  	$("#groups").tablesorter({widgets: ['zebra']]});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Contest Groups"%}</h1>
+<p>This page allows contest groups to be maintained.  Edit a specific contest to add it to a group.</p>
+<p>There are {{GroupCount}} Contest Groups.</p>
+<p>
+  <form action="." method="POST">{%csrf_token%}
+    <input type="text" name="groupname"/> <input type="submit" value="Add New Group"/>
+  </form>
+</p>
+<table id="groups" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>Contests</th>
+			<th>Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for group in Groups %}
+  		<tr>
+  			<td class="contestgroup">
+  			  <a href="/contests/{{group.slug|upper}}/">{{group.name}}</a>
+  			  {% for alias in group.aliases %}<br/>{{alias}}{%endfor%}
+  			</td>
+  			<td>
+  			  {% for name, slug in group.contests %}
+  			    <a href="/contests/{{slug}}/">{{name}}</a>{%if not forloop.last%}<br/>{%endif%}
+  			  {% endfor %}
+  			</td>
+  			<td>{% if group.count == 0%}[<a href="/contests/groups/delete/{{group.id}}/">delete</a>]{%endif%}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

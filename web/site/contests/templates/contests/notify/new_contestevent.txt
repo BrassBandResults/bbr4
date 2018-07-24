@@ -1,0 +1,19 @@
+A new contest event has been added to the database.
+
+Date: {{ThingNew.date_of_event|date:"Y-m-d"}}
+Date Resolution: {{ThingNew.get_date_resolution_display}}
+Contest Name: {{ThingNew.contest.name|safe}}
+Event Name: {{ThingNew.name|safe}}
+Test Piece: {{ThingNew.test_piece.name|safe}}
+Venue: {{ThingNew.venue_link.name|safe}}
+Contest Type Override: {{ThingNew.contest_type_override_link.name}}
+Complete: {{ThingNew.complete}}
+No Contest: {{ThingNew.no_contest}}
+Requires Input: {{ThingNew.requires_input}}
+
+Notes: {{ThingNew.notes|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/contests/{{ThingNew.contest.slug}}/{{ThingNew.date_of_event|date:"Y-m-d"}}/

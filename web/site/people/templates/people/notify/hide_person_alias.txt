@@ -1,0 +1,9 @@
+Person Alias Hidden
+
+Alias: {{ThingNew.name|safe}}
+Person: {{ThingNew.person.name|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/people/{{ThingNew.person.slug}}/

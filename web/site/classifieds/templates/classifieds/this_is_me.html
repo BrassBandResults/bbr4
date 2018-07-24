@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+
+{%block title %}Create Profile{% endblock %}
+
+{%block keywords %}profile{% endblock %}
+
+{%block description%}Create a profile for {{Object.name}}{%endblock%}
+
+{% block adbar %}<br/>{% endblock %}
+{% block adbarBottom %}<br/>{% endblock %}
+{% block feedback %}{% endblock %}
+
+{% block content %}
+<h1>Are You {{Object.name}}?</h1>
+<p>This site is becoming ever more popular with <strong>1000s of visitors</strong> and over <strong>100,000 page views</strong> per month.</p>
+<p>Do you want to:</p>
+<ul>
+  <li>be able to put a detailed profile on your page?</li>
+  <li>link to your website?</li>
+  <li>advertise your services for all to see?</li>
+  <li>combine contest results, adjudications and compositions on the same page?</li>
+  <li>put your picture here?</li>
+  <li>include contact details?</li>
+  <li>have no adverts on your page?</li>
+</ul>
+<p>See an example for <a href="/conductors/david-roberts/">David Roberts</a>.</p>
+<p>{% if not AllowProfileForFree %}You can have this for just <strong>£24</strong> a year, though you'll need to have an account on the site first.{%endif%} <a href="/classifieds/{{Type}}/{{Object.slug}}/signup/">Create Your Profile Now</a></p>
+{% endblock %}

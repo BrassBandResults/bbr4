@@ -1,0 +1,8 @@
+Future Event for {{ThingNew.contest.name|safe}} deleted.
+
+Date: {{ThingNew.event_date}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/contests/{{ThingNew.contest.slug}}/

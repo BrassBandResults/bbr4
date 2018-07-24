@@ -1,0 +1,21 @@
+New Band Classified Profile for {{ThingNew.band.name}} 
+
+Logo: {{ThingNew.logo}}
+Facebook: {{ThingNew.facebook_url}}
+Contact Name: {{ThingNew.band_contact_name}}
+Contact Email: {{ThingNew.band_contact_email}}
+Contact Phone: {{ThingNew.band_contact_telephone}}
+Contact Address: {{ThingNew.band_contact_address}}
+Rehearsal Address: {{ThingNew.band_rehearsal_address}}
+
+Visible: {{ThingNew.visible}}
+Status: {{ThingNew.status}}
+
+Profile:    
+{{ThingNew.profile|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bbradmin/classifieds/classifiedband/{{ThingNew.id}}/
+

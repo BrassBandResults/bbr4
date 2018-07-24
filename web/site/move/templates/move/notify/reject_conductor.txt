@@ -1,0 +1,20 @@
+Your request to merge conductor 
+
+{{ThingNew.source_conductor.name|safe}}
+http://brassbandresults.co.uk/conductors/{{ThingNew.source_conductor.slug}}/ 
+
+to 
+
+{{ThingNew.destination_conductor.name|safe}}
+http://brassbandresults.co.uk/conductors/{{ThingNew.destination_conductor.slug}}/ 
+
+has been declined.  {%if Reason%}The reason for this:{%endif%}
+
+{{Reason|safe}}
+
+Thanks for your support of the site - please reply to this email if you disagree and we'll look into it again.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

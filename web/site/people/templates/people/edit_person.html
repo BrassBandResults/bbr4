@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Edit Person{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Edit"%} {{Person.name}}</h1>
+<form action="." method="post">{% csrf_token %}
+<table>
+	{{form.as_table}}
+{% if not request.user.profile.superuser %}
+    <tr><td></td><td>{% trans "Please enter FirstName LastName"%}</td></tr>
+{%endif %}
+	<tr><td></td><td><input type="submit" value="{% trans "Save Changes"%}" /> <a href="/people/{{Person.slug}}/">Cancel without saving</a></td></tr>
+</table>
+</form>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

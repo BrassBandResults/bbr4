@@ -1,0 +1,47 @@
+{% extends "template.html" %}
+
+{% block title %}Sign In Pro{% endblock %}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+
+<form method="post" action=".">{% csrf_token %}
+<h1>Upgrade To Pro</h1>
+<p><b>In order to view this page you need to have a BrassBandResults pro account.</b></p>
+<p>If you don't have a pro account, you'll need to pay £19.99 per year for access to pro features.  You can cancel at any time.  <a href="/accounts/upgrade/">Upgrade and more details here</a>.
+</p>
+<p>Basic functionality on the site will always be free.</p>
+<p>Benefits of Pro:
+<ul>
+  <li>Add a player position to your contest history</li>
+  <li>See other users who took part at the same contest as you</li>
+  <li>Extended statistics and filtering on your myresults page, plus the same on other users you look at</li>
+  <li>Add a profile for yourself (if you're a conductor, composer or adjudicator)</li>
+  <li>See results over the years for a given draw at a contest</li>
+  <li>See bands that have come in a specified position at a contest over the years</li>
+  <li>No adverts</li>
+</ul>
+</p>
+<h1>Pro User Login</h1>
+{% if form.errors %}
+<p><font color="red">Invalid username/password. Please try again.</font></p>
+{% endif %}
+<table>
+  <tr><td><label for="id_username">Username:</label></td><td>{{form.username}}</td></tr>
+  <tr><td><label for="id_password">Password:</label></td><td>{{form.password}}</td></tr>
+  <tr><td>&nbsp;</td><td><input type="submit" value="Sign In" /><input type="hidden" name="next" value="{{ next|escape }}" /></td></tr>
+</table>
+</form>
+<p><a href="/accounts/forgottenpassword/">Forgotten your login?</a></p>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

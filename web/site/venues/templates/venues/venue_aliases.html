@@ -1,0 +1,44 @@
+{% extends "template.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{Venue.name}} - {% trans "Venue Aliases"%}{% endblock %}
+
+{%block keywords %}Venue {{Venue.name}}{% endblock %}
+
+{%block description%}Details about the venue {{Venue.name}}{%endblock%}
+
+{%block venues-selected%}class="selected"{%endblock%}
+
+
+{% block content %}
+<h1 class="band">{{Venue.name}} {% trans "Aliases"%}</h1>
+<p>&lt;&lt;&lt; {% trans "Back to"%} <a href="/venues/{{Venue.slug}}/">{{Venue.name}}</a></p>
+<form action="." method="post">{% csrf_token %}
+<table id="aliases" class="table table-hover">
+<thead>
+ <tr>
+  <th>{% trans "Alias Name"%}</th>
+  <th></th>
+ </tr>
+</thead>
+<tbody>
+{%for alias in Aliases%}
+ <tr>
+  <td>{{alias.name}}</td>
+  <td>
+{% if user.profile.superuser %}  
+    [<a href="/venues/{{Venue.slug}}/aliases/{{alias.id}}/delete/">{% trans "delete"%}</a>]
+{% endif %}  
+  </td>
+ </tr>
+{%endfor%}
+</tbody>
+<tfoot>
+  <tr>
+    <td colspan="3"><input type="text" name="new_alias_name"/> <input type="submit" value="{% trans "Save New Alias"%}"/></td>
+  </tr>
+</tfoot>
+</table>
+</form>
+{% endblock %}

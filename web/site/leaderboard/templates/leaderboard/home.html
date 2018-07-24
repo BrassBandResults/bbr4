@@ -1,0 +1,68 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Leaderboard"%}{% endblock %}
+
+{%block description%}User Leaderboard{%endblock%}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#leaderboard").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#leaderboard').trigger('sortReset');
+      return false;
+    });
+  });
+  
+  var lPieData = [
+    { label: ">= 50 points", data: {{OnLeaderboardCount}}, color: "#ffc600" },  
+    { label: "< 50 points", data: {{NotOnLeaderboardCount}}, color: "#99ccff" },
+    { label: "No Points", data: {{NoPointsCount}}, color: "#316497" }
+    ];
+  $.plot($("#flot_pie"), lPieData,
+    {
+      series: {
+        pie: {
+          show: true,
+          label: {
+            formatter: function(label, series){
+              return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+            }
+          }
+        }
+      },
+      legend: {
+          show: false
+      }
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Leaderboard"%}</h1>
+<div id="flot_pie" class="leaderboard"></div>
+<p>{% trans "Every time a user adds results or adds a new point to the map, they get points.  This table shows the current leaderboard."%}</p>
+<table id="leaderboard" class="table table-hover">
+    <thead>
+        <tr>
+            <th>{% trans "Position"%}</th>
+            <th>{% trans "User"%}</th>
+            <th>{% trans "Points"%}</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for profile in Profiles %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><a href="/users/{{profile.user.username}}/">{{profile.user.username}}</a></td>
+            <td>{{profile.points}}</td>
+        </tr>
+{% endfor %}
+        
+    </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+Venue Merge Done
+
+Source (deleted): {{ThingNew.source_venue.name|safe}}
+http://brassbandresults.co.uk/venues/{{ThingNew.source_venue.slug}}/
+ 
+Destination: {{ThingNew.destination_venue.name|safe}}
+http://brassbandresults.co.uk/venues/{{ThingNew.destination_venue.slug}}/
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/move/venues/

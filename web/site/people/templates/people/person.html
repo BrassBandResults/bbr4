@@ -1,0 +1,557 @@
+{% extends "template.html" %}
+{% load i18n %}
+{% load bbrize %}
+{% load humanize %}
+
+{%block title %}{{Person.name}} - Person{% endblock %}
+
+{%block keywords %}Person {{Person.name}}{% endblock %}
+
+{%block description%}Details about the brass band person {{Person.name}}{%endblock%}
+
+{%block people-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="person">{{Person.name}}</h1>
+<span class="screenonly"> 
+{% if ShowEdit %} [<a href="/people/edit/{{Person.slug}}/" title="Edit this person's details">{% trans "edit"%}</a>]{%endif%}
+{% if user.profile.superuser %} [<a href="/people/{{Person.slug}}/aliases/" title="Edit person aliases">{% trans "aliases"%}</a>]{% endif %}
+{% if user.is_staff and perms.pieces.change_composer %} [<a href="/bbradmin/people/person/{{Person.id}}/" title="Edit this person in the admin site">admin</a>]{% endif %}
+{% if Profile and request.user == Profile.owner %}[<a href="/people/{{Person.slug}}/edit_classified/">edit profile</a>]{% endif %}
+</span>
+{% if Aliases %}
+<p class="alias"><b>{% trans "Also/previously known as"%}:</b> {%for alias in Aliases%}{{alias.name}}{%if not forloop.last%}, {%endif%}{%endfor%}</p>
+{% endif %} 
+{% if Person.bandname %}   
+<p class="alias"><b>{% trans "Known For"%}</b>: {{Person.bandname}}</p>
+{% endif %}
+{% if RelationsOut or RelationsBack %}
+<p class="alias"><b>{% trans "Relations"%}</b>:
+{% for relation in RelationsOut %}
+{{relation.relation}} - <a href="/people/{{relation.relation_person.slug}}/">{{relation.relation_person.name}}</a>
+{% endfor %}
+{% for relation in RelationsBack %}
+{%firstof relation.reverse_relation relation.relation%} - <a href="/people/{{relation.source_person.slug}}/">{{relation.source_person.name}}</a>
+{% endfor %}  
+</p>
+{% endif %}
+
+
+{% if Profile %}
+
+{% if Profile.picture %}<img src="{{Profile.picture.url_200x200}}" id="ProfileImage"/>{% endif %}
+<table>
+  {% if Profile.email %}<tr><th>Email: </th><td><script type="text/javascript"><!--
+              var name='{{Profile.email_mailbox}}';
+              var domain='{{Profile.email_domain}}';
+              var addr=name+'@'+domain;
+              document.write('<'+'a href="mailto:'+addr+'">'+addr+'<'+'/a'+'>'); //-->
+              </script></td></tr> {%endif%}
+  {% if Profile.website %}<tr><th>Website: </th><td><a href="{{Profile.website}}">{{Profile.website}}</a></td></tr>{%endif%}
+  {% if Profile.address %}<tr><th>Address: </th><td>{{Profile.address|linebreaksbr}}</td></tr>{%endif%}
+  {% if Profile.home_phone %}<tr><th>Telephone: </th><td>{{Profile.home_phone}}</td></tr>{%endif%}
+  {% if Profile.mobile_phone %}<tr><th>Mobile: </th><td>{{Profile.mobile_phone}}</td></tr>{%endif%}
+</table>
+<br/>
+<p>{{Profile.profile|linebreaksbr|bbrize}}</p>
+{% endif %}
+
+<table width="100%">
+<tr>
+<td width="80%" align="left">
+{% if PiecesAsComposerCount %}{% trans "Composed"%} {{PiecesAsComposerCount}} piece{{PiecesAsComposerCount|pluralize:"s"}}<br/>{%endif%}
+{% if PiecesAsArrangerCount %}{% trans "Arranged"%} {{PiecesAsArrangerCount}} piece{{PiecesAsArrangerCount|pluralize:"s"}}{%endif%}
+</td>
+<td width="20%" align="right" valign="top" id="link_buttons">
+  {% if ContestResults %}<a href="/people/{{Person.slug}}/csv/"> <button class="btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "Conducting as CSV" %}</button></a>{%endif%}
+  {% if not Profile %}<a href="/people/{{Person.slug}}/newclassified/?u={{user.username}}" class="profilead"> <button class="btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "Personalise This Page"%}</button></a>{% endif %}
+</td>
+</tr></table>
+<br/>
+
+
+
+{% if ContestResults %}
+  	{% if user.profile.pro_member %}
+      <div id="flot_pie"></div>
+    {% else %}
+      <a href="/accounts/upgrade/"><img src="/site_media/upgrade/pie_chart_if_upgrade.jpg"/></a>
+    {% endif%}
+{% endif %}
+
+
+
+<div class="bannerad">
+<div class="banner_slot">
+{% if not user.profile.pro_member %}
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Brass Band Results Mid Rectangle -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-5087204743199130"
+     data-ad-slot="9371852405"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endif %}
+</div>
+</div>
+
+{% if ContestResults %}
+	{% if user.profile.pro_member %}
+	  <div id="flot_chart"></div>
+    <p><strong>{% trans "Date Range (use slider to change)"%}:</strong> <span id="slider-amount"></span></p>
+    <div id="slider-range"></div>
+	{% else %}
+	  <a href="/accounts/upgrade/"><img src="/site_media/upgrade/results_history_if_upgrade.jpg"/></a>
+	{% endif %}
+<br/>
+{% endif %}
+
+{% if ShowTabs %}
+<div id="tabs">
+    <ul class="screenonly">
+{% if ContestResults %}
+        <li><a href="#contests-tab">Conducting Results{%if user.profile.pro_member%} ({{ContestResultsCount}}){%endif%}</a></li>
+{% endif %}
+{% if WhitFridayResults %}        
+        <li><a href="#whitfriday-tab">Whit Friday{%if user.profile.pro_member%} ({{WhitFridayResultsCount}}){%endif%}</a></li>
+{% endif %}
+{% if Adjudications %}
+        <li><a href="#adjudicator-tab">Adjudications{%if user.profile.pro_member%} ({{AdjudicationsCount}}){%endif%}</a></li>
+{% endif %}        
+{% if ComposedPieces %}        
+        <li><a href="#composer-tab">Compositions{%if user.profile.pro_member%} ({{ComposedPiecesCount}}){%endif%}</a></li>
+{% endif %}
+{% if ArrangedPieces %}        
+        <li><a href="#arranger-tab">Arrangements{%if user.profile.pro_member%} ({{ArrangedPiecesCount}}){%endif%}</a></li>
+{% endif %}
+    </ul>
+{% endif %}
+
+{% if ContestResults %}
+{% if not ShowTabs %}<h2>Conducting Results{%if user.profile.pro_member%} ({{ContestResultsCount}}){%endif%}</h2>{%endif%}
+<div id="contests-tab">
+{% if Filter %}
+<p class="filter_notify">{% trans "This view of the results is filtered to"%} <b>{{FilteredTo.name}}</b>.  [<a href="/people/{{Person.slug}}/">{% trans "Remove Filter"%}</a>].</p>
+{% endif %}
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Contest"%}</th>
+			<th>{% trans "Band"%}</th>
+			<th>{% trans "Position"%}</th>
+			<th>{% trans "Points"%}</th>
+			<th>{% trans "Draw"%}</th>
+{% if user.is_staff and perms.contests.change_contestresult  %}
+			<th></th>
+{% endif %}
+		</tr>
+	</thead>
+	<tbody>
+{% for result in ContestResults %}
+      <tr class="result-{{result.results_position_display}} year-{{result.contest_event.date_of_event|date:"Y"}}">
+        <td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{ result.contest_event.date_of_event|date:"Y-m-d" }}/">{{ result.contest_event.event_date }}</a></td>
+        <td class="contest-event-name">
+        {% if not Filter %}<a class="hourglass" onclick="toggleFilter({{result.id}});" title="{% trans "Click to filter"%}"><img src="/site_media/icons/magnifier.png" border="0"/></a> {%endif%}<span title="{% trans "Competed as"%} {{result.band_name}}">{%if result.contest_event.future%}<b>{%endif%}{{ result.contest_event.name }}{%if result.contest_event.future%}</b>{%endif%}</span>
+        <div id="tags" class="tags-{{result.id}}">
+          <a href="/people/{{Person.slug}}/{{result.contest_event.contest.actual_slug}}/" title="{% trans "Click to filter to"%} {{result.contest_event.contest.name}}">This Contest</a>
+          {% if result.contest_event.contest.group_id %}
+          <a href="/people/{{Person.slug}}/{{result.contest_event.contest.group.actual_slug}}/" title="{% trans "Click to filter to"%} {{result.contest_event.contest.group.name}}">This Group</a>
+          {% endif %}
+          {% for tag in result.contest_event.tag_list %}<a href="/people/{{Person.slug}}/tag/{{tag.slug}}/" title="{% trans "Click to filter to tag"%} {{tag.name}}">{{tag.name}}</a> {%endfor%}
+        </div>
+        </td>
+		<td class="band"><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{ result.band_name }}</a></td>
+		<td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="/site_media/icons/comment.png" border="0"/></a>{%endif%}</td>
+		<td class="band-contest-points">{% if result.points %}{{result.points_display}}{% endif %}</td>
+		<td class="band-contest-draw">{% if result.draw %}{{ result.draw }}{% endif %}</td>
+{% if user.is_staff and perms.contests.change_contestresult %}
+			<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>			
+{% endif %}		
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% if Filter %}
+<p class="filter_notify">{% trans "This view of the results is filtered to"%} <b>{{FilteredTo.name}}</b>.  [<a href="/people/{{Person.slug}}/">{% trans "Remove Filter"%}</a>].</p>
+{% endif %}
+
+</div>
+{% endif %}
+
+{% if WhitFridayResults %}
+{% if not ShowTabs %}<h2>Whit Friday Results{%if user.profile.pro_member%} ({{WhitFridayResultsCount}}){%endif%}</h2>{%endif%}
+<div id="whitfriday-tab">
+<table id="whitfriday" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Contest"%}</th>
+			<th>{% trans "Band"%}</th>
+			<th>{% trans "Position"%}</th>
+{% if user.is_staff and perms.contests.change_contestresult  %}
+			<th></th>
+{% endif %}
+		</tr>
+	</thead>
+	<tbody>
+{% for result in WhitFridayResults %}
+   <tr class="result-{{result.results_position_display}} year-{{result.contest_event.date_of_event|date:"Y"}}">
+        <td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{ result.contest_event.date_of_event|date:"Y-m-d" }}/">{{ result.contest_event.event_date }}</a></td>
+		<td class="contest-event-name">{{ result.contest_event.name }}</td>
+		<td class="band"><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{ result.band_name }}</a></td>
+		<td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}</td>
+{% if user.is_staff and perms.contests.change_contestresult %}
+			<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>			
+{% endif %}		
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+
+{% if Adjudications %}
+{% if not ShowTabs %}<h2>Adjudications{%if user.profile.pro_member%} ({{AdjudicationsCount}}){%endif%}</h2>{%endif%}
+<div id="adjudicator-tab">
+
+{% if UserAdjudications %}
+<h3>Your Adjudications ({{UserAdjudicationsCount}})</h3>
+<p></p>
+<table id="yourcontests" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Contest</th>
+      <th>Band</th>
+      <th>Position</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for contest_history in UserAdjudications %}
+      <tr class="result-{{contest_history.results_position}}">
+        <td class="contest-event"><a href="/contests/{{contest_history.contest_event.contest.slug}}/{{ contest_history.contest_event.date_of_event|date:"Y-m-d" }}/">{{ contest_history.contest_event.event_date }}</a></td>
+        <td class="contest">{{contest_history.contest_event.name}}</td>
+        <td class="band"><a href="/bands/{{ contest_history.band.slug }}/" title="{{contest_history.band.name}}">{{ contest_history.band_name }}</a></td>
+        <td>{{contest_history.results_position}}</td>
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+<h3>Contest Adjudications</h3>
+{% endif %}
+
+
+<table id="adjudications" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Contest</th>
+			<th>Winner</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for adjudication in Adjudications %}
+      <tr class="year-{{adjudication.date_of_event|date:"Y"}}">
+        <td class="contest-event"><a href="/contests/{{adjudication.contest_slug}}/{{ adjudication.date_of_event|date:"Y-m-d" }}/">{{ adjudication.event_date }}</a></td>
+		<td>{%if adjudication.future%}<b>{%endif%}{{ adjudication.event_name }}{%if adjudication.future%}</b>{%endif%}</td>
+{% if adjudication.band_name %}
+		<td class="band">{% for band in adjudication.winners %}<a href="/bands/{{ band.slug }}/">{{ band.name }}</a>{% if not forloop.last %}<br/>{%endif%}{% endfor %}</td>
+{% else %}
+        <td></td>
+{% endif %}		
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+
+{% if ComposedPieces %}
+{% if not ShowTabs %}<h2>Compositions{%if user.profile.pro_member%} ({{ComposedPiecesCount}}){%endif%}</h2>{%endif%}
+<div id=composer-tab>
+<table id="compositions" class="table table-hover">
+	<thead>
+		<tr>
+		 <th>{% trans "Name"%}</th>
+		 <th>{% trans "Composer"%}</th>
+		 <th>{% trans "Arranger"%}</th>
+         <th>{% trans "Year"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for piece in ComposedPieces %}
+    <tr>
+      <td class="testpiece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+{% ifequal Person.name piece.composer.name %}
+      <td class="composer">{{piece.composer.name}}</td>
+{% else %}      
+      <td class="composer"><a href="/person/{{piece.composer.slug}}/">{{piece.composer.name}}</a></td>
+{% endifequal %}
+{% ifequal Composer.name piece.arranger.name %}
+      <td class="composer">{{piece.arranger.name}}</td>
+{% else %}      
+      <td class="composer"><a href="/person/{{piece.arranger.slug}}/">{{piece.arranger.name}}</a></td>
+{% endifequal %}
+	  <td>{{piece.year}}</td>
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div> <!-- composer tab -->
+{% endif %}
+
+
+{% if ArrangedPieces %}
+{% if not ShowTabs %}<h2>Arrangements{%if user.profile.pro_member%} ({{ArrangedPiecesCount}}){%endif%}</h2>{%endif%}
+<div id=arranger-tab>
+<table id="arrangements" class="table table-hover">
+	<thead>
+		<tr>
+		 <th>{% trans "Name"%}</th>
+		 <th>{% trans "Composer"%}</th>
+		 <th>{% trans "Arranger"%}</th>
+         <th>{% trans "Year"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for piece in ArrangedPieces %}
+    <tr>
+      <td class="testpiece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
+{% ifequal Person.name piece.composer.name %}
+      <td class="composer">{{piece.composer.name}}</td>
+{% else %}      
+      <td class="composer"><a href="/person/{{piece.composer.slug}}/">{{piece.composer.name}}</a></td>
+{% endifequal %}
+{% ifequal Person.name piece.arranger.name %}
+      <td class="composer">{{piece.arranger.name}}</td>
+{% else %}      
+      <td class="composer"><a href="/person/{{piece.arranger.slug}}/">{{piece.arranger.name}}</a></td>
+{% endifequal %}
+	  <td>{{piece.year}}</td>
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div> <!-- arranger tab -->
+{% endif %}
+
+{% if ShowTabs %}
+</div> <!-- tab div -->
+{% endif %}
+
+
+{% if Person.notes %}
+<h2>{% trans "Notes"%}</h2>
+<p>{{Person.notes|safe|bbrize}}</p>
+{% endif %}
+
+{% if user.profile.superuser %}
+<br/>
+<form action="/move/people/{{Person.slug}}/move_person/" method="post">{%csrf_token%}
+<p><input type="checkbox" id="move_person"/> {% trans "Request merge with"%} <span id="person_to_move_to">{% trans "another person"%}.</span></p>
+</form>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#compositions").tablesorter({widgets: ['zebra']});
+    $("#arrangements").tablesorter({widgets: ['zebra']});
+    $("#adjudications").tablesorter({widgets: ['zebra']});
+    $("#contests").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
+    
+    {% if ShowTabs %}    
+    $("#tabs").tabs();
+    {% endif %}
+    
+    {% if user.profile.pro_member and ResultsWithPosition > 0 %}
+    {% if Wins > 0 or TopSixNotWin > 0 %}    
+        var lPieData = [
+        { label: "Wins", data: {{Wins}}, color: "#ffc600" },  
+        { label: "Top Six", data: {{TopSixNotWin}}, color: "#99ccff" },
+        { label: "Unplaced", data: {{Unplaced}}, color: "#316497" }
+        ];
+      $.plot($("#flot_pie"), lPieData,
+        {
+          series: {
+            pie: {
+              show: true,
+              label: {
+                formatter: function(label, series){
+                  return '<div style="font-size:8pt;text-align:center;padding:2px;color:black;">'+label+'<br/>'+series.data[0][1]+" (" +Math.round(series.percent)+'%)</div>';
+                }
+              }
+            }
+          },
+          legend: {
+              show: false
+          }
+      });
+    {% endif %}  
+    {% endif %}
+    
+  });  
+
+
+  function toggleFilter(pResultId){
+	  $('.tags-'+pResultId).toggle("slow");
+  }
+
+  $('#move_person').click(function(){
+    var lChecked = $('#move_person').prop('checked');
+    if (lChecked) {
+      var lHtml = '<select name="moveToPerson"><option>{% trans "loading"%}...</option></select>';
+      $('#person_to_move_to').html(lHtml);  
+      $.get('/people/options/?exclude={{Person.id}}', function(data){
+          lHtml = '<select name="moveToPerson">' + data + '</select><input type="submit" value="{% trans "Merge People"%}"/>';
+          $('#person_to_move_to').html(lHtml);  
+      });
+    } else {
+      $('#person_to_move_to').html("{% trans "another person"%}.");
+    }
+  });
+  
+  
+  $("#slider-range").slider({
+		range: true,
+		min: {{FirstResultYear}},
+		max: {{LastResultYear}},
+		values: [ {{FirstResultYear}}, {{LastResultYear}} ],
+		slide: function( event, ui ) {
+			$("#slider-amount").html(ui.values[0] + " - " + ui.values[1]);
+			for (var i={{FirstResultYear}};i<={{LastResultYear}};i++){
+				$('.year-' + i).show();
+				if (i < ui.values[0])
+				{
+					$('.year-' + i).hide();
+				}
+				if (i > ui.values[1])
+				{
+					$('.year-' + i).hide();
+				}
+			}
+			
+			var lFromDate = new Date(ui.values[0] + '/1/1');
+	    var lToDate = new Date(ui.values[1] + '/12/31');
+	    plot = $.plot($("#flot_chart"), lFlotData, $.extend(true, {}, lFlotOptions, {
+	        xaxis: { min: lFromDate, max: lToDate }
+	    }));
+		}
+	});
+	$("#slider-amount").html($("#slider-range").slider("values", 0) + " - " + $("#slider-range").slider("values", 1));
+
+	{% if ResultsWithPosition > 1 %}  
+
+	var lFlotData = [ 
+	  {
+	    label: "lines",
+	    lines:  { show: true },
+	    color: '#99ccff',
+	    hoverable: true, 
+	    clickable: false,
+	    data: [
+	{% for result in ContestResults %}{% if result.results_position < 27 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
+	    ] 
+	  },
+	  {
+	    label: [
+	{% for result in ContestResults %}{% if result.results_position < 27 and result.results_position > 3 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}
+	    ],
+	    points: { show: true, fillColor: "#3d7dbd" },
+	    color: '#3d7dbd',
+	    hoverable: true, 
+	    clickable: false,
+	    data: [
+	{% for result in ContestResults %}{% if result.results_position < 27 and result.results_position > 3 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
+	    ] 
+	  },
+	  {
+	    label: [
+	{% for result in ContestResults %}{% if result.results_position == 1 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}
+	    ],
+	    points: { show: true, fillColor: "#ffc600" },
+	    color: '#ffc600',
+	    hoverable: true, 
+	    clickable: false,
+	    data: [
+	{% for result in ContestResults %}{% if result.results_position == 1 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
+	    ] 
+	  },
+	  {
+	    label: [
+	{% for result in ContestResults %}{% if result.results_position == 2 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}
+	    ],
+	    points: { show: true, fillColor: "#919191" },
+	    color: '#919191',
+	    hoverable: true, 
+	    clickable: false,
+	    data: [
+	{% for result in ContestResults %}{% if result.results_position == 2 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
+	    ] 
+	  },
+	  {
+	    label: [
+	{% for result in ContestResults %}{% if result.results_position == 3 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}    
+	    ],
+	    points: { show: true, fillColor: "#7a6e55" },
+	    color: '#7a6e55',
+	    hoverable: true, 
+	    clickable: false,
+	    data: [
+	{% for result in ContestResults %}{% if result.results_position == 3 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
+	    ] 
+	  }
+	  ];
+
+	var lFlotOptions = { 
+	                grid: {
+	                          hoverable: true, 
+	                          clickable: false,
+	                          autoHighlight: true,
+	                          borderWidth: 0
+	                },
+	                legend: {
+	                           show: false
+	                        },
+	                yaxis: {
+	                           transform: function (v) { return -v; },
+	                           inverseTransform: function (v) { return -v; },
+	                           max: 26,
+	                           ticks: [1, 5, 10, 15, 20, 25],
+	                           color: "#000000"
+	                     },
+	                xaxis: { 
+	                           mode: "time",
+	                           color: "#000000"
+	                    }
+	                      };
+	                 
+	                 
+	var plot = $.plot($("#flot_chart"), lFlotData, lFlotOptions);
+
+	function showTooltip(x, y, contents) {
+	  $('<div id="flot_chart_tooltip">' + contents + '</div>').css( {
+	    top: y + 5,
+	    left: x + 5,
+	  }).appendTo("body").fadeIn(200);
+	}
+
+
+	$("#flot_chart").bind("plothover", function (event, pos, item) {
+	  if (item) {
+	    $("#flot_chart_tooltip").remove();
+	    showTooltip(item.pageX, item.pageY, item.series.label[item.dataIndex]);
+	  } else {
+	    $("#flot_chart_tooltip").remove();
+	  }
+	});
+</script>
+{% endif %}
+
+{% endblock %}

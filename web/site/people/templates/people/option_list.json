@@ -1,0 +1,1 @@
+[{% for person in People %}{"id":"{{person.id}}","name":"{{person.surname}}, {{person.first_names}}{% if person.bandname%} ({{person.bandname}}){%endif%}"}{% if not forloop.last %},{% endif %}{% endfor %}]

@@ -1,0 +1,11 @@
+Your request to merge conductor {{ThingNew.source_conductor.name|safe}} into
+
+{{ThingNew.destination_conductor.name|safe}}
+http://brassbandresults.co.uk/conductors/{{ThingNew.destination_conductor.slug}}/ 
+
+has been approved.
+
+Kind regards,
+
+The BrassBandResults Team     
+http://brassbandresults.co.uk/

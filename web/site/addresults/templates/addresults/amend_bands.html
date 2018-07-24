@@ -1,0 +1,189 @@
+{% extends "template.html" %}
+
+{% block title %}Band Placings - Amend Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Amend Contest Results</h1>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+{% if ContestEvent.contest_type.test_piece %}  
+	<tr><th>Test Piece:</th><td>{{ContestEvent.test_piece.name}}</td></tr>
+	<tr><th>Composer:</th><td>{{ContestEvent.test_piece.composer.name}}{% if ContestEvent.test_piece.arranger%} arranged {{ContestEvent.test_piece.arranger.name}}{%endif%}</td></tr>
+{% else %}
+    <tr><th>Format:</th><td>{{ContestEvent.contest_type_link.name}}</td></tr>
+{% endif %}	
+	<tr><th>Venue:</th><td>{{ContestEvent.venue_link.name}}</td></tr>
+{% if ExistingUnplacedResults %}
+    <tr><th>Existing Results:</th><td></td></tr>
+{% for unplacedResult in ExistingUnplacedResults %}
+    <tr>
+      <td colspan="2">
+       <div class="resultbox">
+        <b><hr/>{{unplacedResult.band_name}}</b><br/>
+        
+{% if unplacedResult.owner.id == user.id or request.user.profile.superuser %}
+          <div class="innerbox">
+            <b>Position</b>: <input type="text" name="position-{{unplacedResult.id}}" size="4" maxlength="4" value="{%if unplacedResult.results_position_display%}{{unplacedResult.results_position_display}}{%endif%}"/>
+          </div>
+          <div class="innerbox">
+            
+{% if ContestEvent.contest_type.second_draw %}
+            <b>Draw</b>
+            {{ContestEvent.contest_type.first_draw}}: <input type="text" name="draw-{{unplacedResult.id}}" size="4" maxlength="4" value="{% if unplacedResult.draw%}{{unplacedResult.draw}}{%endif%}"/>
+            {{ContestEvent.contest_type.second_draw}}: <input type="text" name="drawsecond-{{unplacedResult.id}}" size="4" maxlength="4" value="{% if unplacedResult.draw_second_part%}{{unplacedResult.draw_second_part}}{%endif%}"/>
+{% else %}            
+            <b>{{ContestEvent.contest_type.first_draw}}</b>: <input type="text" name="draw-{{unplacedResult.id}}" size="4" maxlength="4" value="{% if unplacedResult.draw%}{{unplacedResult.draw}}{%endif%}"/>
+{% endif %}
+          </div>
+          <div class="innerbox">
+{% if ContestEvent.contest_type.points_one %}
+          <b>Points</b>
+          {{ContestEvent.contest_type.points_one}}: <input type="text" name="pointsfirst-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.points_first_part%}{{unplacedResult.points_first_part}}{%endif%}"/>
+          {% if ContestEvent.contest_type.points_two%}{{ContestEvent.contest_type.points_two}}: <input type="text" name="pointssecond-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.points_second_part%}{{unplacedResult.points_second_part}}{%endif%}"/>{%endif%}
+          {% if ContestEvent.contest_type.points_three%}{{ContestEvent.contest_type.points_three}}: <input type="text" name="pointsthird-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.points_third_part%}{{unplacedResult.points_third_part}}{%endif%}"/>{%endif%}
+          {% if ContestEvent.contest_type.points_four%}{{ContestEvent.contest_type.points_four}}: <input type="text" name="pointsfourth-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.points_fourth_part%}{{unplacedResult.points_fourth_part}}{%endif%}"/>{%endif%}
+          
+          {% if ContestEvent.contest_type.penalty_points %}{{ContestEvent.contest_type.penalty_points}}: <input type="text" name="pointspenalty-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.penalty_points%}{{unplacedResult.penalty_points}}{%endif%}"/>{%endif%}
+          {{ContestEvent.contest_type.total_points}}: <input type="text" name="points-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.points%}{{unplacedResult.points}}{%endif%}"/>
+{% else %}
+          <b>{{ContestEvent.contest_type.total_points}}</b>: <input type="text" name="points-{{unplacedResult.id}}" size="4" maxlength="6" value="{%if unplacedResult.points%}{{unplacedResult.points}}{%endif%}"/>
+{% endif %}
+          </div>
+          
+          <div class="innerbox">
+          <b>Conductor</b>: {{unplacedResult.person_conducting.name}} <input type="checkbox" class="conductor-checkbox" id="conductor-checkbox-{{unplacedResult.id}}"/> Edit <select style="display:none;" name="" conductor="{{unplacedResult.conductor_id}}" class="conductor conductor-{{unplacedResult.id}}"><option value="">loading...</option></select>
+          </div>
+          <div class="innerbox">
+        {% if ContestEvent.contest_type.own_choice %}
+          <b>Own Choice Piece</b>: {{unplacedResult.test_piece.name}} <input type="checkbox" class="ownchoice-checkbox" id="ownchoice-checkbox-{{unplacedResult.id}}"/> Edit <select style="display:none;" name="" ownchoice="{{unplacedResult.test_piece_id}}" class="ownchoice ownchoice-{{unplacedResult.id}}"><option value="">loading...</option></select>
+        {% endif %}
+          </div>
+
+
+{% else %}{%comment %} Not Owner {%endcomment%}
+
+{% if user.profile.enhanced_functionality %}
+           
+{% if ContestEvent.contest_type.second_draw %}
+        <div class="innerbox">
+          <b>Position</b>: {% ifnotequal unplacedResult.results_position 9999%}<b>{{unplacedResult.results_position_display}}</b>{%else%}<input type="text" name="position-{{unplacedResult.id}}" size="4" maxlength="4"/>{%endifnotequal%}
+        </div>
+        <div class="innerbox">
+          <b>Draw</b>
+          {{ContestEvent.contest_type.first_draw}}: {% if unplacedResult.draw%}<b>{{unplacedResult.draw}}</b>{%else%}<input type="text" name="draw-{{unplacedResult.id}}" size="4" maxlength="4"/>{%endif%}
+          {{ContestEvent.contest_type.second_draw}}: {% if unplacedResult.draw_second_part%}<b>{{unplacedResult.draw_second_part}}</b>{%else%}<input type="text" name="drawsecond-{{unplacedResult.id}}" size="4" maxlength="4"/>{%endif%}
+{% else %}           
+          <b>{{ContestEvent.contest_type.first_draw}}</b>: {% if unplacedResult.draw%}<b>{{unplacedResult.draw}}</b>{%else%}<input type="text" name="draw-{{unplacedResult.id}}" size="4" maxlength="4"/>{%endif%}
+{% endif %}
+        </div>
+         
+        <div class="innerbox"> 
+{% if ContestEvent.contest_type.points_one %}
+          <b>Points</b>
+          {{ContestEvent.contest_type.points_one}}: {% if unplacedResult.points_first_part%}<b>{{unplacedResult.points_first_part}}</b>{%else%}<input type="text" name="pointsfirst-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%} 
+          {% if ContestEvent.contest_type.points_two%}{{ContestEvent.contest_type.points_two}}: {% if unplacedResult.points_second_part%}<b>{{unplacedResult.points_second_part}}</b>{%else%}<input type="text" name="pointssecond-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%}{%endif%}
+          {% if ContestEvent.contest_type.points_three%}{{ContestEvent.contest_type.points_three}}: {% if unplacedResult.points_third_part%}<b>{{unplacedResult.points_third_part}}</b>{%else%}<input type="text" name="pointsthird-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%}{%endif%}
+          {% if ContestEvent.contest_type.points_four%}{{ContestEvent.contest_type.points_four}}: {% if unplacedResult.points_fourth_part%}<b>{{unplacedResult.points_fourth_part}}</b>{%else%}<input type="text" name="pointsfourth-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%}{%endif%}
+          {{ContestEvent.contest_type.penalty_points}}: {% if unplacedResult.penalty_points%}<b>{{unplacedResult.penalty_points}}</b>{%else%}<input type="text" name="pointspenalty-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%} 
+          {{ContestEvent.contest_type.total_points}}: {% if unplacedResult.points%}<b>{{unplacedResult.points}}</b>{%else%}<input type="text" name="points-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%} 
+{% else %}
+           
+          <b>{{ContestEvent.contest_type.total_points}}</b>: {% if unplacedResult.points%}<b>{{unplacedResult.points}}</b>{%else%}<input type="text" name="points-{{unplacedResult.id}}" size="4" maxlength="6"/>{%endif%} 
+{% endif %}          
+        </div>
+{% endif %}
+
+          <b>Conductor</b>: {% if unplacedResult.has_conductor%}{{unplacedResult.person_conducting.name}}{%else%}<input type="checkbox" class="conductor-checkbox" id="conductor-checkbox-{{unplacedResult.id}}"/> Edit <select style="display:none;" name="" conductor="{{unplacedResult.person_conducting_id}}" class="conductor conductor-{{unplacedResult.id}}"><option value="">loading...</option></select>{%endif%}
+        {% if ContestEvent.contest_type.own_choice %}
+          <b>Own Choice Piece</b>: {% if unplacedResult.has_test_piece%}{{unplacedResult.test_piece.name}}{%else%}<input type="checkbox" class="ownchoice-checkbox" id="ownchoice-checkbox-{{unplacedResult.id}}"/> Edit <select style="display:none;" name="" ownchoice="{{unplacedResult.test_piece_id}}" class="ownchoice ownchoice-{{unplacedResult.id}}"><option value="">loading...</option></select>{%endif%}
+        {% endif %}
+{% endif %} {%comment %} If Owner {%endcomment%}
+       </div>          
+      </td>
+    </tr>
+{% endfor %}
+    </td></tr>
+{% endif %}    
+	<tr><td colspan="2"><input type="submit" value="Submit" /></td></tr>
+</table>
+</form>
+<div id="conductor-droplist-options" style="display:none;"></div>
+<div id="ownchoice-droplist-options" style="display:none;"></div>
+</div>
+{% endblock %}
+
+{%block scriptfooter %}
+<script type="text/javascript">
+{% if ExistingUnplacedResults and user.profile.enhanced_functionality %}
+  $('.conductor-checkbox').click(function(){
+    var lRowId = $(this).prop('id').substring('conductor-checkbox-'.length);
+    if ($(this).prop('checked') === true) {
+      $('.conductor-' + lRowId).show();
+      var lConductorOptions = $('#conductor-droplist-options').html();
+      var lConductorId = $('.conductor-' + lRowId).prop('conductor');
+      if (lConductorOptions.length === 0) {
+        $.get('/people/options.json/', function(data){
+          var lArray = $.parseJSON(data);
+          var lDroplistOptions = "";
+          for (var i=0; i<lArray.length;i++) {
+            var lConductor = lArray[i];
+        	lDroplistOptions += '<option value="'+lConductor.id+'">' + lConductor.name + '</option>';	
+          }
+          $('#conductor-droplist-options').html(lDroplistOptions);
+          $('.conductor-' + lRowId).html(lDroplistOptions);
+          $('.conductor-' + lRowId).prop('name', 'conductor-' + lRowId);
+          $('.conductor-' + lRowId + ' option[value='+lConductorId+']').prop('selected','selected'); 
+        });    
+      }    
+      else {
+        $('.conductor-' + lRowId).html(lConductorOptions);
+        $('.conductor-' + lRowId).prop('name', 'conductor-' + lRowId);
+        $('.conductor-' + lRowId + ' option[value='+lConductorId+']').prop('selected','selected'); 
+      }
+    }
+    else
+    {
+      $('.conductor-' + lRowId).hide();
+      $('.conductor-' + lRowId).html('<option value="">loading...</option>');
+      $('.conductor-' + lRowId).prop('name', '');
+    }
+  });
+  
+  $('.ownchoice-checkbox').click(function(){
+    var lRowId = $(this).prop('id').substring('ownchoice-checkbox-'.length);
+    if ($(this).prop('checked') === true) {
+      $('.ownchoice-' + lRowId).show();
+      var lOwnChoiceOptions = $('#ownchoice-droplist-options').html();
+      var lOwnChoiceId = $('.ownchoice-' + lRowId).prop('ownchoice');
+      if (lOwnChoiceOptions.length === 0) {
+        $.get('/pieces/options/', function(data){
+          $('#ownchoice-droplist-options').html(data);
+          $('.ownchoice-' + lRowId).html(data);
+          $('.ownchoice-' + lRowId).prop('name', 'ownchoice-' + lRowId);
+          $('.ownchoice-' + lRowId + ' option[value='+lOwnChoiceId+']').prop('selected','selected'); 
+        });    
+      }    
+      else {
+        $('.ownchoice-' + lRowId).html(lOwnChoiceOptions);
+        $('.ownchoice-' + lRowId).prop('name', 'ownchoice-' + lRowId);
+        $('.ownchoice-' + lRowId + ' option[value='+lOwnChoiceId+']').prop('selected','selected'); 
+      }
+    }
+    else
+    {
+      $('.ownchoice-' + lRowId).hide();
+      $('.ownchoice-' + lRowId).html('<option value="">loading...</option>');
+      $('.ownchoice-' + lRowId).prop('name', '');
+    }
+  });
+{% endif %}
+</script>
+{%endblock %}
+

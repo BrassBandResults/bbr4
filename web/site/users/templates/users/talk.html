@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+{% load i18n %}
+{% load bbrize %}
+
+{% block title %}{% trans "User Talk Page for "%}{{TalkUser.username}}{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>User Talk for {{TalkUser.username}}{% if EditEnabled %} [<a href="/users/{{TalkUser.username}}/talk/edit/">edit</a>]{%endif%}</h1>
+<p class="small"><b>superusers: {% for user in Superusers%}<a href="/users/{{user.user.username}}/talk/">{{user.user.username}}</a> {% if not forloop.last%}| {%endif%}{% endfor %}</b>
+{% if Talk %}
+{{Talk.text|safe}}
+<p class="small">Last Modified {{Talk.last_modified}}</p>
+{% else %}
+<p>This page is blank</p>
+{% endif%}
+<h2>Recent Talk Changes</h2>
+<ul>
+{% for talk in RecentTalkChanges %}
+{% if talk.object_link.name %}
+  <li><a href="{{talk.get_absolute_url}}">{{talk.object_link.name}}</a> by <a href="/users/{{talk.lastChangedBy.username}}/talk/">{{talk.lastChangedBy.username}}</a> on {{talk.last_modified}}</li>
+{% else %}
+  <li><a href="{{talk.get_absolute_url}}">{{talk.owner.username}}</a> by <a href="/users/{{talk.lastChangedBy.username}}/talk/">{{talk.lastChangedBy.username}}</a> on {{talk.last_modified}}</li>
+{% endif %}
+   
+{% endfor %}
+</ul> 
+</p>
+{% endblock %}

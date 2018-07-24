@@ -1,0 +1,1 @@
+Contest Result Edited: {{ThingNew.band_name|safe}}

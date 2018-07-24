@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+
+{% block title %}Date - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-whitfriday-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript" src="/site_media/datepicker/date.js"></script>
+<script src="/site_media/datepicker/jquery.datePicker.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/site_media/datepicker/datePicker.css" type="text/css" media="screen"/>
+<script type="text/javascript">
+  $(document).ready(function(){
+	$('.date-pick').datePicker({startDate:'01/01/1800'});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Enter the date of the contest.  Use the format 31/01/2000 or use the date picker by clicking on the calendar icon.  If you only know the month and year, use 1/2000 format.  If you only know the year, then just enter the year, i.e. 2000.</p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<p>{{ form.ContestDate.errors }}</p>
+<table>
+	<tr>
+		<th>Contest Area:</th><td>{{ContestGroup.name}}</td>
+	</tr>
+	<tr>
+		<th>Contest Date:</th>
+		<td><input type="text" id="datepick" class="date-pick" name="ContestDate" maxlength="10" value="{{value}}"/>&nbsp;&nbsp;<input type="submit" value="Submit"/></td>
+	</tr>
+</table>
+</form>
+</div>
+{% endblock %}

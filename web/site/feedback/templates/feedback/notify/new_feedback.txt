@@ -1,0 +1,15 @@
+Hello {{ThingNew.owner.username}},
+
+Some feedback has been entered on the Brass Band Results site, on a page containing information that you entered.  Please review the comment and correct it if required.
+
+Feedback:
+{{ ThingNew.comment|safe }}
+
+Page: {{ Url }}
+{% if ThingNew.reporter.username %}
+User: https://brassbandresults.co.uk/users/{{ ThingNew.reporter.username }}/
+
+You can message this user at https://brassbandresults.co.uk/messages/create/{{ThingNew.reporter.username}}/
+{% endif %}
+
+When you have made the changes suggested in this mail, please go to your user profile and mark this feedback as done.  Feedback not done will be moved to a site queue for administrators to deal with.

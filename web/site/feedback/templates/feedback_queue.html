@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+
+{% block title %}Feedback Queue{% endblock %}
+
+{%block description%}Feedback Queue{%endblock%}
+
+{%block feedback-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#feedback").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#feedback').trigger('sortReset');
+      return false;
+    });
+  });
+  
+  function claim(pFeedbackSerial)
+  {
+    var lUrl = "/users/{{user.username}}/claim/" + pFeedbackSerial + "/";
+    $.get(lUrl, function(){
+        $('#feedback-' + pFeedbackSerial).html('claimed');
+    });
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Feedback Queue</h1>
+<p>On this screen you can claim feedback.  Once you have claimed it, make the changes, then mark it as fixed in your user profile.</p>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="feedback" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Feedback</th>
+      <th>From</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+{% for feedback in Feedback %}
+    <tr>
+        <td><a href="/feedback/detail/{{feedback.id}}/">{{feedback.created|date:"jS M Y"}}</a></td>
+      <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+      <td>{% if feedback.reporter %}<a href="/users/{{feedback.reporter.username}}">{{feedback.reporter.username}}</a>{%endif%}</td>
+      <td id="feedback-{{feedback.id}}">[<a onclick="javascript:claim('{{feedback.id}}');" href="javascript:void(0);">claim</a>]</td>
+    </tr>
+{% empty %}
+    <tr><td colspan="4">No Feedback in Queue</td></tr>    
+{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}

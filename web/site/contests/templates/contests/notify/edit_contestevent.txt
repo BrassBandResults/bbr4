@@ -1,0 +1,22 @@
+An edit has been made to {{ThingNew.date_of_event|date:"Y-m-d"}} {{ThingNew.contest.name|safe}}. 
+
+Date: {{ThingNew.date_of_event|date:"Y-m-d"}}{% ifnotequal ThingNew.date_of_event ThingOld.date_of_event %} [was {{ThingOld.date_of_event|date:"Y-m-d"}}]{%endifnotequal%}
+Date Resolution: {{ThingNew.get_date_resolution_display}}{% ifnotequal ThingNew.date_resolution ThingOld.date_resolution %} [was {{ThingOld.get_date_resolution_display}}]{%endifnotequal%}
+Contest Name: {{ThingNew.contest.name|safe}}{% ifnotequal ThingNew.contest.name ThingOld.contest.name %} [was {{ThingOld.contest.name|safe}}]{%endifnotequal%}
+Event Name: {{ThingNew.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
+Test Piece: {{ThingNew.test_piece|safe}}{% ifnotequal ThingNew.test_piece ThingOld.test_piece %} [was {{ThingOld.test_piece|safe}}]{%endifnotequal%}
+Venue: {{ThingNew.venue_link.name|safe}}{% ifnotequal ThingNew.venue_link.name ThingOld.venue_link.name %} [was {{ThingOld.venue_link.name|safe}}]{%endifnotequal%}
+Contest Type Override: {{ThingNew.contest_type_override_link.name}}{% ifnotequal ThingNew.contest_type_override_link.name ThingOld.contest_type_override_link.name %} [was {{ThingOld.contest_type_override_link.name}}]{%endifnotequal%}
+Complete: {{ThingNew.complete}}{% ifnotequal ThingNew.complete ThingOld.complete %} [was {{ThingOld.complete}}]{%endifnotequal%}
+No Contest: {{ThingNew.no_contest}}{% ifnotequal ThingNew.no_contest ThingOld.no_contest %} [was {{ThingOld.no_contest}}]{%endifnotequal%}
+Requires Input: {{ThingNew.requires_input}}{% ifnotequal ThingNew.requires_input ThingOld.requires_input %} [was {{ThingOld.requires_input}}]{%endifnotequal%}
+
+Notes: {{ThingNew.notes|safe}}
+
+{% ifnotequal ThingNew.notes ThingOld.notes %} [was {{ThingOld.notes}}]{%endifnotequal%}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+{% if ThingNew.owner != ThingNew.original_owner %}Original Owner: {{ThingNew.original_owner.username}}{%endif%}
+
+https://brassbandresults.co.uk/contests/{{ThingNew.contest.slug}}/{{ThingNew.date_of_event|date:"Y-m-d"}}/

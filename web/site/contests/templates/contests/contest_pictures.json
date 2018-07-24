@@ -1,0 +1,11 @@
+[
+{% for picture in Images %}
+{
+  "id": "{{picture.id}}",
+  "server": "{{picture.server}}",
+  "farm": "{{picture.farm}}",
+  "secret": "{{picture.secret}}",
+  "title": "{{picture.title}}",
+  "url": "{{picture.url}}"
+}{% if not forloop.last%},{%endif%}{% endfor %}
+]

@@ -1,0 +1,9 @@
+A concert has been deleted for {{ThingNew.band.name}}.
+
+Date: {{ThingNew.date_of_event}}
+Title: {{ThingNew.title}}
+Location: {{ThingNew.location}}
+Time: {{ThingNew.time}}
+Postcode: {{ThingNew.postcode}}
+Tickets: {{ThingNew.tickets}}
+

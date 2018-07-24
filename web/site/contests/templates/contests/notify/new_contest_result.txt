@@ -1,0 +1,25 @@
+New Contest Result
+
+Contest: {{ThingNew.contest_event.name|safe}}
+Date: {{ThingNew.contest_event.event_date}}
+Band: {{ThingNew.band.name|safe}}
+Competed As: {{ThingNew.band_name|safe}}
+Conductor: {{ThingNew.conductor.name|safe}}
+Entered As: {{ThingNew.conductor_name|safe}}
+Test Piece: {{ThingNew.test_piece.name|safe}}
+Position: {{ThingNew.results_position}}
+1st Draw: {{ThingNew.draw}}
+2nd Draw: {{ThingNew.draw_second_part}}
+1st Points: {{ThingNew.points_first_part}}
+2nd Points: {{ThingNew.points_second_part}}
+3rd Points: {{ThingNew.points_third_part}}
+4th Points: {{ThingNew.points_fourth_part}}
+Penalty Points: {{ThingNew.penalty_points}}
+
+Notes: {{ThingNew.notes|safe}} 
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+{% if ThingNew.owner != ThingNew.original_owner %}Original Owner: {{ThingNew.original_owner.username}}{%endif%} 
+
+https://brassbandresults.co.uk/contests/{{ThingNew.contest_event.contest.slug}}/{{ThingNew.contest_event.date_of_event|date:"Y-m-d"}}/

@@ -1,0 +1,6 @@
+Results are missing for recent contest {{ThingNew.contest.name|safe}} on {{ThingNew.event_date}}.
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/contests/{{ThingNew.contest.slug}}/

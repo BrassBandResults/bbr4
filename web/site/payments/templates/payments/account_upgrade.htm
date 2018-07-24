@@ -1,0 +1,13 @@
+{% load i18n %}
+{% if FullSubscribeCode %}
+<div id="RankingsUpgradeAdvert">
+<table>
+  <tr><th></th><th>Free</th><th>Basic</th><th>Full</th></tr>
+  <tr><th>Seed Year:</th><td>1989-1992</td><td>1969-2011</td><td>1899-2011</td></tr>
+  <tr><th>Start Year:</th><td>1990-1995</td><td>1970-2012</td><td>1900-2012</td></tr>
+  <tr><th>End Year:</th><td>1995-2002</td><td>1970-Today</td><td>1900-Today</td></tr>
+  <tr><th>Price:</th><td>FREE!</td><td>£29 every 6 months</td><td>£49 every 6 months</td></tr>
+  <tr><th></th><td></td><td>{{BasicSubscribeCode.code|safe}}</td><td>{{FullSubscribeCode.code|safe}}</td</tr>
+</table>
+</div>
+{%endif%}

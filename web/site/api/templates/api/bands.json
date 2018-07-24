@@ -1,0 +1,10 @@
+[{% for band in Bands %}
+  {
+  "name":"{{band.name}}",
+  "slug":"{{band.slug}}",
+  "latitude":"{{band.latitude}}",
+  "longitude":"{{band.longitude}}",
+  "website":"{{band.website_url}}",
+  "status" : "{{band.get_status_display}}"
+  }{% if not forloop.last %},{% endif %}{% endfor %}
+]

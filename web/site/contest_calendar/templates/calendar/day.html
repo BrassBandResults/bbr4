@@ -1,0 +1,61 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{% trans "Contests on"%} {{Day}} {{MonthText}}, {{Year}}{% endblock %}
+
+{%block keywords %}Contests on {{Day}} {{MonthText}}, {{Year}}{% endblock %}
+
+{%block description %}List of contest results from {{Day}} {{MonthText}}, {{Year}}{% endblock %}
+
+{%block years-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#events").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %} 
+<div class="container pt-1">
+<h1>{% trans "Contests on"%} {{EventDate|date:"D jS M Y"}}</h1>
+<p>[<a href="/calendar/date/{{Year}}/{{Month}}/">Show contests in {{MonthText}} {{Year}}</a>]</p>
+<table id="events" class="table table-hover">
+	<thead>
+		<tr>
+			<th nowrap="nowrap">Date</th>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Winning Band"%}</th>
+			<th>{% trans "Winning Conductor"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in Events %}
+  	<tr>
+  		<td  nowrap="nowrap" class="contest-event"><a href="/contests/{{event.contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+			<td>{{event.name}}</td>
+			{% if event.no_contest %}
+			<td colspan="2">{% trans "No Contest Took Place"%}</td>
+			{% else %}
+			<td>
+			  {% for result in event.winners %}
+			    <img src="/site_media/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a>
+			  {% endfor %}
+			</td>
+			<td>
+			  {% for result in event.winners %}
+			    {%  if result.person_conducting.slug == 'unknown' %}
+			      <font color="red">{% trans "Unknown, do you know?"%}</font>
+			    {% else %}
+			      <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
+			    {% endif %}
+			  {% endfor %}
+			</td>
+			{% endif %}
+		</tr>
+{% endfor %}
+	</tbody>
+</table>	
+</div>
+{% endblock %}

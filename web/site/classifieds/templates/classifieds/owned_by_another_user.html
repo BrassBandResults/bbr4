@@ -1,0 +1,15 @@
+{% extends "template.html" %}
+
+{%block title %}Create Profile{% endblock %}
+
+{%block keywords %}profile{% endblock %}
+
+{%block description%}Create a profile for {{Object.name}}{%endblock%}
+
+{% block adbar %}<br/>{% endblock %}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{% block content %}
+<h1>Profile Owned by Someone Else</h1>
+<p>This profile has been created by another user.  Please fill in the feedback box and let us know if you want to take over this profile, and we'll sort it out for you.</p>
+{% endblock %}

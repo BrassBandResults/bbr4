@@ -1,0 +1,8 @@
+Vacancies have been changed for {{Band.name}}.
+
+New vacancies are:
+
+{% for vacancy in ThingNew %}
+{{vacancy.position.name}}
+{% endfor %}
+

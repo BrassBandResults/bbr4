@@ -1,0 +1,13 @@
+Programme Cover Added
+
+Contest: {{ThingNew.contest.name|safe}}
+Group: {{ThingNew.contest_group.name|safe}}
+Date: {{ThingNew.event_date}}
+Picture: {{ThingNew.image}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+{% if ThingNew.contest %}https://brassbandresults.co.uk/contests/{{ThingNew.contest.slug}}/
+{% else %}https://brassbandresults.co.uk/contests/{{ThingNew.contest_group.slug|upper}}/{{ThingNew.event_date.year}}/
+{% endif %}

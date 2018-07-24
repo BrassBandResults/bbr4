@@ -1,0 +1,9 @@
+Band Alias Deleted
+
+Alias: {{ThingNew.old_name|safe}}
+Band: {{ThingNew.band.name|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bands/{{ThingNew.band.slug}}/

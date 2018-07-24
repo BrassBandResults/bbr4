@@ -1,0 +1,1 @@
+Venue Alias Deleted: {{ThingNew.name|safe}}

@@ -1,0 +1,14 @@
+An edit has been made to {{ThingNew.name|safe}} contest. 
+
+Name: {{ThingNew.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
+Region: {{ThingNew.region.name|safe}}{% ifnotequal ThingNew.region.name ThingOld.region.name %} [was {{ThingOld.region.name|safe}}]{%endifnotequal%}
+Section: {{ThingNew.section.name}}{% ifnotequal ThingNew.section.name ThingOld.section.name %} [was {{ThingOld.section.name}}]{%endifnotequal%}
+Ordering: {{ThingNew.ordering}}{% ifnotequal ThingNew.ordering ThingOld.ordering %} [was  {{ThingOld.ordering}}]{%endifnotequal%}
+Contest Type: {{ThingNew.contest_type_link.name}}{% ifnotequal ThingNew.contest_type_link.name ThingOld.contest_type_link.name %} [was {{ThingOld.contest_type_link.name}}]{%endifnotequal%}
+Extinct: {{ThingNew.extinct}}{% ifnotequal ThingNew.extinct ThingOld.extinct %} [was {{ThingOld.extinct}}]{%endifnotequal%}
+All Events Added: {{ThingNew.all_events_added}}{% ifnotequal ThingNew.all_events_added ThingOld.all_events_added %} [was {{ThingOld.all_events_added}}]{%endifnotequal%}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}}{% ifnotequal ThingNew.lastChangedBy.username ThingOld.lastChangedBy.username %} [was {{ThingOld.lastChangedBy.username}}]{%endifnotequal%} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}{% ifnotequal ThingNew.owner.username ThingOld.owner.username %} [was  {{ThingOld.owner.username}}]{%endifnotequal%}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/contests/{{ThingNew.slug}}/

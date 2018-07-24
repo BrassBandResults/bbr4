@@ -1,0 +1,47 @@
+{% load i18n %}<div id="FutureEventForm">
+<h1 id="popupHeader">{% trans "Add Future Event"%}</h1>
+<div id="popupErrors" class="errorlist"></div>
+<form id="FutureEventForm" action="/contests/AddFutureEvent/" method="post">{% csrf_token %}
+<table>
+	{{form.as_table}}
+	<tr><th></th><td><input type="submit" value="{% trans "Save Future Event"%}"/></td></tr>
+</table>
+</form>
+<script type="text/javascript">
+	$('#id_date_of_event').datePicker({startDate:(new Date()).asString()});
+	$('#FutureEventForm').bind('submit', function(){
+		var lContest = $('#id_contest').val();
+		var lDate = $('#id_date_of_event').val();
+		var lTestPiece = $('#id_test_piece').val();
+		var lVenue = $('#id_venue_link').val();
+		
+		var lDateValid = true;
+		var lDateSplit = lDate.split('/');
+		if (lDateSplit.length !== 3) {
+			lDateValid = false;	
+		}
+		var lDay = lDateSplit[0];
+		var lMonth = lDateSplit[1];
+		var lYear = lDateSplit[2];
+		
+		lDateValid = lDateValid && lDay.length <= 2 && parseInt(lDay) <= 31 && parseInt(lDay) >= 1;
+		lDateValid = lDateValid && lMonth.length <= 2 && parseInt(lMonth) <= 12 && parseInt(lMonth) >= 1;
+		lDateValid = lDateValid && lYear.length === 4 && parseInt(lYear) >= 2010;
+		
+		if (lContest.length > 0 && lDateValid) {
+			$('#popupHeader').html("{% trans "Saving"%}"...");
+			$.post('/contests/AddFutureEvent/', {contest: lContest,
+			                                     date_of_event: lDate,
+											     test_piece: lTestPiece,
+											     venue_link: lVenue }, function(){
+											   		window.needs_refresh = true;
+													$('#blanket').click();
+											     });
+
+		} else {
+		  $('#popupErrors').html("{% trans "Please select a contest and enter a future date.  The Test Piece and Venue are optional."%}"");
+		}
+		return false;
+	});
+</script>
+</div>

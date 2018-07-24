@@ -1,0 +1,140 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{ContestGroup.name}} - Contest Group{% endblock %}
+
+{%block description%}Details about the brass band contest {{ContestGroup.name}}{%endblock%}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+  	$("#contests").tablesorter();
+    $("#extinctcontests").tablesorter();
+    $("#years-table").tablesorter();
+    
+    $('#tabs').tabs();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{{ContestGroup.name}} 
+  {% if user.profile.superuser %}
+  [<a href="/contests/{{ContestGroup.actual_slug}}/talk/" title="{% trans "Contest Group Talk Page"%}">{% trans "talk"%}</a>]
+  {% endif %}
+  {% if user.is_staff and perms.contests.change_contestgroup %}[<a href="/bbradmin/contests/contestgroup/{{ContestGroup.id}}/">admin</a>]{%endif%}
+</h1>
+{% if GroupAliases %}
+<p class="alias"><b>{% trans "Also/previously known as"%}:</b> {%for alias in GroupAliases%}{{alias.name}}{%if not forloop.last%}, {%endif%}{%endfor%}</p>
+{% endif %}
+<div id="tabs">
+    <ul class="screenonly">
+      <li><a href="#contests-tab">{% trans "Contests"%}</a></li>
+      <li><a href="#years-tab">{% trans "Years"%}</a></li>
+{% if ProgrammeCovers %}
+      <li><a href="#programmes-tab">{% trans "Programmes"%}</a></li>
+{% endif %}      
+    </ul>
+  
+<div id="contests-tab">
+{% if Contests %}
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Events on Site"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in Contests %}
+  		<tr>
+  			<td class="contest"><a href="/contests/{{contest.actual_slug}}/">{{contest.name}}</a></td>
+			<td>{{contest.count}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% if ExtinctContests %}
+<h2>{% trans "Old Contest Sections"%}</h2>
+<table id="extinctcontests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Events on Site"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in ExtinctContests %}
+  		<tr>
+  			<td class="contest"><a href="/contests/{{contest.actual_slug}}/">{{contest.name}}</a></td>
+			<td>{{contest.count}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+</div>
+
+<div id="years-tab">
+<p>{% trans "We have events for this contest in these years."%}</p>
+<table class="table table-hover" id="years-table">
+  <thead>
+    <tr>
+      <th>{% trans "Year"%}</th>
+      <th>{% trans "Contests"%}</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for year, eventcount in Years.items %}
+    <tr>
+      <td><a href="/contests/{{ContestGroup.actual_slug}}/{{year}}/">{{year}}</a></td>
+      <td>{{eventcount}}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% if ProgrammeCovers %}
+<div id="programmes-tab">
+{% for cover in ProgrammeCovers %}
+<a href="/contests/{{cover.contest_group.slug|upper}}/{{cover.event_date.year}}/" title="{{cover.contest_group.name}} {{cover.event_date|date:"Y"}}" data-lightbox="programme" data-title="{{ContestEvent.name}} Programme Cover, {{ContestEvent.event_date}}"><img src="{{cover.image.url_80x100}}"/></a>
+{% endfor %}
+</div>
+{% endif %} 
+
+</div> <!-- endtabs -->
+
+<br/>
+<div id="tags">
+  {% for tag in ContestGroup.tag_list %}<a href="/tags/{{tag.slug}}/">{{tag.name}}</a> {%endfor%}<br/>
+  {% if user.profile.superuser or user.profile.regional_superuser %}  
+  <p>
+    <form method="post" action="/tags/new/">{% csrf_token %}
+      <input type="hidden" name="type" value="group"/>
+      <input type="hidden" name="slug" value="{{ContestGroup.actual_slug}}"/>
+      <input type="text" name="name" placeholder="Enter New Tag" maxlength="255"/>
+      <input type="submit" value="Add Tag">
+    </form>
+  </p>
+  {% endif %} 
+</div>
+
+
+{% if ContestGroup.links %}
+<h2>{% trans "See Also"%}</h2>
+<table>
+{% for link in ContestGroup.links %}
+<tr><td>{{link.name}}:</td><td><a href="{{link.website_url}}">{{link.website_url}}</a></td></tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if ContestGroup.notes %}
+<h2>{% trans "Notes"%}</h2>
+<p>{{ContestGroup.notes|safe|linebreaksbr}}</p>
+{% endif %}
+</div>
+{% endblock %}

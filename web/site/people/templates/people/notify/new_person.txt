@@ -1,0 +1,17 @@
+A new person has been added to the database.
+
+Name: {{ThingNew.name|safe}}
+First Name: {{ThingNew.first_names|safe}}
+Surname: {{ThingNew.surname|safe}}
+Band Name: {{ThingNew.band_name|safe}}
+Deceased: {{ThingNew.deceased}}
+Start date: {{ThingNew.start_date}}
+End date: {{ThingNew.end_date}}
+Email: {{ThingNew.contact_email}}
+
+Notes: {{ThingNew.notes|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/people/{{ThingNew.slug}}/

@@ -1,0 +1,1 @@
+[{% for conductor in Conductors %}{"id":"{{conductor.id}}","name":"{{conductor.surname}}, {{conductor.first_names}}{% if conductor.bandname%} ({{conductor.bandname}}){%endif%}"}{% if not forloop.last %},{% endif %}{% endfor %}]

@@ -1,0 +1,16 @@
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th width="25%">Date</th>
+			<th width="75%">Contest</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in ContestEvents %}
+		<tr>
+  			<td class="EventDate"><a href="/contests/{{event.contest_slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a>{% if event.not_complete %} (incomplete){%endif%}</td>
+			<td class="EventName">{{event.name}}</td>
+		</tr>
+{% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,9 @@
+Venue Alias Deleted
+
+Alias: {{ThingNew.name|safe}}
+Venue: {{ThingNew.venue.name|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+http://brassbandresults.co.uk/venues/{{ThingNew.venue.slug}}/

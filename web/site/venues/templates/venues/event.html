@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Venue.name}} - {% trans "Venue"%}{% endblock %}
+
+{%block keywords %}{{Venue.name}} Venue{% endblock %}
+
+{%block description %}Details of the brass band contesting venue {{Venue.name}}{% endblock %}
+
+{%block venues-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+	$("#contests").tablesorter({widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 class="venue"><a href="/contests/{{Contest.slug}}/">{{Contest.name}}</a> {% trans "at"%} <a href="/venues/{{Venue.slug}}/">{{Venue.name}}</a></h1>
+<h2>Contest Results</h2>
+<p><font color="red">{% trans "Do you know more results for this contest?  If so, please"%} <a href="/addresults/{{Contest.slug}}/">{% trans "add them to the site"%}</a> {% trans "today!"%}</font></p>
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Date"%}</th>
+			<th>{% trans "Winner"%}</th>
+			<th>{% trans "Contest Name"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in Events %}
+  		<tr>
+  			<td class="contest-event"><a href="/contests/{{Contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+			<td><div class="band"><a href="/bands/{{event.winners.slug}}/" title="{{event.winners.name}}">{{event.band_name}}</a></div></td>
+			<td>{{event.name}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>{% endblock %}

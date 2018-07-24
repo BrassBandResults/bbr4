@@ -1,0 +1,1 @@
+New Band Concert: {{ThingNew.band.name}}

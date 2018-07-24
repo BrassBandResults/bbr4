@@ -1,0 +1,122 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Region.name}} - Region{% endblock %}
+
+{%block keywords %}{{Region.name}} Region{% endblock %}
+
+{%block description %}Details of the brass band contesting region {{Region.name}}{% endblock %}
+
+{%block regions-selected%}class="selected"{%endblock%}
+
+{%block head %}
+{% if Region.latitude and Region.longitude %}
+<script type="text/javascript" src="/site_media/map/js/infobubble-compiled.js"></script>
+<script type="text/javascript" src="/map/region/{{Region.slug}}/map_script.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
+{% endif %}
+{% endblock %}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#bands").tablesorter();
+    $("#contests").tablesorter();
+
+    $('button.resetBands').click(function(){
+      $('#bands').trigger('sortReset');
+      return false;
+    });
+
+    $('button.resetContests').click(function(){
+      $('#contests').trigger('sortReset');
+      return false;
+    });
+  });
+
+  $('#show_extinct_bands').click(function(){
+    var lChecked = $('#show_extinct_bands').is(':checked');
+    if (lChecked){
+      $('.extinct').show();
+    } 
+    else{
+      $('.extinct').hide();
+    }
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="region">{{Region.name}} {% if user.is_staff and perms.regions.change_region %} [<a href="/bbradmin/regions/region/{{Region.id}}/">admin</a>]{% endif %}</h1>
+<p>
+{% for region in AllCountryRegions %}<div class="region" style="display:inline;"><a href="/regions/{{region.slug}}/">{{region.name}}</a></div>{% if not forloop.last %} | {%endif%}{% endfor %}
+</p>
+<p>
+{% for region in AllUkRegions %}<div class="region" style="display:inline;"><a href="/regions/{{region.slug}}/">{{region.name}}</a></div>{% if not forloop.last %} | {%endif%}{% endfor %}
+</p>
+
+{% if Region.latitude and Region.longitude %}
+<h2>Map</h2>
+<br/>
+<div id="map">
+<!--[if IE]> 
+<p><font color="red">The map doesn't work in older versions of Internet Explorer, please upgrade to IE8 or later.</font></p>
+<![endif]-->
+<div id="map_canvas" style="width: 100%; height: 500px"></div>
+</div>
+<br/>
+{% endif %}
+{% if Region.contests %}
+<h2>Contests</h2>
+<button class="resetContests btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Events on Site"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in Region.contests %}
+  		<tr>
+  			<td class="contest"><a href="/contests/{{contest.slug}}/">{{contest.name}}</a></td>
+			<td>{{contest.resultcount}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+<h2>{% trans "Bands"%} ({{BandCount}} {% trans "of which"%} {{ExtinctBandCount}} {% trans "are extinct"%})</h2>
+<p>T{% trans "here is also a page listing"%} <a href="/regions/{{Region.slug}}/links/">{% trans "Band Links"%}</a> {% trans "for this region"%}.</p>
+<p><input id="show_extinct_bands" type="checkbox" name="show_extinct" checked="checked"/> {% trans "Show Extinct Bands"%}</p>
+<button class="resetBands btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="bands" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Band"%}</th>
+            <th>{% trans "Type"%}</th>
+			<th>{% trans "Results"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for band in Region.bands %}
+		<tr class="
+                    {%ifequal band.status 0 %} extinct table-danger{%endifequal%}
+                    {%ifequal band.status 2 %} table-warning{%endifequal%}
+                    {%ifequal band.status 4 %} table-info{%endifequal%}
+                  ">
+			<td class="band"><a href="/bands/{{band.slug}}/">{{band.name}}</a></td>
+            <td>
+              {%ifequal band.status 0 %}{% trans "Extinct"%}{%endifequal%}
+              {%ifequal band.status 2 %}{% trans "Non-competing"%}{%endifequal%}
+              {%ifequal band.status 4 %}{% trans "Salvation Army"%}{%endifequal%}
+            </td>
+			<td>{{band.resultcount}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}
+

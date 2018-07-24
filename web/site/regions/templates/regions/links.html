@@ -1,0 +1,308 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}{{Region.name}} - Region Bands{% endblock %}
+
+{%block keywords %}{{Region.name}} Region Bands{% endblock %}
+
+{%block description %}Bands and links of the brass band contesting region {{Region.name}}{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="region">{{Region.name}} {% trans "Band Links"%}</h1>
+
+{% if ChampionshipBands %}
+<h2>{% trans "Championship Section"%}</h2>
+<ul>
+{% for band in ChampionshipBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if ExcellenceBands %}
+<h2>{% trans "Excellence Section"%}</h2>
+<ul>
+{% for band in ExcellenceBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if EliteBands %}
+<h2>{% trans "Elite Section"%}</h2>
+<ul>
+{% for band in EliteBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if AGradeBands %}
+<h2>{% trans "A Grade"%}</h2>
+<ul>
+{% for band in AGradeBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if FirstSectionBands %}
+<h2>{% trans "First Section"%}</h2>
+<ul>
+{% for band in FirstSectionBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if BGradeBands %}
+<h2>{% trans "B Grade"%}</h2>
+<ul>
+{% for band in BGradeBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if SecondSectionBands %}
+<h2>{% trans "Second Section"%}</h2>
+<ul>
+{% for band in SecondSectionBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if CGradeBands %}
+<h2>{% trans "C Grade"%}</h2>
+<ul>
+{% for band in CGradeBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if ThirdSectionBands %}
+<h2>{% trans "Third Section"%}</h2>
+<ul>
+{% for band in ThirdSectionBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if DGradeBands %}
+<h2>{% trans "D Grade"%}</h2>
+<ul>
+{% for band in DGradeBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if FourthSectionBands %}
+<h2>{% trans "Fourth Section"%}</h2>
+<ul>
+{% for band in FourthSectionBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if FifthSectionBands %}
+<h2>{% trans "Fifth Section"%}</h2>
+<ul>
+{% for band in FifthSectionBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if YouthBands %}
+<h2>{% trans "Youth Bands"%}</h2>
+<ul>
+{% for band in YouthBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if UngradedBands %}
+<h2>{% trans "Ungraded Bands"%}</h2>
+<ul>
+{% for band in UngradedBands %}
+<li>
+{% if band.website == None or band.website == 'http://' %}
+  [{% trans "web"%}]
+{% else %}
+  [<a href="{{band.website}}">{% trans "web"%}</a>]
+{% endif %}
+{% if band.twitter_name %} 
+  [<a href="http://twitter.com/{{band.twitter_name}}/">{% trans "twitter"%}</a>]
+{% else %}
+  [{% trans "twitter"%}]
+{% endif %} 
+  <a href="/bands/{{band.slug}}/">{{ band.name }} </a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+</div>
+{% endblock %}

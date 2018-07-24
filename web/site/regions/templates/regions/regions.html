@@ -1,0 +1,46 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Regions{% endblock %}
+
+{%block keywords %}Regions{% endblock %}
+
+{%block description %}List of brass band contest regions{% endblock %}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#regions").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#regions').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Region List"%}</h1>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="regions" class="table">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Bands"%}</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+{% for region in Regions %}
+    	<tr>
+    		<td class="region"><img src="/site_media/flags/{{region.country_code}}.png"> <a href="/regions/{{region.slug}}/">{{region.name}}</a></td>
+			<td>{{region.band_count}}</td>
+			<td><a href="/regions/{{region.slug}}/links/">{% trans "Links"%}</a></td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

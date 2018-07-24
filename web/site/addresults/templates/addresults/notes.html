@@ -1,0 +1,56 @@
+{% extends "template.html" %}
+
+{% block title %}Notes - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Enter any notes about the contest, such as winners of solo prizes etc.</p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+{% if ContestEvent.contest_type.test_piece %}  
+	<tr><th>Test Piece:</th><td>{{ContestEvent.test_piece.name}}</td></tr>
+	<tr><th>Composer:</th><td>{{ContestEvent.test_piece.composer.name}}{% if ContestEvent.test_piece.arranger%} arranged {{ContestEvent.test_piece.arranger.name}}{%endif%}</td></tr>
+{% else %}
+    <tr><th>Format:</th><td>{{ContestEvent.contest_type_link.name}}</td></tr>
+{% endif %}	
+	<tr><th>Venue:</th><td>{{ContestEvent.venue_link.name}}</td></tr>
+	<tr><th>Adjudicators:</th><td>{% for contestadjudicator in ContestEvent.contestadjudicator_set.all %}
+{{ contestadjudicator.person.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}</td></tr>
+    <tr><td colspan="2"><b>Notes:</b><br/>{{ form.notes }}</td></tr>
+	<tr><td colspan="2"><input type="submit" value="Submit" /></td></tr>
+</table>
+</form>
+<table id="results" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Position</th>
+			<th>Band</th>
+			<th>Conductor</th>
+			<th>Draw</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in ContestEvent.contestresult_set.all %}
+      <tr>
+      		<td>{{result.results_position_display}}</td>
+			<td>{{result.band_name}}</td>
+			<td>{{result.person_conducting.name}}</td>
+			<td>{{result.draw}}</td>
+			<td>{% if result.points %}{{result.points_display}}{% endif %}</td>
+      </tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

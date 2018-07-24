@@ -1,0 +1,61 @@
+{% extends "template.html" %}
+
+{% block title %}Venue Merge Requests{% endblock %}
+
+{%block description%}Venue Merge Requests{%endblock%}
+
+{% block head %}
+<script type="text/javascript">
+  function reject_merge(pMergeRequestSerial)
+  {
+  $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
+    $('#blanket').bind('click', function(){
+      $('#popup').remove();
+      $('#blanket').remove();
+    });
+    var lLeft = 50;
+    var lTop = 50;
+    var lInputDialog = '<h1>Rejection Reason (send to original submitter)</h1><textarea name="extra" id="reason-text" cols="100" rows="12"></textarea><input type="submit" value="Reject" id="submit-rejection"/>';
+    $('#popup').css('top',lTop).css('left',lLeft).html(lInputDialog);
+    $('#submit-rejection').click(function(){
+      $('#mergeRequestRow-' + pMergeRequestSerial).html('<td>Processing...</td>');
+      var lUrl = "/move/venues/reject_merge/" + pMergeRequestSerial + "/";
+      var lExtraInfo = $('#reason-text').val()
+      $.post(lUrl, {'reason' : lExtraInfo}, function(){
+        $('#mergeRequestRow-' + pMergeRequestSerial).html('<td>Rejected</td>');
+      });
+      $('#blanket').click();
+    });
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Venue Requests</h1>
+<p>Source fields not set in destination are copied across at merge time.</p>
+<table class="table table-hover">
+{% for mergeRequest in MergeRequests %}
+  <tr id="mergeRequestRow-{{mergeRequest.id}}">
+    <td>
+      <table class="table table-hover">
+        <tr><td>From: <a href="/users/{{mergeRequest.owner}}/">{{mergeRequest.owner}}</a></td><th>To Delete</th><th>Destination</th></tr>
+        <tr><th>Name:</th><td><a href="/venues/{{mergeRequest.source_venue.slug}}/">{{mergeRequest.source_venue.name}}</a></td><td><a href="/venues/{{mergeRequest.destination_venue.slug}}/">{{mergeRequest.destination_venue.name}}</a></td></tr>
+        <tr><th>Country:</th><td>{{mergeRequest.source_venue.country.name}}</td><td>{{mergeRequest.country.name}}</td></tr>
+        <tr><th>Latitude:</th><td>{{mergeRequest.source_venue.latitude}}</td><td>{{mergeRequest.destination_venue.latitude}}</td></tr>
+        <tr><th>Longitude:</th><td>{{mergeRequest.source_venue.longitude}}</td><td>{{mergeRequest.destination_venue.longitude}}</td></tr>
+        <tr><th>Postcode:</th><td>{{mergeRequest.source_venue.postcode}}</td><td>{{mergeRequest.destination_venue.postcode}}</td></tr>
+      </table>
+    </td>
+    <td>
+      &nbsp;[<a href="/move/venues/merge/{{mergeRequest.id}}/">merge&nbsp;now</a>]<br/><br/><br/>
+      
+      &nbsp;[<a href="javascript:reject_merge({{mergeRequest.id}});">reject</a>]
+    </td>
+  </tr>
+{% empty %}
+  <tr><td>None Outstanding</td></tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

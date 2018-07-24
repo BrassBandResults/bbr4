@@ -1,0 +1,1 @@
+CLASSIFIED: https://brassbandresults.co.uk/bands/{{BandSlug}}/ {{BandName}} require {{Position}}.{% if BandTwitter %} @{{BandTwitter}}{%endif%}

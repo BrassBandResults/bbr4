@@ -1,0 +1,23 @@
+{% extends "template.html" %}
+
+{% block title %}Sign Out{% endblock %}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("input:text:first").focus();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Sign Out</h1>
+<p>Thank you for spending some quality time with the website today.</p>
+<p><a href="/accounts/login/?next=/">Sign In Again Here</a></p>
+</div>
+{% endblock %}
+
+{%block feedback %}{% endblock %}
+{% block adbar %}{%endblock%}
+{% block adbarBottom %}{%endblock%}

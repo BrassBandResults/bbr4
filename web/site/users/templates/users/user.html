@@ -1,0 +1,127 @@
+{% extends "template.html" %}
+{% load gravatar %}
+
+{% block title %}{{User.username}} - User{% endblock %}
+
+{%block description %}User {{User.username}}{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#contests").tablesorter({widgets: ['zebra']});
+	$("#history").tablesorter({widgets: ['zebra']});
+{% if ContestHistory %}
+	$("#tabs").tabs();
+{% endif %}	
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{{User.username}}
+{% if user.is_superuser %}
+ [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
+ [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
+{%endif%}
+</h1>
+<span style="float: right;">{% gravatar User 40 %}</span>
+{% if user.is_authenticated %}
+<p>[<a href="/messages/create/{{User.username}}/">Send A Message To {{User.username}}</a>]</p>
+{% endif %}
+<table>
+  <tr><th>Date Joined:</th><td id="DateJoined">{{User.date_joined|date:"jS M Y"}}</td></tr>
+  <tr><th>Last Login:</th><td id="LastLogin">{{User.last_login|date:"jS M Y"}} ({{User.last_login|timesince}} ago)</td></tr>
+  <tr><th>Total Contests Added:</th><td id="ContestEventsAdded">{{ContestCount}}</td></tr>
+  <tr><th>Total Results Added:</th><td id="ContestEventsAdded">{{ResultCount}}</td></tr>
+</table>
+<div id="tabs">
+{% if ContestHistory %}
+  <ul class="screenonly">
+	  <li><a href="#history">User's Contest History</a></li>
+	  <li><a href="#results">Contests Added To Site</a></li>
+  </ul>
+<div id="history">
+	<table id="contest-history" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Contest</th>
+			<th>Band</th>
+			<th>Conductor</th>
+			<th>Result</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for result in ContestHistory %}
+		<tr>
+			<td><a href="/contests/{{result.result.contest_event.contest.slug}}/{{result.result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.result.contest_event.event_date}}</a></td>
+			<td>{{result.result.contest_event.contest.name}}</td>
+			<td><a href="/bands/{{result.result.band.slug}}/" title="{{result.result.band.name}}">{{result.result.band_name}}</a></td>
+      <td>
+{% ifequal result.result.conductor.name "Unknown" %}
+        <font color="red">Unknown, do you know?</font>
+{% else %}      
+        <a href="/people/{{result.result.person_conducting.slug}}/">{{result.result.person_conducting.name}}</a>
+{% endifequal %}      
+      </td>
+			<td>{{result.result.results_position_display}}</td>
+		</tr>
+{% endfor %}		
+	</tbody>
+</table>
+
+</div>
+{% else %}
+<h2>Contest Results Provided</h2>
+{% endif %}
+<div id="results">
+{% if Paginate %}
+<div id="years">
+{%for year in Years %}
+<h3 class="expand-link"><span class="year">{{ year.year }}</span> - ({{year.count}} Contests) - <span class="label">Show</span></h3>
+<div class="year-contents"></div>
+{%endfor%}
+</div>
+{% else %}
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Contest</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for event in ContestEvents %}
+		<tr>
+  			<td class="EventDate"><a href="/contests/{{event.contest_slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+			<td class="EventName">{{event.name}}</td>
+		</tr>
+{% endfor %}
+    </tbody>
+</table>
+{%endif%}
+</div>
+</div>
+</div>
+{% endblock %}
+
+{%block scriptfooter%}
+<script type="application/javascript">
+	$('#years h3').bind('click', function(){
+		if ($(this).find('.label').text() === 'Show'){
+			var lHeadNode = $(this)
+			lHeadNode.find('.label').text('Loading...');
+			var lUrl = '/users/{{User.username}}/year/' + lHeadNode.find('.year').text() + '/';
+			var lNode = $(this).next('.year-contents');
+			lNode.load(lUrl, function(){
+				lHeadNode.find('.label').text('Close');	
+			});
+			
+		} else {
+			$(this).next('.year-contents').html('');
+			$(this).find('.label').text('Show');
+		}
+	});
+</script>
+{%endblock%}

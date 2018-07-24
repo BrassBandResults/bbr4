@@ -1,0 +1,79 @@
+{% extends "template.html" %}
+
+{% block title %}Test Piece - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+lData = [{% for result in Data %}{ "name" : "{{result}}" }{% if not forloop.last%},{%endif%}{% endfor %}];
+
+function startsWith(pLookIn, pLookFor) {
+  lRegEx = new RegExp(pLookFor, 'i')
+  lMatch = pLookIn.match(lRegEx)
+  if (lMatch) {
+    return lMatch[0].toLowerCase()==pLookFor.toLowerCase();
+  } else {
+      return false;
+  }
+}
+
+function showSuggestionBox(inputString){
+  lHtml = ""
+  for (var i=0; i<lData.length; i++) {
+    if (startsWith(lData[i].name, inputString)) {
+      lHtml += '<li onclick=\'fill("'+lData[i].name+'");\'>'+lData[i].name+'</li>\n';
+    }
+  }
+  
+  if (lHtml.length > 0) {
+    $('#suggestions').show();
+    $('#autoSuggestionsList').html(lHtml);
+  } else {
+    $('#suggestions').hide();
+  }    
+}
+
+function lookup(inputString)
+{
+  if(inputString.length == 0) {
+    $('#suggestions').hide();
+  } else {
+    showSuggestionBox(inputString);
+  }
+} // lookup
+
+function fill(thisValue) {
+    $('#testpiece').val(thisValue);
+    $('#suggestions').hide();
+}	
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Enter the name of the test piece for this contest.  A popup box will prompt you with the names of the pieces already entered.  If your piece appears on the popup list, then please click on it to select it.  This ensures that the name of the piece is the same, and duplicates aren't created.  It also means that the system already knows the name of the composer, and you won't be asked for it.</p>
+<p>If the contest is own choice, or an entertainments contest, leave this box blank.</p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+	<tr>
+		<th>Test Piece:</th>
+		<td>
+		  <input type="text" id="testpiece" name="TestPiece" onkeyup="lookup(this.value);" maxlength="100" autofocus="autofocus">&nbsp;&nbsp;<input type="submit" value="Submit" />
+		  <div class="suggestionsBox" id="suggestions" style="display: none;">
+		    <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+            <div class="suggestionList" id="autoSuggestionsList"></div>
+		  </div>
+        </td>
+	</tr>
+</table>
+</form>
+</div>
+{% endblock %}

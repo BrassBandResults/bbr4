@@ -1,0 +1,64 @@
+{% extends "template.html" %}
+
+{%block title %}Users{% endblock %}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#contests").tablesorter({headers:{1: {sorter: 'digit'},2: {sorter: 'digit'},3: {sorter: 'digit'},4: {sorter: 'digit'},5: {sorter: 'dayMonthYear'}, 6: {sorter: 'dayMonthYear'}}, widgets: ['zebra']});
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Users</h1>
+<p>Total of {{UserCount}} users.</p>
+<table id="contests" class="table table-hover table-sm">
+	<thead>
+		<tr>
+			<th>User</th>
+			<th>Events Added</th>
+			<th>Results Added</th>
+            <th>History Count</th>
+			<th>Reputation</th>
+			<th>Joined</th>
+			<th>Last Login</th>
+            <th>Last Login</th>
+            <th>Pro</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for profile in UserProfiles %}
+  		<tr>
+{% if profile.user.is_active %}
+       <td class="user"><a href="/users/{{profile.user.username}}/">
+   {% if profile.superuser %}
+         <font color="green">{{profile.user.username}}</font>
+   {% else %}
+     {% if profile.enhanced_functionality%}
+         <font color="red">{{profile.user.username}}</font>
+     {% else %}
+         {{profile.user.username}}
+     {% endif %}
+   {% endif %}
+                        </a>
+                        </td>
+{% else %}
+			<td class="user">(<a href="/users/{{profile.user.username}}/">{{profile.user.username}}</a>)</td>
+{% endif %}
+	   <td>{{profile.event_count}}</td>
+	   <td>{{profile.result_count}}</td>
+       <td>{{profile.history_count}}</td>
+	   <td>{{profile.reputation}}</td>
+	   <td>{{profile.user.date_joined|date:"jS M Y"}}</td>
+	   <td>{{profile.user.last_login|date:"jS M Y"}}</td>
+       <td>{{profile.user.last_login|timesince}} ago</td>
+       <td>{% if profile.pro_member %}PRO{%endif%}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+<p>Total of {{UserCount}} users.</p>
+</div>
+{% endblock %}

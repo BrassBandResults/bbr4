@@ -1,0 +1,7 @@
+{{ThingNew.count}} new bands between {{StartDate|date:"d-m-Y"}} and {{EndDate|date:"d-m-Y"}}
+
+{% for band in ThingNew %}
+{{band.name|safe}}
+https://brassbandresults.co.uk/bands/{{band.slug}}/
+
+{% endfor %}

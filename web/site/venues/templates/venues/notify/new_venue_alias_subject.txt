@@ -1,0 +1,1 @@
+New Venue Alias: {{ThingNew.name|safe}}

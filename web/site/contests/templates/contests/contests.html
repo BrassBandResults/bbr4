@@ -1,0 +1,106 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Contests{% endblock %}
+
+{%block description%}List of brass band contests{%endblock%}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{%block scriptfooter %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  	$("#contests").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#contests').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+{% ifequal StartsWith "ALL" %}
+<h1>{% trans "All Contests"%}</h1>
+{% else %}
+<h1>{% trans "Contests starting with"%} {{StartsWith}}</h1>
+{% endifequal %}
+<p>{% trans "Starts with"%}:
+{% ifequal StartsWith "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/contests/filter/A/">A</a>{%endifequal%}
+{% ifequal StartsWith "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/contests/filter/B/">B</a>{%endifequal%}
+{% ifequal StartsWith "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/contests/filter/C/">C</a>{%endifequal%}
+{% ifequal StartsWith "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/contests/filter/D/">D</a>{%endifequal%}
+{% ifequal StartsWith "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/contests/filter/E/">E</a>{%endifequal%}
+{% ifequal StartsWith "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/contests/filter/F/">F</a>{%endifequal%}
+{% ifequal StartsWith "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/contests/filter/G/">G</a>{%endifequal%}
+{% ifequal StartsWith "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/contests/filter/H/">H</a>{%endifequal%}
+{% ifequal StartsWith "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/contests/filter/I/">I</a>{%endifequal%}
+{% ifequal StartsWith "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/contests/filter/J/">J</a>{%endifequal%}
+{% ifequal StartsWith "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/contests/filter/K/">K</a>{%endifequal%}
+{% ifequal StartsWith "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/contests/filter/L/">L</a>{%endifequal%}
+{% ifequal StartsWith "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/contests/filter/M/">M</a>{%endifequal%}
+{% ifequal StartsWith "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/contests/filter/N/">N</a>{%endifequal%}
+{% ifequal StartsWith "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/contests/filter/O/">O</a>{%endifequal%}
+{% ifequal StartsWith "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/contests/filter/P/">P</a>{%endifequal%}
+{% ifequal StartsWith "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/contests/filter/Q/">Q</a>{%endifequal%}
+{% ifequal StartsWith "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/contests/filter/R/">R</a>{%endifequal%}
+{% ifequal StartsWith "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/contests/filter/S/">S</a>{%endifequal%}
+{% ifequal StartsWith "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/contests/filter/T/">T</a>{%endifequal%}
+{% ifequal StartsWith "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/contests/filter/U/">U</a>{%endifequal%}
+{% ifequal StartsWith "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/contests/filter/V/">V</a>{%endifequal%}
+{% ifequal StartsWith "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/contests/filter/W/">W</a>{%endifequal%}
+{% ifequal StartsWith "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/contests/filter/X/">X</a>{%endifequal%}
+{% ifequal StartsWith "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/contests/filter/Y/">Y</a>{%endifequal%}
+{% ifequal StartsWith "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/contests/filter/Z/">Z</a>{%endifequal%}
+{% ifequal StartsWith "ALL" %}<span class="bg-dark text-light rounded p-1">Show All</span>{%else%}<a href="/contests/filter/ALL/">{% trans "Show All"%}</a>{%endifequal%}
+</p>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="contests" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Events on Site"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for contest in Contests %}
+  		<tr>
+  			<td class="contest"><a href="/contests/{{contest.actual_slug}}/">{{contest.name}}</a></td>
+			<td class="contest-count">{{contest.count}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+<p>{% trans "Starts with"%}:
+{% ifequal StartsWith "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/contests/filter/A/">A</a>{%endifequal%}
+{% ifequal StartsWith "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/contests/filter/B/">B</a>{%endifequal%}
+{% ifequal StartsWith "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/contests/filter/C/">C</a>{%endifequal%}
+{% ifequal StartsWith "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/contests/filter/D/">D</a>{%endifequal%}
+{% ifequal StartsWith "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/contests/filter/E/">E</a>{%endifequal%}
+{% ifequal StartsWith "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/contests/filter/F/">F</a>{%endifequal%}
+{% ifequal StartsWith "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/contests/filter/G/">G</a>{%endifequal%}
+{% ifequal StartsWith "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/contests/filter/H/">H</a>{%endifequal%}
+{% ifequal StartsWith "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/contests/filter/I/">I</a>{%endifequal%}
+{% ifequal StartsWith "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/contests/filter/J/">J</a>{%endifequal%}
+{% ifequal StartsWith "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/contests/filter/K/">K</a>{%endifequal%}
+{% ifequal StartsWith "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/contests/filter/L/">L</a>{%endifequal%}
+{% ifequal StartsWith "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/contests/filter/M/">M</a>{%endifequal%}
+{% ifequal StartsWith "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/contests/filter/N/">N</a>{%endifequal%}
+{% ifequal StartsWith "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/contests/filter/O/">O</a>{%endifequal%}
+{% ifequal StartsWith "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/contests/filter/P/">P</a>{%endifequal%}
+{% ifequal StartsWith "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/contests/filter/Q/">Q</a>{%endifequal%}
+{% ifequal StartsWith "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/contests/filter/R/">R</a>{%endifequal%}
+{% ifequal StartsWith "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/contests/filter/S/">S</a>{%endifequal%}
+{% ifequal StartsWith "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/contests/filter/T/">T</a>{%endifequal%}
+{% ifequal StartsWith "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/contests/filter/U/">U</a>{%endifequal%}
+{% ifequal StartsWith "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/contests/filter/V/">V</a>{%endifequal%}
+{% ifequal StartsWith "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/contests/filter/W/">W</a>{%endifequal%}
+{% ifequal StartsWith "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/contests/filter/X/">X</a>{%endifequal%}
+{% ifequal StartsWith "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/contests/filter/Y/">Y</a>{%endifequal%}
+{% ifequal StartsWith "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/contests/filter/Z/">Z</a>{%endifequal%}
+{% ifequal StartsWith "ALL" %}<span class="bg-dark text-light rounded p-1">Show All</span>{%else%}<a href="/contests/filter/ALL/">{% trans "Show All"%}</a>{%endifequal%}
+</p>
+</div>
+{% endblock %}

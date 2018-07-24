@@ -1,0 +1,61 @@
+{% extends "template.html" %}
+
+{% block title %}Band Placings - Add Results{% endblock %}
+
+{%block feedback %}{% endblock %}
+
+{%block add-results-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Add Contest Results</h1>
+<div id="helpbox">
+<p>Enter results into the box provided, one line for each placing.  Use the following format:</p>
+<p><b><code>1. Black Dyke Band, Nicholas Childs, 2, 345</code></b></p>
+<p>where the values are (points and the comma before it can be omitted):</p>
+<p><b><code>placing. band, conductor, draw, points</code></b>.</p>
+<p>Use W for the placing for Withdrawn bands, and D for the placing for Disqualified bands.</p>
+<p>Use Unknown for the conductor if not known.  Use 0 for the draw if not known.  Use 0 for the placing if not known.</p>
+<p>Use full names for conductors, not initials.  Bands and conductors will be matched against those already in the database.</p>
+<p>There's an Excel spreadsheet to help produce this <a href="/site_media/xls/BbrExportTool.xlsx">available here</a></p>
+</div>
+<form id="contestform" action="." method="post">{% csrf_token %}
+<table>
+	<tr><th>Contest Name:</th><td>{{Contest.name}}</td></tr>
+	<tr><th>Contest Date:</th><td>{{ContestEvent.event_date}}</td></tr>
+{% if ContestEvent.contest_type.test_piece %}  
+	<tr><th>Test Piece:</th><td>{{ContestEvent.test_piece.name}}</td></tr>
+	<tr><th>Composer:</th><td>{{ContestEvent.test_piece.composer.name}}{% if ContestEvent.test_piece.arranger%} arranged {{ContestEvent.test_piece.arranger.name}}{%endif%}</td></tr>
+{% else %}
+  <tr><th>Format:</th><td>{{ContestEvent.contest_type_link.name}}</td></tr>
+{% endif %}	
+	<tr><th>Venue:</th><td>{{ContestEvent.venue_link.name}}</td></tr>
+    <tr><td colspan="2">{{ form.results.errors }} {{ HowToCorrectErrors|safe }}<br/><input type="submit" value="Submit" /><br/>
+	    {{ form.results }}
+    </td></tr>
+	<tr><td colspan="2"><input type="submit" value="Submit" /></td></tr>
+</table>
+</form>
+</div>
+{% endblock %}
+
+{%block scriptfooter %}
+<script type="text/javascript">
+{% if ExistingUnplacedResults and user.profile.enhanced_functionality %}
+  if ($('.conductor').length > 0) {
+    var lConductorOptions = "<option value=''>---</option>{% for conductor in AllConductors %}<option value='{{conductor.id}}'>{{conductor.surname}}, {{conductor.first_names}}</option>{%endfor%}";
+    $('.conductor').html(lConductorOptions);    
+  } 
+  
+  if ($('.ownchoice').length > 0) {
+    var lTestPieceOptions = "<option value=''>---</option>{% for piece in AllPieces %}<option value='{{piece.id}}'>{{piece.name}}</option>{%endfor%}";
+    $('.ownchoice').html(lTestPieceOptions);    
+  }
+  
+  {% for unplacedResult in ExistingUnplacedResults %}
+    {% if unplacedResult.conductor_id%}$('.conductor-{{unplacedResult.id}} option[value={{unplacedResult.conductor_id}}]').prop('selected','selected');{%endif%}
+    {% if unplacedResult.test_piece_id%}$('.ownchoice-{{unplacedResult.id}} option[value={{unplacedResult.test_piece_id}}]').prop('selected','selected');{%endif%}
+  {% endfor %}
+{% endif %}
+</script>
+{%endblock %}

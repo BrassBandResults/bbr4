@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div id="messagepage">
+<h1>Create New Message</h1>
+<form action="." method="POST">{% csrf_token %}
+<table>
+  <tr><th>To:</th><td>{{To}}</td></tr>
+  {{ MessageForm.as_table }}
+  <tr><td></td><td><input type="submit" value="Send"/></td></tr>
+</table>
+</form>
+</div>
+{% endblock %}

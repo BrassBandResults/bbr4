@@ -1,0 +1,22 @@
+Classified Profile Edited
+
+Title: {{ThingNew.title}}{% ifnotequal ThingNew.title ThingOld.title %} [was {{ThingOld.title}}]{%endifnotequal%}
+Qualifications: {{ThingNew.qualifications}}{% ifnotequal ThingNew.qualifications ThingOld.qualifications %} [was {{ThingOld.qualifications}}]{%endifnotequal%}
+Email: {{ThingNew.email}}{% ifnotequal ThingNew.email ThingOld.email %} [was {{ThingOld.email}}]{%endifnotequal%}
+Website: {{ThingNew.website}}{% ifnotequal ThingNew.website ThingOld.website %} [was {{ThingOld.website}}]{%endifnotequal%}
+Home phone: {{ThingNew.home_phone}}{% ifnotequal ThingNew.home_phone ThingOld.home_phone %} [was {{ThingOld.home_phone}}]{%endifnotequal%}
+Mobile phone: {{ThingNew.mobile_phone}}{% ifnotequal ThingNew.mobile_phone ThingOld.mobile_phone %} [was {{ThingOld.mobile_phone}}]{%endifnotequal%}
+Address: {{ThingNew.address|safe}}{% ifnotequal ThingNew.address ThingOld.address %} [was {{ThingOld.address|safe}}]{%endifnotequal%}
+Photo: {{ThingNew.picture}}{% ifnotequal ThingNew.picture ThingOld.picture %} [was {{ThingOld.picture}}]{%endifnotequal%}
+Conductor: {{ThingNew.conductor.name}}{% ifnotequal ThingNew.conductor.name ThingOld.conductor.name %} [was {{ThingOld.conductor.name}}]{%endifnotequal%}
+Adjudicator: {{ThingNew.adjudicator.name}}{% ifnotequal ThingNew.adjudicator.name ThingOld.adjudicator.name %} [was {{ThingOld.adjudicator.name}}]{%endifnotequal%}
+Visible: {{ThingNew.visible}}{% ifnotequal ThingNew.visible ThingOld.visible %} [was {{ThingOld.visible}}]{%endifnotequal%}
+Status: {{ThingNew.status}}{% ifnotequal ThingNew.status ThingOld.status %} [was {{ThingOld.status}}]{%endifnotequal%}
+
+Profile Diff:
+{{ProfileDiff|safe}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bbradmin/classifieds/classifiedprofile/{{ThingNew.id}}/

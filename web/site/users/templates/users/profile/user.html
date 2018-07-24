@@ -1,0 +1,141 @@
+{% extends "template.html" %}
+{% load gravatar %}
+
+{% block title %}{{User.username}} - User Profile{% endblock %}
+
+{%block description %}User {{User.username}}{% endblock %}
+
+{% block adbar %}<br/>{%endblock%}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<div id="UserProfile">
+<h1>{{User.username}}</h1>
+<span class="screenonly">
+ [<a href="/users/{{User.username}}/change_password/">change password</a>]
+{% if user.is_authenticated and user.profile.superuser %}
+ [<a href="/users/{{User.username}}/talk/">talk</a>]
+{% endif %} 
+{% if user.is_superuser %}
+ [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
+ [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
+{%endif%}
+</span>
+<div id="avatar" class="float-right">
+  {% gravatar User 80 %}<br/>
+  <b>{{Profile.points}}</b><br/>
+  reputation<br/>
+</div>
+<table>
+  <tr><th>Member For:</th><td>{{User.date_joined|timesince}}</td></tr>
+  <tr><th>Last Seen:</th><td>{{User.last_login|timesince}} ago</td></tr>
+</table>
+<div id="badges">
+  {% for userBadge in UserBadges %}
+  <a href="/badges/"><span class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1" title="{{userBadge.type.description}}">{{userBadge.type.name|safe}}</span></a>
+  {% endfor %}
+</div>
+
+<br/><br/><br/><br/><br/>
+
+<div class="clear"></div>
+<div id="tabs">
+  <ul>
+    <li class="selected">Feedback{%if FeedbackCount%} ({{FeedbackCount}}){%endif%}</li>
+    <li><a href="/users/{{User.username}}/feedback_sent/" title="Feedback sent">Sent{%if SentFeedbackCount%} ({{SentFeedbackCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/results_added/" title="Results Added to Site">Results{% if ContestCount %} ({{ContestCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/contest_history/" title="Personal Contest History">Performances{% if PerformanceCount %} ({{PerformanceCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/messages/" title="Site Messages">Messages{% if MessageCount%} ({{MessageCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/classifieds/" title="Classified Profiles">Classifieds</a></li>
+  </ul>
+</div>
+
+<div id="Feedback">
+  <p>Feedback will be moved to a site administrator queue if you don't complete it within seven days.</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Feedback</th>
+        <th>Reporter</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for feedback in Feedback %}
+      <tr>
+{% if user.profile.superuser %}
+        <td><a href="/feedback/detail/{{feedback.id}}/">{{feedback.created|date:"jS M Y"}}</a></td>
+{% else %}
+{% if feedback.claim_date %}      
+        <td>{{feedback.created|date:"jS M Y"}}</td>
+{% else %}
+        <td><b>{{feedback.created|date:"jS M Y"}}</b></td>
+{% endif %}
+{% endif %}      
+        <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
+        <td>{% if feedback.reporter%}<a href="/users/{{feedback.reporter.username}}/">{{feedback.reporter.username}}</a>{%endif%}</td>
+        <td id="feedback-{{feedback.id}}">
+          [<a onclick="javascript:mark_fixed('{{feedback.id}}');" href="javascript:void(0);">mark&nbsp;fixed</a>] 
+          [<a onclick="javascript:release_to_queue('{{feedback.id}}');" href="javascript:void(0);">send&nbsp;to&nbsp;admin</a>]
+{% if user.profile.superuser %}
+          [<a onclick="javascript:send_to_admin_queue('{{feedback.id}}');" href="javascript:void(0);">send&nbsp;to&nbsp;site&nbsp;owners</a>]
+{% endif %}        
+        </td>
+      </tr>
+{% empty %}
+      <tr><td colspan="6">No Outstanding Feedback</td></tr>    
+{% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+{%endblock%}
+
+{% block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#feedback").tablesorter({widgets: ['zebra']});
+  });
+
+  function mark_fixed(pFeedbackSerial)
+  {
+    var lUrl = "/users/{{User.username}}/feedbackdone/" + pFeedbackSerial + "/";
+    $.get(lUrl, function(){
+        $('#feedback-' + pFeedbackSerial).html('done');
+    });
+  }
+  
+  function release_to_queue(pFeedbackSerial)
+  {
+    var lUrl = "/users/{{User.username}}/queue/" + pFeedbackSerial + "/";
+    $.get(lUrl, function(){
+        $('#feedback-' + pFeedbackSerial).html('queued');
+    });
+  }
+  
+  function send_to_admin_queue(pFeedbackSerial)
+  {
+    $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
+    $('#blanket').bind('click', function(){
+      $('#popup').remove();
+      $('#blanket').remove();
+    });
+    var lLeft = 50;
+    var lTop = 50;
+    var lInputDialog = '<h1>Extra Comments</h1><textarea name="extra" id="feedback-extra" cols="100" rows="12"></textarea><input type="submit" value="Send To Site Owners" id="submit-inconclusive"/>';
+    $('#popup').css('top',lTop).css('left',lLeft).html(lInputDialog);
+    $('#submit-inconclusive').click(function(){
+      $('#feedback-' + pFeedbackSerial).html('processing...');
+      var lUrl = "/users/{{User.username}}/admin/" + pFeedbackSerial + "/";
+      var lExtraInfo = $('#feedback-extra').val()
+      $.post(lUrl, {'extra' : lExtraInfo}, function(){
+        $('#feedback-' + pFeedbackSerial).html('sent to site owners');
+      });
+      $('#blanket').click();
+    })
+  }
+</script>
+{%endblock%}

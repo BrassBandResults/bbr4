@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+{% load humanize %}
+{% load bbrize %}
+{% load i18n %}
+
+{% block title %}{% trans "Tags"%}{% endblock %}
+
+{%block keywords %}Brass Band Contest Tags{% endblock %}
+
+{%block description%}Tags attached to contests and contest groups at brass band results{%endblock%}
+
+{%block scriptfooter %}
+<script>
+  $(document).ready(function(){
+    $("#tags").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#tags').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Tags</h1>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="tags" class="table table-hover">
+  <thead>
+    <tr><th>Tag</th></tr>
+  </thead>
+  <tbody>
+{% for tag in ContestTags %}
+    <tr><td><a href="/tags/{{tag.slug}}/">{{tag.name}}</a></td></tr>
+{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

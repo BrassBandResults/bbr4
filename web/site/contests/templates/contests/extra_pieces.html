@@ -1,0 +1,202 @@
+{% extends "template.html" %}
+{% load gravatar %}
+{% load humanize %}
+{% load i18n %}
+
+{%block title %}{{ContestEvent.name}} - {{ContestEvent.event_date}}{% endblock %}
+
+{%block keywords %}{{ContestEvent.name}} {{ContestEvent.event_date}}{% endblock %}
+
+{%block description%}Details about the brass band contest {{ContestEvent.name}} on {{ContestEvent.event_date}}{%endblock%}
+
+{%block feedback%}{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest-event"><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{{ContestEvent.name}}</a></h1>
+<h2>{{ContestEvent.event_date_with_day}}</h2>
+<p><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">&lt;&lt;Back to results</a></p>
+<p>With this page, you can enter the pieces that each band played as part of their programme</p>
+
+{% for result in Results %}
+<h3>{{result.band_name}}</h3>
+<ul>
+{% for piece in result.extra_pieces %}
+  <li>
+    <a href="/pieces/{{piece.piece.slug}}/">{{piece.piece.name}}</a>{% if piece.suffix %} ({{piece.suffix}}){%endif%} - {{piece.piece.composer.name}}
+    [<a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/entertainments/delete/{{piece.id}}/">X</a>]
+  </li>
+{% endfor %}
+</ul>
+<p>
+<form action="." method="post" class="piece-form">{%csrf_token%}
+  <input type="text" id="piece-{{result.id}}" name="piece-{{result.id}}" onkeyup="lookupPiece(this.value, {{result.id}});" size=50 maxlength=100 {%if result.PieceName%}value="{{result.PieceName}}"{%endif%}></input>
+  <input type="text" id="suffix-{{result.id}}" name="suffix-{{result.id}}" placeholder="Optional detail such as 'Second Movement'" size=50 maxlength=100 {%if result.Suffix%}value="{{result.Suffix}}"{%endif%}></input>
+  <input type="hidden" name="ordering-{{result.id}}" value="{{result.next_order}}"/>
+  <input id="add-{{result.id}}" type="submit" value="Add Piece"></input>
+  <div class="suggestionsBox" id="pieceSuggestions-{{result.id}}" style="display: none;">
+	<img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+    <div class="suggestionList" id="autoPieceSuggestionsList-{{result.id}}"></div> 
+   </div>
+{% if result.show_new_piece_form %}
+<script>
+var gPeople = [
+{% for person in People%}{name:"{{person.name}}"}{% if not forloop.last%},{%endif%}{% endfor %},
+{% for alias in PeopleAliases%}{name:"{{alias.name}}"}{% if not forloop.last%},{%endif%}{% endfor %}
+              ];
+</script>
+<br/>
+  <table>
+    <tr>
+      <th>Composer:</th>
+      <td>
+        <input type="text" id="composer-{{result.id}}" name="composer-{{result.id}}" size=50 maxlength=100" onkeyup="lookupComposer(this.value, {{result.id}});"></input>
+        <div class="suggestionsBox" id="composerSuggestions-{{result.id}}" style="display: none;">
+	      <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+          <div class="suggestionList" id="autoComposerSuggestionsList-{{result.id}}"></div> 
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th>Arranger:</th>
+      <td>
+        <input type="text" id="arranger-{{result.id}}" name="arranger-{{result.id}}" size=50 maxlength=100" onkeyup="lookupArranger(this.value, {{result.id}});"></input>
+        <div class="suggestionsBox" id="arrangerSuggestions-{{result.id}}" style="display: none;">
+	      <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+          <div class="suggestionList" id="autoArrangerSuggestionsList-{{result.id}}"></div> 
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th>Year:</th>
+      <td><input type="text" id="year-{{result.id}}" name="year-{{result.id}}" size=8 maxlength=4"></input></td>
+    </tr>
+    <tr>
+      <th>Type:</th>
+      <td>
+        <select id="type-{{result.id}}" name="type-{{result.id}}">
+          <option value="TestPiece">Test Piece</option>
+          <option value="March">March</option>
+          <option value="Solo">Solo</option>
+          <option selected="selected" value="Other">Other</option>
+        </select> 
+      </td>
+    </tr>
+  </table>
+{% endif %}
+</form>
+</p>
+{% endfor %}
+
+</div>
+<script>
+
+
+
+
+var gPieces = [
+{% for piece in Pieces%}{name:"{{piece.name}}"}{% if not forloop.last%},{%endif%}{% endfor %},
+{% for alias in PieceAliases%}{name:"{{alias.name}}"}{% if not forloop.last%},{%endif%}{% endfor %}
+              ];
+               
+               
+function startsWith(pLookIn, pLookFor) {
+  var lRegEx = new RegExp(pLookFor, 'i')
+  var lMatch = pLookIn.match(lRegEx)
+  if (lMatch) {
+    return lMatch[0].toLowerCase()==pLookFor.toLowerCase();
+  } else {
+      return false;
+  }
+}
+
+function showPieceSuggestionBox(pInputString, pResultId){
+  var lHtml = ""
+  for (var i=0; i<gPieces.length; i++) {
+    if (startsWith(gPieces[i].name, pInputString)) {
+      lHtml += '<li onclick=\'fillPiece("'+gPieces[i].name+'","'+pResultId+'");\'>'+gPieces[i].name+'</li>\n';
+    }
+  }
+	  
+  if (lHtml.length > 0) {
+    $('#pieceSuggestions-' + pResultId).show();
+    $('#autoPieceSuggestionsList-' + pResultId).html(lHtml);
+  } else {
+    $('#pieceSuggestions-' + pResultId).hide();
+  }    
+}
+
+function showComposerSuggestionBox(pInputString, pResultId){
+  var lHtml = ""
+  for (var i=0; i<gPeople.length; i++) {
+    if (startsWith(gPeople[i].name, pInputString)) {
+      lHtml += '<li onclick=\'fillComposer("'+gPeople[i].name+'","'+pResultId+'");\'>'+gPeople[i].name+'</li>\n';
+    }
+  }
+	  
+  if (lHtml.length > 0) {
+    $('#composerSuggestions-' + pResultId).show();
+    $('#autoComposerSuggestionsList-' + pResultId).html(lHtml);
+  } else {
+    $('#composerSuggestions-' + pResultId).hide();
+  }    
+}
+
+function showArrangerSuggestionBox(pInputString, pResultId){
+  var lHtml = ""
+  for (var i=0; i<gPeople.length; i++) {
+    if (startsWith(gPeople[i].name, pInputString)) {
+      lHtml += '<li onclick=\'fillArranger("'+gPeople[i].name+'","'+pResultId+'");\'>'+gPeople[i].name+'</li>\n';
+    }
+  }
+	  
+  if (lHtml.length > 0) {
+    $('#arrangerSuggestions-' + pResultId).show();
+    $('#autoArrangerSuggestionsList-' + pResultId).html(lHtml);
+  } else {
+    $('#arrangerSuggestions-' + pResultId).hide();
+  }    
+}
+
+function lookupPiece(pInputString, pResultId){
+ if(pInputString.length === 0) {
+    $('#pieceSuggestions-' + pResultId).hide();
+  } else {
+    showPieceSuggestionBox(pInputString, pResultId);
+  }
+}
+
+function lookupComposer(pInputString, pResultId){
+ if(pInputString.length === 0) {
+    $('#composerSuggestions-' + pResultId).hide();
+  } else {
+    showComposerSuggestionBox(pInputString, pResultId);
+  }
+}
+
+function lookupArranger(pInputString, pResultId){
+ if(pInputString.length === 0) {
+    $('#arrangerSuggestions-' + pResultId).hide();
+  } else {
+    showArrangerSuggestionBox(pInputString, pResultId);
+  }
+}
+
+function fillPiece(pThisValue, pResultId) {
+    $('#piece-' + pResultId).val(pThisValue);
+    $('#pieceSuggestions-' + pResultId).hide();
+}
+
+function fillComposer(pThisValue, pResultId) {
+    $('#composer-' + pResultId).val(pThisValue);
+    $('#composerSuggestions-' + pResultId).hide();
+}
+
+function fillArranger(pThisValue, pResultId) {
+    $('#arranger-' + pResultId).val(pThisValue);
+    $('#arrangerSuggestions-' + pResultId).hide();
+}
+
+</script>
+
+{% endblock %}

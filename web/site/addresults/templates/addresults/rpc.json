@@ -1,0 +1,7 @@
+[
+{% for result in Data %}
+  {
+    "name" : "{{result.name}}"
+  }{% if not forloop.last%},{%endif%}
+{% endfor %}
+]

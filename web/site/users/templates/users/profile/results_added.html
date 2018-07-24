@@ -1,0 +1,120 @@
+{% extends "template.html" %}
+{% load gravatar %}
+
+{% block title %}{{User.username}} - User Profile{% endblock %}
+
+{%block description %}User {{User.username}}{% endblock %}
+
+{%block profile-selected%}class="selected"{%endblock%}
+
+{% block adbar %}<br/>{%endblock%}
+{% block adbarBottom %}<br/>{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<div id="UserProfile">
+<h1>{{User.username}}</h1>
+<span class="screenonly">
+ [<a href="/users/{{User.username}}/change_password/">change password</a>]
+{% if user.is_authenticated and user.profile.superuser %}
+ [<a href="/users/{{User.username}}/talk/">talk</a>]
+{% endif %} 
+{% if user.is_superuser %}
+ [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
+ [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
+{%endif%}
+</span>
+<div id="avatar" class="float-right">
+  {% gravatar User 80 %}<br/>
+  <b>{{Profile.points}}</b><br/>
+  reputation<br/>
+</div>
+<table>
+  <tr><th>Member For:</th><td>{{User.date_joined|timesince}}</td></tr>
+  <tr><th>Last Seen:</th><td>{{User.last_login|timesince}} ago</td></tr>
+</table>
+
+<br/><br/><br/><br/><br/>
+
+<div class="clear"></div>
+<div id="tabs">
+  <ul>
+    <li><a href="/users/{{User.username}}/" title="Feedback sent">Feedback{%if FeedbackCount%} ({{FeedbackCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/feedback_sent/" title="Feedback sent">Sent{%if SentFeedbackCount%} ({{SentFeedbackCount}}){%endif%}</a></li>
+    <li class="selected">Results{% if ContestCount %} ({{ContestCount}}){%endif%}</li>
+    <li><a href="/users/{{User.username}}/contest_history/" title="Personal Contest History">Performances{% if PerformanceCount %} ({{PerformanceCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/messages/" title="Site Messages">Messages{% if MessageCount%} ({{MessageCount}}){%endif%}</a></li>
+    <li><a href="/users/{{User.username}}/classifieds/" title="Classified Profiles">Classifieds</a></li>  
+  </ul>
+</div>
+
+<div id="ContestsAdded">
+  <table id="contests" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Contest</th>
+{% if not CompletelyComplete %}      
+      <th>Results</th>
+      <th>Positions</th>
+      <th>Conductors</th>
+      <th>Draws</th>
+      <th>Test</th>
+      <th>Venue</th>
+      <th>Programme</th>
+{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+{% for event in ContestEvents %}
+    <tr>
+      <td class="EventDate"><a href="/contests/{{event.contest_slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
+{% if event.complete %}      
+      <td class="EventName">{{event.name}}</td>
+{% if not CompletelyComplete %}      
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+{%endif%}      
+{% else %}
+      <td class="EventName" title="Event is not marked complete"><b>{{event.name}}</b></td>
+      <td title="{{event.result_count}} result rows entered">{{event.result_count}}</td>
+      <td title="{{event.positions_count}} results have positions{%if event.max_position%} , maximum position is {{event.max_position}}{%endif%}">{{event.positions_count}}{%if event.max_position%} ({{event.max_position}}){%endif%}</td>
+      <td title="{{event.conductor_count}} results have conductors">{{event.conductor_count}}</td>
+      <td title="{{event.draw_count}} draws have been entered{%if event.max_draw%}, max draw is {{event.max_draw}}{%endif%}">{{event.draw_count}}{%if event.max_draw%} ({{event.max_draw}}){%endif%}</td>
+      <td title="{% if event.test_piece_id %}Set test has been entered{%else%}No set test piece has been entered{% endif %}">{% if event.test_piece_id %}Y{%else%}N{% endif %}</td>
+      <td title="{%if event.venue_link_id%}Event has venue{%else%}Event has no venue{%endif%}">{%if event.venue_link_id%}Y{%else%}N{%endif%}</td>
+      <td title="{% if event.programme_cover_id%}Programme cover added{%else%}No programme cover{%endif%}">{%if event.programme_cover_id%}Y{%else%}N{%endif%}</td>
+{% endif %}
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+{%endblock%}
+
+{%block scriptfooter%}
+<script type="application/javascript">
+  $('#years h3').bind('click', function(){
+    if ($(this).find('.label').text() === 'Show'){
+      var lHeadNode = $(this)
+      lHeadNode.find('.label').text('Loading...');
+      var lUrl = '/users/{{User.username}}/year/' + lHeadNode.find('.year').text() + '/';
+      var lNode = $(this).next('.year-contents');
+      lNode.load(lUrl, function(){
+        lHeadNode.find('.label').text('Close'); 
+      });
+      
+    } else {
+      $(this).next('.year-contents').html('');
+      $(this).find('.label').text('Show');
+    }
+  });
+</script>
+{%endblock%}

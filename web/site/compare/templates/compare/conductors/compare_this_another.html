@@ -1,0 +1,37 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Compare Conductors{% endblock %}
+
+{%block keywords %}Compare Conductors{% endblock %}
+
+{%block description%}Compare the results of two conductors{%endblock%}
+
+{%block conductors-compare-selected%}class="selected"{%endblock%}
+
+{% block content %}
+<div class="container pt-1">
+<h1>{% trans "Compare Conductors"%}</h1>
+<p>{% trans "Select the two conductors to compare below"%}:</p>
+<form action="." method="post">{% csrf_token %}
+<table>
+  <tr>
+    <th>{% trans "First conductor"%}:</th>
+    <td>{{ConductorOne.name}}<input type="hidden" name="first_conductor" value="{{ConductorOne.slug}}"></td>
+  </tr>
+  <tr>
+    <th>{% trans "Second conductor"%}:</th>
+    <td>
+      <select name="second_conductor">
+{% for conductor in Conductors %}
+        <option value="{{conductor.slug}}">{{conductor.name}}</option>
+{% endfor %}
+      </select>
+    </td>
+  </tr>
+</table>
+<br/>
+<input type="submit" value="{% trans "Compare"%}"></input>
+</form>
+</div>
+{% endblock %}

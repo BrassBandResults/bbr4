@@ -1,0 +1,245 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Edit Contest Result{% endblock %}
+
+{%block contests-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script type="text/javascript">
+  $(document).ready(function(){
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1 class="contest">{{ContestResult.contest_event.contest.name}}, {{ContestResult.contest_event.event_date}}</h1>
+<table>
+{% if ContestEvent.test_piece %}
+  <tr>
+    <th>{% trans "Test Piece"%}:</th>
+    <td class="test-piece">
+      {{ContestEvent.test_piece.name}}
+      {% if ContestEvent.contest_type.own_choice %} & Own Choice{% endif %}
+      <br/> 
+      - {% if ContestEvent.test_piece.composer %}{{ContestEvent.test_piece.composer.name}}{%endif%} {% if ContestEvent.test_piece.arranger %} arr. {{ContestEvent.test_piece.arranger.name}}{%endif%}
+    </td>
+  </tr>
+{% if ExtraTestPieces %}
+{% for extraTestPiece in ExtraTestPieces %}
+  <tr>
+    <td>{{extraTestPiece.and_or}}</td>
+    <td class="test-piece">
+      {{extraTestPiece.test_piece.name}}<br/> - {% if extraTestPiece.test_piece.composer %}{{extraTestPiece.test_piece.composer.name}}{%endif%} {% if extraTestPiece.test_piece.arranger %} arr. {{extraTestPiece.test_piece.arranger.name}}{%endif%}
+    </td>
+  </tr>
+{% endfor %}
+{% endif %}
+{% else %}
+    <tr><th>{% trans "Format"%}:</th><td>{{ContestEvent.contest_type.name}}</td></tr>
+{% endif %}
+  <tr>
+    <th>{% trans "Adjudicators"%}:</th>
+{% if Adjudicators %}   
+      <td class="adjudicators">{% for contest_adjudicator in Adjudicators %}<span class="adjudicator">{{contest_adjudicator.adjudicator.name}}</span>{% if not forloop.last %}, {%endif%}{% endfor %}</td>
+{% else %}
+        <td><font color="red">{% trans "Unknown, do you know?"%}</font></td>
+{% endif %}   
+  </tr>
+  <tr><th>{% trans "Venue"%}:</th><td>
+    {% if ContestEvent.venue_link %}
+    {{ContestEvent.venue_link.name}}
+    {% else %}
+    {% if ContestEvent.venue %}
+    {{ContestEvent.venue}}
+    {% else %}
+    <font color="red">{% trans "Unknown, do you know?"%}</font>
+    {% endif %}
+    {% endif %}</td></tr>
+</table>
+<br/><br/>
+<form action="." method="post" onsubmit="submit_form()">{% csrf_token %}
+<table>
+	<tr><th>{% trans "Results position"%}:</th><td>{{form.results_position.errors}} <input type="hidden" name="results_position" value="{{Position}}" id="id_results_position" /><input type="text" size="3" maxlength="4" id="position_field"/><input type="checkbox" id="withdrawn" onclick="click_withdrawn()">{% trans "Withdrawn"%}<input type="checkbox" id="disqualified" onclick="click_disqualified()">{% trans "Disqualified"%}</td></tr>
+  <tr><th>{% trans "Band name"%}:</th><td>{{form.band_name.errors}} {{form.band_name}}</td></tr>
+  <tr><th>{% trans "Band"%}:</th><td>{{ContestResult.band.name}}</td></tr>
+  <tr><th></th><td><input type="checkbox" id="editband-checkbox"/> Edit <select style="display:none;" id="bandlist" band_id="{{ContestResult.band.id}}" name=""><option value="">loading...</option></select></td></tr>
+  <tr><th>{{ContestResult.contest_event.contest_type.first_draw}}:</th><td>{{form.draw.errors}} {{form.draw}}</td></tr>
+{% if ContestResult.contest_event.contest_type.second_draw %}
+  <tr><th>{{ContestResult.contest_event.contest_type.second_draw}}:</th><td>{{form.draw_second_part.errors}} {{form.draw_second_part}}</td></tr>
+{% endif %}
+{% if ContestResult.contest_event.contest_type.points_one %}
+  <tr><th>{{ContestResult.contest_event.contest_type.points_one}}:</th><td>{{form.points_first_part.errors}} {{form.points_first_part}}</td></tr>
+  {% if ContestResult.contest_event.contest_type.points_two%}<tr><th>{{ContestResult.contest_event.contest_type.points_two}}:</th><td>{{form.points_second_part.errors}} {{form.points_second_part}}</td></tr>{%endif%}
+  {% if ContestResult.contest_event.contest_type.points_three%}<tr><th>{{ContestResult.contest_event.contest_type.points_three}}:</th><td>{{form.points_third_part.errors}} {{form.points_third_part}}</td></tr>{%endif%}
+  {% if ContestResult.contest_event.contest_type.points_four%}<tr><th>{{ContestResult.contest_event.contest_type.points_four}}:</th><td>{{form.points_fourth_part.errors}} {{form.points_fourth_part}}</td></tr>{%endif%}
+  {% if ContestResult.contest_event.contest_type.penalty_points%}<tr><th>{{ContestResult.contest_event.contest_type.penalty_points}}:</th><td>{{form.penalty_points.errors}} {{form.penalty_points}}</td></tr>{%endif%}
+  <tr><th>{{ContestResult.contest_event.contest_type.total_points}}:</th><td>{{form.points.errors}} {{form.points}}</td></tr>
+{% else %}
+  <tr><th>{{ContestResult.contest_event.contest_type.total_points}}:</th><td>{{form.points.errors}} {{form.points}}</td></tr>
+{% endif %}
+  <tr><th>{% trans "Conductor"%}:</th><td>{{ContestResult.person_conducting.name}}</td></tr>
+  <tr><th></th><td><input type="checkbox" id="editconductor-checkbox"/> Edit <select style="display:none;" id="conductorlist" conductor_id="{{ContestResult.conductor.id}}" name=""><option value="">loading...</option></select></td></tr>
+  <tr><th>{% trans "Own Choice Test piece"%}:</th><td>{% firstof ContestResult.test_piece.name "None" %}</td></tr>
+  <tr><td><input type="checkbox" id="edittestpiece-checkbox"/> Edit <select style="display:none;" id="testpiecelist" testpiece_id="{{ContestResult.test_piece.id}}" name=""><option value="">loading...</option></select></td></tr>
+  <tr><th>{% trans "Notes"%}:</th><td>{{form.notes.errors}} {{form.notes}}</td></tr>
+	<tr><th></th><td><input type="submit" value="{% trans "Submit"%}" /></td></tr>
+</table>
+</form>
+<div id="bandlist-options" style="display: none;"></div>
+<div id="conductorlist-options" style="display: none;"></div>
+<div id="testpiecelist-options" style="display: none;"></div>
+</div>
+{% endblock %}
+
+
+{%block scriptfooter%}
+<script type="text/javascript">
+  $('#editband-checkbox').click(function(){
+    if ($(this).prop('checked') === true) {
+      $('#bandlist').show();
+      var lBandListOptions = $('#bandlist-options').html();
+      var lBandId = $('#bandlist').prop('band_id');
+      if (lBandListOptions.length === 0) {
+        $.get('/bands/options/', function(data){
+          $('#bandlist-options').html(data);
+          $('#bandlist').html(data);
+          $('#bandlist').prop('name', 'band_list_id');
+          $('#bandlist option[value='+lBandId+']').prop('selected','selected'); 
+        });    
+      }    
+      else {
+          $('#bandlist').html(lBandListOptions);
+          $('#bandlist').prop('name', 'band_list_id');
+          $('#bandlist option[value='+lBandId+']').prop('selected','selected'); 
+      }
+    }
+    else
+    {
+      $('#bandlist').hide();
+      $('#bandlist').html('<option value="">{% trans "loading"%}...</option>');
+      $('#bandlist').prop('name', '');
+    }
+  });
+  
+  $('#editconductor-checkbox').click(function(){
+    if ($(this).prop('checked') === true) {
+      $('#conductorlist').show();
+      var lConductorListOptions = $('#conductorlist-options').html();
+      var lConductorId = $('#conductorlist').prop('conductor_id');
+      if (lConductorListOptions.length === 0) {
+        $.get('/people/options/', function(data){
+          lConductorListOptions = "<option value=''>({% trans "Unknown"%})</option>" + data;
+          $('#conductorlist-options').html(lConductorListOptions);
+          $('#conductorlist').html(lConductorListOptions);
+          $('#conductorlist').prop('name', 'conductor_list_id');
+          $('#conductorlist option[value='+lConductorId+']').prop('selected','selected'); 
+        });    
+      }    
+      else {
+          $('#conductorlist').html(lConductorListOptions);
+          $('#conductorlist').prop('name', 'conductor_list_id');
+          $('#conductorlist option[value='+lConductorId+']').prop('selected','selected'); 
+      }
+    }
+    else
+    {
+      $('#conductorlist').hide();
+      $('#conductorlist').html('<option value="">{% trans "loading"%}...</option>');
+      $('#conductorlist').prop('name', '');
+    }
+  });
+  
+  $('#edittestpiece-checkbox').click(function(){
+    if ($(this).prop('checked') === true) {
+      $('#testpiecelist').show();
+      var lTestPieceListOptions = $('#testpiecelist-options').html();
+      var lTestPieceId = $('#testpiecelist').prop('testpiece_id');
+      if (lTestPieceListOptions.length === 0) {
+        $.get('/pieces/options/', function(data){
+          lTestPieceListOptions = "<option value=''>({% trans "None"%})</option>" + data;
+          $('#testpiecelist-options').html(lTestPieceListOptions);
+          $('#testpiecelist').html(lTestPieceListOptions);
+          $('#testpiecelist').prop('name', 'testpiece_list_id');
+          $('#testpiecelist option[value='+lTestPieceId+']').prop('selected','selected'); 
+        });    
+      }    
+      else {
+          $('#testpiecelist').html(lTestPieceListOptions);
+          $('#testpiecelist').prop('name', 'testpiece_list_id');
+          $('#testpiecelist option[value='+lTestPieceId+']').prop('selected','selected'); 
+      }
+    }
+    else
+    {
+      $('#testpiecelist').hide();
+      $('#testpiecelist').html('<option value="">{% trans "loading"%}...</option>');
+      $('#testpiecelist').prop('name', '');
+    }
+  });
+
+
+var lPosition = parseInt($('#id_results_position').val());
+if (lPosition < 9999) {
+  // Proper Result, show it
+  $('#position_field').prop('disabled', '').val(lPosition);
+  $('#withdrawn').prop('checked', '');
+  $('#disqualified').prop('checked', '');
+}
+else if (lPosition === 9999){
+  // Unplaced
+  $('#position_field').prop('disabled', '').val('');
+  $('#withdrawn').prop('checked', '');
+  $('#disqualified').prop('checked', '');
+}
+else if (lPosition === 10000){
+  // Disqualified
+  $('#position_field').prop('disabled', 'disabled').val('');
+  $('#withdrawn').prop('checked', '');
+  $('#disqualified').prop('checked', 'checked');
+}
+else if (lPosition === 10001){
+  // Withdrawn
+  $('#position_field').prop('disabled', 'disabled').val('');
+  $('#withdrawn').prop('checked', 'checked');
+  $('#disqualified').prop('checked', '');
+}
+
+function submit_form(){
+  var lPosition = $('#position_field').val();
+  if ($('#withdrawn').is(':checked')){
+    lPosition = 10001;
+  }
+  if ($('#disqualified').is(':checked')){
+    lPosition = 10000
+  }
+  if (lPosition === ''){
+    lPosition = '9999';
+  }
+  $('#id_results_position').val(lPosition);
+}
+
+function click_disqualified(){
+  if ($('#disqualified').is(':checked')){
+    $('#position_field').prop('disabled', 'disabled').val('');
+    $('#withdrawn').prop('checked', '');
+  }
+  else {
+    $('#position_field').prop('disabled', '');
+  }
+}
+
+function click_withdrawn(){
+  if ($('#withdrawn').is(':checked')){
+    $('#position_field').prop('disabled', 'disabled').val('');
+    $('#disqualified').prop('checked', '');
+  }
+  else {
+    $('#position_field').prop('disabled', '');
+  }  
+}
+</script>
+{%endblock%}
+
+{%block feedback %}{% endblock %}

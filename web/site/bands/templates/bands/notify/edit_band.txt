@@ -1,0 +1,27 @@
+An edit has been made to {{ThingNew.name|safe}}. 
+
+Name: {{ThingNew.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
+Status: {{ThingNew.get_status_display}}{% ifnotequal ThingNew.status ThingOld.status %} [was {{ThingOld.get_status_display}}]{%endifnotequal%}
+
+Region: {{ThingNew.region.name}}{% ifnotequal ThingNew.region.name ThingOld.region.name %} [was {{ThingOld.region.name}}]{%endifnotequal%}
+Postcode: {{ThingNew.postcode}}{% ifnotequal ThingNew.postcode ThingOld.postcode %} [was {{ThingOld.postcode}}]{%endifnotequal%}
+Latitude: {{ThingNew.latitude}}{% ifnotequal ThingNew.latitude ThingOld.latitude %} [was {{ThingOld.latitude}}]{%endifnotequal%}
+Longitude: {{ThingNew.longitude}}{% ifnotequal ThingNew.longitude ThingOld.longitude %} [was {{ThingOld.longitude}}]{%endifnotequal%}
+Rehearsals: {{ThingNew.rehearsal_night_1}}{% ifnotequal ThingNew.rehearsal_night_1 ThingOld.rehearsal_night_1 %} [was {{ThingOld.rehearsal_night_1}}]{%endifnotequal%} {{ThingNew.rehearsal_night_2}}{% ifnotequal ThingNew.rehearsal_night_2 ThingOld.rehearsal_night_2 %} [was {{ThingOld.rehearsal_night_2}}]{%endifnotequal%}
+
+Email: {{ThingNew.contact_email}}{% ifnotequal ThingNew.contact_email ThingOld.contact_email %} [was {{ThingOld.contact_email}}]{%endifnotequal%}
+Website: {{ThingNew.website}}{% ifnotequal ThingNew.website ThingOld.website %} [was {{ThingOld.website}}]{%endifnotequal%}
+Twitter: {{ThingNew.twitter_name}}{% ifnotequal ThingNew.twitter_name ThingOld.twitter_name %} [was {{ThingOld.twitter_name}}]{%endifnotequal%}
+
+Start Date: {{ThingNew.start_date}}{% ifnotequal ThingNew.start_date ThingOld.start_date %} [was {{ThingOld.start_date}}]{%endifnotequal%}
+End Date: {{ThingNew.end_date}}{% ifnotequal ThingNew.end_date ThingOld.end_date %} [was {{ThingOld.end_date}}]{%endifnotequal%}
+Scratch Band: {{ThingNew.scratch_band}}{% ifnotequal ThingNew.scratch_band ThingOld.scratch_band %} [was {{ThingOld.scratch_band}}]{%endifnotequal%}
+
+Notes: {{ThingNew.notes|safe}}
+
+{% ifnotequal ThingNew.notes ThingOld.notes %} [was {{ThingOld.notes|safe}}]{%endifnotequal%}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}}{% ifnotequal ThingNew.lastChangedBy.username ThingOld.lastChangedBy.username %} [was {{ThingOld.lastChangedBy.username}}]{%endifnotequal%} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}{% ifnotequal ThingNew.owner.username ThingOld.owner.username %} [was  {{ThingOld.owner.username}}]{%endifnotequal%}, created {{ThingNew.created}}
+
+https://brassbandresults.co.uk/bands/{{ThingNew.slug}}/
