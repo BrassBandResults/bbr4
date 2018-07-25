@@ -10,11 +10,18 @@ data "template_file" "pgpass" {
     }
 }
 
-data "template_file" "bootstrap" {
-    template = "${file("bootstrap-web.sh")}"
+data "template_file" "bootstrap-web" {
+    template = "${file("bootstrap-web.tpl")}" 
     vars {
         username = "${var.prefix}"
         password = "${var.web_ssh_password}"
+    }
+}
+
+data "template_file" "bootstrap-bbr" {
+    template = "${file("bootstrap-bbr.tpl")}" 
+    vars {
+        
     }
 }
 
@@ -24,7 +31,6 @@ resource "aws_instance" "bbr-web" {
     key_name = "${lookup(var.keypair, var.region)}"
     subnet_id = "${aws_subnet.public-subnet.id}"
     private_ip = "10.0.7.7"
-    user_data = "${data.template_file.bootstrap.rendered}"
 
     security_groups = [
         "${aws_security_group.web_traffic.id}",
@@ -36,16 +42,64 @@ resource "aws_instance" "bbr-web" {
     }
 
     provisioner "file" {
-        content = "${data.template_file.pgpass.rendered}"
-        destination = ".pgpass"
+        content = "${data.template_file.bootstrap-web.rendered}"
+        destination = "bootstrap-web.sh"
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "admin"
+        }  
     }
 
-   connection {
-        type = "ssh"
-        agent = false
-        private_key = "${file("${var.ec2_private_key}")}"
-        user = "admin"
-    }  
+    provisioner "remote-exec" {
+        inline = [
+            "chmod a+x bootstrap-web.sh",
+            "./bootstrap-web.sh",
+        ]
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "admin"
+        }  
+    }
+    
+    provisioner "file" {
+        content = "${data.template_file.pgpass.rendered}"
+        destination = ".pgpass"
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "bbr"
+        }  
+    }
+
+    provisioner "file" {
+        content = "${data.template_file.bootstrap-bbr.rendered}"
+        destination = "bootstrap-bbr.sh"
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "bbr"
+        }  
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "chmod a+x bootstrap-bbr.sh",
+            "./bootstrap-bbr.sh",
+        ]
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "bbr"
+        }  
+    }
+
 }
 
 resource "aws_eip" "web-tier-ip-address" {
