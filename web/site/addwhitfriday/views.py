@@ -9,8 +9,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 from addwhitfriday.forms import ContestNameForm, ContestDateForm, \
     ResultsForm
 from bands.models import Band, PreviousBandName
-from bbr3.siteutils import slugify
-from bbr3.render import render_auth    
+from bbr.siteutils import slugify
+from bbr.render import render_auth    
 from contests.models import ContestGroup
 from regions.models import Region
 

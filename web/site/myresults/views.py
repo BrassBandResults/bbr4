@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 
 from bands.models import Band
-from bbr3.render import render_auth
+from bbr.render import render_auth
 from contests.models import Contest, ContestGroup
 from people.models import Person
 from users.models import PersonalContestHistory

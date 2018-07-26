@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # (c) 2009, 2012, 2015 Tim Sawyer, All Rights Reserved
 
-from celery.task import task
-from bbr3.notification import notify
 
-@task(ignore_result=True)
+from bbr.notification import notify
+
+
 def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None):
     """
     Send an admin notification email when something happens in users module
@@ -20,7 +20,7 @@ def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowser
            pAdditionalContext = pAdditionalContext)
     
     
-@task(ignore_result=True)
+
 def award_points_and_save(pUser, pAwardType, pAwardedFor, pNumberOfPoints, pBrowserDetails):
     """
     Award the specified number of points to the specified user, and send notification mail if over 100 points
@@ -31,4 +31,4 @@ def award_points_and_save(pUser, pAwardType, pAwardedFor, pNumberOfPoints, pBrow
         lProfile.award_points_and_save(pAwardType, pAwardedFor.id, pNumberOfPoints)
     lPointsAfter = lProfile.points
     if lPointsBefore < 100 and lPointsAfter >= 100:
-        notification.delay(None, lProfile, 'reputation', 'enhanced', pUser, pBrowserDetails)
+        notification(None, lProfile, 'reputation', 'enhanced', pUser, pBrowserDetails)

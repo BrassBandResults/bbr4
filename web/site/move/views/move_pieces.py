@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
-from bbr3.siteutils import browser_details
-from bbr3.render import render_auth
+from bbr.siteutils import browser_details
+from bbr.render import render_auth
 from contests.models import ContestEvent, ContestResult, ContestTestPiece
 from move.models import PieceMergeRequest
 from move.tasks import notification
@@ -30,7 +30,7 @@ def merge_request(request, pSourcePieceSlug):
         lPieceMergeRequest.owner = request.user
         lPieceMergeRequest.save()
         
-        notification.delay(None, lPieceMergeRequest, 'piece_merge', 'request', request.user, browser_details(request))
+        notification(None, lPieceMergeRequest, 'piece_merge', 'request', request.user, browser_details(request))
     except IndexError:
         # someone already merged one or either side
         pass
@@ -75,7 +75,7 @@ def reject_merge(request, pMergePieceRequestSerial):
         lDestination = 'tsawyer@brassbandresults.co.uk'
     
     lContext = {'Reason' : lReason, }
-    notification.delay(None, lPieceMergeRequest, 'piece', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
+    notification(None, lPieceMergeRequest, 'piece', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
         
     # delete merge request
     lPieceMergeRequest.delete()
@@ -135,9 +135,9 @@ def merge_action(request, pMergePieceRequestSerial):
         testPiece.save()
     
         
-    notification.delay(None, lMergeRequest, 'piece_merge', 'done', request.user, browser_details(request))
+    notification(None, lMergeRequest, 'piece_merge', 'done', request.user, browser_details(request))
     lSubmitterUser = lMergeRequest.owner
-    notification.delay(None, lMergeRequest, 'piece', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
+    notification(None, lMergeRequest, 'piece', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
     
     lFromPiece.delete()
     lMergeRequest.delete()

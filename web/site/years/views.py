@@ -6,8 +6,8 @@ from django.db import connection
 from django.http.response import Http404
 
 from bands.models import Band
-from bbr3.decorators import login_required_pro_user
-from bbr3.render import render_auth
+from bbr.decorators import login_required_pro_user
+from bbr.render import render_auth
 from contests.models import ContestEvent, ContestResult
 from regions.models import Region
 

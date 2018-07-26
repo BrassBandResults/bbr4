@@ -3,7 +3,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 
-from bbr3.render import render_auth
+from bbr.render import render_auth
 from contests.models import Contest, ContestGroup
 from tags.forms import NewTagForm
 from tags.models import ContestTag

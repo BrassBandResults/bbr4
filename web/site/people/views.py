@@ -15,9 +15,9 @@ from django.utils.encoding import smart_text
 
 from adjudicators.models import ContestAdjudicator
 from bands.models import Band
-from bbr3.decorators import login_required_pro_user
-from bbr3.siteutils import slugify, browser_details
-from bbr3.render import render_auth
+from bbr.decorators import login_required_pro_user
+from bbr.siteutils import slugify, browser_details
+from bbr.render import render_auth
 from contests.models import ContestResult, ContestGroup, Contest, ContestEvent
 from people.forms import EditPersonForm, EditPersonAsSuperuserForm, EditClassifiedProfileForm
 from people.models import Person, PersonAlias, ClassifiedPerson, PersonRelation
@@ -490,7 +490,7 @@ def add_person(request):
             lNewPerson.owner = request.user
             lNewPerson.save()
             
-            notification.delay(None, lNewPerson, 'person', 'new', request.user, browser_details(request))
+            notification(None, lNewPerson, 'person', 'new', request.user, browser_details(request))
             
             return HttpResponseRedirect('/people/')
     else:
@@ -525,7 +525,7 @@ def edit_person(request, pPersonSlug):
             lNewPerson.lastChangedBy = request.user
             lNewPerson.save()
             
-            notification.delay(lOriginalPerson, lNewPerson, 'person', 'edit', request.user, browser_details(request))
+            notification(lOriginalPerson, lNewPerson, 'person', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/people/%s/' % lPerson.slug)
     else:
@@ -558,7 +558,7 @@ def single_person_aliases(request, pPersonSlug):
         lPersonAlias.owner = request.user
         lPersonAlias.lastChangedBy = request.user
         lPersonAlias.save()
-        notification.delay(None, lPersonAlias, 'person_alias', 'new', request.user, browser_details(request))
+        notification(None, lPersonAlias, 'person_alias', 'new', request.user, browser_details(request))
         return HttpResponseRedirect('/people/%s/aliases/' % lPerson.slug)
     
     lPeopleAliases = PersonAlias.objects.filter(person=lPerson)
@@ -585,7 +585,7 @@ def single_person_alias_show(request, pPersonSlug, pAliasSerial):
     lPersonAlias.hidden = False
     lPersonAlias.lastChangedBy = request.user
     lPersonAlias.save()
-    notification.delay(None, lPersonAlias, 'person_alias', 'show', request.user, browser_details(request))
+    notification(None, lPersonAlias, 'person_alias', 'show', request.user, browser_details(request))
     return HttpResponseRedirect('/people/%s/aliases/' % pPersonSlug)
 
 
@@ -605,7 +605,7 @@ def single_person_alias_hide(request, pPersonSlug, pAliasSerial):
     lPersonAlias.hidden = True
     lPersonAlias.lastChangedBy = request.user
     lPersonAlias.save()
-    notification.delay(None, lPersonAlias, 'person_alias', 'hide', request.user, browser_details(request))
+    notification(None, lPersonAlias, 'person_alias', 'hide', request.user, browser_details(request))
     return HttpResponseRedirect('/people/%s/aliases/' % pPersonSlug)
 
 
@@ -622,7 +622,7 @@ def single_person_alias_delete(request, pPersonSlug, pAliasSerial):
     except IndexError:
         raise Http404
     
-    notification.delay(None, lPersonAlias, 'person_alias', 'delete', request.user, browser_details(request))
+    notification(None, lPersonAlias, 'person_alias', 'delete', request.user, browser_details(request))
     lPersonAlias.delete()
     return HttpResponseRedirect('/people/%s/aliases/' % pPersonSlug)
     
@@ -694,7 +694,7 @@ def new_classified(request, pPersonSlug):
             lNewProfile.save()
             
             # email notification
-            notification.delay(None, lNewProfile, 'profile', 'new', request.user, browser_details(request))
+            notification(None, lNewProfile, 'profile', 'new', request.user, browser_details(request))
             
             # redirect to person page
             return HttpResponseRedirect('/people/%s/' % pPersonSlug)
@@ -743,7 +743,7 @@ def edit_classified(request, pPersonSlug):
             lNewProfile.save()
             
             # email notification
-            notification.delay(None, lNewProfile, 'profile', 'edit', request.user, browser_details(request))
+            notification(None, lNewProfile, 'profile', 'edit', request.user, browser_details(request))
             
             # redirect to person page
             return HttpResponseRedirect('/people/%s/' % pPersonSlug)

@@ -1,10 +1,10 @@
-#!/home/tjs/.venv/bbr3/bin/python
+#!/home/tjs/.venv/bbr4/bin/python
 # (c) 2012, 2018 Tim Sawyer, All Rights Reserved
 
 import sys, os, re
 from datetime import datetime, timedelta
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr3.settingslive'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr4.settingslive'
 
 import django
 django.setup()

@@ -9,7 +9,7 @@ from random import randint
 from django.db import connection
 
 from bands.models import Band
-from bbr3.render import render_auth
+from bbr.render import render_auth
 from contests.models import ContestEvent
 from contests.models import ContestResult
 from home.models import FaqSection

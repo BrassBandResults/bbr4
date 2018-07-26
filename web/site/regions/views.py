@@ -8,8 +8,8 @@ from django.http import Http404
 from django.conf import settings
 from django.db.models import Q
 
-from bbr3.render import render_auth
-from bbr3.decorators import login_required_pro_user
+from bbr.render import render_auth
+from bbr.decorators import login_required_pro_user
 
 from bands.models import Band
 from regions.models import Region

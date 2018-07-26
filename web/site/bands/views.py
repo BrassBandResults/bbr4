@@ -6,13 +6,13 @@ from django.http import HttpResponse
 from django.db import connection
 from django.db.models.query_utils import Q
 
-from bbr3.render import render_auth
-from bbr3.decorators import login_required_pro_user
+from bbr.render import render_auth
+from bbr.decorators import login_required_pro_user
 
 from bands.models import Band
 from contests.models import Contest, ContestGroup, ContestAchievementAward, CurrentChampion, ContestTag
 
-from bbr3.siteutils import slugify, browser_details
+from bbr.siteutils import slugify, browser_details
 
 
 def check_results_complete(pResults, pContestGroups, pCurrentUser):
@@ -99,7 +99,7 @@ def add_band(request):
             lNewBand.lastChangedBy = request.user
             lNewBand.owner = request.user
             lNewBand.save()
-            notification.delay(None, lNewBand, 'band', 'new', request.user, browser_details(request))
+            notification(None, lNewBand, 'band', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/bands/')
     else:
         form = EditBandForm()
@@ -152,7 +152,7 @@ def edit_band(request, pBandSlug):
             lNewBand.lastChangedBy = request.user
             lNewBand.save()
             
-            notification.delay(lOldBand, lNewBand, 'band', 'edit', request.user, browser_details(request))
+            notification(lOldBand, lNewBand, 'band', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/bands/%s/' % lBand.slug)
     else:
@@ -408,7 +408,7 @@ def single_band_aliases(request, pBandSlug):
         lBandAlias.owner = request.user
         lBandAlias.lastChangedBy = request.user
         lBandAlias.save()
-        notification.delay(None, lBandAlias, 'band_alias', 'new', request.user, browser_details(request))
+        notification(None, lBandAlias, 'band_alias', 'new', request.user, browser_details(request))
         return HttpResponseRedirect('/bands/%s/aliases/' % lBand.slug)
     
     lBandAliases = PreviousBandName.objects.filter(band=lBand)
@@ -442,7 +442,7 @@ def single_band_alias_show(request, pBandSlug, pAliasSerial):
     lBandAlias.hidden = False
     lBandAlias.lastChangedBy = request.user
     lBandAlias.save()
-    notification.delay(None, lBandAlias, 'band_alias', 'show', request.user, browser_details(request))
+    notification(None, lBandAlias, 'band_alias', 'show', request.user, browser_details(request))
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
 
 
@@ -470,7 +470,7 @@ def single_band_alias_hide(request, pBandSlug, pAliasSerial):
     lBandAlias.hidden = True
     lBandAlias.lastChangedBy = request.user
     lBandAlias.save()
-    notification.delay(None, lBandAlias, 'band_alias', 'hide', request.user, browser_details(request))
+    notification(None, lBandAlias, 'band_alias', 'hide', request.user, browser_details(request))
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
 
 
@@ -487,7 +487,7 @@ def single_band_alias_delete(request, pBandSlug, pAliasSerial):
     except IndexError:
         raise Http404
     
-    notification.delay(None, lBandAlias, 'band_alias', 'delete', request.user, browser_details(request))
+    notification(None, lBandAlias, 'band_alias', 'delete', request.user, browser_details(request))
     lBandAlias.delete()
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
 
@@ -575,7 +575,7 @@ def update_whit_friday_conductors(request, pBandSlug):
             if request.user.profile.superuser:
                 lOldResult = ContestResult.objects.filter(id=lResult.id)[0]
                 lResult.save()
-                contest_notification.delay(lOldResult, lResult, 'contest_result', 'edit', request.user, browser_details(request))
+                contest_notification(lOldResult, lResult, 'contest_result', 'edit', request.user, browser_details(request))
             
     return HttpResponseRedirect('/bands/%s/#whitfriday-tab' % pBandSlug)
 

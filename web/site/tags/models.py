@@ -5,7 +5,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
-from bbr3.siteutils import slugify
+from bbr.siteutils import slugify
 
 
 class ContestTag(models.Model):

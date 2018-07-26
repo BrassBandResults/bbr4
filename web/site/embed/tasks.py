@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # (c) 2009, 2012, 2015 Tim Sawyer, All Rights Reserved
 
-from celery.task import task
+
 
 from embed.models import EmbeddedResultsLog
 
-@task(ignore_result=True)
+
 def log_embed_access(pBandSlug, pBand, pBrowserDetails, pReferer):
     """
     Log the fact that the embedded results page has been requested

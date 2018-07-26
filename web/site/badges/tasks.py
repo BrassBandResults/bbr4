@@ -3,14 +3,14 @@
 
 
 
-from celery.task import task
+
 
 from badges.models import Badge
-from bbr3.notification import notify
+from bbr.notification import notify
 from users.models import UserBadge
 
 
-@task(ignore_result=True)
+
 def award_badge(pUser, pBadgeSerial):
     """
     Award a badge to a user, if they don't already have it

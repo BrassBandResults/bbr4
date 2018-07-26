@@ -3,12 +3,12 @@
 
 
 
-from celery.task import task
-from bbr3.notification import notify
+
+from bbr.notification import notify
 import difflib
 import textwrap
 
-@task(ignore_result=True)
+
 def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None):
     """
     Send an admin notification email when something happens in classifieds module

@@ -3,7 +3,7 @@
 from django.contrib import admin
 
 from adjudicators.models import ContestAdjudicator
-from bbr3.admin import BbrAdmin
+from bbr.admin import BbrAdmin
 from contests.models import Contest, ContestEvent, ContestResult, \
     ContestWeblink, ContestGroup, ContestGroupAlias, ContestAlias, \
     ContestGroupWeblink, ContestProgrammePage, ContestProgrammeCover, \

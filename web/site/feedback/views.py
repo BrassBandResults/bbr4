@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseRedirect
 
-from bbr3.siteutils import browser_details
-from bbr3.render import render_auth
+from bbr.siteutils import browser_details
+from bbr.render import render_auth
 from contests.models import ContestEvent
 from feedback.models import SiteFeedback, ClarificationRequest
 from feedback.tasks import notification
@@ -81,7 +81,7 @@ def feedback(request):
                         'Url' : lUrl,
                         'Referrer' : lReferrer,
                         }
-            notification.delay(None, lFeedback, 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext)
+            notification(None, lFeedback, 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext)
                 
         lNextUrl = lUrl[len('http://'):]
         lNextUrl = lNextUrl[lNextUrl.find('/'):]

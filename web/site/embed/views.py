@@ -8,8 +8,8 @@ from datetime import date
 from django.http import Http404
 
 from bands.models import Band
-from bbr3.siteutils import browser_details
-from bbr3.render import render_auth
+from bbr.siteutils import browser_details
+from bbr.render import render_auth
 from embed.tasks import log_embed_access
 
 
@@ -28,7 +28,7 @@ def band_results(request, pBandSlug, pVersion):
         lReferer = ''
     
     
-    log_embed_access.delay(pBandSlug, lBand, browser_details(request), lReferer)
+    log_embed_access(pBandSlug, lBand, browser_details(request), lReferer)
     
     lBandSlugUnderscore = pBandSlug.replace('-','_')
     lToday = date.today()

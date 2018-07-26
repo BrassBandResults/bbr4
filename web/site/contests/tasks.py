@@ -3,8 +3,8 @@
 
 
 
-from celery.task import task
-from bbr3.notification import notify
+
+from bbr.notification import notify
 from datetime import timedelta, date
 from contests.models import ContestEvent
 import tweepy
@@ -14,20 +14,20 @@ from users.models import PersonalContestHistoryDateRange, PointsAward, PersonalC
 from badges.models import Badge
 from badges.tasks import award_badge
 from users.tasks import award_points_and_save
-from bbr3.siteutils import shorten_url
+from bbr.siteutils import shorten_url
 
-@task(ignore_result=True)
+
 def check_for_contest_history_badges(pContestResult, pUser):
     """
     Check to see if user needs awarding any badges, and award them if so
     """
-    award_badge.delay(pUser, Badge.COMPETITOR) # user has a contest history
+    award_badge(pUser, Badge.COMPETITOR) # user has a contest history
     lWins = PersonalContestHistory.objects.filter(user=pUser, result__results_position=1,status='accepted')
     if lWins.count() > 0:
-        award_badge.delay(pUser, Badge.WON_CONTEST)
+        award_badge(pUser, Badge.WON_CONTEST)
     
 
-@task(ignore_result=True)
+
 def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None):
     """
     Send an admin notification email when something happens in contests module
@@ -35,7 +35,7 @@ def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowser
     if pObjectType == 'contestevent' and pChangeType == 'results_added': # new contest event with results added
         lTweetContents = _tweet_contest(pThingNew)
         pAdditionalContext = {'TweetContents' : lTweetContents}
-        award_badge.delay(pUser, Badge.CONTRIBUTOR)
+        award_badge(pUser, Badge.CONTRIBUTOR)
     
     notify(pThingOld = pThingOld, 
            pThingNew = pThingNew, 
@@ -49,12 +49,12 @@ def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowser
     
     if pObjectType == 'contest_result' and pChangeType == 'new':
         _check_for_contest_date_range_match(pUser, pThingNew, pBrowserDetails)
-        award_points_and_save.delay(pUser, PointsAward.TYPE_CONTEST_RESULT, pThingNew, 1, pBrowserDetails)
+        award_points_and_save(pUser, PointsAward.TYPE_CONTEST_RESULT, pThingNew, 1, pBrowserDetails)
     elif pObjectType == 'programme_cover' and pChangeType == 'new':
         _update_programme_on_events(pThingNew)
-        award_badge.delay(pUser, Badge.PROGRAMME_SCANNER)
+        award_badge(pUser, Badge.PROGRAMME_SCANNER)
     elif pObjectType == 'future_event' and pChangeType == 'new':
-        award_badge.delay(pUser, Badge.SCHEDULER)
+        award_badge(pUser, Badge.SCHEDULER)
         
         
 def _check_for_contest_date_range_match(pUser, pContestResult, pBrowserDetails):

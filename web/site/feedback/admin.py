@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from bbr3.admin import BbrAdmin
+from bbr.admin import BbrAdmin
 from feedback.models import SiteFeedback, ClarificationRequest
 
 

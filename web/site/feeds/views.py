@@ -1,6 +1,6 @@
 # (c) 2009, 2012, 2015, 2017 Tim Sawyer, All Rights Reserved
 
-from bbr3.render import render_auth
+from bbr.render import render_auth
 from pieces.models import TestPiece
 
 

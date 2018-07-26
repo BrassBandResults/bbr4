@@ -7,9 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.http import Http404, HttpResponseRedirect
 
-from bbr3.decorators import login_required_pro_user
-from bbr3.siteutils import slugify, browser_details
-from bbr3.render import render_auth
+from bbr.decorators import login_required_pro_user
+from bbr.siteutils import slugify, browser_details
+from bbr.render import render_auth
 from contests.models import ContestEvent, ContestResult, ResultPiecePerformance
 from people.models import Person
 from pieces.forms import EditPieceForm
@@ -374,7 +374,7 @@ def add_piece(request):
             lNewPiece.lastChangedBy = request.user
             lNewPiece.owner = request.user
             lNewPiece.save()
-            notification.delay(None, lNewPiece, 'piece', 'new', request.user, browser_details(request))            
+            notification(None, lNewPiece, 'piece', 'new', request.user, browser_details(request))            
             return HttpResponseRedirect('/pieces/')
     else:
         form = EditPieceForm()
@@ -403,7 +403,7 @@ def edit_piece(request, pPieceSlug):
             lNewPiece = form.save(commit=False)
             lNewPiece.lastChangedBy = request.user
             lNewPiece.save()
-            notification.delay(lOldPiece, lNewPiece, 'piece', 'edit', request.user, browser_details(request))
+            notification(lOldPiece, lNewPiece, 'piece', 'edit', request.user, browser_details(request))
             return HttpResponseRedirect('/pieces/%s/' % lPiece.slug)
     else:
         form = EditPieceForm(instance=lPiece)

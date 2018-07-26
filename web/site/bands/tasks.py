@@ -1,8 +1,8 @@
 # (c) 2009, 2012, 2015, 2017 Tim Sawyer, All Rights Reserved
 
-from bbr3.notification import notify
+from bbr.notification import notify
 from users.models import PointsAward
-from celery.task import task
+
 from django.conf import settings
 from django.core.mail import send_mail
 import tweepy
@@ -11,7 +11,7 @@ from bands.models import Band
 from badges.tasks import award_badge
 from users.tasks import award_points_and_save
 
-@task(ignore_result=True)
+
 def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None):
     """
     Send an admin notification email when something happens in bands module
@@ -44,11 +44,11 @@ def _award_points_for_map_move(pNewBand, pUser, pBrowserDetails):
     if pNewBand.mapper != pUser:
         pNewBand.mapper = pUser
         pNewBand.save()
-        award_points_and_save.delay(pUser, PointsAward.TYPE_BAND_MAPPER, pNewBand, 5, pBrowserDetails)
+        award_points_and_save(pUser, PointsAward.TYPE_BAND_MAPPER, pNewBand, 5, pBrowserDetails)
         
-    award_badge.delay(pUser, Badge.CARTOGRAPHER)
+    award_badge(pUser, Badge.CARTOGRAPHER)
     if Band.objects.filter(mapper=pUser).count() >= 10:
-        award_badge.delay(pUser, Badge.MASTER_MAPPER)
+        award_badge(pUser, Badge.MASTER_MAPPER)
     
     
 def _location_changed(pOldBand, pNewBand):

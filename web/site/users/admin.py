@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from bbr3.admin import BbrAdmin
+from bbr.admin import BbrAdmin
 from users.models import UserProfile, PointsAward, UserBadge, \
     PersonalContestHistory, PersonalContestHistoryDateRange, UserNotification
 

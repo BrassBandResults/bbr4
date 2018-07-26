@@ -19,10 +19,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from adjudicators.models import ContestAdjudicator
 from bands.models import Band
-from bbr3.decorators import login_required_pro_user
-from bbr3.siteutils import browser_details, slugify
-from bbr3.render import render_auth
-from bbr3.talkutils import fetch_recent_talk_changes
+from bbr.decorators import login_required_pro_user
+from bbr.siteutils import browser_details, slugify
+from bbr.render import render_auth
+from bbr.talkutils import fetch_recent_talk_changes
 from classifieds.models import PlayerPosition
 from contests.forms import ContestResultForm, ContestEventForm, FutureEventForm, FutureEventFormNoContest, ContestProgrammeCoverForm, ContestForm, ContestTalkEditForm, GroupTalkEditForm
 from contests.models import Contest, ContestEvent, ContestResult, ContestGroup, ContestGroupAlias, ContestAlias, ContestProgrammeCover, ContestTestPiece, ContestProgrammePage, ContestAchievementAward, ContestEventWeblink, ContestTalkPage, GroupTalkPage, ResultPiecePerformance
@@ -901,7 +901,7 @@ def edit_result(request, pResultSerial):
             lOldResult = ContestResult.objects.filter(id=lContestResult.id)[0]
             lContestResult.lastChangedBy = request.user
             lContestResult.save()
-            notification.delay(lOldResult, lContestResult, 'contest_result', 'edit', request.user, browser_details(request))
+            notification(lOldResult, lContestResult, 'contest_result', 'edit', request.user, browser_details(request))
             return HttpResponseRedirect('/contests/%s/%s/' % (lContestResult.contest_event.contest.slug, lContestResult.contest_event.date_of_event))
     else:
         form = ContestResultForm(instance=lContestResult)
@@ -939,7 +939,7 @@ def delete_result(request, pResultSerial):
     if lAllowedToDelete == False:
         raise Http404()
     
-    notification.delay(None, lContestResult, 'contest_result', 'delete', request.user, browser_details(request))
+    notification(None, lContestResult, 'contest_result', 'delete', request.user, browser_details(request))
     lContestResult.delete()
     
     return HttpResponseRedirect('/contests/%s/%s/' % (lContestResult.contest_event.contest.slug, lContestResult.contest_event.date_of_event))
@@ -965,7 +965,7 @@ def edit_contest(request, pContestSlug):
             lContestToSave = form.save(commit=False)
             lContestToSave.lastChangedBy = request.user
             
-            notification.delay(lOriginalContest, lContestToSave, 'contest', 'edit', request.user, browser_details(request))
+            notification(lOriginalContest, lContestToSave, 'contest', 'edit', request.user, browser_details(request))
             
             lContestToSave.save()
             return HttpResponseRedirect('/contests/%s/' % lContest.slug)
@@ -992,7 +992,7 @@ def delete_contest(request, pContestSlug):
         raise Http404
     
     lContest.delete()
-    notification.delay(lContest, None, 'contest', 'delete', request.user, browser_details(request))
+    notification(lContest, None, 'contest', 'delete', request.user, browser_details(request))
 
     return HttpResponseRedirect('/contests/')
 
@@ -1023,7 +1023,7 @@ def edit_event(request, pContestSlug, pContestDate, pEventSerial):
             lNewEvent.lastChangedBy = request.user
             lNewEvent.save()
             
-            notification.delay(lOldEvent, lNewEvent, 'contestevent', 'edit', request.user, browser_details(request))
+            notification(lOldEvent, lNewEvent, 'contestevent', 'edit', request.user, browser_details(request))
                         
             return HttpResponseRedirect("/contests/%s/%s" % (lContestEvent.contest.slug, lContestEvent.date_of_event))
     else:
@@ -1071,7 +1071,7 @@ def take_ownership(request, pContestSlug, pDate):
     except ValidationError:
         raise Http404()
     
-    notification.delay(lExistingOwner, lContestEvent, 'contestevent', 'take_ownership', request.user, browser_details(request))
+    notification(lExistingOwner, lContestEvent, 'contestevent', 'take_ownership', request.user, browser_details(request))
     
     return HttpResponseRedirect('/contests/%s/%s/' % (lContestEvent.contest.slug, lContestEvent.date_of_event))
 
@@ -1104,7 +1104,7 @@ def add_result_to_contest_history(request, pContestSlug, pDate, pResultSerial):
             lExisting.status = 'accepted'
             lExisting.save()
         
-    check_for_contest_history_badges.delay(lContestResult, request.user)
+    check_for_contest_history_badges(lContestResult, request.user)
     
     lPath = '/users/%s/contest_history/' % request.user.username
     return HttpResponseRedirect(lPath)
@@ -1129,7 +1129,7 @@ def add_future_event(request, pContestSlug):
             lContestEvent.owner = request.user
             lContestEvent.lastChangedBy = request.user
             lContestEvent.save()
-            notification.delay(None, lContestEvent, 'future_event', 'new', request.user, browser_details(request))
+            notification(None, lContestEvent, 'future_event', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/contests/%s/' % lContest.slug)
     else:
         try:
@@ -1158,7 +1158,7 @@ def delete_future_event(request, pContestSlug, pEventId):
         raise Http404()
     
     if request.user == lEvent.owner:
-        notification.delay(None, lEvent, 'future_event', 'delete', request.user, browser_details(request))
+        notification(None, lEvent, 'future_event', 'delete', request.user, browser_details(request))
         lEvent.delete()
         
     return HttpResponseRedirect('/contests/%s/' % lContest.slug)
@@ -1176,7 +1176,7 @@ def add_future_event_popup(request):
             lContestEvent.owner = request.user
             lContestEvent.lastChangedBy = request.user
             lContestEvent.save()
-            notification.delay(None, lContestEvent, 'future_event', 'new', request.user, browser_details(request))
+            notification(None, lContestEvent, 'future_event', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/')
 
     lForm = FutureEventFormNoContest()
@@ -1207,7 +1207,7 @@ def upload_programme_cover(request):
             lProgrammeCover.lastChangedBy = request.user
             _handle_uploaded_file(request, lProgrammeCover)
             lProgrammeCover.save()
-            notification.delay(None, lProgrammeCover, 'programme_cover', 'new', request.user, browser_details(request))
+            notification(None, lProgrammeCover, 'programme_cover', 'new', request.user, browser_details(request))
             
             if lProgrammeCover.contest_group:
                 lRedirectUrl = '/contests/%s/%s/' % (lProgrammeCover.contest_group.actual_slug, lProgrammeCover.event_date.year)

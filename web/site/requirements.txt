@@ -1,12 +1,9 @@
-amqp==1.4.9
 anyjson==0.3.3
 billiard==3.3.0.23
-celery==3.1.20
 certifi==2017.7.27.1
 chardet==3.0.4
 confusable-homoglyphs==3.0.0
 Django==1.11.6
-django-celery==3.1.17
 django-registration==2.4.1
 idna==2.6
 kombu==3.0.33

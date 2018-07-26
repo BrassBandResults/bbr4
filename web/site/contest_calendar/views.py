@@ -8,8 +8,8 @@ from django.http.response import HttpResponseRedirect
 from django.utils.html import conditional_escape as esc
 from django.utils.safestring import mark_safe
 
-from bbr3.decorators import login_required_pro_user
-from bbr3.render import render_auth
+from bbr.decorators import login_required_pro_user
+from bbr.render import render_auth
 from contests.models import ContestEvent, ContestResult
 
 

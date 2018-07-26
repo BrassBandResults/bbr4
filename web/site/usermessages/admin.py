@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-from bbr3.admin import BbrAdmin
+from bbr.admin import BbrAdmin
 from usermessages.models import Message
 
 

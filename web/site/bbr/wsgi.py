@@ -1,5 +1,5 @@
 """
-WSGI config for bbr3 project.
+WSGI config for bbr4 project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bbr3.settingslive")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bbr4.settingslive")
 
 application = get_wsgi_application()

@@ -2,8 +2,8 @@
 
 from django.db import connection
 
-from bbr3.decorators import login_required_pro_user
-from bbr3.render import render_auth
+from bbr.decorators import login_required_pro_user
+from bbr.render import render_auth
 
 
 class SectionCount(object):

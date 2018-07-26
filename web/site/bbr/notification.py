@@ -1,7 +1,7 @@
 # (c) 2009, 2012, 2015, 2017 Tim Sawyer, All Rights Reserved
 
 from audit.models import AuditEntry
-from bbr3.siteutils import shorten_url
+from bbr.siteutils import shorten_url
 from users.models import UserNotification
 from django.conf import settings
 from django.core.mail import EmailMessage, send_mail
@@ -40,6 +40,10 @@ def notify(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrow
     """
     Send an admin notification email when something happens
     """
+    if settings.NOTIFICATIONS_ENABLED = false:
+        # disable all notifications for tesitng purposes
+        return
+
     lContext = { 'ThingNew'  : pThingNew,
                  'ThingOld'  : pThingOld,
                  'User'      : pUser,

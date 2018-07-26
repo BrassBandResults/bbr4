@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponseRedirect
 
-from bbr3.siteutils import browser_details
-from bbr3.render import render_auth
+from bbr.siteutils import browser_details
+from bbr.render import render_auth
 from usermessages.forms import UserMessageForm
 from usermessages.models import Message
 from usermessages.tasks import notification
@@ -50,7 +50,7 @@ def create_with_subject(request, pUserCode, pSubject):
             lMessage.text = lForm.cleaned_data['text']
             lMessage.save()
             
-            notification.delay(None, lMessage, 'message', 'new', request.user, browser_details(request), pDestination=lMessage.to_user.email)
+            notification(None, lMessage, 'message', 'new', request.user, browser_details(request), pDestination=lMessage.to_user.email)
             
             return HttpResponseRedirect('/users/%s/' % lToUser.username)
     else:

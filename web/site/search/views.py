@@ -8,7 +8,7 @@ from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 
 from bands.models import Band, PreviousBandName
-from bbr3.render import render_auth
+from bbr.render import render_auth
 from contests.models import Contest, Venue, ContestGroup, ContestGroupAlias, ContestAlias
 from contests.models import VenueAlias
 from people.models import Person, PersonAlias
