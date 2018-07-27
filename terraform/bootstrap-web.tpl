@@ -9,7 +9,7 @@ sudo apt-get upgrade
 
 # install required software as root
 sudo apt-get install git python3-pip nginx -y
-sudo pip3 install virtualenv
+sudo pip3 install virtualenv virtualenvwrapper
 
 # Create bbr user and group, and copy in certificate and .pgpass
 sudo addgroup ${username}
