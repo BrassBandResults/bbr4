@@ -32,7 +32,7 @@ resource "aws_instance" "bbr-web" {
     subnet_id = "${aws_subnet.public-subnet.id}"
     private_ip = "10.0.7.7"
 
-    security_groups = [
+    vpc_security_group_ids = [
         "${aws_security_group.web_traffic.id}",
         "${aws_security_group.admin_access.id}"
     ]
