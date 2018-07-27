@@ -9,7 +9,14 @@ sudo apt-get upgrade
 
 # install required software as root
 sudo apt-get install git python3-pip nginx -y
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 sudo pip3 install virtualenv virtualenvwrapper
+
+# sort out virtualenv settings
+echo '' >> ~/.profile
+echo 'export WORKON_HOME=$HOME/.venv' >> ~/.profile
+echo 'export PROJECT_HOME=$HOME' >> ~/.profile
+echo 'source /usr/local/bin/virtualenvwrapper.sh' >> ~/.profile
 
 # Create bbr user and group, and copy in certificate and .pgpass
 sudo addgroup ${username}
