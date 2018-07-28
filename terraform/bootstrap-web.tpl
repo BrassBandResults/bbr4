@@ -8,7 +8,7 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 # install required software as root
-sudo apt-get install git python3-pip nginx -y
+sudo apt-get install git python3-pip nginx postgresql-client -y
 export VIRTUALENVWRAPPER_PYTHON=`which python3`
 sudo pip3 install -U pip
 sudo pip3 install -U virtualenv virtualenvwrapper
