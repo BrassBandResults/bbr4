@@ -4,4 +4,5 @@
 
 psql -h bbr-db.csxjs9r4u4br.eu-west-2.rds.amazonaws.com -U bbradmin -d bbr -f prepare.sql
 psql -h bbr-db.csxjs9r4u4br.eu-west-2.rds.amazonaws.com -U bbr -d bbr -f ~/bbr.sql
+psql -h bbr-db.csxjs9r4u4br.eu-west-2.rds.amazonaws.com -U bbradmin -d bbr -f clearup.sql
 
