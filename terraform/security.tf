@@ -45,12 +45,21 @@ resource "aws_security_group" "admin_access" {
     }
 }
  
-resource "aws_security_group_rule" "ssh_inbound" {
+resource "aws_security_group_rule" "ssh_inbound_home" {
     type = "ingress"
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["${var.local_ip}/32"]
+    cidr_blocks = ["${var.home_ip}/32"]
+    security_group_id = "${aws_security_group.admin_access.id}"
+}
+ 
+resource "aws_security_group_rule" "ssh_inbound_work" {
+    type = "ingress"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["${var.work_ip}/32"]
     security_group_id = "${aws_security_group.admin_access.id}"
 }
  

@@ -1,4 +1,8 @@
-variable "local_ip" {
+variable "home_ip" {
+    type = "string"
+}
+ 
+variable "work_ip" {
     type = "string"
 }
 
