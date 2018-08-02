@@ -1,0 +1,38 @@
+limit_req_zone  $binary_remote_addr  zone=one:10m   rate=1r/s;
+
+server {
+	listen   80;
+	server_name  bbr4.brassbandresults.co.uk;
+
+	access_log  /var/log/bbr/bbr-access.log;
+	error_log   /var/log/bbr/bbr-error.log;
+
+	gzip on;
+
+	if ($host ~* www\.(.*)) {
+		set $host_without_www $1;
+		rewrite ^(.*)$ http://$host_without_www$1 permanent; 
+	}
+
+        if ($host !~* ^(bbr4.brassbandresults.co.uk|brassbandresults.co.uk|brassbandresults.com)$) {
+                return 444;
+        }
+
+	location / {
+		proxy_pass http://localhost:8224;
+		proxy_set_header X-REAL-IP $remote_addr;
+		proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
+		proxy_set_header Host $host;
+		limit_req zone=one burst=5;
+	}
+
+	location /site_media {
+		root /home/bbr/bbr4/web/site/;
+	}
+
+	location /site_media/admin/ {
+		alias /home/bbr/.venv/bbr4/lib/python3.5/site-packages/django/contrib/admin/static/admin/;
+	}
+
+}
+

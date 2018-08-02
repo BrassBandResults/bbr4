@@ -1,1 +1,5 @@
-local_ip = "82.69.23.82"
+home_ip = "82.69.23.82"
+work_ip = "148.253.134.213"
+ec2_private_key = "~/bbr-london.pem"
+web_ssh_password = "WebPassword964523"
+db_password = "TheRavenWhoRefusedtoSing947362"

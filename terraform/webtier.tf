@@ -42,6 +42,17 @@ resource "aws_instance" "bbr-web" {
     }
 
     provisioner "file" {
+        source = "../web/scripts/"
+        destination = "/home/admin"
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "admin"
+        }  
+    }
+
+    provisioner "file" {
         content = "${data.template_file.bootstrap-web.rendered}"
         destination = "bootstrap-web.sh"
         connection {

@@ -32,3 +32,21 @@ sudo chown -R ${username}:${username} /home/${username}/.ssh
 # Make sure copied in files on bbr user are owned by bbr:bbr
 cd /home/${username}
 sudo chown -R ${username}:${username} /home/${username}
+
+# create log file folders
+sudo mkdir /var/log/bbr
+sudo mkdir /var/log/gunicorn
+sudo chmod a+rwx /var/log/gunicorn
+
+# run bbr gunicorn server
+sudo cp ~/init-gu-bbr /etc/init.d/gu-bbr
+sudo chmod a+x /etc/init.d/gu-bbr
+sudo chown root:root /etc/init.d/gu-bbr
+sudo /etc/init.d/gu-bbr start
+sudo systemctl enable gu-bbr
+
+# configure nginx
+sudo mkdir /var/log/bbr
+sudo cp ~/nginx-bbr4 /etc/nginx/sites-available/bbr4
+sudo ln -s /etc/nginx/sites-available/bbr4 /etc/nginx/sites-enabled/bbr4
+sudo /etc/init.d/nginx restart

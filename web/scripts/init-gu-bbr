@@ -1,0 +1,73 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:       bbr3
+# Required-Start: $local_fs $syslog
+# Required-Stop:  $local_fs $syslog
+# Default-Start:  2 3 4 5
+# Default-Stop:   0 1 6
+# Short-Description: Gunicorn processes for brassbandresults3
+### END INIT INFO
+
+OWNER="bbr"
+NAME="bbr4"
+PORT=8224
+WORKERS=2
+VIRTUALENV="bbr4"
+
+CONFDIR="/home/$OWNER/bbr4/web/site"
+USER=bbr
+VIRTUALENVDIR="/home/$OWNER/.venv"
+GUNICORN_RUN="$VIRTUALENVDIR/$VIRTUALENV/bin/gunicorn"
+PID="/tmp/gunicorn_$NAME.pid"
+LOGPATH="/var/log/gunicorn/$NAME.log"
+RETVAL=0
+
+# source function library
+. /lib/lsb/init-functions
+
+start()
+{
+    echo "Starting $NAME."
+    export PYTHONPATH=$CONFDIR
+    cd $CONFDIR
+    . $VIRTUALENVDIR/$VIRTUALENV/bin/activate
+    echo $PYTHONPATH
+    su -c "$GUNICORN_RUN bbr.wsgi:application -b localhost:$PORT -n $NAME -w $WORKERS --timeout 60 -p $PID --daemon --error-logfile $LOGPATH" $USER && echo "OK" || echo "failed"
+}
+
+stop()
+{
+    echo "Stopping $NAME"
+    kill -QUIT `cat $PID` && echo "OK" || echo "failed";
+}
+
+reload()
+{
+    echo "Reloading $NAME:"
+    if [ -f $PID ]
+    then kill -HUP `cat $PID` && echo "OK" || echo "failed";
+    fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        reload
+        ;;
+    reload)
+        reload
+        ;;
+    force-reload)
+        stop && start
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        RETVAL=1
+esac
+exit $RETVAL
+
