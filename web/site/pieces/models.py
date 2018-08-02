@@ -10,9 +10,6 @@ from django.db import models
 
 from people.models import Person
 
-from sorl.thumbnail import ImageField
-
-
 class TestPiece(models.Model):
     """
     A test piece
@@ -145,7 +142,7 @@ class DownloadAlbum(models.Model):
     band_name = models.CharField(max_length=100)
     title = models.CharField(max_length=50)
     link = models.URLField()
-    thumbnail = ImageField(upload_to='cd_covers/%Y')
+    thumbnail = models.ImageField(upload_to='cd_covers/%Y')
     TYPE_CHOICES = (
                     ('cd','Purchase CD'),
                     ('download', 'Download Track'),
