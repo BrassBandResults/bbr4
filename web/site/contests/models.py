@@ -15,7 +15,6 @@ from django.utils.dateformat import format
 from bands.models import Band
 from contests.whitfriday import calculate_overall_winners, \
     calculate_overall_results
-from sorl.thumbnail import ImageField
 from people.models import Person
 from pieces.models import TestPiece
 from regions.models import Region
@@ -889,7 +888,7 @@ class ContestProgrammeCover(models.Model):
     contest_group = models.ForeignKey(ContestGroup, blank=True, null=True, on_delete=models.PROTECT)
     contest = models.ForeignKey(Contest, blank=True, null=True, on_delete=models.PROTECT)
     event_date = models.DateField(help_text="Date of Event, DD/MM/YYYY")
-    image = ImageField(upload_to='programme_cover/%Y')
+    image = models.ImageField(upload_to='programme_cover/%Y')
     lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestProgrammeCoverLastChangedBy')
     owner = models.ForeignKey(User, editable=False, related_name='ContestProgrammeCoverOwner')
     
@@ -924,7 +923,7 @@ class ContestProgrammePage(models.Model):
     created = models.DateTimeField(default=datetime.now,editable=False)
     cover = models.ForeignKey(ContestProgrammeCover)
     number = models.IntegerField(default=1)
-    image = ImageField(upload_to='programme_page/%Y')
+    image = models.ImageField(upload_to='programme_page/%Y')
     description = models.CharField(max_length=255, blank=True, null=True)
     lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestProgrammePageLastChangedBy')
     owner = models.ForeignKey(User, editable=False, related_name='ContestProgrammePageOwner')

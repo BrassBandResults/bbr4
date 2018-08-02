@@ -6,9 +6,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
-from sorl.thumbnail import ImageField
-
-
 class Person(models.Model):
     """
     A conductor, adjudicator, composer or arranger
@@ -238,7 +235,7 @@ class ClassifiedPerson(models.Model):
     mobile_phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)
     profile = models.TextField()
-    picture = ImageField(blank=True, null=True, upload_to='profile_photos/%Y') 
+    picture = models.ImageField(blank=True, null=True, upload_to='profile_photos/%Y') 
     person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT)
     visible = models.BooleanField(default=False)
     show_on_homepage = models.BooleanField(default=True)
