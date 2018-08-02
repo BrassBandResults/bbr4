@@ -4,8 +4,8 @@ server {
 	listen   80;
 	server_name  bbr4.brassbandresults.co.uk;
 
-	access_log  /var/log/bbr/bbr-access.log;
-	error_log   /var/log/bbr/bbr-error.log;
+	access_log  /var/log/bbr/web-access.log;
+	error_log   /var/log/bbr/web-error.log;
 
 	gzip on;
 

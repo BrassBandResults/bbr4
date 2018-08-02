@@ -35,8 +35,7 @@ sudo chown -R ${username}:${username} /home/${username}
 
 # create log file folders
 sudo mkdir /var/log/bbr
-sudo mkdir /var/log/gunicorn
-sudo chmod a+rwx /var/log/gunicorn
+sudo chmod a+rwx /var/log/bbr
 
 # run bbr gunicorn server
 sudo cp ~/init-gu-bbr /etc/init.d/gu-bbr

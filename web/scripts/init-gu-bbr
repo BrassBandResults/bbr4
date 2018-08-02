@@ -19,7 +19,7 @@ USER=bbr
 VIRTUALENVDIR="/home/$OWNER/.venv"
 GUNICORN_RUN="$VIRTUALENVDIR/$VIRTUALENV/bin/gunicorn"
 PID="/tmp/gunicorn_$NAME.pid"
-LOGPATH="/var/log/gunicorn/$NAME.log"
+LOGPATH="/var/log/bbr/gunicorn.log"
 RETVAL=0
 
 # source function library
