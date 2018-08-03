@@ -13,6 +13,8 @@ export VIRTUALENVWRAPPER_PYTHON=`which python3`
 sudo pip3 install -U pip
 sudo pip3 install -U virtualenv virtualenvwrapper
 
+# install geodjango libraries
+sudo apt-get install binutils libproj-dev gdal-bin -y
 
 # sort out virtualenv settings
 echo '' >> ~/.profile
