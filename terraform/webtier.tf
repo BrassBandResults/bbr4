@@ -28,7 +28,7 @@ data "template_file" "bootstrap-bbr" {
 data "template_file" "django-settings-live" {
     template = "${file("settings-live.py.tpl")}" 
     vars {
-        dbHost = "${aws_db_instance.bbr-db.address}""
+        dbHost = "${aws_db_instance.bbr-db.address}"
         dbPassword = "${var.db_password}"
         djangoSecretKey = "${var.djangoSecretKey}"
         googleMapsKey = "${var.googleMapsKey}"
