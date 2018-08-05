@@ -33,9 +33,9 @@ GOOGLE_MAPS_API_KEY = "${googleMapsKey}"
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'bbr4',
+        'NAME': 'bbr',
         'USER': 'bbr',
-        'PASSWORD':'${dbPassword}',
+        'PASSWORD':'${dbPasswordBbr}',
         'HOST':'${dbHost}',
         'PORT':'5432',
     }

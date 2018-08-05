@@ -52,6 +52,10 @@ variable "db_password" {
     type = "string"
 }
 
+variable "db_password_bbr" {
+    type = "string"
+}
+
 variable "web_ssh_password" {
     type = "string"
 }

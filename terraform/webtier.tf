@@ -29,7 +29,7 @@ data "template_file" "django-settings-live" {
     template = "${file("settings-live.tpl.py")}" 
     vars {
         dbHost = "${aws_db_instance.bbr-db.address}"
-        dbPassword = "${var.db_password}"
+        dbPasswordBbr = "${var.db_password_bbr}"
         djangoSecretKey = "${var.djangoSecretKey}"
         googleMapsKey = "${var.googleMapsKey}"
     }
