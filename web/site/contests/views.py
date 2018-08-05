@@ -26,7 +26,7 @@ from bbr.talkutils import fetch_recent_talk_changes
 from classifieds.models import PlayerPosition
 from contests.forms import ContestResultForm, ContestEventForm, FutureEventForm, FutureEventFormNoContest, ContestProgrammeCoverForm, ContestForm, ContestTalkEditForm, GroupTalkEditForm
 from contests.models import Contest, ContestEvent, ContestResult, ContestGroup, ContestGroupAlias, ContestAlias, ContestProgrammeCover, ContestTestPiece, ContestProgrammePage, ContestAchievementAward, ContestEventWeblink, ContestTalkPage, GroupTalkPage, ResultPiecePerformance
-from contests.tasks import notification, check_for_contest_history_badges
+from contests.tasks import notification
 from people.models import Person, PersonAlias
 from pieces.models import TestPiece, TestPieceAlias
 from regions.models import Region
@@ -1104,8 +1104,6 @@ def add_result_to_contest_history(request, pContestSlug, pDate, pResultSerial):
             lExisting.status = 'accepted'
             lExisting.save()
         
-    check_for_contest_history_badges(lContestResult, request.user)
-    
     lPath = '/users/%s/contest_history/' % request.user.username
     return HttpResponseRedirect(lPath)
 
