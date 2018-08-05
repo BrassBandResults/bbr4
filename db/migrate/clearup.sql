@@ -18,3 +18,9 @@ DROP TABLE dj_banner_contract CASCADE;
 DROP TABLE dj_banner_month;
 
 DELETE FROM django_session;
+
+GRANT ALL PRIVILEGES ON DATABASE bbr TO bbr;
+
+SELECT exec('GRANT ALL ON ' || table_schema || '.' || table_name || ' TO bbr;')
+FROM information_schema.tables
+WHERE table_schema = 'public'
