@@ -10,8 +10,6 @@ from django.http import Http404
 from bands.models import Band
 from bbr.siteutils import browser_details
 from bbr.render import render_auth
-from embed.tasks import log_embed_access
-
 
 def band_results(request, pBandSlug, pVersion):
     """
@@ -26,10 +24,7 @@ def band_results(request, pBandSlug, pVersion):
         lReferer = request.META['HTTP_REFERER']
     except KeyError:
         lReferer = ''
-    
-    
-    log_embed_access(pBandSlug, lBand, browser_details(request), lReferer)
-    
+       
     lBandSlugUnderscore = pBandSlug.replace('-','_')
     lToday = date.today()
     lResults = lBand.contestresult_set.filter(contest_event__date_of_event__lte=lToday).select_related()
