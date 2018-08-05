@@ -1,29 +1,12 @@
-# -*- coding: utf-8 -*-
-# (c) 2009, 2012, 2015 Tim Sawyer, All Rights Reserved
-
-
-
+# (c) 2009, 2012, 2015, 2018 Tim Sawyer, All Rights Reserved
 
 from bbr.notification import notify
-import difflib
-import textwrap
 
 
 def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None):
     """
     Send an admin notification email when something happens in classifieds module
     """
-    if (pObjectType == 'profile' or pObjectType == 'band_profile') and pChangeType == 'edit':
-        lOldProfile = textwrap.wrap(pThingOld.profile, 80)
-        lNewProfile = textwrap.wrap(pThingNew.profile, 80)
-        
-        lDiff = difflib.Differ()
-        lProfileDiffLines = lDiff.compare(lOldProfile, lNewProfile)
-        lProfileDiff = '\n'.join(list(lProfileDiffLines))
-        if pAdditionalContext == None:
-            pAdditionalContext = {}
-        pAdditionalContext.update({'ProfileDiff' : lProfileDiff})
-    
     notify(pThingOld = pThingOld, 
            pThingNew = pThingNew, 
            pModule = 'classifieds', 

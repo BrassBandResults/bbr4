@@ -18,17 +18,3 @@ def notification(pThingOld, pThingNew, pObjectType, pChangeType, pUser, pBrowser
            pBrowserDetails = pBrowserDetails, 
            pDestination = pDestination,
            pAdditionalContext = pAdditionalContext)
-    
-    
-
-def award_points_and_save(pUser, pAwardType, pAwardedFor, pNumberOfPoints, pBrowserDetails):
-    """
-    Award the specified number of points to the specified user, and send notification mail if over 100 points
-    """
-    lProfile = pUser.profile
-    lPointsBefore = lProfile.points
-    if pAwardedFor != None:
-        lProfile.award_points_and_save(pAwardType, pAwardedFor.id, pNumberOfPoints)
-    lPointsAfter = lProfile.points
-    if lPointsBefore < 100 and lPointsAfter >= 100:
-        notification(None, lProfile, 'reputation', 'enhanced', pUser, pBrowserDetails)
