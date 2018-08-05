@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-from settings_common import *
+from bbr.settings_common import *
 
 
 # Quick-start development settings - unsuitable for production

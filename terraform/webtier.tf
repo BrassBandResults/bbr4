@@ -123,7 +123,7 @@ resource "aws_instance" "bbr-web" {
 
         provisioner "file" {
         content = "${data.template_file.django-settings-live.rendered}"
-        destination = "~/bbr4/web/site/bbr/settings-live.py"
+        destination = "~/bbr4/web/site/bbr/settingslive.py"
         connection {
             type = "ssh"
             agent = false
