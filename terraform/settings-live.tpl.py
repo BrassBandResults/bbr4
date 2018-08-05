@@ -21,7 +21,6 @@ SECRET_KEY = '${djangoSecretKey}'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-THUMBNAIL_DEBUG = True
 
 ALLOWED_HOSTS = ['bbr4.brassbandresults.co.uk',]
 
