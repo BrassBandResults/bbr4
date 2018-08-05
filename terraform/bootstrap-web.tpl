@@ -43,8 +43,8 @@ sudo chmod a+rwx /var/log/bbr
 sudo cp ~/init-gu-bbr /etc/init.d/gu-bbr
 sudo chmod a+x /etc/init.d/gu-bbr
 sudo chown root:root /etc/init.d/gu-bbr
-sudo /etc/init.d/gu-bbr start
-sudo systemctl enable gu-bbr
+#sudo /etc/init.d/gu-bbr start
+#sudo systemctl enable gu-bbr
 
 # configure nginx
 sudo mkdir /var/log/bbr

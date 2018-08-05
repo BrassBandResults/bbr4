@@ -18,7 +18,7 @@ from settings_common import *
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f69cytx1o42nne1tm1@b$v0$9yl)0!+iqo+yjpsh!tq6abnuw_'
+SECRET_KEY = '${djangoSecretKey}'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -26,7 +26,7 @@ THUMBNAIL_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GOOGLE_MAPS_API_KEY = "AIzaSyDRGGo0pfBGKEE5n6iS7IEqhWeSHYiEI2c"
+GOOGLE_MAPS_API_KEY = "${googleMapsKey}"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -36,8 +36,8 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'bbr4',
         'USER': 'bbr',
-        'PASSWORD':'2barsrepeat',
-        'HOST':'sokar',
+        'PASSWORD':'${dbPassword}',
+        'HOST':'${dbHost}',
         'PORT':'5432',
     }
 }

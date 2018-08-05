@@ -25,6 +25,16 @@ data "template_file" "bootstrap-bbr" {
     }
 }
 
+data "template_file" "django-settings-live" {
+    template = "${file("settings-live.py.tpl")}" 
+    vars {
+        dbHost = "${aws_db_instance.bbr-db.address}""
+        dbPassword = "${var.db_password}"
+        djangoSecretKey = "${var.djangoSecretKey}"
+        googleMapsKey = "${var.googleMapsKey}"
+    }
+}
+
 resource "aws_instance" "bbr-web" {
     ami = "${lookup(var.ec2ami, var.region)}"
     instance_type = "t2.micro"
@@ -103,6 +113,17 @@ resource "aws_instance" "bbr-web" {
             "chmod a+x bootstrap-bbr.sh",
             "./bootstrap-bbr.sh",
         ]
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "bbr"
+        }  
+    }
+
+        provisioner "file" {
+        content = "${data.template_file.django-settings-live.rendered}"
+        destination = "~/bbr4/web/site/bbr/settings-live.py"
         connection {
             type = "ssh"
             agent = false
