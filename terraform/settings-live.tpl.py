@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 from bbr.settings_common import *
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -24,7 +23,7 @@ SECRET_KEY = '${djangoSecretKey}'
 DEBUG = True
 THUMBNAIL_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bbr4.brassbandresults.co.uk',]
 
 GOOGLE_MAPS_API_KEY = "${googleMapsKey}"
 

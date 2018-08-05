@@ -26,7 +26,7 @@ data "template_file" "bootstrap-bbr" {
 }
 
 data "template_file" "django-settings-live" {
-    template = "${file("settings-live.py.tpl")}" 
+    template = "${file("settings-live.tpl.py")}" 
     vars {
         dbHost = "${aws_db_instance.bbr-db.address}"
         dbPassword = "${var.db_password}"
@@ -129,6 +129,19 @@ resource "aws_instance" "bbr-web" {
             agent = false
             private_key = "${file("${var.ec2_private_key}")}"
             user = "bbr"
+        }  
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "sudo /etc/init.d/gu-bbr stop",
+            "sudo /etc/init.d/gu-bbr start",
+        ]
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "admin"
         }  
     }
 
