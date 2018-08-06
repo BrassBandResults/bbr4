@@ -48,20 +48,20 @@ def notify(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrow
         # disable all notifications for tesitng purposes
         return
 
-    lMessage = new MessageWrapper(pThingOld,
-                                  pThingNew,
-                                  pModule,
-                                  pObjectType,
-                                  pChangeType,
-                                  pUser,
-                                  pBrowserDetails,
-                                  pDestination,
-                                  pAdditionalContext,
-                                  pCc,
-                                  pBcc,
-                                  pFromName,
-                                  pFromEmail,  
-                                 )
+    lMessage = MessageWrapper(pThingOld,
+                              pThingNew,
+                              pModule,
+                              pObjectType,
+                              pChangeType,
+                              pUser,
+                              pBrowserDetails,
+                              pDestination,
+                              pAdditionalContext,
+                              pCc,
+                              pBcc,
+                              pFromName,
+                              pFromEmail,  
+                             )
 
     client = boto3.client('sns')
     client.publish(
