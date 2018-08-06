@@ -32,6 +32,7 @@ data "template_file" "django-settings-live" {
         dbPasswordBbr = "${var.db_password_bbr}"
         djangoSecretKey = "${var.djangoSecretKey}"
         googleMapsKey = "${var.googleMapsKey}"
+        notificationTopicArn = "${aws_sns_topic.bbr-notify.arn}"
     }
 }
 

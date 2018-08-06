@@ -49,4 +49,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "site_media"),
 ]
 
-NOTIFICATIONS_ENABLED = False
+NOTIFICATIONS_ENABLED = True
+NOTIFICATION_TOPIC_ARN = ${notificationTopicArn}
