@@ -37,7 +37,7 @@ class MessageWrapper:
         self.fromEmail = pFromEmail
 
     def asJson(self):
-        return "{"json": "json"}"
+        return "{'json': 'json'}"
 
 
 def notify(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None, pCc=None, pBcc=None, pFromName=None, pFromEmail=None):
