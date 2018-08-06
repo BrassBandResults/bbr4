@@ -50,4 +50,4 @@ STATICFILES_DIRS = [
 ]
 
 NOTIFICATIONS_ENABLED = True
-NOTIFICATION_TOPIC_ARN = ${notificationTopicArn}
+NOTIFICATION_TOPIC_ARN = "${notificationTopicArn}"
