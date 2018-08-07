@@ -43,11 +43,7 @@ DATABASES = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/site_media/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "site_media"),
-]
+STATIC_URL = 'http://${prefix}-site-media.s3-website.eu-west-2.amazonaws.com/'
 
 NOTIFICATIONS_ENABLED = True
 NOTIFICATION_TOPIC_ARN = "${notificationTopicArn}"

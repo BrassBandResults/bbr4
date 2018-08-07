@@ -24,12 +24,12 @@
   <tr>
     <td align="left">
       {% if PreviousEvent %}
-      <img src="/site_media/icons/arrow_left.png"/> <a href="/contests/{{ContestGroup.actual_slug}}/{{PreviousEvent.date_of_event.year}}/">{{PreviousEvent.date_of_event.year}}</a>
+      <img src="{{ STATIC_URL }}/icons/arrow_left.png"/> <a href="/contests/{{ContestGroup.actual_slug}}/{{PreviousEvent.date_of_event.year}}/">{{PreviousEvent.date_of_event.year}}</a>
       {% endif %}
     </td>
     <td align="right">
      {% if NextEvent %}
-      <a href="/contests/{{ContestGroup.actual_slug}}/{{NextEvent.date_of_event.year}}/">{{NextEvent.date_of_event.year}}</a> <img src="/site_media/icons/arrow_right.png"/>
+      <a href="/contests/{{ContestGroup.actual_slug}}/{{NextEvent.date_of_event.year}}/">{{NextEvent.date_of_event.year}}</a> <img src="{{ STATIC_URL }}/icons/arrow_right.png"/>
       {% endif %}      
     </td>
   </tr>
@@ -53,7 +53,7 @@
 {% else %}        
         <td>
           {% for winner in event.winners %}
-            <div class="band"><img src="/site_media/flags/{{winner.band.region.country_code|lower}}.png" title="{{winner.band.region.name}}"> <a href="/bands/{{winner.band.slug}}/" title="{{winner.band.name}}">{{winner.band_name}}</a></div>
+            <div class="band"><img src="{{ STATIC_URL }}/flags/{{winner.band.region.country_code|lower}}.png" title="{{winner.band.region.name}}"> <a href="/bands/{{winner.band.slug}}/" title="{{winner.band.name}}">{{winner.band_name}}</a></div>
           {% endfor %}
         </td>
 {% endif %}        

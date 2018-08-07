@@ -73,7 +73,7 @@ function fill(thisValue) {
 		<td>
 		  <input type="text" id="venue" name="Venue" value="{{PreviousVenue}}" onkeyup="lookup(this.value);" maxlength="100" autofocus="autofocus">&nbsp;&nbsp;<input type="submit" value="Submit" />
 		  <div class="suggestionsBox" id="suggestions" style="display: none;">
-		    <img src="/site_media/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+		    <img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
             <div class="suggestionList" id="autoSuggestionsList"></div>
 		  </div>
         </td>

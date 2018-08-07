@@ -10,7 +10,7 @@
 {%block bands-mapvacancies-selected%}{% if VacanciesOnly %}class="selected"{%endif%}{%endblock%}
 
 {%block head %}
-<script src="/site_media/map/js/infobubble-compiled.js"></script>
+<script src="{{ STATIC_URL }}/map/js/infobubble-compiled.js"></script>
 {% if Band %}
   <script src="/map/band/{{Band.slug}}/map_script.js"></script>
   {% else %}

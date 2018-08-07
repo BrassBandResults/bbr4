@@ -8,9 +8,9 @@
 {%block contests-selected%}class="selected"{%endblock%}
 
 {%block head %}
-<script type="text/javascript" src="/site_media/datepicker/date.js"></script>
-<script src="/site_media/datepicker/jquery.datePicker.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/site_media/datepicker/datePicker.css" type="text/css" media="screen"/>
+<script type="text/javascript" src="{{ STATIC_URL }}/datepicker/date.js"></script>
+<script src="{{ STATIC_URL }}/datepicker/jquery.datePicker.js" type="text/javascript"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}/datepicker/datePicker.css" type="text/css" media="screen"/>
 <script type="text/javascript">
   $(document).ready(function(){
 	$('#id_date_of_event').datePicker({startDate:(new Date()).asString()});

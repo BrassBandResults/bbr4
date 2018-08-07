@@ -125,12 +125,12 @@
 <button class="screenonly hide_highlights btn btn-outline-primary btn-sm float-right mb-1 mr-1">{% trans "Hide Highlight"%}</button>
 <table class="next-previous screenonly" width="100%">
     <tr>
-        <td align="left">{% if PreviousSectionEvent %}<a href="/contests/{{PreviousSectionEvent.contest.slug}}/{{PreviousSectionEvent.date_of_event|date:"Y-m-d"}}/"><img src="/site_media/icons/arrow_up.png" border="0"/> {{PreviousSectionEvent.contest.name}} {{PreviousSectionEvent.date_of_event|date:"Y"}}</a>{%endif%}</td>
-        <td align="right">{% if NextSectionEvent %}<a href="/contests/{{NextSectionEvent.contest.slug}}/{{NextSectionEvent.date_of_event|date:"Y-m-d"}}/">{{NextSectionEvent.contest.name}} {{NextSectionEvent.date_of_event|date:"Y"}} <img src="/site_media/icons/arrow_down.png" border="0"/></a>{%endif%}</td>
+        <td align="left">{% if PreviousSectionEvent %}<a href="/contests/{{PreviousSectionEvent.contest.slug}}/{{PreviousSectionEvent.date_of_event|date:"Y-m-d"}}/"><img src="{{ STATIC_URL }}/icons/arrow_up.png" border="0"/> {{PreviousSectionEvent.contest.name}} {{PreviousSectionEvent.date_of_event|date:"Y"}}</a>{%endif%}</td>
+        <td align="right">{% if NextSectionEvent %}<a href="/contests/{{NextSectionEvent.contest.slug}}/{{NextSectionEvent.date_of_event|date:"Y-m-d"}}/">{{NextSectionEvent.contest.name}} {{NextSectionEvent.date_of_event|date:"Y"}} <img src="{{ STATIC_URL }}/icons/arrow_down.png" border="0"/></a>{%endif%}</td>
         
     <tr>
-        <td align="left">{% if ContestEventPrevious %}<img src="/site_media/icons/arrow_left.png" border="0"/> <a href="/contests/{{ContestEventPrevious.contest.slug}}/{{ContestEventPrevious.date_of_event|date:"Y-m-d"}}/">{% trans "Previous Event"%}</a> {%endif%}</td>
-        <td align="right">{% if ContestEventNext %} <a href="/contests/{{ContestEventNext.contest.slug}}/{{ContestEventNext.date_of_event|date:"Y-m-d"}}/">{% trans "Next Event"%}</a> <img src="/site_media/icons/arrow_right.png" border="0"/>{%endif%}</td>
+        <td align="left">{% if ContestEventPrevious %}<img src="{{ STATIC_URL }}/icons/arrow_left.png" border="0"/> <a href="/contests/{{ContestEventPrevious.contest.slug}}/{{ContestEventPrevious.date_of_event|date:"Y-m-d"}}/">{% trans "Previous Event"%}</a> {%endif%}</td>
+        <td align="right">{% if ContestEventNext %} <a href="/contests/{{ContestEventNext.contest.slug}}/{{ContestEventNext.date_of_event|date:"Y-m-d"}}/">{% trans "Next Event"%}</a> <img src="{{ STATIC_URL }}/icons/arrow_right.png" border="0"/>{%endif%}</td>
     </tr>
 </table>
 <table id="results" class="table table-hover table-sm">
@@ -182,9 +182,9 @@
 {% for result in Results %}
       <tr class="result-{{result.results_position_display}}">
 {% if not ContestEvent.moreThanThreeMonthsInFuture %}          
-              <td class="band-contest-position">{% if result.results_position_display%}<a href="/contests/{{ContestEvent.contest.slug}}/position/{{result.results_position_display}}/">{{result.results_position_display}}</a>{%endif%}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="/site_media/icons/comment.png" border="0"/></a>{%endif%}</td>
+              <td class="band-contest-position">{% if result.results_position_display%}<a href="/contests/{{ContestEvent.contest.slug}}/position/{{result.results_position_display}}/">{{result.results_position_display}}</a>{%endif%}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}/icons/comment.png" border="0"/></a>{%endif%}</td>
 {% endif %}              
-            <td class="band"><img src="/site_media/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
+            <td class="band"><img src="{{ STATIC_URL }}/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
 {% if not ContestEvent.moreThanThreeMonthsInFuture %}            
             <td class="conductor">
 {% ifnotequal result.results_position_display "W" %}
@@ -254,8 +254,8 @@
 </table>
 <table class="next-previous screenonly" width="100%">
     <tr>
-        <td align="left">{% if ContestEventPrevious %}<img src="/site_media/icons/arrow_left.png" border="0"/> <a href="/contests/{{ContestEventPrevious.contest.slug}}/{{ContestEventPrevious.date_of_event|date:"Y-m-d"}}/">Previous Event</a> {%endif%}</td>
-        <td align="right">{% if ContestEventNext %} <a href="/contests/{{ContestEventNext.contest.slug}}/{{ContestEventNext.date_of_event|date:"Y-m-d"}}/">Next Event</a> <img src="/site_media/icons/arrow_right.png" border="0"/>{%endif%}</td>
+        <td align="left">{% if ContestEventPrevious %}<img src="{{ STATIC_URL }}/icons/arrow_left.png" border="0"/> <a href="/contests/{{ContestEventPrevious.contest.slug}}/{{ContestEventPrevious.date_of_event|date:"Y-m-d"}}/">Previous Event</a> {%endif%}</td>
+        <td align="right">{% if ContestEventNext %} <a href="/contests/{{ContestEventNext.contest.slug}}/{{ContestEventNext.date_of_event|date:"Y-m-d"}}/">Next Event</a> <img src="{{ STATIC_URL }}/icons/arrow_right.png" border="0"/>{%endif%}</td>
     </tr>
 </table>
 

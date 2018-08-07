@@ -33,6 +33,7 @@ data "template_file" "django-settings-live" {
         djangoSecretKey = "${var.djangoSecretKey}"
         googleMapsKey = "${var.googleMapsKey}"
         notificationTopicArn = "${aws_sns_topic.bbr-notify.arn}"
+        prefix = "${var.prefix}"
     }
 }
 

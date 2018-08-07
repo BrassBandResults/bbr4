@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="AUTHOR" content="Tim Sawyer" />
-  <link rel="shortcut icon" href="/site_media/favicon.ico" >
+  <link rel="shortcut icon" href="{{ STATIC_URL }}/favicon.ico" >
   <meta name="Description" content="Brass Band Results: Project to build a comprehensive database of contest results. {% block description %}{% endblock %}." />
   <meta name="Keywords" content="Brass,Band,Contest,Music,Competition,Group,Results,{% block keywords %}{% endblock %}" />
   <title>{% block title %}{% endblock %} - Brass Band Results</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-  <link rel="stylesheet" href="/site_media/css2017/bbr4.css"/>
-  <link rel="stylesheet" href="/site_media/css2017/bbr4-print.css" media="print"/>
-  <link rel="stylesheet" href="/site_media/js/tablesorter/theme.bootstrap_4.css">
-  <link rel="stylesheet" href="/site_media/jqueryui/jquery-ui.min.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css2017/bbr4.css"/>
+  <link rel="stylesheet" href="{{ STATIC_URL }}/css2017/bbr4-print.css" media="print"/>
+  <link rel="stylesheet" href="{{ STATIC_URL }}/js/tablesorter/theme.bootstrap_4.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}/jqueryui/jquery-ui.min.css">
 
   {% if not user.profile.pro_member %}
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -141,7 +141,7 @@
 
     <form class="form-inline" role="search" action="/search/">
       <input type="text" class="form-control" placeholder="Search" name="q">
-      <button type="submit" class="btn btn-default search"><img src="/site_media/search.png"/></button>
+      <button type="submit" class="btn btn-default search"><img src="{{ STATIC_URL }}/search.png"/></button>
     </form>
 
   </div>
@@ -240,12 +240,12 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-<script src="/site_media/js/tablesorter/jquery.tablesorter.min.js"></script>
-<script src="/site_media/jqueryui/jquery-ui.min.js"></script>
-<script src="/site_media/js/flot/jquery.flot.min.js"></script>
-<script src="/site_media/js/flot/jquery.flot.time.min.js"></script>
-<script src="/site_media/js/flot/jquery.flot.resize.min.js"></script>
-<script src="/site_media/js/flot/jquery.flot.pie.min.js"></script>
+<script src="{{ STATIC_URL }}/js/tablesorter/jquery.tablesorter.min.js"></script>
+<script src="{{ STATIC_URL }}/jqueryui/jquery-ui.min.js"></script>
+<script src="{{ STATIC_URL }}/js/flot/jquery.flot.min.js"></script>
+<script src="{{ STATIC_URL }}/js/flot/jquery.flot.time.min.js"></script>
+<script src="{{ STATIC_URL }}/js/flot/jquery.flot.resize.min.js"></script>
+<script src="{{ STATIC_URL }}/js/flot/jquery.flot.pie.min.js"></script>
 {%block scriptfooter%}{%endblock%}
 </body>
 </html>

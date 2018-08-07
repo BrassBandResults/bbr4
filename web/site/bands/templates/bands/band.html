@@ -115,7 +115,7 @@
   	{% if user.profile.pro_member %}
   	  <div id="pie-chart"></div>
   	{% else %}
-  	  <a href="/accounts/upgrade/"><img src="/site_media/upgrade/pie_chart_if_upgrade.jpg"/></a>
+  	  <a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}/upgrade/pie_chart_if_upgrade.jpg"/></a>
   	{% endif%}
   </div>
 </div>
@@ -156,7 +156,7 @@
 {% if user.profile.pro_member %}
   <div id="flot_chart"></div>
 {% else %}
-  <a href="/accounts/upgrade/"><img src="/site_media/upgrade/results_history_if_upgrade.jpg"/></a>
+  <a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}/upgrade/results_history_if_upgrade.jpg"/></a>
 {% endif %}
 {% endif %}
 <br/>
@@ -209,7 +209,7 @@
       <tr class="result-{{result.results_position_display}} year-{{result.contest_event.date_of_event|date:"Y"}}">
         <td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{ result.contest_event.date_of_event|date:"Y-m-d" }}/">{{ result.contest_event.event_date }}</a></td>
 		<td class="contest-event-name">
-        {% if not Filter %}<a class="hourglass" onclick="toggleFilter({{result.id}});" title="{% trans "Click to filter"%}"><img src="/site_media/icons/magnifier.png" border="0"/></a> {%endif%}<span title="{% trans "Competed as"%} {{result.band_name}}">{%if result.contest_event.future%}<b>{%endif%}{{ result.contest_event.name }}{%if result.contest_event.future%}</b>{%endif%}</span>
+        {% if not Filter %}<a class="hourglass" onclick="toggleFilter({{result.id}});" title="{% trans "Click to filter"%}"><img src="{{ STATIC_URL }}/icons/magnifier.png" border="0"/></a> {%endif%}<span title="{% trans "Competed as"%} {{result.band_name}}">{%if result.contest_event.future%}<b>{%endif%}{{ result.contest_event.name }}{%if result.contest_event.future%}</b>{%endif%}</span>
 		<div id="tags" class="tags-{{result.id}}">
 		  <a href="/bands/{{Band.slug}}/{{result.contest_event.contest.actual_slug}}/" title="{% trans "Click to filter to"%} {{result.contest_event.contest.name}}">This Contest</a>
 		  {% if result.contest_event.contest.group_id %}
@@ -218,7 +218,7 @@
 		  {% for tag in result.contest_event.tag_list %}<a href="/bands/{{Band.slug}}/tag/{{tag.slug}}/" title="{% trans "Click to filter to tag"%} {{tag.name}}">{{tag.name}}</a> {%endfor%}
 		</div>
 		</td>
-		<td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="/site_media/icons/comment.png" border="0"/></a>{%endif%}</td>
+		<td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}/icons/comment.png" border="0"/></a>{%endif%}</td>
 		<td class="band-contest-piece">{% if result.piece_played %}<a href="/pieces/{{result.piece_played.slug}}/">{{result.piece_played.name}}</a>{%endif%}</td>
 		<td class="band-contest-draw">{% if result.draw %}{{ result.draw }}{% endif %}</td>
 		<td class="conductor">
@@ -278,7 +278,7 @@
 {% endif %} 
         <td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{ result.contest_event.date_of_event|date:"Y-m-d" }}/">{{ result.contest_event.event_date }}</a></td>
 		    <td class="contest-event-name">{{ result.contest_event.name }}</td>
-		    <td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="/site_media/icons/comment.png" border="0"/></a>{%endif%}</td>
+		    <td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}/icons/comment.png" border="0"/></a>{%endif%}</td>
 		    <td class="conductor">
 {% ifequal result.person_conducting.name "Unknown" %}
 			    <font color="red">{% trans "Unknown, do you know?"%}</font>

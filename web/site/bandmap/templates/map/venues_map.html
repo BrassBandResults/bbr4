@@ -11,8 +11,8 @@
 
 {%block head %}
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?v=3.25&key={{GoogleMapsKey}}"></script>
-<script type="text/javascript" src="/site_media/infobubble-compiled.js"></script>
-<!-- <script type="text/javascript" src="/site_media/infobubble.js"></script> -->
+<script type="text/javascript" src="{{ STATIC_URL }}/infobubble-compiled.js"></script>
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}/infobubble.js"></script> -->
 <script type="text/javascript" src="/map/map_script.js?type=venues"></script>
 {% endblock %}
 
