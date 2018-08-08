@@ -199,3 +199,6 @@ crash.log
 
 
 # End of https://www.gitignore.io/api/macos,django,python,terraform,sublimetext
+#
+# Ignore Lambda build folders
+lambda/**/build
