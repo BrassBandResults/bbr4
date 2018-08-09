@@ -18,6 +18,11 @@ resource "aws_iam_role" "bbr-iam-lambda" {
 EOF
 }
 
+resource "aws_iam_role_policy_attachment" "bbr-lambda-logs" {
+  role = "${aws_iam_role.bbr-iam-lambda.name}"
+  policy_arn = "${aws_iam_policy.bbr-lambda-log-policy.arn}"
+}
+
 resource "aws_lambda_function" "bbr-thumbnail" {
   filename = "../lambda/thumbnails/target/lambda-thumbnails-1.0.jar" 
   function_name = "${var.prefix}-thumbnail"
@@ -25,6 +30,8 @@ resource "aws_lambda_function" "bbr-thumbnail" {
   handler = "uk.co.brassbandresults.lambda.CreateThumbnail"
   source_code_hash = "${base64sha256(file("../lambda/thumbnails/target/lambda-thumbnails-1.0.jar"))}"
   runtime = "java8"
+  memory_size = "256"
+  timeout = "30"
 }
 
 resource "aws_lambda_permission" "bbr-thumbnail-allow-bucket-access" {
@@ -46,10 +53,10 @@ resource "aws_s3_bucket_notification" "lambda-image-bucket-notification" {
   }
 }
 
-resource "aws_iam_policy" "bbr-lambda-logging" {
-  name = "bbr-lambda-logging"
+resource "aws_iam_policy" "bbr-lambda-access-thumbnails-policy" {
+  name = "bbr-lambda-access-thumbnails-policy"
   path = "/"
-  description = "IAM policy for logging from a lambda"
+  description = "IAM policy for writing to thumbnails bucket"
 
   policy = <<EOF
 {
@@ -57,11 +64,9 @@ resource "aws_iam_policy" "bbr-lambda-logging" {
   "Statement": [
     {
       "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
+        "s3:*"
       ],
-      "Resource": "arn:aws:logs:*:*:*",
+      "Resource": "${aws_s3_bucket.bbr-uploads-thumbnail-bucket.arn}",
       "Effect": "Allow"
     }
   ]
@@ -69,7 +74,8 @@ resource "aws_iam_policy" "bbr-lambda-logging" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "bbr-lambda-logs" {
+resource "aws_iam_role_policy_attachment" "bbr-lambda-write-to-thumbnails" {
   role = "${aws_iam_role.bbr-iam-lambda.name}"
-  policy_arn = "${aws_iam_policy.bbr-lambda-logging.arn}"
+  policy_arn = "${aws_iam_policy.bbr-lambda-access-thumbnails-policy.arn}"
 }
+
