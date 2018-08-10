@@ -63,10 +63,12 @@ resource "aws_iam_policy" "bbr-lambda-access-thumbnails-policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "s3:*"
+      "Action": [ 
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:DeleteObject"
       ],
-      "Resource": "${aws_s3_bucket.bbr-uploads-thumbnail-bucket.arn}",
+      "Resource": "${aws_s3_bucket.bbr-uploads-thumbnail-bucket.arn}/*",
       "Effect": "Allow"
     }
   ]
