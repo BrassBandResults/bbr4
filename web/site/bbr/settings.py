@@ -45,6 +45,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/site_media'
+UPLOAD_URL = 'http://${prefix}-bbr-media-upload.s3-website.eu-west-2.amazonaws.com'
+THUMBS_URL = 'http://${prefix}-bbr-media-upload-thumbnail.s3-website.eu-west-2.amazonaws.com'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "site_media"),
