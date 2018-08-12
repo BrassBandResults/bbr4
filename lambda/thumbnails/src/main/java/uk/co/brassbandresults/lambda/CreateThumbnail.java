@@ -49,16 +49,17 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 	// 70x70
 	// 100x100
 	// 200x200
-	// 800x800
+	// 800x1200
 
 	private static final List<Dimensions> dimensions = Arrays.asList( //
 			new Dimensions(70, 70), //
 			new Dimensions(100, 100), //
 			new Dimensions(200, 200), //
-			new Dimensions(800, 800) //
+			new Dimensions(800, 1200) //
 	);
 
 	private final String JPG_TYPE = "jpg";
+	private final String JPEG_TYPE = "jpeg";
 	private final String JPG_MIME = "image/jpeg";
 	private final String PNG_TYPE = "png";
 	private final String PNG_MIME = "image/png";
@@ -88,7 +89,10 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 				System.out.println("Unable to infer image type for key " + srcKey);
 				return "";
 			}
-			final String imageType = matcher.group(1);
+			String imageType = matcher.group(1);
+			if (this.JPEG_TYPE.equals(imageType)) {
+				imageType = this.JPG_TYPE;
+			}
 			if (!this.JPG_TYPE.equals(imageType) && !this.PNG_TYPE.equals(imageType)) {
 				System.out.println("Skipping non-image " + srcKey);
 				return "";
