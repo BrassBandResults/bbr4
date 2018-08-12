@@ -10,7 +10,7 @@ from bbr.siteutils import browser_details
 from bbr.render import render_auth
 from contests.models import ContestEvent, ContestResult, ContestTestPiece
 from move.models import PieceMergeRequest
-from move.tasks import notification
+from bbr.notification import notification
 from pieces.models import TestPiece, TestPieceAlias
 
 
@@ -30,7 +30,7 @@ def merge_request(request, pSourcePieceSlug):
         lPieceMergeRequest.owner = request.user
         lPieceMergeRequest.save()
         
-        notification(None, lPieceMergeRequest, 'piece_merge', 'request', request.user, browser_details(request))
+        notification(None, lPieceMergeRequest, 'move', 'piece_merge', 'request', request.user, browser_details(request))
     except IndexError:
         # someone already merged one or either side
         pass
@@ -75,7 +75,7 @@ def reject_merge(request, pMergePieceRequestSerial):
         lDestination = 'tsawyer@brassbandresults.co.uk'
     
     lContext = {'Reason' : lReason, }
-    notification(None, lPieceMergeRequest, 'piece', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
+    notification(None, lPieceMergeRequest, 'move', 'piece', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
         
     # delete merge request
     lPieceMergeRequest.delete()
@@ -135,9 +135,9 @@ def merge_action(request, pMergePieceRequestSerial):
         testPiece.save()
     
         
-    notification(None, lMergeRequest, 'piece_merge', 'done', request.user, browser_details(request))
+    notification(None, lMergeRequest, 'move', 'piece_merge', 'done', request.user, browser_details(request))
     lSubmitterUser = lMergeRequest.owner
-    notification(None, lMergeRequest, 'piece', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
+    notification(None, lMergeRequest, 'move', 'piece', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
     
     lFromPiece.delete()
     lMergeRequest.delete()

@@ -14,7 +14,7 @@ from contests.models import ContestEvent, ContestResult, ResultPiecePerformance
 from people.models import Person
 from pieces.forms import EditPieceForm
 from pieces.models import  TestPiece, TestPieceAlias, DownloadTrack
-from pieces.tasks import notification
+from bbr.notification import notification
 from sections.models import Section
 from users.models import PersonalContestHistory
 
@@ -374,7 +374,7 @@ def add_piece(request):
             lNewPiece.lastChangedBy = request.user
             lNewPiece.owner = request.user
             lNewPiece.save()
-            notification(None, lNewPiece, 'piece', 'new', request.user, browser_details(request))            
+            notification(None, lNewPiece, 'pieces', 'piece', 'new', request.user, browser_details(request))            
             return HttpResponseRedirect('/pieces/')
     else:
         form = EditPieceForm()
@@ -403,7 +403,7 @@ def edit_piece(request, pPieceSlug):
             lNewPiece = form.save(commit=False)
             lNewPiece.lastChangedBy = request.user
             lNewPiece.save()
-            notification(lOldPiece, lNewPiece, 'piece', 'edit', request.user, browser_details(request))
+            notification(lOldPiece, lNewPiece, 'pieces', 'piece', 'edit', request.user, browser_details(request))
             return HttpResponseRedirect('/pieces/%s/' % lPiece.slug)
     else:
         form = EditPieceForm(instance=lPiece)

@@ -20,16 +20,14 @@ from bbr.siteutils import browser_details
 from bbr.render import render_auth
 from bbr.talkutils import fetch_recent_talk_changes
 from classifieds.models import PlayerPosition
-from classifieds.tasks import notification as classified_notification
+from bbr.notification import notification 
 from contests.models import ContestEvent, ContestResult
 from feedback.models import SiteFeedback
-from feedback.tasks import notification as feedback_notification
 from people.forms import EditClassifiedProfileForm
 from people.models import ClassifiedPerson
 from usermessages.models import Message
 from users.forms import DateRangeForm, PasswordResetForm, ResetPasswordForm, NewEmailForm, UserTalkEditForm
 from users.models import PersonalContestHistory, PersonalContestHistoryDateRange, UserProfile, PasswordReset, PointsAward, UserBadge, UserTalk, UserIpAddress
-from users.tasks import notification
 
 def user_contests_year(request, pUsername, pYear):
     """
@@ -173,7 +171,7 @@ def feedback_inconclusive(request, pUsercode, pFeedbackId):
     lFeedback.status = 'Inconclusive'
     lFeedback.lastChangedBy = request.user
     lFeedback.save("Feedback marked as inconclusive by %s with comment [%s]" % (request.user, request.POST['extra']))
-    feedback_notification(None, lFeedback, 'feedback', 'inconclusive', request.user, browser_details(request))   
+    notification(None, lFeedback, 'feedback', 'feedback', 'inconclusive', request.user, browser_details(request))   
     return HttpResponseRedirect('/users/%s/' % pUsercode)
 
 
@@ -196,7 +194,7 @@ def feedback_release_to_queue(request, pUsercode, pFeedbackId):
     lFeedback.claim_date = None
     if request.user.id == lFeedback.owner.id:
         lFeedback.save("Feedback queued by %s" % request.user)
-        feedback_notification(None, lFeedback, 'feedback', 'to_queue', request.user, browser_details(request))   
+        notification(None, lFeedback, 'feedback', 'feedback', 'to_queue', request.user, browser_details(request))   
     return HttpResponseRedirect('/users/%s/' % pUsercode)
 
 
@@ -227,7 +225,7 @@ def feedback_push_to_admin(request, pUsercode, pFeedbackId):
     lFeedback.claim_date = None
     if request.user.id == lFeedback.owner.id:
         lFeedback.save("Feedback pushed to admin by %s with comment [%s]" % (request.user, lFeedbackComment))
-        feedback_notification(None, lFeedback, 'feedback', 'to_admin', request.user, browser_details(request))   
+        notification(None, lFeedback, 'feedback', 'feedback', 'to_admin', request.user, browser_details(request))   
     return render_auth(request, 'users/blank.html')
 
 
@@ -249,7 +247,7 @@ def feedback_claim_from_queue(request, pUsercode, pFeedbackId):
     lFeedback.save("Feedback claimed from queue by %s" % request.user)
     lProfile = request.user.profile
     if lProfile.superuser:
-        feedback_notification(None, lFeedback, 'feedback', 'claim', request.user, browser_details(request))   
+        notification(None, lFeedback, 'feedback', 'feedback', 'claim', request.user, browser_details(request))   
     return render_auth(request, 'users/blank.html')
 
 
@@ -385,7 +383,7 @@ def forgotten_password(request):
                 # don't send email if user is inactive
                 return HttpResponseRedirect(reverse('users.views.forgotten_password_sent')) 
     
-            notification(lUser, lPasswordReset, 'password_reset', 'request', request.user, browser_details(request), pDestination=lUser.email) 
+            notification(lUser, lPasswordReset, 'user', 'password_reset', 'request', request.user, browser_details(request), pDestination=lUser.email) 
             return HttpResponseRedirect(reverse('users.views.forgotten_password_sent'))
     else:
         # show password reset form
@@ -426,7 +424,7 @@ def reset_password(request, pResetKey):
             lPasswordReset.used = datetime.now()
             lPasswordReset.save()
             
-            notification(lPasswordReset, lUserToReset, 'password', 'changed', request.user, browser_details(request), pDestination=lUserToReset.email)
+            notification(lPasswordReset, lUserToReset, 'user', 'password', 'changed', request.user, browser_details(request), pDestination=lUserToReset.email)
             
             return render_auth(request, "users/resetpassword/password_reset_done.html",  {'User' : lUserToReset,
                                                                                           'PasswordReset' : lPasswordReset,
@@ -459,7 +457,7 @@ def edit_profile(request, pUsercode, pClassifiedProfileId):
             lNewProfile.save()
             lNewProfile.check_expiry()
             
-            classified_notification(lOldProfile, lNewProfile, 'profile', 'edit', request.user, browser_details(request))
+            notification(lOldProfile, lNewProfile, 'classifieds', 'profile', 'edit', request.user, browser_details(request))
             
             return HttpResponseRedirect('/users/%s/classifieds/' % (lProfile.owner.username))
     else:
@@ -490,7 +488,7 @@ def edit_band_profile(request, pUsercode, pClassifiedProfileId):
             lNewProfile.save()
             lNewProfile.check_expiry()
             
-            classified_notification(lOldProfile, lNewProfile, 'band_profile', 'edit', request.user, browser_details(request))
+            notification(lOldProfile, lNewProfile, 'classifieds', 'band_profile', 'edit', request.user, browser_details(request))
             
             return HttpResponseRedirect('/users/%s/classifieds/' % (lProfile.owner.username))
     else:
@@ -962,7 +960,7 @@ def password_change(request, pUsername):
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
-            notification(None, request.user, 'password', 'changed', request.user, browser_details(request), pDestination=request.user.email)
+            notification(None, request.user, 'users', 'password', 'changed', request.user, browser_details(request), pDestination=request.user.email)
             return HttpResponseRedirect('/users/%s/password_changed/' % pUsername)
         
     else:
@@ -1121,7 +1119,7 @@ def pro_paid(request):
         pass
     
     
-    notification(request.user, None, 'pro_upgrade', 'paid', request.user, browser_details(request))
+    notification(request.user, None, 'users', 'pro_upgrade', 'paid', request.user, browser_details(request))
     
     return HttpResponseRedirect('/accounts/pro/thanks/')
 

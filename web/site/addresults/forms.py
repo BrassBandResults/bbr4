@@ -12,7 +12,7 @@ from django.forms import ModelForm
 from addresults.finder import find_band, find_conductor
 from bbr.siteutils import browser_details
 from contests.models import ContestResult, Contest, UNPLACED_RESULTS_POSITION, DISQUALIFIED_RESULTS_POSITION, WITHDRAWN_RESULTS_POSITION
-from contests.tasks import notification as contest_notification
+from bbr.notification import notification
 
 
 class ContestNameForm(forms.Form):
@@ -173,7 +173,7 @@ class ResultsForm(forms.Form):
             lContestResult.owner = request.user
             lContestResult.save()
             
-            contest_notification(None, lContestResult, 'contest_result', 'new', request.user, browser_details(request))
+            notification(None, lContestResult, 'contests', 'contest_result', 'new', request.user, browser_details(request))
 
 
 class ContestTypeForm(ModelForm):

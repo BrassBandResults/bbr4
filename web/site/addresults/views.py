@@ -10,18 +10,14 @@ from django.utils.datastructures import MultiValueDictKeyError
 from addresults.forms import ContestNameForm, ContestDateForm, ResultsForm, NotesForm, ContestTypeForm
 from adjudicators.models import ContestAdjudicator
 from bands.models import Band, PreviousBandName
-from bands.tasks import notification as band_notification
+from bbr.notification import notification
 from bbr.siteutils import add_space_after_dot, add_dot_after_initial, slugify, browser_details
 from bbr.render import render_auth    
-from people.tasks import notification as person_notification
 from contests.models import Contest, ContestEvent, Venue, ContestResult
 from contests.models import VenueAlias
-from contests.tasks import notification as contest_notification
 from people.models import PersonAlias, Person
 from pieces.models import TestPiece, TestPieceAlias
-from pieces.tasks import notification as piece_notification
 from regions.models import Region
-from venues.tasks import notification as venue_notification
 
 
 @login_required
@@ -54,7 +50,7 @@ def enter_contest_name(request):
                 lContest.owner = request.user
                 lContest.save() 
                 
-                contest_notification(None, lContest, 'contest', 'new', request.user, browser_details(request))
+                notification(None, lContest, 'contests', 'contest', 'new', request.user, browser_details(request))
                 
             if lExistingContest:
                 return HttpResponseRedirect('/addresults/%s/' % lContest.slug)
@@ -140,7 +136,7 @@ def enter_contest_date(request, pContestSlug):
                 lContestEvent.owner = request.user
                 lContestEvent.save()
                 
-                contest_notification(None, lContestEvent, 'contestevent', 'new', request.user, browser_details(request))
+                notification(None, lContestEvent, 'contests', 'contestevent', 'new', request.user, browser_details(request))
                 
             if lContestEvent.contest_type.test_piece:
                 return HttpResponseRedirect('/addresults/%s/%s/' % (pContestSlug, lDate))
@@ -191,7 +187,7 @@ def enter_test_piece(request, pContestSlug, pDate):
                     lTestPiece.owner = request.user
                     lTestPiece.save()
                     
-                    piece_notification(None, lTestPiece, 'piece', 'new', request.user, browser_details(request))
+                    notification(None, lTestPiece, 'pieces', 'piece', 'new', request.user, browser_details(request))
                     
             lContestEvent.test_piece = lTestPiece
             lContestEvent.save()
@@ -269,7 +265,7 @@ def enter_composer(request, pContestSlug, pDate):
                     lPerson.lastChangedBy = request.user
                     lPerson.save()
                     lArrangerPerson = lPerson
-                    person_notification(None, lPerson, 'person', 'new', request.user, browser_details(request)) 
+                    notification(None, lPerson, 'people', 'person', 'new', request.user, browser_details(request)) 
                 
         if len(lArrangerName.strip()) > 0:
             try:
@@ -287,7 +283,7 @@ def enter_composer(request, pContestSlug, pDate):
                     lPerson.lastChangedBy = request.user
                     lPerson.save()
                     lArrangerPerson = lPerson
-                    person_notification(None, lPerson, 'person', 'new', request.user, browser_details(request))                
+                    notification(None, lPerson, 'people', 'person', 'new', request.user, browser_details(request))                
                 
         lTestPiece.arranger = lArrangerPerson
         lTestPiece.composer = lComposerPerson
@@ -342,7 +338,7 @@ def enter_venue(request, pContestSlug, pDate):
                     lNewVenue.owner = request.user
                     lNewVenue.slug = slugify(lNewVenue.name, instance=lNewVenue)
                     lNewVenue.save()
-                    venue_notification(None, lNewVenue, 'venue', 'new', request.user, browser_details(request))
+                    notification(None, lNewVenue, 'venues', 'venue', 'new', request.user, browser_details(request))
                     lContestEvent.venue_link = lNewVenue
         lContestEvent.save()
         
@@ -400,7 +396,7 @@ def enter_results(request, pContestSlug, pDate):
                 lNewConductorPerson.lastChangedBy = request.user
                 lNewConductorPerson.owner = request.user
                 lNewConductorPerson.save()
-                person_notification(None, lNewConductorPerson, 'person', 'new', request.user, browser_details(request))
+                notification(None, lNewConductorPerson, 'people', 'person', 'new', request.user, browser_details(request))
                 
             elif lRadioSelection == 'alias':
                 lPreviousConductorName = request.POST['conductoralias']
@@ -413,7 +409,7 @@ def enter_results(request, pContestSlug, pDate):
                 lPreviousName.lastChangedBy = request.user
                 lPreviousName.owner = request.user
                 lPreviousName.save()
-                person_notification(None, lPreviousName, 'person_alias', 'new', request.user, browser_details(request))
+                notification(None, lPreviousName, 'people', 'person_alias', 'new', request.user, browser_details(request))
                 
                 ## TODO create person alias here - we'll need to pass through the person id, not the conductor id
             
@@ -433,7 +429,7 @@ def enter_results(request, pContestSlug, pDate):
                 lNewBand.owner = request.user
                 lNewBand.lastChangedBy = request.user
                 lNewBand.save()
-                band_notification(None, lNewBand, 'band', 'new', request.user, browser_details(request))
+                notification(None, lNewBand, 'bands', 'band', 'new', request.user, browser_details(request))
             elif lRadioSelection == 'nameonly':
                 lPreviousBandName = request.POST['oldbandname']
                 lBandSerial = request.POST['bandid']
@@ -444,7 +440,7 @@ def enter_results(request, pContestSlug, pDate):
                 lPreviousName.lastChangedBy = request.user
                 lPreviousName.owner = request.user
                 lPreviousName.save()
-                band_notification(None, lPreviousName, 'band_alias', 'new', request.user, browser_details(request))
+                notification(None, lPreviousName, 'bands', 'band_alias', 'new', request.user, browser_details(request))
         except MultiValueDictKeyError:
             pass
         
@@ -636,7 +632,7 @@ def amend_results(request, pContestSlug, pDate):
                         lMatchingResult.save()                        
                         
                         
-        contest_notification(None, lContestEvent, 'contestevent', 'results_added', request.user, browser_details(request))
+        notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request))
         return HttpResponseRedirect('/contests/%s/%s/' % (pContestSlug, pDate))
 
     return render_auth(request, 'addresults/amend_bands.html', {"Contest" : lContest,
@@ -687,7 +683,7 @@ def _link_adjudicator(request, pOriginalAdjudicatorName, pContestEvent):
             lPerson.owner = request.user
             lPerson.lastChangedBy = request.user
             lPerson.save()
-            person_notification(None, lPerson, 'person', 'new', request.user, browser_details(request))
+            notification(None, lPerson, 'people', 'person', 'new', request.user, browser_details(request))
             
     lContestAdjudicator = ContestAdjudicator()
     lContestAdjudicator.contest_event = pContestEvent
@@ -793,7 +789,7 @@ def enter_notes(request, pContestSlug, pDate):
         else:
             return HttpResponseRedirect('/contests/%s/%s/' % (lContest.slug, lContestEvent.date_of_event))
     else:
-        contest_notification(None, lContestEvent, 'contestevent', 'results_added', request.user, browser_details(request))
+        notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request))
         return render_auth(request, 'addresults/notes.html', {"Contest" : lContest,
                                                               "ContestEvent" : lContestEvent,
                                                               "form" : lForm,

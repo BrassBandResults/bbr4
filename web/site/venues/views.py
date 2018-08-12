@@ -12,7 +12,7 @@ from contests.models import Venue, Contest, ContestEvent
 from contests.models import VenueAlias
 from regions.models import Region
 from .forms import EditVenueForm
-from .tasks import notification
+from bbr.notification import notification
 
 
 def venue_list(request):
@@ -188,7 +188,7 @@ def add_venue(request):
             lNewVenue.lastChangedBy = request.user
             lNewVenue.owner = request.user
             lNewVenue.save()
-            notification(None, lNewVenue, 'venue', 'new', request.user, browser_details(request))
+            notification(None, lNewVenue, 'venues', 'venue', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/venues/')
     else:
         form = lFormType()
@@ -220,7 +220,7 @@ def edit_venue(request, pVenueSlug):
             lNewVenue = form.save(commit=False)
             lNewVenue.lastChangedBy = request.user
             lNewVenue.save()
-            notification(lOldVenue, lNewVenue, 'venue', 'edit', request.user, browser_details(request))
+            notification(lOldVenue, lNewVenue, 'venues', 'venue', 'edit', request.user, browser_details(request))
             return HttpResponseRedirect('/venues/%s/' % lVenue.slug)
     else:
         form = lFormClass(instance=lVenue)
@@ -265,7 +265,7 @@ def single_venue_aliases(request, pVenueSlug):
         lVenueAlias.owner = request.user
         lVenueAlias.lastChangedBy = request.user
         lVenueAlias.save()
-        notification(None, lVenueAlias, 'venue_alias', 'new', request.user, browser_details(request))
+        notification(None, lVenueAlias, 'venues', 'venue_alias', 'new', request.user, browser_details(request))
         return HttpResponseRedirect('/venues/%s/aliases/' % lVenue.slug)
     
     lVenueAliases = VenueAlias.objects.filter(venue=lVenue)
@@ -288,6 +288,6 @@ def single_venue_alias_delete(request, pVenueSlug, pAliasSerial):
     except IndexError:
         raise Http404
     
-    notification(None, lVenueAlias, 'venue_alias', 'delete', request.user, browser_details(request))
+    notification(None, lVenueAlias, 'venues', 'venue_alias', 'delete', request.user, browser_details(request))
     lVenueAlias.delete()
     return HttpResponseRedirect('/venues/%s/aliases/' % pVenueSlug)

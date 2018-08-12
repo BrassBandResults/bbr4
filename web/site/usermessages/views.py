@@ -8,7 +8,7 @@ from bbr.siteutils import browser_details
 from bbr.render import render_auth
 from usermessages.forms import UserMessageForm
 from usermessages.models import Message
-from usermessages.tasks import notification
+from bbr.notification import notification
 
 
 @login_required
@@ -50,7 +50,7 @@ def create_with_subject(request, pUserCode, pSubject):
             lMessage.text = lForm.cleaned_data['text']
             lMessage.save()
             
-            notification(None, lMessage, 'message', 'new', request.user, browser_details(request), pDestination=lMessage.to_user.email)
+            notification(None, lMessage, 'messages', 'message', 'new', request.user, browser_details(request), pDestination=lMessage.to_user.email)
             
             return HttpResponseRedirect('/users/%s/' % lToUser.username)
     else:

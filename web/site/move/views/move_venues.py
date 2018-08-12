@@ -9,7 +9,7 @@ from bbr.render import render_auth
 from contests.models import Venue, ContestEvent
 from contests.models import VenueAlias
 from move.models import VenueMergeRequest
-from move.tasks import notification
+from bbr.notification import notification
 
 
 @login_required
@@ -28,7 +28,7 @@ def merge_request(request, pSourceVenueSlug):
         lVenueMergeRequest.owner = request.user
         lVenueMergeRequest.save()
         
-        notification(None, lVenueMergeRequest, 'venue_merge', 'request', request.user, browser_details(request))
+        notification(None, lVenueMergeRequest, 'move', 'venue_merge', 'request', request.user, browser_details(request))
     except IndexError:
         # someone already merged one or either side
         pass        
@@ -73,7 +73,7 @@ def reject_merge(request, pMergeVenueRequestSerial):
         lDestination = 'tsawyer@brassbandresults.co.uk'
     
     lContext = {'Reason' : lReason, }
-    notification(None, lVenueMergeRequest, 'venue', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
+    notification(None, lVenueMergeRequest, 'move', 'venue', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
         
     # delete merge request
     lVenueMergeRequest.delete()
@@ -117,9 +117,9 @@ def merge_action(request, pMergeVenueRequestSerial):
     lNewVenueAlias.lastChangedBy = request.user
     lNewVenueAlias.save()
         
-    notification(None, lMergeRequest, 'venue_merge', 'done', request.user, browser_details(request))
+    notification(None, lMergeRequest, 'move', 'venue_merge', 'done', request.user, browser_details(request))
     lSubmitterUser = lMergeRequest.owner
-    notification(None, lMergeRequest, 'venue', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
+    notification(None, lMergeRequest, 'move', 'venue', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
     
     lFromVenue.delete()
     lMergeRequest.delete()

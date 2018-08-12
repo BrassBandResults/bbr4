@@ -26,7 +26,7 @@ from bbr.talkutils import fetch_recent_talk_changes
 from classifieds.models import PlayerPosition
 from contests.forms import ContestResultForm, ContestEventForm, FutureEventForm, FutureEventFormNoContest, ContestProgrammeCoverForm, ContestForm, ContestTalkEditForm, GroupTalkEditForm
 from contests.models import Contest, ContestEvent, ContestResult, ContestGroup, ContestGroupAlias, ContestAlias, ContestProgrammeCover, ContestTestPiece, ContestProgrammePage, ContestAchievementAward, ContestEventWeblink, ContestTalkPage, GroupTalkPage, ResultPiecePerformance
-from contests.tasks import notification
+from bbr.notification import notification
 from people.models import Person, PersonAlias
 from pieces.models import TestPiece, TestPieceAlias
 from regions.models import Region
@@ -901,7 +901,7 @@ def edit_result(request, pResultSerial):
             lOldResult = ContestResult.objects.filter(id=lContestResult.id)[0]
             lContestResult.lastChangedBy = request.user
             lContestResult.save()
-            notification(lOldResult, lContestResult, 'contest_result', 'edit', request.user, browser_details(request))
+            notification(lOldResult, lContestResult, 'contests', 'contest_result', 'edit', request.user, browser_details(request))
             return HttpResponseRedirect('/contests/%s/%s/' % (lContestResult.contest_event.contest.slug, lContestResult.contest_event.date_of_event))
     else:
         form = ContestResultForm(instance=lContestResult)
@@ -939,7 +939,7 @@ def delete_result(request, pResultSerial):
     if lAllowedToDelete == False:
         raise Http404()
     
-    notification(None, lContestResult, 'contest_result', 'delete', request.user, browser_details(request))
+    notification(None, lContestResult, 'contests', 'contest_result', 'delete', request.user, browser_details(request))
     lContestResult.delete()
     
     return HttpResponseRedirect('/contests/%s/%s/' % (lContestResult.contest_event.contest.slug, lContestResult.contest_event.date_of_event))
@@ -965,7 +965,7 @@ def edit_contest(request, pContestSlug):
             lContestToSave = form.save(commit=False)
             lContestToSave.lastChangedBy = request.user
             
-            notification(lOriginalContest, lContestToSave, 'contest', 'edit', request.user, browser_details(request))
+            notification(lOriginalContest, lContestToSave, 'contests', 'contest', 'edit', request.user, browser_details(request))
             
             lContestToSave.save()
             return HttpResponseRedirect('/contests/%s/' % lContest.slug)
@@ -992,7 +992,7 @@ def delete_contest(request, pContestSlug):
         raise Http404
     
     lContest.delete()
-    notification(lContest, None, 'contest', 'delete', request.user, browser_details(request))
+    notification(lContest, None, 'contests', 'contest', 'delete', request.user, browser_details(request))
 
     return HttpResponseRedirect('/contests/')
 
@@ -1023,7 +1023,7 @@ def edit_event(request, pContestSlug, pContestDate, pEventSerial):
             lNewEvent.lastChangedBy = request.user
             lNewEvent.save()
             
-            notification(lOldEvent, lNewEvent, 'contestevent', 'edit', request.user, browser_details(request))
+            notification(lOldEvent, lNewEvent, 'contests', 'contestevent', 'edit', request.user, browser_details(request))
                         
             return HttpResponseRedirect("/contests/%s/%s" % (lContestEvent.contest.slug, lContestEvent.date_of_event))
     else:
@@ -1071,7 +1071,7 @@ def take_ownership(request, pContestSlug, pDate):
     except ValidationError:
         raise Http404()
     
-    notification(lExistingOwner, lContestEvent, 'contestevent', 'take_ownership', request.user, browser_details(request))
+    notification(lExistingOwner, lContestEvent, 'contests', 'contestevent', 'take_ownership', request.user, browser_details(request))
     
     return HttpResponseRedirect('/contests/%s/%s/' % (lContestEvent.contest.slug, lContestEvent.date_of_event))
 
@@ -1127,7 +1127,7 @@ def add_future_event(request, pContestSlug):
             lContestEvent.owner = request.user
             lContestEvent.lastChangedBy = request.user
             lContestEvent.save()
-            notification(None, lContestEvent, 'future_event', 'new', request.user, browser_details(request))
+            notification(None, lContestEvent, 'contests', 'future_event', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/contests/%s/' % lContest.slug)
     else:
         try:
@@ -1156,7 +1156,7 @@ def delete_future_event(request, pContestSlug, pEventId):
         raise Http404()
     
     if request.user == lEvent.owner:
-        notification(None, lEvent, 'future_event', 'delete', request.user, browser_details(request))
+        notification(None, lEvent, 'contests', 'future_event', 'delete', request.user, browser_details(request))
         lEvent.delete()
         
     return HttpResponseRedirect('/contests/%s/' % lContest.slug)
@@ -1174,7 +1174,7 @@ def add_future_event_popup(request):
             lContestEvent.owner = request.user
             lContestEvent.lastChangedBy = request.user
             lContestEvent.save()
-            notification(None, lContestEvent, 'future_event', 'new', request.user, browser_details(request))
+            notification(None, lContestEvent, 'contests', 'future_event', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/')
 
     lForm = FutureEventFormNoContest()
@@ -1205,7 +1205,7 @@ def upload_programme_cover(request):
             lProgrammeCover.lastChangedBy = request.user
             _handle_uploaded_file(request, lProgrammeCover)
             lProgrammeCover.save()
-            notification(None, lProgrammeCover, 'programme_cover', 'new', request.user, browser_details(request))
+            notification(None, lProgrammeCover, 'contests', 'programme_cover', 'new', request.user, browser_details(request))
             
             if lProgrammeCover.contest_group:
                 lRedirectUrl = '/contests/%s/%s/' % (lProgrammeCover.contest_group.actual_slug, lProgrammeCover.event_date.year)

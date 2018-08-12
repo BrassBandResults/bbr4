@@ -10,7 +10,7 @@ from bbr.siteutils import browser_details
 from bbr.render import render_auth
 from contests.models import ContestResult
 from move.models import BandMergeRequest
-from move.tasks import notification
+from bbr.notification import notification
 from users.models import PersonalContestHistoryDateRange
 
 
@@ -30,7 +30,7 @@ def merge_request(request, pSourceBandSlug):
         lBandMergeRequest.owner = request.user
         lBandMergeRequest.save()
         
-        notification(None, lBandMergeRequest, 'band_merge', 'request', request.user, browser_details(request))
+        notification(None, lBandMergeRequest, 'move', 'band_merge', 'request', request.user, browser_details(request))
     except IndexError:
         # someone already merged one or either side
         pass        
@@ -74,7 +74,7 @@ def reject_merge(request, pMergeBandRequestSerial):
         lDestination = 'tsawyer@brassbandresults.co.uk'
     
     lContext = {'Reason' : lReason, }
-    notification(None, lBandMergeRequest, 'band', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
+    notification(None, lBandMergeRequest, 'move', 'band', 'reject', request.user, browser_details(request), pDestination=lDestination, pAdditionalContext=lContext)
         
     # delete merge request
     lBandMergeRequest.delete()
@@ -127,9 +127,9 @@ def merge_action(request, pMergeBandRequestSerial):
         lNewPreviousBandName.lastChangedBy = request.user
         lNewPreviousBandName.save()    
         
-    notification(None, lMergeRequest, 'band_merge', 'done', request.user, browser_details(request))
+    notification(None, lMergeRequest, 'move', 'band_merge', 'done', request.user, browser_details(request))
     lSubmitterUser = lMergeRequest.owner
-    notification(None, lMergeRequest, 'band', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
+    notification(None, lMergeRequest, 'move', 'band', 'merge', request.user, browser_details(request), pDestination=lSubmitterUser.email)
     
     lFromBand.delete()
     lMergeRequest.delete()

@@ -11,7 +11,7 @@ from bbr.siteutils import browser_details
 from bbr.render import render_auth
 from contests.models import ContestEvent
 from feedback.models import SiteFeedback, ClarificationRequest
-from feedback.tasks import notification
+from bbr.notification import notification
 
 
 def feedback(request):
@@ -81,7 +81,7 @@ def feedback(request):
                         'Url' : lUrl,
                         'Referrer' : lReferrer,
                         }
-            notification(None, lFeedback, 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext)
+            notification(None, lFeedback, 'feedback', 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext)
                 
         lNextUrl = lUrl[len('http://'):]
         lNextUrl = lNextUrl[lNextUrl.find('/'):]

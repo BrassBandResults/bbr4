@@ -6,7 +6,7 @@ from django.contrib.gis.measure import D
 from django.http import Http404, HttpResponseRedirect
 
 from bands.models import Band
-from bands.tasks import notification as bands_notification
+from bbr.notification import notification
 from bbr.siteutils import browser_details
 from bbr.render import render_auth
 from contests.models import ContestEvent, Venue
@@ -183,7 +183,7 @@ def move_specific_band(request, pBandSlug):
             lNewBand.lastChangedBy = request.user
             lNewBand.mapper = request.user
             lNewBand.save()
-            bands_notification(lOldBand, lNewBand, 'band_map', 'move', request.user, browser_details(request))
+            notification(lOldBand, lNewBand, 'bands', 'band_map', 'move', request.user, browser_details(request))
 
             return HttpResponseRedirect('/map/coordwrong/%s/saved/' % lBand.slug)
     return render_auth(request, 'map/movespecificband.html', {"Band" : lBand,
