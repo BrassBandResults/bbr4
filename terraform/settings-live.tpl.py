@@ -44,8 +44,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = 'http://${prefix}-site-media.s3-website.eu-west-2.amazonaws.com'
-UPLOAD_URL = 'http://${prefix}-bbr-media-upload.s3-website.eu-west-2.amazonaws.com'
-THUMBS_URL = 'http://${prefix}-bbr-media-upload-thumbnail.s3-website.eu-west-2.amazonaws.com'
+UPLOAD_URL = 'http://${prefix}-media-upload.s3-website.eu-west-2.amazonaws.com'
+THUMBS_URL = 'http://${prefix}-media-upload-thumbnail.s3-website.eu-west-2.amazonaws.com'
 
 NOTIFICATIONS_ENABLED = True
 NOTIFICATION_TOPIC_ARN = "${notificationTopicArn}"
