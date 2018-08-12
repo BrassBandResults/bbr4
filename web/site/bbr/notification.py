@@ -2,6 +2,7 @@
 
 import boto3
 from django.conf import settings
+from django.core import serializers
 
 class MessageWrapper:
     """
@@ -37,7 +38,27 @@ class MessageWrapper:
         self.fromEmail = pFromEmail
 
     def asJson(self):
-        return "{'json': 'json'}"
+         return """{'notification': {
+           'module' : '%s',
+           'object' : '%s',
+           'change' : '%s',
+           'user' : '%s',
+           'destination' : '%s',
+           'ipAddress' : '%s',
+           'userAgent' : '%s,'
+           'thingOld' : %s,
+           'thingNew' : %s
+         }}""" % (
+           self.module,
+           self.objectType,
+           self.changeType,
+           self.user,
+           self.browserDetails[0],
+           self.browserDetails[1],
+           self.destination,
+           serializers.serialize("json", self.thingOld),
+           serializers.serialize("json", self.thingNew),
+         )
 
 
 def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None, pCc=None, pBcc=None, pFromName=None, pFromEmail=None):
