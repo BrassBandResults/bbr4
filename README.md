@@ -11,6 +11,7 @@ Amazon Web Services
     * nginx
     * Gunicorn
 * SNS for change notification
+* Lambda for thumbnailing
 
 ## Documentation
 The development wiki for this project contains more information, see https://github.com/BrassBandResults/bbr4/wiki

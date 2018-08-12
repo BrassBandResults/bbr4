@@ -31,7 +31,7 @@ resource "aws_lambda_function" "bbr-thumbnail" {
   source_code_hash = "${base64sha256(file("../lambda/thumbnails/target/lambda-thumbnails-1.0.jar"))}"
   runtime = "java8"
   memory_size = "192"
-  timeout = "20"
+  timeout = "60"
 }
 
 resource "aws_lambda_permission" "bbr-thumbnail-allow-bucket-access" {

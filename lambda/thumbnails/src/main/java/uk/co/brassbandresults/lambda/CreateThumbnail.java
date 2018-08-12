@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,13 +27,43 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
 public class CreateThumbnail implements RequestHandler<S3Event, String> {
-	private static final float MAX_WIDTH = 100;
-	private static final float MAX_HEIGHT = 100;
+
+	// Profile Pictures
+	// - homepage 72x72
+	// - profile page 200x200
+
+	// Programme Covers
+	// - wall of shame 72-80x100
+	// - full size - 462x663
+
+	// Programme page
+	// - list - 80x56
+	// - full size - 800x565
+
+	// thumb - 100x100 max
+	// full size profile - 200x200 max
+	// full size programme page - 800x800
+
+	// All images get resized to fit within
+	// WxH
+	// 70x70
+	// 100x100
+	// 200x200
+	// 800x800
+
+	private static final List<Dimensions> dimensions = Arrays.asList( //
+			new Dimensions(70, 70), //
+			new Dimensions(100, 100), //
+			new Dimensions(200, 200), //
+			new Dimensions(800, 800) //
+	);
+
 	private final String JPG_TYPE = "jpg";
 	private final String JPG_MIME = "image/jpeg";
 	private final String PNG_TYPE = "png";
 	private final String PNG_MIME = "image/png";
 
+	@Override
 	public String handleRequest(S3Event s3event, Context context) {
 		try {
 			final S3EventNotificationRecord record = s3event.getRecords().get(0);
@@ -42,7 +74,6 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 			srcKey = URLDecoder.decode(srcKey, "UTF-8");
 
 			final String dstBucket = "bbr-media-upload-thumbnail";
-			final String dstKey = srcKey;
 
 			// Sanity check: validate that source and destination are different
 			// buckets.
@@ -66,50 +97,59 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 			// Download the image from S3 into a stream
 			final AmazonS3 s3Client = AmazonS3ClientBuilder.standard().build();
 			final S3Object s3Object = s3Client.getObject(new GetObjectRequest(srcBucket, srcKey));
-			final InputStream objectData = s3Object.getObjectContent();
 
 			// Read the source image
+			final InputStream objectData = s3Object.getObjectContent();
 			final BufferedImage srcImage = ImageIO.read(objectData);
 			final int srcHeight = srcImage.getHeight();
 			final int srcWidth = srcImage.getWidth();
-			// Infer the scaling factor to avoid stretching the image
-			// unnaturally
-			final float scalingFactor = Math.min(CreateThumbnail.MAX_WIDTH / srcWidth,
-					CreateThumbnail.MAX_HEIGHT / srcHeight);
-			final int width = (int) (scalingFactor * srcWidth);
-			final int height = (int) (scalingFactor * srcHeight);
+			System.out.println("  - Source WxH " + srcWidth + "x" + srcHeight);
 
-			final BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-			final Graphics2D g = resizedImage.createGraphics();
-			// Fill with white before applying semi-transparent (alpha) images
-			g.setPaint(Color.white);
-			g.fillRect(0, 0, width, height);
-			// Simple bilinear resize
-			// If you want higher quality algorithms, check this link:
-			// https://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g.drawImage(srcImage, 0, 0, width, height, null);
-			g.dispose();
+			for (final Dimensions dim : CreateThumbnail.dimensions) {
 
-			// Re-encode image to target format
-			final ByteArrayOutputStream os = new ByteArrayOutputStream();
-			ImageIO.write(resizedImage, imageType, os);
-			final InputStream is = new ByteArrayInputStream(os.toByteArray());
-			// Set Content-Length and Content-Type
-			final ObjectMetadata meta = new ObjectMetadata();
-			meta.setContentLength(os.size());
-			if (this.JPG_TYPE.equals(imageType)) {
-				meta.setContentType(this.JPG_MIME);
+				System.out.print("Resizing to fit within WxH" + dim.getWidth() + "x" + dim.getHeight());
+
+				// Infer the scaling factor to avoid stretching the image unnaturally
+				final float scalingFactor = Math.min((float) dim.getWidth() / srcWidth, (float) dim.getHeight() / srcHeight);
+				System.out.println("  - Scaling Factor " + scalingFactor);
+				final int potentialWidth = (int) (scalingFactor * srcWidth);
+				final int width = potentialWidth <= 0 ? srcWidth : potentialWidth;
+				final int potentialHeight = (int) (scalingFactor * srcHeight);
+				final int height = potentialHeight <= 0 ? srcHeight : potentialHeight;
+				System.out.println("  - Destination WxH " + width + "x" + height);
+
+				final BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+				final Graphics2D g = resizedImage.createGraphics();
+				// Fill with white before applying semi-transparent (alpha) images
+				g.setPaint(Color.white);
+				g.fillRect(0, 0, width, height);
+				// Simple bilinear resize
+				// If you want higher quality algorithms, check this link:
+				// https://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
+				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g.drawImage(srcImage, 0, 0, width, height, null);
+				g.dispose();
+
+				// Re-encode image to target format
+				final ByteArrayOutputStream os = new ByteArrayOutputStream();
+				ImageIO.write(resizedImage, imageType, os);
+				final InputStream is = new ByteArrayInputStream(os.toByteArray());
+				// Set Content-Length and Content-Type
+				final ObjectMetadata meta = new ObjectMetadata();
+				meta.setContentLength(os.size());
+				if (this.JPG_TYPE.equals(imageType)) {
+					meta.setContentType(this.JPG_MIME);
+				}
+				if (this.PNG_TYPE.equals(imageType)) {
+					meta.setContentType(this.PNG_MIME);
+				}
+
+				// Uploading to S3 destination bucket
+				final String dstKey = srcKey + dim.getSuffix() + "." + imageType;
+				System.out.println("  - Writing to: " + dstBucket + "/" + dstKey);
+				s3Client.putObject(dstBucket, dstKey, is, meta);
+				System.out.println("  - Successfully resized " + srcBucket + "/" + srcKey + " and uploaded to " + dstBucket + "/" + dstKey);
 			}
-			if (this.PNG_TYPE.equals(imageType)) {
-				meta.setContentType(this.PNG_MIME);
-			}
-
-			// Uploading to S3 destination bucket
-			System.out.println("Writing to: " + dstBucket + "/" + dstKey);
-			s3Client.putObject(dstBucket, dstKey, is, meta);
-			System.out.println("Successfully resized " + srcBucket + "/" + srcKey + " and uploaded to " + dstBucket
-					+ "/" + dstKey);
 			return "Ok";
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
