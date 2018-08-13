@@ -34,6 +34,7 @@ data "template_file" "django-settings-live" {
         googleMapsKey = "${var.googleMapsKey}"
         notificationTopicArn = "${aws_sns_topic.bbr-notify.arn}"
         prefix = "${var.prefix}"
+	region = "${var.region}"
     }
 }
 

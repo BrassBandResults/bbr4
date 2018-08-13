@@ -94,7 +94,7 @@ def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser,
                               pFromEmail,  
                              )
 
-    client = boto3.client('sns')
+    client = boto3.client('sns', region_name=settings.AWS_REGION)
     client.publish(
             TopicArn = settings.NOTIFICATION_TOPIC_ARN,
             Message = lMessage.asJson(),
