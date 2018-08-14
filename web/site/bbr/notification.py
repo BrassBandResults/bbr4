@@ -51,8 +51,7 @@ class MessageWrapper:
            'ipAddress' : '%s',
            'userAgent' : '%s,'
            'thingOld' : %s,
-           'thingNew' : %s,
-	   'additionalContext' : %s
+           'thingNew' : %s
          }}""" % (
            self.module,
            self.objectType,
@@ -67,7 +66,6 @@ class MessageWrapper:
            self.fromEmail,
            serializers.serialize("json", [self.thingOld,]),
            serializers.serialize("json", [self.thingNew,]),
-           serializers.serialize("json", self.additionalContext),
          )
 
 
