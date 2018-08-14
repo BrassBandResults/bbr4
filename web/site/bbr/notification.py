@@ -43,13 +43,13 @@ class MessageWrapper:
            'object' : '%s',
            'change' : '%s',
            'user' : '%s',
+           'ip' : '%s',
+           'browser' : '%s',
            'destination' : '%s',
            'cc' : '%s',
            'bcc' : '%s',
            'fromName' : '%s',
            'fromEmail' : '%s',
-           'ipAddress' : '%s',
-           'userAgent' : '%s,'
            'thingOld' : %s,
            'thingNew' : %s
          }}""" % (
