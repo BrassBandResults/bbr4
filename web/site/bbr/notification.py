@@ -38,20 +38,20 @@ class MessageWrapper:
         self.fromEmail = pFromEmail
 
     def asJson(self):
-         return """{'notification': {
-           'module' : '%s',
-           'object' : '%s',
-           'change' : '%s',
-           'user' : '%s',
-           'ip' : '%s',
-           'browser' : '%s',
-           'destination' : '%s',
-           'cc' : '%s',
-           'bcc' : '%s',
-           'fromName' : '%s',
-           'fromEmail' : '%s',
-           'thingOld' : %s,
-           'thingNew' : %s
+         return """{"notification": {
+           "module" : "%s",
+           "object" : "%s",
+           "change" : "%s",
+           "user" : "%s",
+           "ip" : "%s",
+           "browser" : "%s",
+           "destination" : "%s",
+           "cc" : "%s",
+           "bcc" : "%s",
+           "fromName" : "%s",
+           "fromEmail" : "%s",
+           "thingOld" : %s,
+           "thingNew" : %s
          }}""" % (
            self.module,
            self.objectType,
