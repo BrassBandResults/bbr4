@@ -65,8 +65,8 @@ class MessageWrapper:
            self.bcc,
            self.fromName,
            self.fromEmail,
-           serializers.serialize("json", self.thingOld),
-           serializers.serialize("json", self.thingNew),
+           serializers.serialize("json", [self.thingOld,]),
+           serializers.serialize("json", [self.thingNew,]),
            serializers.serialize("json", self.additionalContext),
          )
 
@@ -76,7 +76,7 @@ def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser,
     Send an admin notification email when something happens
     """
     if settings.NOTIFICATIONS_ENABLED == False:
-        # disable all notifications for tesitng purposes
+        # disable all notifications for testing purposes
         return
 
     lMessage = MessageWrapper(pThingOld,

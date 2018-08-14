@@ -1,3 +1,38 @@
+resource "aws_iam_role" "webtier-role" {
+    name = "webtier-role"
+    assume_role_policy = "${file("assume-role-policy.json")}"
+}
+
+resource "aws_iam_policy" "webtier-policy" {
+    name = "webtier-policy"
+    description = "IAM Policy to allow web tier to write to SNS"
+    policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sns:Publish"
+      ],
+      "Resource": "${aws_sns_topic.bbr-notify.arn}"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "webtier-policy-attach" {
+    name = "webtier-policy-attachment"
+    roles = ["${aws_iam_role.webtier-role.name}"]
+    policy_arn = "${aws_iam_policy.webtier-policy.arn}"
+}
+
+resource "aws_iam_instance_profile" "webtier-profile" {
+    name = "webtier-profile"
+    role = "${aws_iam_role.webtier-role.name}"
+}
+
 data "template_file" "pgpass" {
     template = "$${pg_host}:$${pg_port}:$${pg_dbname}:$${pg_username}:$${pg_password}"
 
@@ -44,7 +79,7 @@ resource "aws_instance" "bbr-web" {
     key_name = "${lookup(var.keypair, var.region)}"
     subnet_id = "${aws_subnet.public-subnet.id}"
     private_ip = "10.0.7.7"
-
+    iam_instance_profile = "${aws_iam_instance_profile.webtier-profile.name}"
     vpc_security_group_ids = [
         "${aws_security_group.web_traffic.id}",
         "${aws_security_group.admin_access.id}"
