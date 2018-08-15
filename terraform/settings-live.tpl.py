@@ -43,9 +43,9 @@ DATABASES = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'http://${prefix}-site-media.s3-website.eu-west-2.amazonaws.com'
-UPLOAD_URL = 'http://${prefix}-media-upload.s3-website.eu-west-2.amazonaws.com'
-THUMBS_URL = 'http://${prefix}-media-upload-thumbnail.s3-website.eu-west-2.amazonaws.com'
+STATIC_URL = 'http://${prefix}-site-media.s3-website.eu-west-2.amazonaws.com/'
+UPLOAD_URL = 'http://${prefix}-media-upload.s3-website.eu-west-2.amazonaws.com/'
+THUMBS_URL = 'http://${prefix}-media-upload-thumbnail.s3-website.eu-west-2.amazonaws.com/'
 
 AWS_REGION = '${region}'
 
