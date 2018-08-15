@@ -87,8 +87,11 @@ def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser,
                               pFromEmail,  
                              )
 
+    lMessageToSend = lMessage.asJson()
+    if len(lMessageToSend) < 5:
+      lMessageToSend = "INVALID MESSAGE [%s]" % lMessageToSend
     client = boto3.client('sns', region_name=settings.AWS_REGION)
     client.publish(
             TopicArn = settings.NOTIFICATION_TOPIC_ARN,
-            Message = lMessage.asJson(),
+            Message = lMessageToSend,
         )
