@@ -39,9 +39,9 @@ class MessageWrapper:
         self.fromEmail = pFromEmail
 
     def asJson(self):
-	lContext = {
+        lContext = {
           'module' : self.module,
-	  'objectType' : self.objectType,
+          'objectType' : self.objectType,
           'change' : self.changeType,
           'user' : self.user,
           'ip': self.browserDetails[0], 
@@ -53,15 +53,15 @@ class MessageWrapper:
           'fromEmail': self.fromEmail,
           'ThingOld': 'null',
           'ThingNew': 'null',
-	}
+        }
 
-	if self.thingOld:
-		lContext['ThingOld'] = serializers.serialize("json", [self.thingOld,])
-	if self.thingNew:
-		lContext['ThingNew'] = serializers.serialize("json", [self.thingNew,])
+        if self.thingOld:
+          lContext['ThingOld'] = serializers.serialize("json", [self.thingOld,])
+        if self.thingNew:
+          lContext['ThingNew'] = serializers.serialize("json", [self.thingNew,])
 
-	lRenderedString = render_to_string('notify/message.json', lContext)
-	return lRenderedString
+        lRenderedString = render_to_string('notify/message.json', lContext)
+        return lRenderedString
 
 
 def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None, pCc=None, pBcc=None, pFromName=None, pFromEmail=None):
