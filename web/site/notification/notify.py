@@ -1,4 +1,7 @@
 # (c) 2018 Tim Sawyer, All Rights Reserved
+from django.core import serializers
+from django.conf import settings
+from django.template.loader import render_to_string
 
 class MessageWrapper:
     """
@@ -37,7 +40,7 @@ class MessageWrapper:
         """
         Send message
         """
-        lMessageToSend = lMessage.asJson()
+        lMessageToSend = self.asJson()
         client.publish(
             TopicArn = settings.NOTIFICATION_TOPIC_ARN,
             Message = lMessageToSend,
@@ -52,8 +55,6 @@ class MessageWrapper:
           'objectType' : self.objectType,
           'change' : self.changeType,
           'user' : self.user,
-          'ip': self.browserDetails[0], 
-          'browser': self.browserDetails[1],
           'destination': self.destination,
           'cc': self.cc,
           'bcc': self.bcc,
@@ -67,6 +68,9 @@ class MessageWrapper:
           lContext['ThingOld'] = serializers.serialize("json", [self.thingOld,])
         if self.thingNew:
           lContext['ThingNew'] = serializers.serialize("json", [self.thingNew,])
+        if self.browserDetails:
+          lContext['ip']  =  self.browserDetails[0]
+          lContext['browser'] = self.browserDetails[1]
 
         lRenderedString = render_to_string('notify/message.json', lContext)
         return lRenderedString

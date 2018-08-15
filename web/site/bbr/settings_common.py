@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'leaderboard',
     'move',
     'myresults',
+    'notification',
     'payments',
     'people',
     'pieces',
