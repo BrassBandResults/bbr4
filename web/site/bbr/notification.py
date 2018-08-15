@@ -3,6 +3,7 @@
 import boto3
 from django.conf import settings
 from django.core import serializers
+from django.template.loader import render_to_string
 
 class MessageWrapper:
     """
@@ -38,35 +39,29 @@ class MessageWrapper:
         self.fromEmail = pFromEmail
 
     def asJson(self):
-         return """{"notification": {
-           "module" : "%s",
-           "object" : "%s",
-           "change" : "%s",
-           "user" : "%s",
-           "ip" : "%s",
-           "browser" : "%s",
-           "destination" : "%s",
-           "cc" : "%s",
-           "bcc" : "%s",
-           "fromName" : "%s",
-           "fromEmail" : "%s",
-           "thingOld" : %s,
-           "thingNew" : %s
-         }}""" % (
-           self.module,
-           self.objectType,
-           self.changeType,
-           self.user,
-           self.browserDetails[0],
-           self.browserDetails[1],
-           self.destination,
-           self.cc,
-           self.bcc,
-           self.fromName,
-           self.fromEmail,
-           serializers.serialize("json", [self.thingOld,]),
-           serializers.serialize("json", [self.thingNew,]),
-         )
+	lContext = {
+          'module' : self.module,
+	  'objectType' : self.objectType,
+          'change' : self.changeType,
+          'user' : self.user,
+          'ip': self.browserDetails[0], 
+          'browser': self.browserDetails[1],
+          'destination': self.destination,
+          'cc': self.cc,
+          'bcc': self.bcc,
+          'fromName': self.fromName,
+          'fromEmail': self.fromEmail,
+          'ThingOld': 'null',
+          'ThingNew': 'null',
+	}
+
+	if self.thingOld:
+		lContext['ThingOld'] = serializers.serialize("json", [self.thingOld,])
+	if self.thingNew:
+		lContext['ThingNew'] = serializers.serialize("json", [self.thingNew,])
+
+	lRenderedString = render_to_string('notify/message.json', lContext)
+	return lRenderedString
 
 
 def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None, pCc=None, pBcc=None, pFromName=None, pFromEmail=None):
