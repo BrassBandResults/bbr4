@@ -1,14 +1,16 @@
 {
   "notification": {
-    "module" : "{{module}}",
-    "type" : "{{objectType}}",
-    "change" : "{{change}}",
-    "user" : "{{user}}",
-    "ip" : "{{ip}}",
-    "browser" : "{{browser}}",
-    "destination" : "{{destination}}",
-    "cc" : "{{cc}}",
-    "bcc" : "{{bcc}}",
-    "fromName" : "{{fromName}}",
-    "fromEmail" : "{{fromEmail}}"
+    "module" : "{{Mmodule}}",
+    "type" : "{{ObjectType}}",
+    "change" : "{{Change}}",
+    "user" : "{{User}}",
+    "ip" : "{{Ip}}",
+    "browser" : "{{Browser}}",
+    "destination" : "{{Destination}}",
+    "cc" : "{{Cc}}",
+    "bcc" : "{{Bcc}}",
+    "fromName" : "{{FromName}}",
+    "fromEmail" : "{{FromEmail}}",
+    "thingOld" : {% autoescape off %}{{ThingOldJson|safe}}{%endautoescape%},
+    "thingNew" : {% autoescape off %}{{ThingNewJson|safe}}{%endautoescape%}
 }

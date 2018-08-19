@@ -48,6 +48,9 @@ class MessageWrapper:
             Subject = lSubjectToSend,
             MessageStructure = "json",
           )
+        else:
+          print (lSubjectToSend)
+          print (lMessageToSend)  
 
     def asJson(self):
         """
@@ -86,5 +89,5 @@ class MessageWrapper:
           'emailText' : lRenderedEmailText,
           'jsonText' : lRenderedJsonText,
         }
-        lRenderedJson = render_to_string('notify/sns_message.json', lContext)
+        lRenderedJson = render_to_string('notify/sns_message.json', lSnsContext)
         return lRenderedJson, lRenderedEmailSubject
