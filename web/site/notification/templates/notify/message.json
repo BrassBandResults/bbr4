@@ -1,17 +1,19 @@
-{"default" : "{
-  "notification": {
-    "module" : "{{module}}",
-    "type" : "{{objectType}}",
-    "change" : "{{change}}",
-    "user" : "{{user}}",
-    "ip" : "{{ip}}",
-    "browser" : "{{browser}}",
-    "destination" : "{{destination}}",
-    "cc" : "{{cc}}",
-    "bcc" : "{{bcc}}",
-    "fromName" : "{{fromName}}",
-    "fromEmail" : "{{fromEmail}}",
-    "thingOld" : {{ThingOld}},
-    "thingNew" : {{ThingNew}}
-  }"
+{
+"default": "{
+  \"notification\": {
+    \"module\" : \"{{module}}\",
+    \"type\" : \"{{objectType}}\",
+    \"change\" : \"{{change}}\",
+    \"user\" : \"{{user}}\",
+    \"ip\" : \"{{ip}}\",
+    \"browser\" : \"{{browser}}\",
+    \"destination\" : \"{{destination}}\",
+    \"cc\" : \"{{cc}}\",
+    \"bcc\" : \"{{bcc}}\",
+    \"fromName\" : \"{{fromName}}\",
+    \"fromEmail\" : \"{{fromEmail}}\",
+    \"thingOld\" : {{ThingOld}},
+    \"thingNew\" : {{ThingNew}}
+  }", 
+"email": "Email Template Contents" 
 }
