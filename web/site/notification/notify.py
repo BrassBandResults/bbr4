@@ -84,7 +84,7 @@ class MessageWrapper:
 
         lSnsContext = {
           'emailText' : lRenderedEmailText,
-          'jsonText' lRenderedJsonText,
+          'jsonText' : lRenderedJsonText,
         }
         lRenderedJson = render_to_string('notify/sns_message.json', lContext)
         return lRenderedJson, lRenderedEmailSubject
