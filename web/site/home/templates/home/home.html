@@ -79,7 +79,7 @@
 <div class="col d-none d-md-block border border-light rounded text-light bg-dark pt-1" id="profile-1">
     <h3><a href="{{RandomProfile.get_absolute_url}}" class="text-white">{{RandomProfile.name}}</a></h3>
     <p>
-      {% if RandomProfile.picture %}<a href="{{RandomProfile.get_absolute_url}}">{% thumbnail RandomProfile.picture "70x70"%}{% endif %}
+      {% if RandomProfile.picture %}<a href="{{RandomProfile.get_absolute_url}}">{% thumbnail RandomProfile.picture "70x70"%}</a>{% endif %}
       {{RandomProfile.profile|truncatewords_html:"50"|bbrize}} 
       [<a href="{{RandomProfile.get_absolute_url}}">{% trans "more"%}</a>]
       </p>
@@ -89,7 +89,7 @@
   <div class="col d-none d-lg-block border border-light rounded text-light bg-dark pt-1" id="profile-2">
     <h3><a href="{{SecondRandomProfile.get_absolute_url}}" class="text-white">{{SecondRandomProfile.name}}</a></h3>
     <p>
-      {% if SecondRandomProfile.picture %}<a href="{{SecondRandomProfile.get_absolute_url}}"><img src="{{THUMBS_URL}}/{{SecondRandomProfile.picture}}-70x70.jpg"/></a>{% endif %}
+      {% if SecondRandomProfile.picture %}<a href="{{SecondRandomProfile.get_absolute_url}}">{% thumbnail SecondRandomProfile.picture "70x70"%}</a></a>{% endif %}
       {{SecondRandomProfile.profile|truncatewords_html:"50"|bbrize}} 
       [<a href="{{SecondRandomProfile.get_absolute_url}}">{% trans "more"%}</a>]
       </p>
