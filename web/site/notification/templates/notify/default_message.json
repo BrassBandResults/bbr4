@@ -1,6 +1,6 @@
 {
   "notification": {
-    "module" : "{{Mmodule}}",
+    "module" : "{{Module}}",
     "type" : "{{ObjectType}}",
     "change" : "{{Change}}",
     "user" : "{{User}}",

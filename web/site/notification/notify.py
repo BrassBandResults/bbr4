@@ -87,7 +87,7 @@ class MessageWrapper:
 
         lSnsContext = {
           'emailText' : lRenderedEmailText,
-          'jsonText' : lRenderedJsonText,
+          'jsonText' : lRenderedJsonText.replace('"','\\"')
         }
         lRenderedJson = render_to_string('notify/sns_message.json', lSnsContext)
         return lRenderedJson, lRenderedEmailSubject

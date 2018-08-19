@@ -1,4 +1,4 @@
 {
-"default": "{{jsonText}}", 
+"default": "{{jsonText|safe}}", 
 "email": "{{emailText}}" 
 }
