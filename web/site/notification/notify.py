@@ -80,10 +80,14 @@ class MessageWrapper:
 
 
         lRenderedJsonText = render_to_string('notify/default_message.json', lContext)
+        lRenderedJsonText = ''.join(lRenderedJsonText.splitlines()) #  *must not* contain newlines
+        
         lRenderedEmailText = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
+        lRenderedEmailText = '\\n'.join(lRenderedEmailText.splitlines()) #  *must not* contain newlines
+        
         
         lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
-        lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) # Email subject *must not* contain newlines
+        lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) #  *must not* contain newlines
 
         lSnsContext = {
           'emailText' : lRenderedEmailText,
