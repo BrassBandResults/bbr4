@@ -13,4 +13,5 @@
     "fromEmail" : "{{FromEmail}}",
     "thingOld" : {% autoescape off %}{{ThingOldJson|safe}}{%endautoescape%},
     "thingNew" : {% autoescape off %}{{ThingNewJson|safe}}{%endautoescape%}
+  }
 }
