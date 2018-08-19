@@ -9,4 +9,5 @@ def thumbnail(pathToImage, dimensions):
 thumbnail.is_safe=True
 thumbnail.needs_autoescape = False
 
+register = template.Library()
 register.simple_tag(thumbnail)
