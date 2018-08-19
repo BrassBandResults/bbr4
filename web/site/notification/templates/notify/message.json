@@ -11,9 +11,7 @@
     \"cc\" : \"{{cc}}\",
     \"bcc\" : \"{{bcc}}\",
     \"fromName\" : \"{{fromName}}\",
-    \"fromEmail\" : \"{{fromEmail}}\",
-    \"thingOld\" : {{ThingOld}},
-    \"thingNew\" : {{ThingNew}}
+    \"fromEmail\" : \"{{fromEmail}}\"
   }", 
 "email": "Email Template Contents" 
 }

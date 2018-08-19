@@ -40,10 +40,12 @@ class MessageWrapper:
         """
         Send message
         """
-        lMessageToSend = self.asJson()
+        lMessageToSend, lSubjectToSend = self.asJson()
         client.publish(
             TopicArn = settings.NOTIFICATION_TOPIC_ARN,
             Message = lMessageToSend,
+            Subject = lSubjectToSend,
+            MessageStructure = "json",
         )
 
     def asJson(self):
@@ -72,5 +74,12 @@ class MessageWrapper:
           lContext['ip']  =  self.browserDetails[0]
           lContext['browser'] = self.browserDetails[1]
 
-        lRenderedString = render_to_string('notify/message.json', lContext)
-        return lRenderedString
+
+        lRenderedEmailText = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
+        lContext['emailText'] = lRenderedEmailText
+
+        lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (pModule, pChangeType, pObjectType), lContext)
+        lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) # Email subject *must not* contain newlines
+
+        lRenderedJson = render_to_string('notify/message.json', lContext)
+        return lRenderedJson, lRenderedEmailSubject
