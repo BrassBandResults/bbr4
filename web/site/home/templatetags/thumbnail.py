@@ -1,5 +1,6 @@
 from django.utils.safestring import mark_safe
 from django.conf import settings
+from django import template
 
 def thumbnail(pathToImage, dimensions):
     lExtension = pathToImage[pathToImage.rfind('.'):]
