@@ -1,5 +1,4 @@
 {
-"default": "{
   "notification": {
     "module" : "{{module}}",
     "type" : "{{objectType}}",
@@ -12,6 +11,4 @@
     "bcc" : "{{bcc}}",
     "fromName" : "{{fromName}}",
     "fromEmail" : "{{fromEmail}}"
-  }", 
-"email": "{{emailText}}" 
 }

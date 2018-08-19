@@ -1,0 +1,4 @@
+{
+"default": "{{jsonText}}", 
+"email": "{{emailText}}" 
+}

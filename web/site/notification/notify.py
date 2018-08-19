@@ -54,33 +54,37 @@ class MessageWrapper:
         Convert message to JSON
         """
         lContext = {
-          'module' : self.module,
-          'objectType' : self.objectType,
-          'change' : self.changeType,
-          'user' : self.user,
-          'destination': self.destination,
-          'cc': self.cc,
-          'bcc': self.bcc,
-          'fromName': self.fromName,
-          'fromEmail': self.fromEmail,
-          'ThingOld': 'null',
-          'ThingNew': 'null',
+          'Module' : self.module,
+          'ObjectType' : self.objectType,
+          'Change' : self.changeType,
+          'User' : self.user,
+          'Destination': self.destination,
+          'Cc': self.cc,
+          'Bcc': self.bcc,
+          'FromName': self.fromName,
+          'FromEmail': self.fromEmail,
+          'ThingOld': self.ThingOld,
+          'ThingNew': self.ThingNew,
         }
 
         if self.thingOld:
-          lContext['ThingOld'] = serializers.serialize("json", [self.thingOld,])
+          lContext['ThingOldJson'] = serializers.serialize("json", [self.thingOld,])
         if self.thingNew:
-          lContext['ThingNew'] = serializers.serialize("json", [self.thingNew,])
+          lContext['ThingNewJson'] = serializers.serialize("json", [self.thingNew,])
         if self.browserDetails:
-          lContext['ip']  =  self.browserDetails[0]
-          lContext['browser'] = self.browserDetails[1]
+          lContext['Ip']  =  self.browserDetails[0]
+          lContext['Browser'] = self.browserDetails[1]
 
 
+        lRenderedJsonText = render_to_string('notify/default_message.json', lContext)
         lRenderedEmailText = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
-        lContext['emailText'] = lRenderedEmailText
-
+        
         lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
         lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) # Email subject *must not* contain newlines
 
-        lRenderedJson = render_to_string('notify/message.json', lContext)
+        lSnsContext = {
+          'emailText' : lRenderedEmailText,
+          'jsonText' lRenderedJsonText,
+        }
+        lRenderedJson = render_to_string('notify/sns_message.json', lContext)
         return lRenderedJson, lRenderedEmailSubject
