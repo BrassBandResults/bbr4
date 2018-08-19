@@ -63,8 +63,8 @@ class MessageWrapper:
           'Bcc': self.bcc,
           'FromName': self.fromName,
           'FromEmail': self.fromEmail,
-          'ThingOld': self.ThingOld,
-          'ThingNew': self.ThingNew,
+          'ThingOld': self.thingOld,
+          'ThingNew': self.thingNew,
         }
 
         if self.thingOld:
