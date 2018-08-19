@@ -1,5 +1,6 @@
 {% extends "template.html" %}
 {% load humanize %}
+{% load thumbnail %}
 {% load bbrize %}
 {% load i18n %}
 
@@ -78,7 +79,7 @@
 <div class="col d-none d-md-block border border-light rounded text-light bg-dark pt-1" id="profile-1">
     <h3><a href="{{RandomProfile.get_absolute_url}}" class="text-white">{{RandomProfile.name}}</a></h3>
     <p>
-      {% if RandomProfile.picture %}<a href="{{RandomProfile.get_absolute_url}}"><img src="{{THUMBS_URL}}/{{RandomProfile.picture}}-70x70.jpg"/></a>{% endif %}
+      {% if RandomProfile.picture %}<a href="{{RandomProfile.get_absolute_url}}">{% thumbnail RandomProfile.picture "70x70"%}{% endif %}
       {{RandomProfile.profile|truncatewords_html:"50"|bbrize}} 
       [<a href="{{RandomProfile.get_absolute_url}}">{% trans "more"%}</a>]
       </p>
