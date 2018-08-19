@@ -5,7 +5,7 @@ from django import template
 def thumbnail(imageFieldFile, dimensions):
     lPathToImage = imageFieldFile.url
     lExtension = lPathToImage[lPathToImage.rfind('.'):]
-    lThumbPath = "%s%s-%s%s" % (settings.THUMBS_URL, lPathToImage, dimensions, lExtension)
+    lThumbPath = "%s/%s-%s%s" % (settings.THUMBS_URL, lPathToImage, dimensions, lExtension)
     return mark_safe("<img src='%s'/>" % lThumbPath)
 
 thumbnail.is_safe=True
