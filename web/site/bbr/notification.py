@@ -8,10 +8,6 @@ def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser,
     """
     Send an admin notification email when something happens
     """
-    if settings.NOTIFICATIONS_ENABLED == False:
-        # disable all notifications for testing purposes
-        return
-
     lMessage = MessageWrapper(pThingOld,
                               pThingNew,
                               pModule,
