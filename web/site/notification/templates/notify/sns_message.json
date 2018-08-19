@@ -1,4 +1,4 @@
 {
-"default": "{{jsonText|safe}}", 
+"default": "{% autoescape off %}{{jsonText|safe}}{%endautoescape%}", 
 "email": "{{emailText}}" 
 }
