@@ -25,20 +25,6 @@
 {% if user.is_staff and perms.pieces.change_testpiece %} [<a href="/bbradmin/pieces/testpiece/{{Piece.id}}/" title="Edit this piece in the admin site">admin</a>]{% endif %}
 </h1>
 
-{% if DownloadAlbums %}
-<h2>Recordings</h2>
-<div id="recordings">
-<ul>
-{% for album in DownloadAlbums %}
-<li>
-  <a href="{{album.link|safe}}"><img src="{{album.thumbnail.url_100x100}}" title="{% if album.type == 'download'%}Download: {%endif%}{% if album.type == 'cd'%}CD: {%endif%}{{album.title}} - {{album.band_name}}"/></a>
-  <span class="recording-icon"><img src="{{ STATIC_URL }}icons/recording-{{album.type}}.png"/></span>
-</li>
-{% endfor %}
-</ul>
-</div>
-{% endif %}
-
 {% if UserResultsForThisPiece %}
 <h2>{% trans "Your Performances"%} ({{UserResultsForThisPieceCount}})</h2>
 <table id="contest-history" class="table table-hover">

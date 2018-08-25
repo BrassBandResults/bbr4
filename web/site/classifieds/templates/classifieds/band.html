@@ -257,19 +257,6 @@
 </table>
 {% endif %}
 
-{% if DownloadAlbums %}
-<h2>Recordings</h2>
-<div id="recordings">
-<ul>
-{% for album in DownloadAlbums %}
-<li>
-  <a href="{{album.link|safe}}"><img src="{{album.thumbnail.url_100x100}}" title="{% if album.type == 'download'%}Download: {%endif%}{% if album.type == 'cd'%}CD: {%endif%}{{album.title}} - {{album.band_name}}"/></a>
-  <span class="recording-icon"><img src="{{ STATIC_URL }}icons/recording-{{album.type}}.png"/></span>
-</li>
-{% endfor %}
-</ul>
-</div>
-{% endif %}
 {% ifnotequal Band.status 2 %}
 <h2>Contest Results</h2>
 {% endifnotequal %}

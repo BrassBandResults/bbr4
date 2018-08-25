@@ -187,3 +187,14 @@ tbody tr.result-3 td, td.result-3 {
 .suggestionList li:hover {
     background-color: #659CD8;
 }
+
+#ProfileImage img {
+  float: right;
+  border: 1px solid black;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #000;
+  margin: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+}
