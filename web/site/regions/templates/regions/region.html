@@ -11,7 +11,7 @@
 
 {%block head %}
 {% if Region.latitude and Region.longitude %}
-<script type="text/javascript" src="{{ STATIC_URL }}/map/js/infobubble-compiled.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}map/js/infobubble-compiled.js"></script>
 <script type="text/javascript" src="/map/region/{{Region.slug}}/map_script.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
 {% endif %}

@@ -37,12 +37,12 @@
  <tr>
     <td align="left">
       {% if PreviousContestSection %}
-      <img src="{{ STATIC_URL }}/icons/arrow_up.png"/> <a href="/contests/{{PreviousContestSection.slug}}/">{{PreviousContestSection.name}}</a>
+      <img src="{{ STATIC_URL }}icons/arrow_up.png"/> <a href="/contests/{{PreviousContestSection.slug}}/">{{PreviousContestSection.name}}</a>
       {% endif %}
     </td>
     <td align="right">
      {% if NextContestSection %}
-      <a href="/contests/{{NextContestSection.slug}}/">{{NextContestSection.name}}</a> <img src="{{ STATIC_URL }}/icons/arrow_down.png"/>
+      <a href="/contests/{{NextContestSection.slug}}/">{{NextContestSection.name}}</a> <img src="{{ STATIC_URL }}icons/arrow_down.png"/>
       {% endif %}      
     </td>
   </tr>
@@ -104,7 +104,7 @@
 			<td nowrap="nowrap"><a href="/contests/{{event.contest_slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
             <td>         
 			  {% for winner in event.winners %}
-			    <div class="band">{% if winner.region.country_code %}<img src="{{ STATIC_URL }}/flags/{{winner.region.country_code|lower}}.png" title="{{winner.region.name}}">{%endif%} <a href="/bands/{{winner.slug}}/" title="{{winner.name}}">{{winner.band_name}}</a></div>
+			    <div class="band">{% if winner.region.country_code %}<img src="{{ STATIC_URL }}flags/{{winner.region.country_code|lower}}.png" title="{{winner.region.name}}">{%endif%} <a href="/bands/{{winner.slug}}/" title="{{winner.name}}">{{winner.band_name}}</a></div>
 			  {% endfor %}<i>{{event.name}}</i>  
 			</td>
             
@@ -112,7 +112,7 @@
             <td class="contest-event" nowrap="nowrap"><a href="/contests/{{Contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
             <td>
 			  {% for winner in event.winners %}
-			    <div class="band">{% if winner.region.country_code %}<img src="{{ STATIC_URL }}/flags/{{winner.region.country_code|lower}}.png" title="{{winner.region.name}}">{%endif%} <a href="/bands/{{winner.slug}}/" title="{{winner.name}}">{{winner.band_name}}</a></div>
+			    <div class="band">{% if winner.region.country_code %}<img src="{{ STATIC_URL }}flags/{{winner.region.country_code|lower}}.png" title="{{winner.region.name}}">{%endif%} <a href="/bands/{{winner.slug}}/" title="{{winner.name}}">{{winner.band_name}}</a></div>
 			  {% endfor %}
 			</td>
 {% endif %}

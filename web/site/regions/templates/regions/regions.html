@@ -35,7 +35,7 @@
 	<tbody>
 {% for region in Regions %}
     	<tr>
-    		<td class="region"><img src="{{ STATIC_URL }}/flags/{{region.country_code}}.png"> <a href="/regions/{{region.slug}}/">{{region.name}}</a></td>
+    		<td class="region"><img src="{{ STATIC_URL }}flags/{{region.country_code}}.png"> <a href="/regions/{{region.slug}}/">{{region.name}}</a></td>
 			<td>{{region.band_count}}</td>
 			<td><a href="/regions/{{region.slug}}/links/">{% trans "Links"%}</a></td>
 		</tr>

@@ -78,7 +78,7 @@ function fill(pValue) {
 		<th>&nbsp;</th>
 		<td><input type="text" id="adjudicator" name="AdjudicatorName" onkeyup="lookup(this.value);" maxlength="100" autofocus="autofocus">&nbsp;&nbsp;<input type="submit" value="Add" /> <a href="/addresults/{{Contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/7/">Done</a>
 		  <div class="suggestionsBox" id="suggestions" style="display: none;">
-		    <img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+		    <img src="{{ STATIC_URL }}images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
             <div class="suggestionList" id="autoSuggestionsList"></div>
 		  </div>
         </td>

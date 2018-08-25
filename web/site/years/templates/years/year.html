@@ -22,13 +22,13 @@
 <h1>{% trans "Contests in"%} {{Year}}{% if Region %} featuring {{Region.name}} bands{% endif %}</h1>
 <p>
 {% if Region %}
- {% if PreviousYear %}<a href="/years/{{PreviousYear}}/region/{{Region.slug}}/"><img src="{{ STATIC_URL }}/icons/arrow_left.png"/></a>{%endif%}
+ {% if PreviousYear %}<a href="/years/{{PreviousYear}}/region/{{Region.slug}}/"><img src="{{ STATIC_URL }}icons/arrow_left.png"/></a>{%endif%}
  <b>{{Year}}</b>
- {% if NextYear %}<a href="/years/{{NextYear}}/region/{{Region.slug}}/"><img src="{{ STATIC_URL }}/icons/arrow_right.png"/></a>{%endif%}
+ {% if NextYear %}<a href="/years/{{NextYear}}/region/{{Region.slug}}/"><img src="{{ STATIC_URL }}icons/arrow_right.png"/></a>{%endif%}
 {% else %}
- {% if PreviousYear %}<a href="/years/{{PreviousYear}}/"><img src="{{ STATIC_URL }}/icons/arrow_left.png"/></a>{%endif%}
+ {% if PreviousYear %}<a href="/years/{{PreviousYear}}/"><img src="{{ STATIC_URL }}icons/arrow_left.png"/></a>{%endif%}
  <b>{{Year}}</b>
- {% if NextYear %}<a href="/years/{{NextYear}}/"><img src="{{ STATIC_URL }}/icons/arrow_right.png"/></a>{%endif%}
+ {% if NextYear %}<a href="/years/{{NextYear}}/"><img src="{{ STATIC_URL }}icons/arrow_right.png"/></a>{%endif%}
 {% endif %} 
 </p>
 <table id="events" class="table table-hover">
@@ -50,7 +50,7 @@
 			{% else %}
 			<td>
 			  {% for result in event.winners %}
-			    <img src="{{ STATIC_URL }}/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a>
+			    <img src="{{ STATIC_URL }}flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a>
 			  {% endfor %}
 			</td>
 			<td>

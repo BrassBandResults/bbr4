@@ -52,7 +52,7 @@
 		<td>{{result.conductor_one_band_name}}</td>
 {% endifequal %}
 		<td><a href="/contests/{{result.slug}}/{{result.date|date:"Y-m-d"}}/">{{result.event_date}}</a></td>
-		<td>{% if not Filter %}<a class="hourglass" href="/compare/conductors/{{ConductorOne.slug}}/{{ConductorTwo.slug}}/{{result.slug}}/" title="{% trans "Click to filter to"%} {{result.name}}"><img src="{{ STATIC_URL }}/icons/magnifier.png" border="0"/></a> {%endif%}{{result.name}}</td>
+		<td>{% if not Filter %}<a class="hourglass" href="/compare/conductors/{{ConductorOne.slug}}/{{ConductorTwo.slug}}/{{result.slug}}/" title="{% trans "Click to filter to"%} {{result.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a> {%endif%}{{result.name}}</td>
 {% ifequal result.conductor_two 9999 %}
 		<td>{% trans "Unknown"%}</td>
 {% else %}

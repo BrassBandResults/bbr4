@@ -35,7 +35,7 @@
   <input type="hidden" name="ordering-{{result.id}}" value="{{result.next_order}}"/>
   <input id="add-{{result.id}}" type="submit" value="Add Piece"></input>
   <div class="suggestionsBox" id="pieceSuggestions-{{result.id}}" style="display: none;">
-	<img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+	<img src="{{ STATIC_URL }}images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
     <div class="suggestionList" id="autoPieceSuggestionsList-{{result.id}}"></div> 
    </div>
 {% if result.show_new_piece_form %}
@@ -52,7 +52,7 @@ var gPeople = [
       <td>
         <input type="text" id="composer-{{result.id}}" name="composer-{{result.id}}" size=50 maxlength=100" onkeyup="lookupComposer(this.value, {{result.id}});"></input>
         <div class="suggestionsBox" id="composerSuggestions-{{result.id}}" style="display: none;">
-	      <img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+	      <img src="{{ STATIC_URL }}images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
           <div class="suggestionList" id="autoComposerSuggestionsList-{{result.id}}"></div> 
         </div>
       </td>
@@ -62,7 +62,7 @@ var gPeople = [
       <td>
         <input type="text" id="arranger-{{result.id}}" name="arranger-{{result.id}}" size=50 maxlength=100" onkeyup="lookupArranger(this.value, {{result.id}});"></input>
         <div class="suggestionsBox" id="arrangerSuggestions-{{result.id}}" style="display: none;">
-	      <img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+	      <img src="{{ STATIC_URL }}images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
           <div class="suggestionList" id="autoArrangerSuggestionsList-{{result.id}}"></div> 
         </div>
       </td>

@@ -40,7 +40,7 @@
 			{% else %}
 			<td>
 			  {% for result in event.winners %}
-			    <img src="{{ STATIC_URL }}/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a>
+			    <img src="{{ STATIC_URL }}flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a>
 			  {% endfor %}
 			</td>
 			<td>

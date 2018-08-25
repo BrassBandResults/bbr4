@@ -32,7 +32,7 @@
 {% for album in DownloadAlbums %}
 <li>
   <a href="{{album.link|safe}}"><img src="{{album.thumbnail.url_100x100}}" title="{% if album.type == 'download'%}Download: {%endif%}{% if album.type == 'cd'%}CD: {%endif%}{{album.title}} - {{album.band_name}}"/></a>
-  <span class="recording-icon"><img src="{{ STATIC_URL }}/icons/recording-{{album.type}}.png"/></span>
+  <span class="recording-icon"><img src="{{ STATIC_URL }}icons/recording-{{album.type}}.png"/></span>
 </li>
 {% endfor %}
 </ul>
@@ -93,7 +93,7 @@
 {% if user.profile.pro_member %}
 <div id="flot_chart"></div>
 {% else %}
-<a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}/upgrade_to_pro_for_charts.jpg"/></a>
+<a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}upgrade_to_pro_for_charts.jpg"/></a>
 {% endif %}
 {% endif %}
 

@@ -33,8 +33,8 @@
 {% for result in Results %}
       <tr class="result-{{result.results_position_display}}">
         <td><a href="/contests/{{Contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.event_date}}</a></td>
-  		<td class="band-contest-position">{{result.results_position_display}}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}/icons/comment.png" border="0"/></a>{%endif%}</td>
-		<td class="band"><img src="{{ STATIC_URL }}/flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
+  		<td class="band-contest-position">{{result.results_position_display}}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}icons/comment.png" border="0"/></a>{%endif%}</td>
+		<td class="band"><img src="{{ STATIC_URL }}flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
   	    <td class="conductor">
 {% ifnotequal result.results_position_display "W" %}
 {% ifequal result.conductor.name "Unknown" %}

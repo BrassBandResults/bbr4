@@ -69,7 +69,7 @@ function fill(pType, thisValue) {
 		<td>
 		  <input type="text" id="Composer" name="Composer" onkeyup="lookup('Composer', this.value);" value="{{ContestEvent.test_piece.composer.name}}" maxlength="100" autofocus="autofocus">
       <div class="suggestionsBox" id="ComposerSuggestions" style="display: none;">
-        <img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+        <img src="{{ STATIC_URL }}images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
             <div class="suggestionList" id="ComposerAutoSuggestionsList"></div>
       </div>
     </td>
@@ -79,7 +79,7 @@ function fill(pType, thisValue) {
     <td>
       <input type="text" id="Arranger" name="Arranger" onkeyup="lookup('Arranger', this.value);" value="{{ContestEvent.test_piece.arranger.name}}" maxlength="100">&nbsp;&nbsp;<input type="submit" value="Submit" />
       <div class="suggestionsBox" id="ArrangerSuggestions" style="display: none;">
-        <img src="{{ STATIC_URL }}/images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
+        <img src="{{ STATIC_URL }}images/autoComplete/upArrow.png" style="position: relative; top: -12px; left: 30px" alt="upArrow" />
             <div class="suggestionList" id="ArrangerAutoSuggestionsList"></div>
       </div>
     </td>    
