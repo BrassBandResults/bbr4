@@ -82,7 +82,7 @@
   <tr><th>{% trans "Conductor"%}:</th><td>{{ContestResult.person_conducting.name}}</td></tr>
   <tr><th></th><td><input type="checkbox" id="editconductor-checkbox"/> Edit <select style="display:none;" id="conductorlist" conductor_id="{{ContestResult.conductor.id}}" name=""><option value="">loading...</option></select></td></tr>
   <tr><th>{% trans "Own Choice Test piece"%}:</th><td>{% firstof ContestResult.test_piece.name "None" %}</td></tr>
-  <tr><td><input type="checkbox" id="edittestpiece-checkbox"/> Edit <select style="display:none;" id="testpiecelist" testpiece_id="{{ContestResult.test_piece.id}}" name=""><option value="">loading...</option></select></td></tr>
+  <tr><th></th><td><input type="checkbox" id="edittestpiece-checkbox"/> Edit <select style="display:none;" id="testpiecelist" testpiece_id="{{ContestResult.test_piece.id}}" name=""><option value="">loading...</option></select></td></tr>
   <tr><th>{% trans "Notes"%}:</th><td>{{form.notes.errors}} {{form.notes}}</td></tr>
 	<tr><th></th><td><input type="submit" value="{% trans "Submit"%}" /></td></tr>
 </table>

@@ -126,6 +126,8 @@ SUFFIXES = (
             ('III','III'),
            )
 
+OWN_CHOICE_POINTS = {1:10, 2:5, 3:3}
+
 UNKNOWN_PERSON_ID = 310730
 
 ACCOUNT_ACTIVATION_DAYS = 3

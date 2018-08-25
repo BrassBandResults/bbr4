@@ -51,3 +51,4 @@ AWS_REGION = '${region}'
 
 NOTIFICATIONS_ENABLED = True
 NOTIFICATION_TOPIC_ARN = "${notificationTopicArn}"
+

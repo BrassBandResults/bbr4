@@ -65,8 +65,8 @@ data "template_file" "django-settings-live" {
     vars {
         dbHost = "${aws_db_instance.bbr-db.address}"
         dbPasswordBbr = "${var.db_password_bbr}"
-        djangoSecretKey = "${var.djangoSecretKey}"
-        googleMapsKey = "${var.googleMapsKey}"
+        djangoSecretKey = "${var.django_secret_key}"
+        googleMapsKey = "${var.google_maps_key}"
         notificationTopicArn = "${aws_sns_topic.bbr-notify.arn}"
         prefix = "${var.prefix}"
 	region = "${var.region}"

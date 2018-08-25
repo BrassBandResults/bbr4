@@ -60,12 +60,10 @@ variable "web_ssh_password" {
     type = "string"
 }
 
-variable "djangoSecretKey" {
+variable "django_secret_key" {
     type = "string"
-    default = "ABC123"
 }
 
-variable "googleMapsKey" {
+variable "google_maps_key" {
     type = "string"
-    default = "ABC123"
 }
