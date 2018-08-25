@@ -82,7 +82,7 @@ class MessageWrapper:
 
         lRenderedEmail = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
         lRenderedEmailText = '\\n'.join(lRenderedEmail.splitlines()) #  *must not* contain newlines
-        lContext['Message'] = '[!NEWLINE!]'.join(lRenderedEmail.splitlines()) #  *must not* contain newlines
+        lContext['Message'] = '!NEW_LINE!'.join(lRenderedEmail.splitlines()) #  *must not* contain newlines
          
         lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
         lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) #  *must not* contain newlines
