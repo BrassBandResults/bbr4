@@ -40,7 +40,7 @@
 
 {% if Profile %}
 
-{% if Profile.picture %}<img src="{{THUMBS_URL}}/{{Profile.picture.url}}-200x200.jpg" id="ProfileImage"/>{% endif %}
+{% if Profile.picture %}<img src="{{THUMBS_URL}}{{Profile.picture.url}}-200x200.jpg" id="ProfileImage"/>{% endif %}
 <table>
   {% if Profile.email %}<tr><th>Email: </th><td><script type="text/javascript"><!--
               var name='{{Profile.email_mailbox}}';
