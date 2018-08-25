@@ -2,6 +2,7 @@
 from django.core import serializers
 from django.conf import settings
 from django.template.loader import render_to_string
+import json
 
 class MessageWrapper:
     """
@@ -51,6 +52,7 @@ class MessageWrapper:
         else:
           print (lSubjectToSend)
           print (lMessageToSend)  
+          json.loads(lMessageToSend)
 
     def asJson(self):
         """
@@ -78,16 +80,17 @@ class MessageWrapper:
           lContext['Ip']  =  self.browserDetails[0]
           lContext['Browser'] = self.browserDetails[1]
 
+        lRenderedEmailText = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
+        lRenderedEmailText = '\\n'.join(lRenderedEmailText.splitlines()) #  *must not* contain newlines
+        lContext['Message'] = lRenderedEmailText
+         
+        lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
+        lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) #  *must not* contain newlines
+        lContext['Subject'] = lRenderedEmailSubject
 
         lRenderedJsonText = render_to_string('notify/default_message.json', lContext)
         lRenderedJsonText = ''.join(lRenderedJsonText.splitlines()) #  *must not* contain newlines
         
-        lRenderedEmailText = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
-        lRenderedEmailText = '\\n'.join(lRenderedEmailText.splitlines()) #  *must not* contain newlines
-         
-        lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
-        lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) #  *must not* contain newlines
-
         lSnsContext = {
           'emailText' : lRenderedEmailText,
           'jsonText' : lRenderedJsonText.replace('"','\\"')

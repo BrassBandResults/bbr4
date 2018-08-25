@@ -33,7 +33,7 @@ variable "zones_secondary" {
 variable "ec2ami" {
     type = "map"
     default = {
-        "eu-west-2" = "ami-ba0ae1dd"
+        "eu-west-2" = "ami-02d7859cef54f67bb"
     }
 }
 
