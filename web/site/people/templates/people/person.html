@@ -76,8 +76,6 @@
 {% if ContestResults %}
   	{% if user.profile.pro_member %}
       <div id="flot_pie"></div>
-    {% else %}
-      <a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}upgrade/pie_chart_if_upgrade.jpg"/></a>
     {% endif%}
 {% endif %}
 
@@ -104,8 +102,6 @@
 	  <div id="flot_chart"></div>
     <p><strong>{% trans "Date Range (use slider to change)"%}:</strong> <span id="slider-amount"></span></p>
     <div id="slider-range"></div>
-	{% else %}
-	  <a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}upgrade/results_history_if_upgrade.jpg"/></a>
 	{% endif %}
 <br/>
 {% endif %}

@@ -114,8 +114,6 @@
   <div id="right-top-block" class="pt-2">
   	{% if user.profile.pro_member %}
   	  <div id="pie-chart"></div>
-  	{% else %}
-  	  <a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}upgrade/pie_chart_if_upgrade.jpg"/></a>
   	{% endif%}
   </div>
 </div>
@@ -155,8 +153,6 @@
 <br/>
 {% if user.profile.pro_member %}
   <div id="flot_chart"></div>
-{% else %}
-  <a href="/accounts/upgrade/"><img src="{{ STATIC_URL }}upgrade/results_history_if_upgrade.jpg"/></a>
 {% endif %}
 {% endif %}
 <br/>
