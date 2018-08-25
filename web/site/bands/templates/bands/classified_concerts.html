@@ -12,6 +12,7 @@
 
 
 {% block content %}
+<div  class="container pt-1">
 <h1 class="band"><a href="/bands/{{ClassifiedBand.band.slug}}/">{{ClassifiedBand.band.name}}</a> {% trans "Concerts"%}</h1>
 <dl id="classified_concerts">
 {% for concert in Concerts %}
@@ -23,4 +24,5 @@
 <dd>{{concert.tickets}}</dd>
 {% endfor %}
 </dl>
+</div>
 {% endblock %}

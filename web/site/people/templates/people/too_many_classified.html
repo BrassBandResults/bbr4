@@ -4,6 +4,7 @@
 {%block title %}Too Many Classified{% endblock %}
 
 {% block content %}
+<div  class="container pt-1">
 <h1>Apologies</h1>
 <p>You have reached your limit of classified profiles.  If you would like to add more, please get in touch with the feedback box below and tell us why.</p>
 
@@ -12,4 +13,5 @@
 <li><a href="/people/{{profile.person.slug}}/">{{profile.person.name}}</a></li>
 {% endfor %}
 </ul>
+</div>
 {% endblock %}

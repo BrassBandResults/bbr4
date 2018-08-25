@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.db import connection
 from django.db.models.query_utils import Q
+from django.template.loader import render_to_string
 
 from bbr.render import render_auth
 from bbr.decorators import login_required_pro_user

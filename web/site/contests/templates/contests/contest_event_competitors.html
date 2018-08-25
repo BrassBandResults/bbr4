@@ -14,7 +14,7 @@
 <h1 class="contest-event"><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">{{ContestEvent.name}}</a> Competitors</h1>
 <h2>{{ContestEvent.event_date_with_day}}</h2>
 <p><a href="/contests/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/">&lt;&lt;Back to results</a></p>
-{% if not Competitiors %}
+{% if not Competitors %}
 <p>None of our users competed at this contest.</p>
 {% endif %}
 

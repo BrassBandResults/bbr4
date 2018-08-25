@@ -19,6 +19,7 @@
 {% block bodyattrib %}onload="initialize();processCheckboxes();"{% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 <h1>Brass Band Map</h1>
 <p>[<a href="/map/search/">Search The Map</a>]</p>
 <p>This map is intended to give a general indication of where a band rehearses.  Please contact the band directly to obtain full directions.</p>
@@ -45,6 +46,7 @@
 <input type="checkbox" id="venues_checkbox" checked="checked">Venues
 </p> 
 <div id="map_canvas" style="width: 100%; height: 500px"></div>
+</div>
 {% endblock %}
 
 {%block scriptfooter%}

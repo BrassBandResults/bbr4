@@ -12,6 +12,7 @@
 
 
 {% block content %}
+<div  class="container pt-1">
 <h1 class="band">{{Band.name}} {% trans "Aliases"%}</h1>
 <p>&lt;&lt;&lt; {% trans "Back to"%} <a href="/bands/{{Band.slug}}/">{{Band.name}}</a></p>
 <form action="." method="post">{% csrf_token %}
@@ -48,4 +49,5 @@
 </tfoot>
 </table>
 </form>
+</div>
 {% endblock %}

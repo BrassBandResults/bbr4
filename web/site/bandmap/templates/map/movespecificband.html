@@ -11,6 +11,7 @@
 {%block feedback %}{% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 {% if Band.latitude %}
 <h1>Move Band On Map</h1>
 <p>{{Band.name}} is currently at the following latitide and longitude.  Please correct the values and re-submit.</p>
@@ -25,4 +26,5 @@
 </table>	
 <input type="Submit" value="Save Position"></input>
 </form>
+</div>
 {% endblock %}

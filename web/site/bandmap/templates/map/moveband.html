@@ -11,6 +11,7 @@
 {%block feedback %}{% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 <h1>Move Band On Map</h1>
 <p>Please select your band from this list:</p>
 <form action="." method="post">{% csrf_token %}
@@ -21,4 +22,5 @@
 </select>
 <input type="Submit" value="This Is My Band"></input>
 </form>
+</div>
 {% endblock %}

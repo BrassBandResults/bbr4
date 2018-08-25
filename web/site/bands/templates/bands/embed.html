@@ -18,6 +18,7 @@
 {% endblock %}
 
 {% block content %}
+<div  class="container pt-1">
 <h1>{% trans "Embed Results for"%} {{Band.name}}</h1>
 <p>{% trans "This page allows you to embed live results from Brass Band Results for this band onto the band's own website.  This will render as a html table with four columns: date, contest, results position and conductor.  Conductor and Date will be links which, when clicked, will call through to full results on this website."%}</p>
 <p>{% trans "To use this, copy and paste the following code into the HTML of a page on your website"%}:</p>
@@ -57,4 +58,5 @@ function bbr_embed_{{BandSlugUnderscores}}_jsonp(data)
 &lt;!-- End https://brassbandresults.co.uk/ embedding code v2 --&gt;</textarea>
 </blockquote>
 <p>Any problems, let us know in the feedback box below.</p>
+</div>
 {% endblock %}
