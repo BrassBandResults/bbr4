@@ -452,7 +452,7 @@ def enter_results(request, pContestSlug, pDate):
         else:
             lFormErrors = str(lForm.errors['results'])
             if lFormErrors.startswith(_CONDUCTOR_PREFIX):
-                lConductorName = unicode(lFormErrors[len(_CONDUCTOR_PREFIX):-15], 'UTF-8', errors='strict')
+                lConductorName = str(lFormErrors[len(_CONDUCTOR_PREFIX):-15], 'UTF-8', errors='strict')
                 lConductorDropList = '<select name="conductorid">\n'
                 lConductors = Person.objects.all()
                 for conductor in lConductors:
@@ -469,7 +469,7 @@ def enter_results(request, pContestSlug, pDate):
                                          <input type="radio" name="conductor_choice" value="alias"/>Next submit will add a conductor alias of <b>%s</b> to %s<input type="hidden" name="conductoralias" value="%s"/><br/>
                                          <input type="radio" name="conductor_choice" value="nothing" checked="checked"/>Do nothing, correct it in the text box below.""" % (lConductorName, lConductorName, lConductorDropList, lConductorName)
             if lFormErrors.startswith(_BAND_PREFIX):
-                lBandName = unicode(lFormErrors[len(_BAND_PREFIX):-15], 'UTF-8', errors='strict')
+                lBandName = str(lFormErrors[len(_BAND_PREFIX):-15], 'UTF-8', errors='strict')
                 #lBandName = lFormErrors[len(_BAND_PREFIX):-15]
                 lBandDropList = '<select name="bandid">\n'
                 lBands = Band.objects.all()
