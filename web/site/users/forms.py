@@ -24,8 +24,8 @@ class NewEmailForm(forms.Form):
     """
     Form used to enter email when it is marked invalid
     """
-    email_confirm = forms.EmailField() 
     email = forms.EmailField()
+    email_confirm = forms.EmailField() 
     
     def clean_email(self):
         lEmail = self.cleaned_data['email']

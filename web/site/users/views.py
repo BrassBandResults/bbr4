@@ -424,7 +424,7 @@ def reset_password(request, pResetKey):
             lPasswordReset.used = datetime.now()
             lPasswordReset.save()
             
-            notification(lPasswordReset, lUserToReset, 'user', 'password', 'changed', request.user, browser_details(request), pDestination=lUserToReset.email)
+            notification(lPasswordReset, lUserToReset, 'users', 'password', 'changed', request.user, browser_details(request), pDestination=lUserToReset.email)
             
             return render_auth(request, "users/resetpassword/password_reset_done.html",  {'User' : lUserToReset,
                                                                                           'PasswordReset' : lPasswordReset,
