@@ -377,14 +377,14 @@ def forgotten_password(request):
                     lUser = User.objects.filter(email__iexact=lPasswordReset.username).order_by('-last_login')[0]
                 except:
                     # don't send email if account not found
-                    return HttpResponseRedirect(reverse('users.views.forgotten_password_sent'))
+                    return HttpResponseRedirect('/accounts/forgottenpassword/sent/')
     
             if lUser.is_active == False:
                 # don't send email if user is inactive
-                return HttpResponseRedirect(reverse('users.views.forgotten_password_sent')) 
+                return HttpResponseRedirect('/accounts/forgottenpassword/sent/') 
     
             notification(lUser, lPasswordReset, 'users', 'password_reset', 'request', request.user, browser_details(request), pDestination=lUser.email) 
-            return HttpResponseRedirect(reverse('users.views.forgotten_password_sent'))
+            return HttpResponseRedirect('/accounts/forgottenpassword/sent/')
     else:
         # show password reset form
         lForm = PasswordResetForm()
