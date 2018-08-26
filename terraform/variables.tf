@@ -67,3 +67,19 @@ variable "django_secret_key" {
 variable "google_maps_key" {
     type = "string"
 }
+
+variable "stripe_public_data_key" {
+    type = "string"
+}
+
+variable "stripe_secret_key" {
+    type = "string"
+}
+
+variable "bitly_login" {
+    type = "string"
+}
+
+variable "bitly_api_key" {
+    type = "string"
+}

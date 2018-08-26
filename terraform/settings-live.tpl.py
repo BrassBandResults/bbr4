@@ -20,11 +20,16 @@ from bbr.settings_common import *
 SECRET_KEY = '${djangoSecretKey}'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['bbr4.brassbandresults.co.uk',]
+ALLOWED_HOSTS = ['bbr4.brassbandresults.co.uk','brassbandresults.co.uk',]
 
-GOOGLE_MAPS_API_KEY = "${googleMapsKey}"
+ADMINS = (
+    ('Tim Sawyer', 'bbr.errors@brassbandresults.co.uk'),
+)
+EMAIL_HOST = 'localhost'
+SERVER_EMAIL = 'bbr.server@brassbandresults.co.uk'
+EMAIL_SUBJECT_PREFIX = '[bbr4]'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -51,4 +56,12 @@ AWS_REGION = '${region}'
 
 NOTIFICATIONS_ENABLED = True
 NOTIFICATION_TOPIC_ARN = "${notificationTopicArn}"
+
+GOOGLE_MAPS_API_KEY = "${googleMapsKey}"
+
+STRIPE_PUBLIC_DATA_KEY = "${stripePublicDataKey}"
+STRIPE_SECRET_KEY = "${stripeSecretKey}"
+
+BIT_LY_LOGIN = "${bitlyLogin}"
+BIT_LY_API_KEY = "${bitlyApiKey}"
 

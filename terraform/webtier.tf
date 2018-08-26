@@ -69,7 +69,11 @@ data "template_file" "django-settings-live" {
         googleMapsKey = "${var.google_maps_key}"
         notificationTopicArn = "${aws_sns_topic.bbr-notify.arn}"
         prefix = "${var.prefix}"
-	region = "${var.region}"
+	    region = "${var.region}"
+        stripePublicDataKey = "${var.stripe_public_data_key}"
+        stripeSecretKey = "${var.stripe_secret_key}"
+        bitlyLogin = "${var.bitly_login}"
+        bitlyApiKey = "${var.bitly_api_key}"
     }
 }
 
