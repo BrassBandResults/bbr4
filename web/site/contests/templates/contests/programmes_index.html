@@ -1,17 +1,16 @@
 {% extends "template.html" %}
 {% load i18n %}
+{% load thumbnail %}
 
 {%block title %}Programmes Index{% endblock %}
 
 {%block description%}List of brass band contest programme covers{%endblock%}
 
-{%block contestprogrammes-selected%}class="selected"{%endblock%}
-
 {% block content %}
 <div class="container pt-1">
 <h1>Contest Programmes</h1>
 <div id="all-pages">
-{% for programme in ContestProgrammes %}<a href="{{programme.get_absolute_url}}" title="{% firstof programme.contest.name programme.contest_group.name%}"><img src='{% thumbnail programme.image.url "100x100" %}'/></a>
+{% for programme in ContestProgrammes %}<a href="{{programme.get_absolute_url}}" title="{% firstof programme.contest.name programme.contest_group.name%}">{% thumbnail programme.image "100x100" %}</a>
 {% endfor %}
 </div>
 </div>
