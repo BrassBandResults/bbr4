@@ -383,7 +383,7 @@ def forgotten_password(request):
                 # don't send email if user is inactive
                 return HttpResponseRedirect(reverse('users.views.forgotten_password_sent')) 
     
-            notification(lUser, lPasswordReset, 'user', 'password_reset', 'request', request.user, browser_details(request), pDestination=lUser.email) 
+            notification(lUser, lPasswordReset, 'users', 'password_reset', 'request', request.user, browser_details(request), pDestination=lUser.email) 
             return HttpResponseRedirect(reverse('users.views.forgotten_password_sent'))
     else:
         # show password reset form
