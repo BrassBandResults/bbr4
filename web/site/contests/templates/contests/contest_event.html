@@ -2,6 +2,7 @@
 {% load gravatar %}
 {% load humanize %}
 {% load i18n %}
+{% load thumbnail %}
 
 {%block title %}{{ContestEvent.name}} - {{ContestEvent.event_date}}{% endblock %}
 
@@ -98,11 +99,7 @@
 <td class="screenonly">
   <div id="ProgrammeArea">
     <div id="ProgrammeCover">
-      <a href="{{ContestProgrammeCover.image.url_400x600}}" title="{{ContestEvent.name}} {% trans "Programme Cover"%}, {{ContestEvent.event_date}} " data-lightbox="programme" data-title="{{ContestEvent.name}} Programme Cover, {{ContestEvent.event_date}}"><img src="{{ContestProgrammeCover.image.url_80x100}}"/></a>
-      <span style="display:none;">
-      {% for page in ContestProgrammePages %}
-        <a href="{{page.image.url_400x600}}" title="{{page.description}}"><img src="{{page.image.url_80x100}}"/></a>
-      {% endfor %}
+      {% thumbnail ContestProgrammeCover.image "100x100" %}
       </span>
     </div>
     <a class="small_link" href="/contests/{{Contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/programme/">{% trans "larger"%}</a>

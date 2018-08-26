@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,11 +59,16 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 			new Dimensions(800, 1200) //
 	);
 
-	private final String JPG_TYPE = "jpg";
-	private final String JPEG_TYPE = "jpeg";
-	private final String JPG_MIME = "image/jpeg";
-	private final String PNG_TYPE = "png";
-	private final String PNG_MIME = "image/png";
+	static {
+		CreateThumbnail.mimeType = new HashMap<>();
+		CreateThumbnail.mimeType.put("jpg", "image/jpeg");
+		CreateThumbnail.mimeType.put("jpeg", "image/jpeg");
+		CreateThumbnail.mimeType.put("png", "image/png");
+		CreateThumbnail.mimeType.put("gif", "image/gif");
+		CreateThumbnail.mimeType.put("bmp", "image/bmp");
+	}
+
+	private static HashMap<String, String> mimeType;
 
 	@Override
 	public String handleRequest(S3Event s3event, Context context) {
@@ -89,13 +95,15 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 				System.out.println("Unable to infer image type for key " + srcKey);
 				return "";
 			}
-			String imageType = matcher.group(1);
-			if (this.JPEG_TYPE.equals(imageType)) {
-				imageType = this.JPG_TYPE;
-			}
-			if (!this.JPG_TYPE.equals(imageType) && !this.PNG_TYPE.equals(imageType)) {
+			final String imageExtension = matcher.group(1);
+			final String imageTypeLower = imageExtension.toLowerCase();
+			final String mimeType = CreateThumbnail.mimeType.get(imageTypeLower);
+			System.out.println("Image extension is " + imageExtension);
+			if (mimeType == null) {
 				System.out.println("Skipping non-image " + srcKey);
 				return "";
+			} else {
+				System.out.println("Mime Type is " + mimeType);
 			}
 
 			// Download the image from S3 into a stream
@@ -136,20 +144,15 @@ public class CreateThumbnail implements RequestHandler<S3Event, String> {
 
 				// Re-encode image to target format
 				final ByteArrayOutputStream os = new ByteArrayOutputStream();
-				ImageIO.write(resizedImage, imageType, os);
+				ImageIO.write(resizedImage, imageTypeLower, os);
 				final InputStream is = new ByteArrayInputStream(os.toByteArray());
 				// Set Content-Length and Content-Type
 				final ObjectMetadata meta = new ObjectMetadata();
 				meta.setContentLength(os.size());
-				if (this.JPG_TYPE.equals(imageType)) {
-					meta.setContentType(this.JPG_MIME);
-				}
-				if (this.PNG_TYPE.equals(imageType)) {
-					meta.setContentType(this.PNG_MIME);
-				}
+				meta.setContentType(mimeType);
 
 				// Uploading to S3 destination bucket
-				final String dstKey = srcKey + dim.getSuffix() + "." + imageType;
+				final String dstKey = srcKey + dim.getSuffix() + "." + imageExtension;
 				System.out.println("  - Writing to: " + dstBucket + "/" + dstKey);
 				s3Client.putObject(dstBucket, dstKey, is, meta);
 				System.out.println("  - Successfully resized " + srcBucket + "/" + srcKey + " and uploaded to " + dstBucket + "/" + dstKey);
