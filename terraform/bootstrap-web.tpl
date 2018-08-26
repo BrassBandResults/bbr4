@@ -7,6 +7,11 @@
 sudo apt-get update
 sudo apt-get upgrade -y
 
+# install and configure email sender postfix
+sudo debconf-set-selections <<< "postfix postfix/mailname string brassbandresults.co.uk"
+sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+sudo apt-get install -y postfix
+
 # install required software as root
 sudo apt-get install git python3-pip nginx postgresql-client -y
 export VIRTUALENVWRAPPER_PYTHON=`which python3`
