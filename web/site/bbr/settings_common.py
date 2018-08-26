@@ -132,3 +132,5 @@ UNKNOWN_PERSON_ID = 310730
 
 ACCOUNT_ACTIVATION_DAYS = 3
 
+DEFAULT_FROM_EMAIL = 'BrassBandResults <accounts@brassbandresults.co.uk>'
+
