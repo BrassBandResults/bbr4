@@ -6,10 +6,10 @@ def _tweet_ContestResults(notification):
   """
   Tweet out when contest results have changed
   """
-  contestEvent = notification["ThingNew"]
-  contestName = contestEvent.name
-  contestEventDate = contestEvent.date_of_event
-  contestEventUrl = notification["Url"]
+  contestEvent = notification["thingNew"][0]["fields"]
+  contestName = contestEvent["name"]
+  contestEventDate = contestEvent["date_of_event"]
+  contestEventUrl = "https://brassbandresults.co.uk%s" % notification["url"]
   winnersTwitter = notification["_WinnersTwitter"]
   return "%s (%s) Updated %s %s" % (contestName, contestEventDate, contestEventUrl, winnersTwitter)
     
@@ -18,10 +18,10 @@ def _tweet_BandMapMove(notification):
   """
   Tweet out when a band is moved on the map
   """
-  bandMoved = notification["ThingNew"]
-  bandName = bandMoved.name
+  bandMoved = notification["thingNew"][0]["fields"]
+  bandName = bandMoved["name"]
   bandUrl = "https://brassbandresults.co.uk/map/band/%s/" % bandMoved.slug
-  bandTwitter = bandMoved.twitter_name
+  bandTwitter = bandMoved["twitter_name"]
   if bandTwitter:
     bandTwitter = "@" + bandTwitter
   else:
