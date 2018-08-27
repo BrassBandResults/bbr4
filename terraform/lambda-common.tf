@@ -1,4 +1,3 @@
-
 resource "aws_iam_policy" "bbr-lambda-log-policy" {
   name = "bbr-lambda-log"
   path = "/"

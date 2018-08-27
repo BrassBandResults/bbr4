@@ -631,8 +631,13 @@ def amend_results(request, pContestSlug, pDate):
                     if request.user.profile.enhanced_functionality or request.user.id == lMatchingResult.owner:
                         lMatchingResult.save()                        
                         
-                        
-        notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request))
+        lContestUrl = lContestEvent.get_absolute_url()
+        lWinner = lContestEvent.winners()
+        lAdditionalContext = {}
+        if lWinner:
+            lWinnersTwitter = lWinner.twitter_name
+            lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
+        notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request), pUrl=lContestUrl, pAdditionalContext=lAdditionalContext)
         return HttpResponseRedirect('/contests/%s/%s/' % (pContestSlug, pDate))
 
     return render_auth(request, 'addresults/amend_bands.html', {"Contest" : lContest,
@@ -789,7 +794,13 @@ def enter_notes(request, pContestSlug, pDate):
         else:
             return HttpResponseRedirect('/contests/%s/%s/' % (lContest.slug, lContestEvent.date_of_event))
     else:
-        notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request))
+        lContestUrl = lContestEvent.get_absolute_url()
+         lWinner = lContestEvent.winners()
+        lAdditionalContext = {}
+        if lWinner:
+            lWinnersTwitter = lWinner.twitter_name
+            lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
+        notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request), pUrl=lContestUrl, pAdditionalContext=lAdditionalContext)
         return render_auth(request, 'addresults/notes.html', {"Contest" : lContest,
                                                               "ContestEvent" : lContestEvent,
                                                               "form" : lForm,

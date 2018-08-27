@@ -1,5 +1,5 @@
-resource "aws_iam_role" "bbr-iam-lambda" {
-  name = "bbr-iam-lambda"
+resource "aws_iam_role" "bbr-iam-lambda-thumbs" {
+  name = "bbr-iam-lambda-thumbs"
 
   assume_role_policy = <<EOF
 {
@@ -18,15 +18,15 @@ resource "aws_iam_role" "bbr-iam-lambda" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "bbr-lambda-logs" {
-  role = "${aws_iam_role.bbr-iam-lambda.name}"
+resource "aws_iam_role_policy_attachment" "bbr-lambda-thumbs-logs" {
+  role = "${aws_iam_role.bbr-iam-lambda-thumbs.name}"
   policy_arn = "${aws_iam_policy.bbr-lambda-log-policy.arn}"
 }
 
 resource "aws_lambda_function" "bbr-thumbnail" {
   filename = "../lambda/thumbnails/target/lambda-thumbnails-1.0.jar" 
   function_name = "${var.prefix}-thumbnail"
-  role = "${aws_iam_role.bbr-iam-lambda.arn}"
+  role = "${aws_iam_role.bbr-iam-lambda-thumbs.arn}"
   handler = "uk.co.brassbandresults.lambda.CreateThumbnail"
   source_code_hash = "${base64sha256(file("../lambda/thumbnails/target/lambda-thumbnails-1.0.jar"))}"
   runtime = "java8"
@@ -77,7 +77,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "bbr-lambda-write-to-thumbnails" {
-  role = "${aws_iam_role.bbr-iam-lambda.name}"
+  role = "${aws_iam_role.bbr-iam-lambda-thumbs.name}"
   policy_arn = "${aws_iam_policy.bbr-lambda-access-thumbnails-policy.arn}"
 }
 

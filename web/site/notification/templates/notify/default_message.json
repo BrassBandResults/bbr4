@@ -11,6 +11,10 @@
     "bcc" : "{{Bcc}}",
     "fromName" : "{{FromName}}",
     "fromEmail" : "{{FromEmail}}",
+    "url" : "{{Url}}",
+{% for key, value in AdditionalContext.items %}
+    "_{{key}}" : "{{value}}",
+{% endfor %}     
     "thingOld" : {% autoescape off %}{{ThingOldJson|safe}}{%endautoescape%},
     "thingNew" : {% autoescape off %}{{ThingNewJson|safe}}{%endautoescape%},
     "subject" : "{{Subject}}",

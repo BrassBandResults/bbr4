@@ -4,7 +4,7 @@ import boto3
 from notification.notify import MessageWrapper
 from django.conf import settings
 
-def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None, pCc=None, pBcc=None, pFromName=None, pFromEmail=None):
+def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination=None, pAdditionalContext=None, pCc=None, pBcc=None, pFromName=None, pFromEmail=None, pUrl=None):
     """
     Send an admin notification email when something happens
     """
@@ -21,6 +21,7 @@ def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser,
                               pBcc,
                               pFromName,
                               pFromEmail,  
+                              pUrl,
                              )
 
     client = boto3.client('sns', region_name=settings.AWS_REGION)

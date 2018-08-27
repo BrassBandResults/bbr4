@@ -21,8 +21,9 @@ class MessageWrapper:
     bcc = None
     fromName = None
     fromEmail = None
+    url = None
 
-    def __init__(self, pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination, pAdditionalContext, pCc, pBcc, pFromName, pFromEmail):
+    def __init__(self, pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser, pBrowserDetails, pDestination, pAdditionalContext, pCc, pBcc, pFromName, pFromEmail, pUrl):
         self.thingOld = pThingOld
         self.thingNew = pThingNew
         self.module = pModule
@@ -36,6 +37,7 @@ class MessageWrapper:
         self.bcc = pBcc
         self.fromName = pFromName
         self.fromEmail = pFromEmail
+        self.url = pUrl
 
     def send(self, client):
         """
@@ -70,6 +72,8 @@ class MessageWrapper:
           'FromEmail': self.fromEmail,
           'ThingOld': self.thingOld,
           'ThingNew': self.thingNew,
+          'AdditionalContext' : self.additionalContext,
+          'Url' : self.url,
         }
 
         if self.thingOld:
