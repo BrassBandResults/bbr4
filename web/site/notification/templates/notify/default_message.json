@@ -15,8 +15,12 @@
 {% for key, value in AdditionalContext.items %}
     "_{{key}}" : "{{value}}",
 {% endfor %}     
+{% if ThingOldJson %}
     "thingOld" : {% autoescape off %}{{ThingOldJson|safe}}{%endautoescape%},
+{% endif %}
+{% if ThingNewJson %}    
     "thingNew" : {% autoescape off %}{{ThingNewJson|safe}}{%endautoescape%},
+{% endif %}
     "subject" : "{{Subject}}",
     "message" : "{{Message}}"
   }
