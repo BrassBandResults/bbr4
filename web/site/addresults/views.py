@@ -795,7 +795,7 @@ def enter_notes(request, pContestSlug, pDate):
             return HttpResponseRedirect('/contests/%s/%s/' % (lContest.slug, lContestEvent.date_of_event))
     else:
         lContestUrl = lContestEvent.get_absolute_url()
-         lWinner = lContestEvent.winners()
+        lWinner = lContestEvent.winners()
         lAdditionalContext = {}
         if lWinner:
             lWinnersTwitter = lWinner.twitter_name
