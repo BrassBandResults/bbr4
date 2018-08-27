@@ -636,7 +636,7 @@ def amend_results(request, pContestSlug, pDate):
         lWinnersTwitter = ""
         lAdditionalContext = {}
         for winner in lWinners:
-            lWinnersTwitter += "@" + winner.twitter_name + " "
+            lWinnersTwitter += "@" + winner.band.twitter_name + " "
         lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
         notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request), pUrl=lContestUrl, pAdditionalContext=lAdditionalContext)
         return HttpResponseRedirect('/contests/%s/%s/' % (pContestSlug, pDate))
@@ -798,9 +798,9 @@ def enter_notes(request, pContestSlug, pDate):
         lContestUrl = lContestEvent.get_absolute_url()
         lWinner = lContestEvent.winners()
         lAdditionalContext = {}
-        if lWinner:
-            lWinnersTwitter = lWinner.twitter_name
-            lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
+        for winner in lWinners:
+            lWinnersTwitter += "@" + winner.band.twitter_name + " "
+        lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
         notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request), pUrl=lContestUrl, pAdditionalContext=lAdditionalContext)
         return render_auth(request, 'addresults/notes.html', {"Contest" : lContest,
                                                               "ContestEvent" : lContestEvent,
