@@ -9,7 +9,8 @@ def _tweet_ContestResults(notification):
   contestEvent = notification["ThingNew"]
   contestName = contestEvent.name
   contestEventDate = contestEvent.date_of_event
-  contestEventUrl = "http://"
+  contestEventUrl = notification["Url"]
+  winnersTwitter = notification["_WinnersTwitter"]
   return "%s (%s) Updated %s %s" % (contestName, contestEventDate, contestEventUrl, winnersTwitter)
     
 
@@ -20,7 +21,12 @@ def _tweet_BandMapMove(notification):
   bandMoved = notification["ThingNew"]
   bandName = bandMoved.name
   bandUrl = "https://brassbandresults.co.uk/map/band/%s/" % bandMoved.slug
-  return "%s moved on map %s" % (bandName, bandUrl)
+  bandTwitter = bandMoved.twitter_name
+  if bandTwitter:
+    bandTwitter = "@" + bandTwitter
+  else:
+    bandTwitter = ""
+  return "%s moved on map %s %s" % (bandName, bandUrl, bandTwitter)
 
 
 TWITTER_TEMPLATES = {
@@ -47,7 +53,7 @@ def lambda_handler(event, context):
   try:
     tweetFunction = TWITTER_TEMPLATES[notifyContextPath]
   except KeyError:
-    pass
+    print ("No matching tweet template found")
   
   if tweetFunction:
     messageToTweet = tweetFunction(parsedMessage["notification"])

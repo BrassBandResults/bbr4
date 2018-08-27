@@ -632,11 +632,12 @@ def amend_results(request, pContestSlug, pDate):
                         lMatchingResult.save()                        
                         
         lContestUrl = lContestEvent.get_absolute_url()
-        lWinner = lContestEvent.winners()
+        lWinners = lContestEvent.winners()
+        lWinnersTwitter = ""
         lAdditionalContext = {}
-        if lWinner:
-            lWinnersTwitter = lWinner.twitter_name
-            lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
+        for winner in lWinners:
+            lWinnersTwitter += "@" + winner.twitter_name + " "
+        lAdditionalContext["WinnersTwitter"] = lWinnersTwitter
         notification(None, lContestEvent, 'contests', 'contestevent', 'results_added', request.user, browser_details(request), pUrl=lContestUrl, pAdditionalContext=lAdditionalContext)
         return HttpResponseRedirect('/contests/%s/%s/' % (pContestSlug, pDate))
 
