@@ -78,10 +78,10 @@ class MessageWrapper:
 
         if self.thingOld:
           lThingOldJson = serializers.serialize("json", [self.thingOld,])
-          lContext['ThingOldJson'] = '\\n'.join(lThingOldJson.splitlines()) #  *must not* contain newlines
+          lContext['ThingOldJson'] = '!NEW_LINE!'.join(lThingOldJson.splitlines()) #  *must not* contain newlines
         if self.thingNew:
           lThingNewJson = serializers.serialize("json", [self.thingNew,])
-          lContext['ThingNewJson'] = '\\n'.join(lThingNewJson.splitlines()) #  *must not* contain newlines
+          lContext['ThingNewJson'] = '!NEW_LINE!'.join(lThingNewJson.splitlines()) #  *must not* contain newlines
         if self.browserDetails:
           lContext['Ip']  =  self.browserDetails[0]
           lContext['Browser'] = self.browserDetails[1]
