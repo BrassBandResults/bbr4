@@ -76,6 +76,16 @@ class MessageWrapper:
           'Url' : self.url,
         }
 
+        try:
+          self.thingOld.notes = self.thingOld.notes.strip()
+        except AttributeError:
+          pass
+
+        try:
+          self.thingNew.notes = self.thingNew.notes.strip()
+        except AttributeError:
+          pass
+
         if self.thingOld:
           lThingOldJson = serializers.serialize("json", [self.thingOld,])
           lContext['ThingOldJson'] = '!NEW_LINE!'.join(lThingOldJson.splitlines()) #  *must not* contain newlines
