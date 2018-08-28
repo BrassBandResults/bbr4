@@ -83,3 +83,19 @@ variable "bitly_login" {
 variable "bitly_api_key" {
     type = "string"
 }
+
+variable "tweepy_consumer_token" {
+    type = "string"
+}
+
+variable "tweepy_consumer_secret" {
+    type = "string"
+}
+
+variable "tweepy_access_token_key" {
+    type = "string"
+}
+
+variable "tweepy_access_token_secret" {
+    type = "string"
+}

@@ -30,6 +30,15 @@ resource "aws_lambda_function" "bbr-notify-twitter" {
   handler = "bbr_notify_twitter.lambda_handler"
   source_code_hash = "${base64sha256(file("../lambda/notify-twitter/target/bbr_notify_twitter.zip"))}"
   runtime = "python3.6"
+
+  environment {
+    variables = {
+      TWEEPY_CONSUMER_TOKEN = "${var.tweepy_consumer_token}"
+      TWEEPY_CONSUMER_SECRET = "${var.tweepy_consumer_secret}"
+      TWEEPY_ACCESS_TOKEN_KEY = "${var.tweepy_access_token_key}"
+      TWEEPY_ACCESS_TOKEN_SECRET = "${var.tweepy_access_token_secret}" 
+    }
+  }
 }
 
 resource "aws_sns_topic_subscription" "bbr-notify-twitter-subs" {
