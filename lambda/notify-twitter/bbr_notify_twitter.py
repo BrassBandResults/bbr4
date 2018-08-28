@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 import tweepy
 from dateutil.parser import parse
 
@@ -14,7 +15,7 @@ def _tweet_ContestResults(notification):
   contestName = contestEvent["name"]
   contestEventDateRaw = contestEvent["date_of_event"]
   contestEventDateParsed = parse(contestEventDateRaw)
-  contestEventDate = strftime("%a, %-d %b, %Y")
+  contestEventDate = time.strftime("%a, %-d %b %Y")
   contestEventUrl = "https://brassbandresults.co.uk%s" % notification["url"]
   winnersTwitter = notification["_WinnersTwitter"]
   return "%s on %s updated: %s %s" % (contestName, contestEventDate, contestEventUrl, winnersTwitter)
