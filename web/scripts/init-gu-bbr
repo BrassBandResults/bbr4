@@ -32,7 +32,7 @@ start()
     cd $CONFDIR
     . $VIRTUALENVDIR/$VIRTUALENV/bin/activate
     echo $PYTHONPATH
-    su -c "$GUNICORN_RUN bbr.wsgi:application -b localhost:$PORT -n $NAME -w $WORKERS --timeout 60 -p $PID --daemon --error-logfile $LOGPATH" $USER && echo "OK" || echo "failed"
+    su -c "$GUNICORN_RUN bbr.wsgi:application -b localhost:$PORT -n $NAME -w $WORKERS --timeout 60 -p $PID --daemon --capture-output --error-logfile $LOGPATH" $USER && echo "OK" || echo "failed"
 }
 
 stop()
