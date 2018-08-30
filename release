@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# build lambda functions
+cd lambda/thumbnails
+mvn package
+cd ../..
+
+cd lambda/notify-twitter
+./build
+cd ../..
+
+# copy media to appropriate s3 bucket
+
+# terraform
+cd terraform
+terraform apply
