@@ -5,4 +5,4 @@ register = template.Library()
 
 @register.filter(name='escapejsonquote')
 def escape_json_quote(value):
-  return mark_safe(value.replace('\\"','\\\"'))
+  return mark_safe(value.replace('\\\\"','\\\\\\"'))
