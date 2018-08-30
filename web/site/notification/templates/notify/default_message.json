@@ -1,3 +1,4 @@
+{% load quote_filter %}
 {
   "notification": {
     "module" : "{{Module}}",
@@ -16,10 +17,10 @@
     "_{{key}}" : "{{value}}",
 {% endfor %}     
 {% if ThingOldJson %}
-    "thingOld" : {% autoescape off %}{{ThingOldJson|safe}}{%endautoescape%},
+    "thingOld" : {{ThingOldJson|safe|escapejsonquote}},
 {% endif %}
 {% if ThingNewJson %}    
-    "thingNew" : {% autoescape off %}{{ThingNewJson|safe}}{%endautoescape%},
+    "thingNew" : {{ThingNewJson|safe|escapejsonquote}},
 {% endif %}
     "subject" : "{{Subject}}",
     "message" : "{{Message}}"

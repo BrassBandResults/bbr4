@@ -3,6 +3,7 @@ from django.core import serializers
 from django.conf import settings
 from django.template.loader import render_to_string
 import json
+import logging
 
 class MessageWrapper:
     """
@@ -75,16 +76,6 @@ class MessageWrapper:
           'AdditionalContext' : self.additionalContext,
           'Url' : self.url,
         }
-
-        try:
-          self.thingOld.notes = self.thingOld.notes.strip()
-        except AttributeError:
-          pass
-
-        try:
-          self.thingNew.notes = self.thingNew.notes.strip()
-        except AttributeError:
-          pass
 
         if self.thingOld:
           lThingOldJson = serializers.serialize("json", [self.thingOld,])
