@@ -11,6 +11,7 @@ from bbr.render import render_auth
 from bbr.decorators import login_required_pro_user
 
 from bands.models import Band
+from bands.forms import EditBandForm, EditBandSuperuserForm, BandTalkEditForm
 from contests.models import Contest, ContestGroup, ContestAchievementAward, CurrentChampion, ContestTag
 
 from bbr.siteutils import slugify, browser_details
