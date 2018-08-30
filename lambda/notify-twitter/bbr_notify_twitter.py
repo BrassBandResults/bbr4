@@ -27,7 +27,7 @@ def _tweet_BandMapMove(notification):
   """
   bandMoved = notification["thingNew"][0]["fields"]
   bandName = bandMoved["name"]
-  bandUrl = "https://brassbandresults.co.uk/map/band/%s/" % bandMoved.slug
+  bandUrl = "https://brassbandresults.co.uk/map/band/%s/" % bandMoved["slug"]
   bandTwitter = bandMoved["twitter_name"]
   if bandTwitter:
     bandTwitter = "@" + bandTwitter
