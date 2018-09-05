@@ -22,7 +22,7 @@ def _moved(notification):
 
 
 POINTS = {
-  # New result 1 point
+  "contests.contest_result.new" : 1,
   "feedback.feedback.claim" : 5,
   "feedback.feedback.to_queue": -5,
   "venues.venue_map.move" : 5,
