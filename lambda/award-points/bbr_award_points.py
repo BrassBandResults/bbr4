@@ -66,7 +66,8 @@ def lambda_handler(event, context):
   event_table = dynamodb.Table("EventLog")
 
   lNowString = str(datetime.now())
-  lNowNumber = int(round(time.time() * 1000))
+  lNowNumber = int(round(time.time()))
+  lExpiryTimeNumber = lNowNumber + 2764800 # 32 days
 
   dataToStore = {
              'Username' : userToAddTo,
@@ -75,6 +76,7 @@ def lambda_handler(event, context):
              'EventType' : notifyContextPath, 
              'Points' : pointsToAdd,
              'Data' : parsedMessage["notification"],
+             'TimeToLive' : lExpiryTimeNumber 
            }
   print(dataToStore)
   

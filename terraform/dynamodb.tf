@@ -1,7 +1,7 @@
 resource "aws_dynamodb_table" "bbr-event-log-table" {
   name = "EventLog"
-  read_capacity = 5
-  write_capacity = 5
+  read_capacity = 1
+  write_capacity = 2
   hash_key = "Username"
   range_key = "DateTimestamp"  
 
