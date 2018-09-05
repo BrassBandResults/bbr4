@@ -2,6 +2,8 @@
 
 import boto3
 import json
+import time
+from datetime import datetime
 
 def _moved(notification):
   """
@@ -44,19 +46,36 @@ def lambda_handler(event, context):
   
   print("Looking for notification path %s" % notifyContextPath)
 
-  if ('bands.band.edit' == notifyContextPath && _moved(parsedMessage["notification"])):
+  if ('bands.band.edit' == notifyContextPath) and _moved(parsedMessage["notification"]):
     # band edited with location move, so make sure to add points
     notifyContextPath = 'bands.band_map.move'  
  
-  if ('venues.venue.edit' == notifyContextPath && _moved(parsedMessage["notification"])):
+  if ('venues.venue.edit' == notifyContextPath) and _moved(parsedMessage["notification"]):
     # venue edited with location move
-    notifyContextPath = "venues.venue_map.move'
+    notifyContextPath = "venues.venue_map.move"
  
   try:
     pointsToAdd  = POINTS[notifyContextPath]
   except KeyError:
     pointsToAdd = 0 
   
-if pointsToAdd:
+  if pointsToAdd:
     print("Adding %s points to user %s" % (pointsToAdd, userToAddTo))
+
+  dynamodb = boto3.resource('dynamodb')
+  event_table = dynamodb.Table("EventLog")
+
+  lNowString = str(datetime.now())
+  lNowNumber = int(round(time.time() * 1000)
+  
+  response = event_table.put_item(
+    Item = {
+             'Username' : userToAddTo,
+             'DateTimestamp' : lNowNumber,
+             'DateTime' : lNowString,
+             'EventType' : notifyContextPath, 
+             'Points' : pointsToAdd,
+             'Data' : parsedMessage["notification"],
+           }
+  )
 
