@@ -45,3 +45,29 @@ resource "aws_lambda_permission" "bbr-sns-award-points-perms" {
     principal = "sns.amazonaws.com"
     source_arn = "${aws_sns_topic.bbr-notify.arn}"
 }
+
+resource "aws_iam_policy" "bbr-lambda-points-dynamodb-policy" {
+  name = "bbr-lambda-points-dynamodb-policy"
+  path = "/"
+  description = "IAM policy for writing to DynamoDB event log"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [ 
+        "dynamodb:PutItem"
+      ],
+      "Resource": "${aws_dynamodb_table.bbr-event-log-table.arn}",
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "bbr-lambda-points-log" {
+  role = "${aws_iam_role.bbr-iam-lambda-award-points.name}"
+  policy_arn = "${aws_iam_policy.bbr-lambda-points-dynamodb-policy.arn}"
+}

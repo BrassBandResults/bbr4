@@ -33,7 +33,7 @@ POINTS = {
 def lambda_handler(event, context):
   print(event)    
   print(event["Records"][0]["Sns"]["Message"])
-  parsedMessage = json.loads(event["Records"][0]["Sns"]["Message"])
+  parsedMessage = json.loads(event["Records"][0]["Sns"]["Message"].replace('""','" "'))
   print (parsedMessage)
   
   notifyModule = parsedMessage["notification"]["module"]
@@ -66,10 +66,9 @@ def lambda_handler(event, context):
   event_table = dynamodb.Table("EventLog")
 
   lNowString = str(datetime.now())
-  lNowNumber = int(round(time.time() * 1000)
-  
-  response = event_table.put_item(
-    Item = {
+  lNowNumber = int(round(time.time() * 1000))
+
+  dataToStore = {
              'Username' : userToAddTo,
              'DateTimestamp' : lNowNumber,
              'DateTime' : lNowString,
@@ -77,5 +76,7 @@ def lambda_handler(event, context):
              'Points' : pointsToAdd,
              'Data' : parsedMessage["notification"],
            }
-  )
+  print(dataToStore)
+  
+  response = event_table.put_item(Item = dataToStore)
 
