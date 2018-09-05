@@ -798,6 +798,7 @@ def enter_notes(request, pContestSlug, pDate):
     else:
         lContestUrl = lContestEvent.get_absolute_url()
         lWinners = lContestEvent.winners()
+        lWinnersTwitter = ""
         lAdditionalContext = {}
         for winner in lWinners:
             if winner.band.twitter_name:
