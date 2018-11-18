@@ -5,6 +5,7 @@ mkdir -p target/build
 
 cp -r $VIRTUALENVWRAPPER_HOOK_DIR/bbr-award-points/lib/python3.6/site-packages/* target/build
 cp *.py target/build
+cp -R psycopg2 target/build
 
 cd target/build
 zip -r ../bbr_award_points.zip *
