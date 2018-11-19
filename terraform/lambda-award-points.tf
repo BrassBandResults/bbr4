@@ -29,7 +29,13 @@ resource "aws_lambda_function" "bbr-award-points" {
   role = "${aws_iam_role.bbr-iam-lambda-award-points.arn}"
   handler = "bbr_award_points.lambda_handler"
   source_code_hash = "${base64sha256(file("../lambda/award-points/target/bbr_award_points.zip"))}"
+  timeout = 10
   runtime = "python3.6"
+  environment {
+    variables = {
+      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr-db.address}' user='bbradmin' password='${var.db_password}' dbname='${aws_db_instance.bbr-db.name}'"
+    }
+  }
 }
 
 resource "aws_sns_topic_subscription" "bbr-award-points-subs" {
@@ -71,3 +77,4 @@ resource "aws_iam_role_policy_attachment" "bbr-lambda-points-log" {
   role = "${aws_iam_role.bbr-iam-lambda-award-points.name}"
   policy_arn = "${aws_iam_policy.bbr-lambda-points-dynamodb-policy.arn}"
 }
+
