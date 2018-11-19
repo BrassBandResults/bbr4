@@ -29,8 +29,14 @@ resource "aws_lambda_function" "bbr-award-points" {
   role = "${aws_iam_role.bbr-iam-lambda-award-points.arn}"
   handler = "bbr_award_points.lambda_handler"
   source_code_hash = "${base64sha256(file("../lambda/award-points/target/bbr_award_points.zip"))}"
-  timeout = 10
+  timeout = 65
   runtime = "python3.6"
+
+  vpc_config {
+    subnet_ids=["${aws_subnet.private-subnet.id}", "${aws_subnet.private-subnet-secondary.id}"]
+    security_group_ids=["${aws_security_group.db_traffic.id}"]
+  }
+
   environment {
     variables = {
       BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr-db.address}' user='bbradmin' password='${var.db_password}' dbname='${aws_db_instance.bbr-db.name}'"
@@ -76,5 +82,37 @@ EOF
 resource "aws_iam_role_policy_attachment" "bbr-lambda-points-log" {
   role = "${aws_iam_role.bbr-iam-lambda-award-points.name}"
   policy_arn = "${aws_iam_policy.bbr-lambda-points-dynamodb-policy.arn}"
+}
+
+
+resource "aws_iam_policy" "bbr-lambda-points-rds-policy" {
+  name = "bbr-lambda-points-rds-policy"
+  path = "/"
+  description = "Allow access to RDS in VPC"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+	"Effect": "Allow",
+        "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface"
+        ],
+        "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "bbr-lambda-db-access" {
+  role = "${aws_iam_role.bbr-iam-lambda-award-points.name}"
+  policy_arn = "${aws_iam_policy.bbr-lambda-points-rds-policy.arn}"
 }
 
