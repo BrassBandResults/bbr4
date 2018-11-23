@@ -115,8 +115,10 @@ def lambda_handler(event, context):
     print ("Done")
 
   # Write to event log
+  print ("Connecting to DynamoDB")
   dynamodb = boto3.resource('dynamodb')
   event_table = dynamodb.Table("EventLog")
+  print ("Obtained reference to table")
 
   lNowString = str(datetime.now())
   lNowNumber = int(round(time.time()))
@@ -135,6 +137,7 @@ def lambda_handler(event, context):
            }
   print(dataToStore)
 
-  #response = event_table.put_item(Item = dataToStore)
-  #print("Log written to event table")
+  print ("Writing...")
+  response = event_table.put_item(Item = dataToStore)
+  print("Log written to event table")
 
