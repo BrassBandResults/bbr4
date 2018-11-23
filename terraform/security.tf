@@ -69,16 +69,35 @@ resource "aws_security_group" "db_traffic" {
     vpc_id = "${aws_vpc.bbr-vpc.id}"
 
     tags {
-        "Name"="Database Traffic"
+        "Name"="Database Traffic from Web Tier"
     }
 }
  
-resource "aws_security_group_rule" "db_inbound" {
+resource "aws_security_group_rule" "db_inbound_webtier" {
     type = "ingress"
     from_port = 5432
     to_port = 5432
     protocol = "tcp"
     source_security_group_id = "${aws_security_group.web_traffic.id}"
+    security_group_id = "${aws_security_group.db_traffic.id}"
+}
+
+resource "aws_security_group" "lambda" {
+    name="lambda-security-group"
+    description="Allow access from lambda to the db"
+    vpc_id = "${aws_vpc.bbr-vpc.id}"
+
+    tags {
+        "Name"="Database Traffic from Lambda"
+    }
+}
+
+resource "aws_security_group_rule" "db_inbound_lambda" {
+    type = "ingress"
+    from_port = 5432
+    to_port = 5432
+    protocol = "tcp"
+    source_security_group_id = "${aws_security_group.lambda.id}"
     security_group_id = "${aws_security_group.db_traffic.id}"
 }
  

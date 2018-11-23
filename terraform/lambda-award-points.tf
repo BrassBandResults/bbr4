@@ -29,12 +29,12 @@ resource "aws_lambda_function" "bbr-award-points" {
   role = "${aws_iam_role.bbr-iam-lambda-award-points.arn}"
   handler = "bbr_award_points.lambda_handler"
   source_code_hash = "${base64sha256(file("../lambda/award-points/target/bbr_award_points.zip"))}"
-  timeout = 65
+  timeout = 5
   runtime = "python3.6"
 
   vpc_config {
     subnet_ids=["${aws_subnet.private-subnet.id}", "${aws_subnet.private-subnet-secondary.id}"]
-    security_group_ids=["${aws_security_group.db_traffic.id}"]
+    security_group_ids=["${aws_security_group.lambda.id}"]
   }
 
   environment {
@@ -97,9 +97,6 @@ resource "aws_iam_policy" "bbr-lambda-points-rds-policy" {
     {
 	"Effect": "Allow",
         "Action": [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
           "ec2:CreateNetworkInterface",
           "ec2:DescribeNetworkInterfaces",
           "ec2:DeleteNetworkInterface"

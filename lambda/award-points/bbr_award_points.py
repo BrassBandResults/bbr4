@@ -82,19 +82,24 @@ def lambda_handler(event, context):
            }
   print(dataToStore)
   
-  response = event_table.put_item(Item = dataToStore)
+  #response = event_table.put_item(Item = dataToStore)
 
-  # Increase points on user
-  db_connect_string = os.environ['BBR_DB_CONNECT_STRING']
-  conn = psycopg2.connect(db_connect_string)
+  print("Log written to event table")
+
+  if pointsToAdd:
+    print("Adding %d points to %s" % (pointsToAdd, userToAddTo))
+    # Increase points on user
+    db_connect_string = os.environ['BBR_DB_CONNECT_STRING']
+    conn = psycopg2.connect(db_connect_string)
   
-  user_id = None
-  cursor = conn.cursor()
-  selectUserSql = "SELECT id FROM auth_user WHERE username = (%s)"
-  cursor.execute(selectUserSql, (userToAddTo,))
-  rows = cursor.fetchall()
-  for row in rows:
-    user_id = row[0]
-  cursor.close()
+    user_id = None
+    cursor = conn.cursor()
+    selectUserSql = "SELECT id FROM auth_user WHERE username = (%s)"
+    cursor.execute(selectUserSql, (userToAddTo,))
+    rows = cursor.fetchall()
+    for row in rows:
+      user_id = row[0]
+    cursor.close()
   
-  print("User id for %s is %s" % (userToAddTo, user_id))
+    print("User id for %s is %s" % (userToAddTo, user_id))
+
