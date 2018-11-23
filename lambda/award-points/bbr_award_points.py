@@ -60,31 +60,10 @@ def lambda_handler(event, context):
     pointsToAdd  = POINTS[notifyContextPath]
   except KeyError:
     pointsToAdd = 0 
-  
-  if pointsToAdd:
-    print("Adding %s points to user %s" % (pointsToAdd, userToAddTo))
-
-  dynamodb = boto3.resource('dynamodb')
-  event_table = dynamodb.Table("EventLog")
-
-  lNowString = str(datetime.now())
-  lNowNumber = int(round(time.time()))
-  lExpiryTimeNumber = lNowNumber + 2764800 # 32 days
-
-  dataToStore = {
-             'Username' : userToAddTo,
-             'DateTimestamp' : lNowNumber,
-             'DateTime' : lNowString,
-             'EventType' : notifyContextPath, 
-             'Points' : pointsToAdd,
-             'Data' : parsedMessage["notification"],
-             'TimeToLive' : lExpiryTimeNumber 
-           }
-  print(dataToStore)
-  
-  #response = event_table.put_item(Item = dataToStore)
-  #print("Log written to event table")
-
+ 
+  oldPointsLog = 0
+  newPointsLog = 0
+ 
   if pointsToAdd:
     print("Adding %d points to %s" % (pointsToAdd, userToAddTo))
 
@@ -117,6 +96,9 @@ def lambda_handler(event, context):
     new_points = old_points + pointsToAdd
     print("Old points %d, New Points %d" % (old_points, new_points))
 
+    oldPointsLog = old_points
+    newPointsLog = new_points
+
     if (old_points >= 0):
     	updatePointsSql = "UPDATE users_userprofile SET points = %s WHERE user_id = %s"
     	cursor = conn.cursor()
@@ -127,4 +109,32 @@ def lambda_handler(event, context):
     else:
         print ("User id %d not found" % user_id)
 
+    conn.commit()
     conn.close()
+
+    print ("Done")
+
+  # Write to event log
+  dynamodb = boto3.resource('dynamodb')
+  event_table = dynamodb.Table("EventLog")
+
+  lNowString = str(datetime.now())
+  lNowNumber = int(round(time.time()))
+  lExpiryTimeNumber = lNowNumber + 2764800 # 32 days
+
+  dataToStore = {
+             'Username' : userToAddTo,
+             'DateTimestamp' : lNowNumber,
+             'DateTime' : lNowString,
+             'EventType' : notifyContextPath,
+             'Points' : pointsToAdd,
+             'OldPoints' : oldPointsLog,
+             'NewPoints' : newPointsLog,
+             'Data' : parsedMessage["notification"],
+             'TimeToLive' : lExpiryTimeNumber
+           }
+  print(dataToStore)
+
+  #response = event_table.put_item(Item = dataToStore)
+  #print("Log written to event table")
+
