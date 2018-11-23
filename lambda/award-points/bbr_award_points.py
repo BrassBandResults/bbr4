@@ -105,10 +105,11 @@ def lambda_handler(event, context):
   
     print("User id for %s is %s" % (userToAddTo, user_id))
 
+    old_points = -100
     selectPointsSql = "SELECT points FROM users_userprofile WHERE user_id = %s FOR UPDATE"
     cursor = conn.cursor() 
     cursor.execute(selectPointsSql, (user_id,))
-    row = cursor.fetchall()
+    rows = cursor.fetchall()
     for row in rows:
       old_points = row[0]
     cursor.close()
@@ -116,11 +117,14 @@ def lambda_handler(event, context):
     new_points = old_points + pointsToAdd
     print("Old points %d, New Points %d" % (old_points, new_points))
 
-    updatePointsSql = "UPDATE users_userprofile SET points = %s WHERE user_id = %s"
-    cursor = conn.cursor()
-    cursor.execute(updatePointsSql, (new_points, user_id))
-    cursor.close()   
+    if (old_points >= 0):
+    	updatePointsSql = "UPDATE users_userprofile SET points = %s WHERE user_id = %s"
+    	cursor = conn.cursor()
+    	cursor.execute(updatePointsSql, (new_points, user_id))
+    	cursor.close()   
 
-    print ("Points updated")
- 
+    	print ("Points updated")
+    else:
+        print ("User id %d not found" % user_id)
+
     conn.close()
