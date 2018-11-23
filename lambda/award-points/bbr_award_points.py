@@ -83,18 +83,20 @@ def lambda_handler(event, context):
   print(dataToStore)
   
   #response = event_table.put_item(Item = dataToStore)
-
-  print("Log written to event table")
+  #print("Log written to event table")
 
   if pointsToAdd:
     print("Adding %d points to %s" % (pointsToAdd, userToAddTo))
-    # Increase points on user
+
     db_connect_string = os.environ['BBR_DB_CONNECT_STRING']
+
+    print ("Connect to database")
     conn = psycopg2.connect(db_connect_string)
-  
+    print ("Connected")
+
     user_id = None
     cursor = conn.cursor()
-    selectUserSql = "SELECT id FROM auth_user WHERE username = (%s)"
+    selectUserSql = "SELECT id FROM auth_user WHERE username = %s"
     cursor.execute(selectUserSql, (userToAddTo,))
     rows = cursor.fetchall()
     for row in rows:
@@ -103,3 +105,22 @@ def lambda_handler(event, context):
   
     print("User id for %s is %s" % (userToAddTo, user_id))
 
+    selectPointsSql = "SELECT points FROM users_userprofile WHERE user_id = %s FOR UPDATE"
+    cursor = conn.cursor() 
+    cursor.execute(selectPointsSql, (user_id,))
+    row = cursor.fetchall()
+    for row in rows:
+      old_points = row[0]
+    cursor.close()
+
+    new_points = old_points + pointsToAdd
+    print("Old points %d, New Points %d" % (old_points, new_points))
+
+    updatePointsSql = "UPDATE users_userprofile SET points = %s WHERE user_id = %s"
+    cursor = conn.cursor()
+    cursor.execute(updatePointsSql, (new_points, user_id))
+    cursor.close()   
+
+    print ("Points updated")
+ 
+    conn.close()

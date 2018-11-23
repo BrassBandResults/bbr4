@@ -33,7 +33,7 @@ resource "aws_lambda_function" "bbr-award-points" {
   runtime = "python3.6"
 
   vpc_config {
-    subnet_ids=["${aws_subnet.private-subnet.id}", "${aws_subnet.private-subnet-secondary.id}"]
+    subnet_ids=["${aws_subnet.lambda-subnet.id}","${aws_subnet.public-subnet.id}"]
     security_group_ids=["${aws_security_group.lambda.id}"]
   }
 

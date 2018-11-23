@@ -109,4 +109,13 @@ resource "aws_security_group_rule" "db_outbound" {
     cidr_blocks = ["0.0.0.0/0"]
     security_group_id = "${aws_security_group.db_traffic.id}"
 }
+
+resource "aws_security_group_rule" "lambda_outbound" {
+    type = "egress"
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = "${aws_security_group.lambda.id}"
+}
  

@@ -29,6 +29,18 @@ resource "aws_subnet" "private-subnet" {
   }
 }
 
+# Define a subnet for the lambda functions to live in
+resource "aws_subnet" "lambda-subnet" {
+  vpc_id = "${aws_vpc.bbr-vpc.id}"
+  cidr_block = "10.0.8.0/24"
+  availability_zone = "${lookup(var.zones, var.region)}"
+
+  tags {
+    Name = "BBR Lambda Subnet"
+  }
+
+}
+
 # Secondary subnet required for RDS database, not actually used?
 resource "aws_subnet" "private-subnet-secondary" {
   vpc_id = "${aws_vpc.bbr-vpc.id}"
@@ -65,4 +77,11 @@ resource "aws_route_table" "web-public-routetable" {
 resource "aws_route_table_association" "web-rta" {
   subnet_id = "${aws_subnet.public-subnet.id}"
   route_table_id = "${aws_route_table.web-public-routetable.id}"
+}
+
+# Assign the route table to the lambda Subnet
+resource "aws_route_table_association" "lambda-rta" {
+  subnet_id = "${aws_subnet.lambda-subnet.id}"
+  route_table_id = "${aws_route_table.web-public-routetable.id}"
+
 }
