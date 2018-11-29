@@ -22,6 +22,18 @@ def _moved(notification):
 
   return isLocationChanged
 
+BADGES = {
+  "venues.venue_map.move" : VENUE_CARTOGRAPHER,
+  "bands.band_map.move" : BAND_CARTOGRAPHER,
+  # : MASTER_MAPPER,
+  "contests.performances.new" : COMPETITOR,
+  "contests.performances.accept" : COMPETITOR,
+  # : WON_CONTEST,
+  "contests.contestevent.results_added" : CONTRIBUTOR,
+  "contests.programme_cover.new" : PROGRAMME_SCANNER,
+  "contests.future_event.new" : SCHEDULER,
+}
+
 
 POINTS = {
   "contests.contest_result.new" : 1,
@@ -31,6 +43,15 @@ POINTS = {
   "bands.band_map.move" : 5,
 }
 
+
+def addBadge(conn, badgeType, user_id):
+  print("Adding %d badge to %s" % (badgeType, user_id))
+
+  sql = "INSERT INTO users_userbadge (user_id, type_id, notified) values (%d, %d, false) ON CONFLICT DO NOTHING"
+  cursor = conn.cursor()
+  cursor.execute(sql, (user_id, badgeType))
+  cursor.close()  
+ 
 
 def lambda_handler(event, context):
   print(event)    
@@ -55,20 +76,19 @@ def lambda_handler(event, context):
   if ('venues.venue.edit' == notifyContextPath) and _moved(parsedMessage["notification"]):
     # venue edited with location move
     notifyContextPath = "venues.venue_map.move"
- 
+
+  try:
+    badgeToAdd = BADGES[notifyContextPath]
+  except:
+    badgeToAdd = None
+
   try:
     pointsToAdd  = POINTS[notifyContextPath]
   except KeyError:
     pointsToAdd = 0 
  
-  oldPointsLog = 0
-  newPointsLog = 0
- 
-  if pointsToAdd:
-    print("Adding %d points to %s" % (pointsToAdd, userToAddTo))
-
+  if badgeToAdd or pointsToAdd:
     db_connect_string = os.environ['BBR_DB_CONNECT_STRING']
-
     print ("Connect to database")
     conn = psycopg2.connect(db_connect_string)
     print ("Connected")
@@ -83,6 +103,17 @@ def lambda_handler(event, context):
     cursor.close()
   
     print("User id for %s is %s" % (userToAddTo, user_id))
+
+
+  if badgeToAdd:
+    addBadge(conn, bandToAdd, user_id)
+
+
+  oldPointsLog = 0
+  newPointsLog = 0
+
+  if pointsToAdd:
+    print("Adding %d points to %s" % (pointsToAdd, userToAddTo))
 
     old_points = -100
     selectPointsSql = "SELECT points FROM users_userprofile WHERE user_id = %s FOR UPDATE"
@@ -109,6 +140,7 @@ def lambda_handler(event, context):
     else:
         print ("User id %d not found" % user_id)
 
+  if badgeToAdd or pointsToAdd:
     conn.commit()
     conn.close()
 

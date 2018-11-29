@@ -1098,11 +1098,16 @@ def add_result_to_contest_history(request, pContestSlug, pDate, pResultSerial):
         lContestHistory.result = lContestResult
         lContestHistory.instrument = lPlayerPosition
         lContestHistory.save()
+
+        notification(None, lContestHistory, 'contests', 'performances', 'new', request.user, browser_details(request))
+
     if lCheckForExisting > 0:
         lExisting = PersonalContestHistory.objects.filter(result=lContestResult, user=request.user)[0]
         if lExisting.status == 'pending':
             lExisting.status = 'accepted'
             lExisting.save()
+
+            notification(None, lContestHistory, 'contests', 'performances', 'accept', request.user, browser_details(request))
         
     lPath = '/users/%s/contest_history/' % request.user.username
     return HttpResponseRedirect(lPath)
