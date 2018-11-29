@@ -25,7 +25,7 @@ def lambda_handler(event, context):
 
   sql = """SELECT u.email, n.notify_type, n.name_match 
            FROM users_usernotification n
-	   INNER JOIN auth_user ON (n.notify_user_id = u.id)
+	   INNER JOIN auth_user u ON (n.notify_user_id = u.id)
            WHERE n.enabled = true
            AND u.is_active = true 
            AND n.type = %s"""
