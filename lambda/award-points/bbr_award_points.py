@@ -22,6 +22,15 @@ def _moved(notification):
 
   return isLocationChanged
 
+WON_CONTEST = 1
+BAND_CARTOGRAPHER = 9
+MASTER_MAPPER = 10
+COMPETITOR = 12
+CONTRIBUTOR = 13
+VENUE_CARTOGRAPHER = 11
+PROGRAMME_SCANNER = 14
+SCHEDULER = 15
+
 BADGES = {
   "venues.venue_map.move" : VENUE_CARTOGRAPHER,
   "bands.band_map.move" : BAND_CARTOGRAPHER,
@@ -47,7 +56,7 @@ POINTS = {
 def addBadge(conn, badgeType, user_id):
   print("Adding %d badge to %s" % (badgeType, user_id))
 
-  sql = "INSERT INTO users_userbadge (user_id, type_id, notified) values (%d, %d, false) ON CONFLICT DO NOTHING"
+  sql = "INSERT INTO users_userbadge (user_id, type_id, notified) values (%s, %s, false) ON CONFLICT DO NOTHING"
   cursor = conn.cursor()
   cursor.execute(sql, (user_id, badgeType))
   cursor.close()  
@@ -106,7 +115,7 @@ def lambda_handler(event, context):
 
 
   if badgeToAdd:
-    addBadge(conn, bandToAdd, user_id)
+    addBadge(conn, badgeToAdd, user_id)
 
 
   oldPointsLog = 0

@@ -108,7 +108,7 @@ resource "aws_iam_policy" "bbr-lambda-points-rds-policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "bbr-lambda-db-access" {
+resource "aws_iam_role_policy_attachment" "bbr-lambda-points-db-access" {
   role = "${aws_iam_role.bbr-iam-lambda-award-points.name}"
   policy_arn = "${aws_iam_policy.bbr-lambda-points-rds-policy.arn}"
 }

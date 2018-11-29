@@ -66,7 +66,7 @@ class ContestDateForm(forms.Form):
 
 
 class NotesForm(forms.ModelForm):
-    notes = forms.CharField(widget=forms.Textarea(attrs={'width':"100%",
+    notes = forms.CharField(required=False, widget=forms.Textarea(attrs={'width':"100%",
                                                          'cols' : "80",
                                                          'rows': "4",
                                                          }))

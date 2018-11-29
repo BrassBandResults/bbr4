@@ -17,6 +17,18 @@ DROP TABLE dj_banner_bannerweight;
 DROP TABLE dj_banner_contract CASCADE;
 DROP TABLE dj_banner_month;
 
+DROP TABLE paypal_discountcode;
+DROP TABLE paypal_ipnlog;
+DROP TABLE paypal_paypalpaymentcode;
+
+DROP TABLE rankings_availablepoints;
+DROP TABLE rankings_bankrankingsetup;
+DROP TABLE rankings_pointscalculation;
+DROP TABLE rankings_pointsdecay;
+DROP TABLE rankings_resultscache;
+DROP TABLE rankings_seedpointscalculation;
+DROP TABLE rankings_seedpointsmultiplier;
+
 DELETE FROM django_session;
 
 GRANT ALL PRIVILEGES ON DATABASE bbr TO bbr;
@@ -223,3 +235,18 @@ GRANT ALL PRIVILEGES ON DATABASE bbr TO bbr;
  GRANT ALL ON users_userprofile_regional_superuser_regions_id_seq TO bbr;
  GRANT ALL ON users_usertalk_id_seq TO bbr;
  GRANT ALL ON venues_venuealias_id_seq TO bbr;
+
+UPDATE users_usernotification SET type = 'classifieds.profile.edit' WHERE type = 'edit_profile';
+UPDATE users_usernotification SET type = 'contestevent.results.added' WHERE type = 'results_added_contestevent';
+UPDATE users_usernotification SET type = 'bands.band.new' WHERE type = 'monthly_new_band';
+UPDATE users_usernotification SET type = 'feedback.feedback.new' WHERE type = 'new_feedback';
+UPDATE users_usernotification SET type = 'classifieds.profile.new' WHERE type = 'new_profile';
+UPDATE users_usernotification SET type = 'classifieds.profile.add' WHERE type = 'add_profile';
+UPDATE users_usernotification SET type = 'contests.contest_event.edit' WHERE type = 'edit_contest_event';
+UPDATE users_usernotification SET type = 'contests.contest.edit' WHERE type = 'edit_contest';
+UPDATE users_usernotification SET type = 'users.reputation.enhanced' WHERE type = 'enhanced_reputation';
+UPDATE users_usernotification SET type = 'feedback.feedback.to_admin' WHERE type = 'to_admin_feedback';
+UPDATE users_usernotification SET type = 'feedback.feedback.to_admin' WHERE type = 'new_person';
+UPDATE users_usernotification SET type = 'feedback.feedback.to_admin' WHERE type = 'new_programme_cover';
+
+
