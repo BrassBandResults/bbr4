@@ -237,12 +237,12 @@ GRANT ALL PRIVILEGES ON DATABASE bbr TO bbr;
  GRANT ALL ON venues_venuealias_id_seq TO bbr;
 
 UPDATE users_usernotification SET type = 'classifieds.profile.edit' WHERE type = 'edit_profile';
-UPDATE users_usernotification SET type = 'contestevent.results.added' WHERE type = 'results_added_contestevent';
+UPDATE users_usernotification SET type = 'contests.contestevent.results_added' WHERE type = 'results_added_contestevent';
 UPDATE users_usernotification SET type = 'bands.band.new' WHERE type = 'monthly_new_band';
 UPDATE users_usernotification SET type = 'feedback.feedback.new' WHERE type = 'new_feedback';
 UPDATE users_usernotification SET type = 'classifieds.profile.new' WHERE type = 'new_profile';
 UPDATE users_usernotification SET type = 'classifieds.profile.add' WHERE type = 'add_profile';
-UPDATE users_usernotification SET type = 'contests.contest_event.edit' WHERE type = 'edit_contest_event';
+UPDATE users_usernotification SET type = 'contests.contestevent.edit' WHERE type = 'edit_contest_event';
 UPDATE users_usernotification SET type = 'contests.contest.edit' WHERE type = 'edit_contest';
 UPDATE users_usernotification SET type = 'users.reputation.enhanced' WHERE type = 'enhanced_reputation';
 UPDATE users_usernotification SET type = 'feedback.feedback.to_admin' WHERE type = 'to_admin_feedback';
