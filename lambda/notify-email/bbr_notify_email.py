@@ -18,6 +18,9 @@ def lambda_handler(event, context):
   
   print("Looking for notification path %s" % notifyContextPath)
 
+  email_subject = parsedMessage["notification"]["subject"]
+  email_text = parsedMessage["notification"]["message"]
+
   db_connect_string = os.environ['BBR_DB_CONNECT_STRING']
   print ("Connect to database")
   conn = psycopg2.connect(db_connect_string)
@@ -39,6 +42,27 @@ def lambda_handler(event, context):
     name_match = row[2]
 
     print ("Sending email to %s for notification %s" % (email_address, notifyContextPath))
+
+    ses_client = boto3.client('ses')
+    response = ses_client.send_email(
+      Source='contact@brassbandresults.co.uk',
+      Destination={
+        'ToAddresses': [email_address,],
+        'CcAddresses': [],
+        'BccAddresses': ['maillog@brassbandresults.co.uk',],
+      },
+      Message={
+        'Subject': {
+          'Data' : email_subject,
+          'Charset': 'UTF-8',
+        },
+        'Body' : {
+          'Data': email_text,
+          'Charset': 'UTF-8',
+        },
+      }
+    )
+    
   cursor.close()
 
   conn.close()
