@@ -3,6 +3,7 @@
 import os
 import json
 import psycopg2
+import boto3
 
 def lambda_handler(event, context):
   print(event)    
@@ -43,7 +44,7 @@ def lambda_handler(event, context):
 
     print ("Sending email to %s for notification %s" % (email_address, notifyContextPath))
 
-    ses_client = boto3.client('ses')
+    ses_client = boto3.client('ses',region_name='eu-west-1')
     response = ses_client.send_email(
       Source='contact@brassbandresults.co.uk',
       Destination={
@@ -57,8 +58,10 @@ def lambda_handler(event, context):
           'Charset': 'UTF-8',
         },
         'Body' : {
-          'Data': email_text,
-          'Charset': 'UTF-8',
+          'Text': {
+            'Charset' : 'UTF-8',
+            'Data' : email_text,
+          }
         },
       }
     )

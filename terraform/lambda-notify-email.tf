@@ -72,7 +72,8 @@ resource "aws_iam_policy" "bbr-lambda-email-rds-policy" {
         "Action": [
           "ec2:CreateNetworkInterface",
           "ec2:DescribeNetworkInterfaces",
-          "ec2:DeleteNetworkInterface"
+          "ec2:DeleteNetworkInterface",
+          "ses:SendEmail"
         ],
         "Resource": "*"
     }
