@@ -7,7 +7,7 @@ resource "aws_db_instance" "bbr-db" {
     backup_window = "05:37-06:37"
     storage_type = "gp2"
     engine = "postgres"
-    engine_version = "10.3"
+    engine_version = "10.4"
     final_snapshot_identifier = "${var.prefix}-snapshot-final"
     identifier = "${var.prefix}-db"
     instance_class = "db.t2.micro"
