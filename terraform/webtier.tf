@@ -45,6 +45,10 @@ data "template_file" "pgpass" {
     }
 }
 
+data "template_file" "backports-sources-apt" {
+    template = "deb http://ftp.debian.org/debian stretch-backports main"
+}
+
 data "template_file" "bootstrap-web" {
     template = "${file("bootstrap-web.tpl")}" 
     vars {
@@ -126,6 +130,18 @@ resource "aws_instance" "bbr-web" {
             private_key = "${file("${var.ec2_private_key}")}"
             user = "admin"
         }  
+    }
+
+    provisioner "file" {
+        content = "${data.template_file.backports-sources-apt}"
+        destination = "/etc/apt/source.list.d/stretch-backports.list"
+
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "admin"
+        } 
     }
     
     provisioner "file" {

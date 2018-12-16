@@ -12,6 +12,9 @@ sudo debconf-set-selections <<< "postfix postfix/mailname string brassbandresult
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 sudo apt-get install -y postfix mailutils
 
+# lets encrypt certbot
+sudo apt-get install python-certbot-nginx -t stretch-backports
+
 # install required software as root
 sudo apt-get install git python3-pip nginx postgresql-client -y
 export VIRTUALENVWRAPPER_PYTHON=`which python3`
