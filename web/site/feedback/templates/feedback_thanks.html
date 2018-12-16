@@ -6,8 +6,10 @@
 {%block description%}Feedback Thanks{%endblock%}
 
 {% block content %}
+<div class="container pt-1">
 <h1>{% trans "Thanks!"%}</h1>
 <p>{% blocktrans %}Thanks for your feedback.  We'll take a look.  <a href="{{FeedbackUrl}}">Click Here to return to the previous page.</a>{%endblocktrans%}</p>
+</div>
 {% endblock %}
 
 {%block feedback %}{% endblock %}
