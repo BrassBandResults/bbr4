@@ -683,7 +683,7 @@ def talk_edit(request, pSlug):
             lTalk.object_link = lObjectLink
             lTalk.save()
 
-            notification(None, lTalk, 'bands', 'talk', 'edit', request.user, browser_details(request))
+            # notification(None, lTalk, 'bands', 'talk', 'edit', request.user, browser_details(request))
         
             return HttpResponseRedirect('/bands/%s/talk/' % lObjectLink.slug)
         

@@ -1053,7 +1053,7 @@ def talk_edit(request, pUsername):
         if form.is_valid():
             form.save()
 
-            notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
+            # notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
             
             return HttpResponseRedirect('/users/%s/talk/' % request.user.username)
         

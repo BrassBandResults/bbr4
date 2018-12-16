@@ -1514,7 +1514,7 @@ def talk_edit_contest(request, pSlug):
             lTalk.object_link = lObjectLink
             lTalk.save()
 
-            notification(None, lTalk, 'contests', 'contest_talk', 'edit', request.user, browser_details(request))
+            # notification(None, lTalk, 'contests', 'contest_talk', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/contests/%s/talk/' % lObjectLink.actual_slug)
         
@@ -1586,7 +1586,7 @@ def talk_edit_group(request, pSlug):
             lTalk.object_link = lObjectLink
             lTalk.save()
 
-            notification(None, lTalk, 'contests', 'group_talk', 'edit', request.user, browser_details(request))
+            # notification(None, lTalk, 'contests', 'group_talk', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/contests/%s/talk/' % lObjectLink.actual_slug)
         
