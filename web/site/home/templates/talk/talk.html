@@ -5,6 +5,7 @@
 {% block title %}{{ObjectLink.name}} {% trans "Talk Page"%}{% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 <h1>Talk for <a href="/{{Offset}}/{% firstof ObjectLink.actual_slug ObjectLink.slug %}/">{{ObjectLink.name}}</a> [<a href="/{{Offset}}/{% firstof ObjectLink.actual_slug ObjectLink.slug %}/talk/edit/">edit</a>]</h1>
 {% if Talk %}
 {{Talk.text|safe}}
@@ -23,6 +24,7 @@
    
 {% endfor %}
 </ul> 
+</div>
 {% endblock %}
 
 {% block scriptfooter %}
