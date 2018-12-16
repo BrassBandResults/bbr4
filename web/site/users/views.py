@@ -563,7 +563,7 @@ def _show_public_profile(request, pUser):
         lPaginate=True
         
     lYearNumbers = lYears.items()
-    lYearNumbers.sort()
+    sorted(lYearNumbers)
     lYearNumbers.reverse()
     lYears = [value for key, value in lYearNumbers]
         
