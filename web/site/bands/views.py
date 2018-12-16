@@ -674,8 +674,6 @@ def talk_edit(request, pSlug):
         lTalk.object_link = lObjectLink
         lTalk.save()
 
-        notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
-        
     if request.method == "POST":
         form = BandTalkEditForm(data=request.POST, instance=lTalk)
         if form.is_valid():
@@ -684,6 +682,9 @@ def talk_edit(request, pSlug):
             lTalk.owner = request.user
             lTalk.object_link = lObjectLink
             lTalk.save()
+
+            notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
+        
             return HttpResponseRedirect('/bands/%s/talk/' % lObjectLink.slug)
         
     else:

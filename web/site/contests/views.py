@@ -1504,8 +1504,6 @@ def talk_edit_contest(request, pSlug):
         lTalk.owner = request.user
         lTalk.object_link = lObjectLink
         lTalk.save()
-
-        notification(None, lTalk, 'contest_talk', 'edit', request.user, browser_details(request))
         
     if request.method == "POST":
         form = ContestTalkEditForm(data=request.POST, instance=lTalk)
@@ -1515,6 +1513,9 @@ def talk_edit_contest(request, pSlug):
             lTalk.owner = request.user
             lTalk.object_link = lObjectLink
             lTalk.save()
+
+            notification(None, lTalk, 'contest_talk', 'edit', request.user, browser_details(request))
+
             return HttpResponseRedirect('/contests/%s/talk/' % lObjectLink.actual_slug)
         
     else:
@@ -1575,9 +1576,7 @@ def talk_edit_group(request, pSlug):
         lTalk.owner = request.user
         lTalk.object_link = lObjectLink
         lTalk.save()
-
-        notification(None, lTalk, 'group_talk', 'edit', request.user, browser_details(request))
-        
+     
     if request.method == "POST":
         form =GroupTalkEditForm(data=request.POST, instance=lTalk)
         if form.is_valid():
@@ -1586,6 +1585,9 @@ def talk_edit_group(request, pSlug):
             lTalk.owner = request.user
             lTalk.object_link = lObjectLink
             lTalk.save()
+
+            notification(None, lTalk, 'group_talk', 'edit', request.user, browser_details(request))
+
             return HttpResponseRedirect('/contests/%s/talk/' % lObjectLink.actual_slug)
         
     else:

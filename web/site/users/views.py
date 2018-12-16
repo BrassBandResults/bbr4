@@ -1046,12 +1046,15 @@ def talk_edit(request, pUsername):
         lTalk.owner = request.user
         lTalk.save()
 
-        notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
+
         
     if request.method == "POST":
         form = UserTalkEditForm(data=request.POST, instance=lTalk)
         if form.is_valid():
             form.save()
+
+            notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
+            
             return HttpResponseRedirect('/users/%s/talk/' % request.user.username)
         
     else:
