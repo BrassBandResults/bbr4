@@ -3,6 +3,8 @@
 # Build the initial machine setup using the admin user.
 # This user can sudo, others cannot.
 
+sudo mv ~/stretch-backports.list /etc/apt/sources.list.d/
+
 # Bring machine up to date
 sudo apt-get update
 sudo apt-get upgrade -y
@@ -13,8 +15,7 @@ sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Intern
 sudo apt-get install -y postfix mailutils
 
 # lets encrypt certbot
-sudo mv ~/stretch-backports.list /etc/apt/sources.list.d/
-sudo apt-get install python-certbot-nginx -t stretch-backports
+sudo apt-get install python-certbot-nginx -t stretch-backports -y
 
 # install required software as root
 sudo apt-get install git python3-pip nginx postgresql-client -y

@@ -119,6 +119,18 @@ resource "aws_instance" "bbr-web" {
         }  
     }
 
+    provisioner "file" {
+        content = "${data.template_file.backports-sources-apt.rendered}"
+        destination = "stretch-backports.list"
+
+        connection {
+            type = "ssh"
+            agent = false
+            private_key = "${file("${var.ec2_private_key}")}"
+            user = "admin"
+        } 
+    }
+
     provisioner "remote-exec" {
         inline = [
             "chmod a+x bootstrap-web.sh",
@@ -132,18 +144,6 @@ resource "aws_instance" "bbr-web" {
         }  
     }
 
-    provisioner "file" {
-        content = "${data.template_file.backports-sources-apt.rendered}"
-        destination = "stretch-backports.list"
-
-        connection {
-            type = "ssh"
-            agent = false
-            private_key = "${file("${var.ec2_private_key}")}"
-            user = "admin"
-        } 
-    }
-    
     provisioner "file" {
         content = "${data.template_file.pgpass.rendered}"
         destination = ".pgpass"
@@ -179,7 +179,7 @@ resource "aws_instance" "bbr-web" {
         }  
     }
 
-        provisioner "file" {
+    provisioner "file" {
         content = "${data.template_file.django-settings-live.rendered}"
         destination = "~/bbr4/web/site/bbr/settingslive.py"
         connection {
