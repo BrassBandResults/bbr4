@@ -81,7 +81,7 @@ def feedback(request):
                         'Url' : lUrl,
                         'Referrer' : lReferrer,
                         }
-            notification(None, lFeedback, 'feedback', 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext, pUser=lUrl)
+            notification(None, lFeedback, 'feedback', 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext, pUrl=lUrl)
                 
         lNextUrl = lUrl[len('http://'):]
         lNextUrl = lNextUrl[lNextUrl.find('/'):]
