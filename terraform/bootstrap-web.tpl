@@ -13,6 +13,7 @@ sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Intern
 sudo apt-get install -y postfix mailutils
 
 # lets encrypt certbot
+sudo mv ~/stretch-backports.list /etc/apt/sources.list.d/
 sudo apt-get install python-certbot-nginx -t stretch-backports
 
 # install required software as root

@@ -133,8 +133,8 @@ resource "aws_instance" "bbr-web" {
     }
 
     provisioner "file" {
-        content = "${data.template_file.backports-sources-apt}"
-        destination = "/etc/apt/source.list.d/stretch-backports.list"
+        content = "${data.template_file.backports-sources-apt.rendered}"
+        destination = "stretch-backports.list"
 
         connection {
             type = "ssh"
