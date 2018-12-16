@@ -25,10 +25,10 @@ DEBUG = False
 ALLOWED_HOSTS = ['bbr4.brassbandresults.co.uk','brassbandresults.co.uk',]
 
 ADMINS = (
-    ('Tim Sawyer', 'bbr.errors@brassbandresults.co.uk'),
+    ('Tim Sawyer', 'bbr.errors@brassbandresults.com'),
 )
 EMAIL_HOST = 'localhost'
-SERVER_EMAIL = 'bbr.server@brassbandresults.co.uk'
+SERVER_EMAIL = 'bbr.server@brassbandresults.com'
 EMAIL_SUBJECT_PREFIX = '[bbr4]'
 
 # Database
