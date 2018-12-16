@@ -11,12 +11,8 @@
 {% block feedback %}{% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 <h1>Edit {{Profile.name}} Profile</h1>
-<p>This profile will be shown on the following pages:</p>
-<ul>
-  {% if Profile.adjudicator %}<li><a href="/adjudicators/{{Profile.adjudicator.slug}}/">Adjudicator {{Profile.adjudicator.name}}</a></li>{% endif %}
-  {% if Profile.conductor %}<li><a href="/conductors/{{Profile.conductor.slug}}/">Conductor {{Profile.conductor.name}}</a></li>{%endif%}
-</ul>
 <form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
 <table>
   {{form.as_table}}
@@ -28,4 +24,5 @@
 <p><b>[bands/carlton-main-frickley-colliery-band|Carlton Main Frickley Colliery Band]</b></p>
 <p>The first part of these is the bit of the url after brassbandresults.co.uk, and the second part (after the vertical bar) is the name to display for the link.</p>
 </ul>
+</div>
 {% endblock %}
