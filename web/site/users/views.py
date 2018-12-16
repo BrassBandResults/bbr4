@@ -562,9 +562,7 @@ def _show_public_profile(request, pUser):
     if int(lContestsCount) > 30:
         lPaginate=True
         
-    lYearNumbers = lYears.items()
-    sorted(lYearNumbers)
-    lYearNumbers.reverse()
+    lYearNumbers = reversed(sorted(lYears.items()))
     lYears = [value for key, value in lYearNumbers]
         
     
