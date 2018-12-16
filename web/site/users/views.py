@@ -455,7 +455,6 @@ def edit_profile(request, pUsercode, pClassifiedProfileId):
             lNewProfile.lastChangedBy = request.user
             lNewProfile.owner = request.user
             lNewProfile.save()
-            lNewProfile.check_expiry()
             
             notification(lOldProfile, lNewProfile, 'classifieds', 'profile', 'edit', request.user, browser_details(request))
             
