@@ -60,3 +60,7 @@ sudo mkdir /var/log/bbr
 sudo cp ~/nginx-bbr4 /etc/nginx/sites-available/bbr4
 sudo ln -s /etc/nginx/sites-available/bbr4 /etc/nginx/sites-enabled/bbr4
 sudo /etc/init.d/nginx restart
+
+# Setup certbot for certificate
+sudo certbot --nginx -n --agree-tos --email tim.certbot@drumcoder.co.uk --domains bbr4.brassbandresults.co.uk
+
