@@ -1045,6 +1045,8 @@ def talk_edit(request, pUsername):
         lTalk = UserTalk()
         lTalk.owner = request.user
         lTalk.save()
+
+        notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
         
     if request.method == "POST":
         form = UserTalkEditForm(data=request.POST, instance=lTalk)
