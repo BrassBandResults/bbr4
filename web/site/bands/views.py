@@ -101,7 +101,7 @@ def add_band(request):
             lNewBand.lastChangedBy = request.user
             lNewBand.owner = request.user
             lNewBand.save()
-            notification(None, lNewBand, 'band', 'new', request.user, browser_details(request))
+            notification(None, lNewBand, 'bands', 'band', 'new', request.user, browser_details(request))
             return HttpResponseRedirect('/bands/')
     else:
         form = EditBandForm()
@@ -154,7 +154,7 @@ def edit_band(request, pBandSlug):
             lNewBand.lastChangedBy = request.user
             lNewBand.save()
             
-            notification(lOldBand, lNewBand, 'band', 'edit', request.user, browser_details(request))
+            notification(lOldBand, lNewBand, 'bands', 'band', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/bands/%s/' % lBand.slug)
     else:
@@ -410,7 +410,7 @@ def single_band_aliases(request, pBandSlug):
         lBandAlias.owner = request.user
         lBandAlias.lastChangedBy = request.user
         lBandAlias.save()
-        notification(None, lBandAlias, 'band_alias', 'new', request.user, browser_details(request))
+        notification(None, lBandAlias, 'bands', 'band_alias', 'new', request.user, browser_details(request))
         return HttpResponseRedirect('/bands/%s/aliases/' % lBand.slug)
     
     lBandAliases = PreviousBandName.objects.filter(band=lBand)
@@ -444,7 +444,7 @@ def single_band_alias_show(request, pBandSlug, pAliasSerial):
     lBandAlias.hidden = False
     lBandAlias.lastChangedBy = request.user
     lBandAlias.save()
-    notification(None, lBandAlias, 'band_alias', 'show', request.user, browser_details(request))
+    notification(None, lBandAlias, 'bands', 'band_alias', 'show', request.user, browser_details(request))
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
 
 
@@ -472,7 +472,7 @@ def single_band_alias_hide(request, pBandSlug, pAliasSerial):
     lBandAlias.hidden = True
     lBandAlias.lastChangedBy = request.user
     lBandAlias.save()
-    notification(None, lBandAlias, 'band_alias', 'hide', request.user, browser_details(request))
+    notification(None, lBandAlias, 'bands', 'band_alias', 'hide', request.user, browser_details(request))
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
 
 
@@ -489,7 +489,7 @@ def single_band_alias_delete(request, pBandSlug, pAliasSerial):
     except IndexError:
         raise Http404
     
-    notification(None, lBandAlias, 'band_alias', 'delete', request.user, browser_details(request))
+    notification(None, lBandAlias, 'bands', 'band_alias', 'delete', request.user, browser_details(request))
     lBandAlias.delete()
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
 
@@ -577,7 +577,7 @@ def update_whit_friday_conductors(request, pBandSlug):
             if request.user.profile.superuser:
                 lOldResult = ContestResult.objects.filter(id=lResult.id)[0]
                 lResult.save()
-                contest_notification(lOldResult, lResult, 'contest_result', 'edit', request.user, browser_details(request))
+                contest_notification(lOldResult, lResult, 'bands', 'contest_result', 'edit', request.user, browser_details(request))
             
     return HttpResponseRedirect('/bands/%s/#whitfriday-tab' % pBandSlug)
 
@@ -683,7 +683,7 @@ def talk_edit(request, pSlug):
             lTalk.object_link = lObjectLink
             lTalk.save()
 
-            notification(None, lTalk, 'talk', 'edit', request.user, browser_details(request))
+            notification(None, lTalk, 'bands', 'talk', 'edit', request.user, browser_details(request))
         
             return HttpResponseRedirect('/bands/%s/talk/' % lObjectLink.slug)
         
