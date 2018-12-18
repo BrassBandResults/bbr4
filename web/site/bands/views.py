@@ -2,13 +2,14 @@
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.db import connection
 from django.db.models.query_utils import Q
 from django.template.loader import render_to_string
 
 from bbr.render import render_auth
 from bbr.decorators import login_required_pro_user
+
 
 from bbr.talkutils import fetch_recent_talk_changes
 from bands.models import Band, BandTalkPage
