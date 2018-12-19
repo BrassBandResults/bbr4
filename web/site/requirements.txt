@@ -29,3 +29,5 @@ six==1.11.0
 stripe==2.16.0
 termcolor==1.1.0
 urllib3==1.24.1
+pathlib2==2.3.3
+scipy==1.2.0
