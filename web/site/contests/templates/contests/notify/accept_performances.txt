@@ -1,0 +1,6 @@
+Accepted Performance for {{ThingNew.user.username}}.
+
+Date: {{ThingNew.result.contest_event.contest.name}}
+
+Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
+Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}
