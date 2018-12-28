@@ -34,7 +34,7 @@ resource "aws_lambda_function" "bbr-award-points" {
 
   environment {
     variables = {
-      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr4-db.address}' user='bbradmin' password='${var.db_password}' dbname='${aws_db_instance.bbr4-db.name}'"
+      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr4-db.address}' user='bbr' password='${var.db_password_bbr}' dbname='${aws_db_instance.bbr4-db.name}'"
     }
   }
 }
@@ -78,33 +78,3 @@ resource "aws_iam_role_policy_attachment" "bbr-lambda-points-log" {
   role = "${aws_iam_role.bbrie-iam-lambda-award-points.name}"
   policy_arn = "${aws_iam_policy.bbrie-lambda-points-dynamodb-policy.arn}"
 }
-
-
-resource "aws_iam_policy" "bbrie-lambda-points-rds-policy" {
-  name = "bbrie-lambda-points-rds-policy"
-  path = "/"
-  description = "Allow access to RDS in VPC"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-	"Effect": "Allow",
-        "Action": [
-          "ec2:CreateNetworkInterface",
-          "ec2:DescribeNetworkInterfaces",
-          "ec2:DeleteNetworkInterface"
-        ],
-        "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "bbr-lambda-points-db-access" {
-  role = "${aws_iam_role.bbrie-iam-lambda-award-points.name}"
-  policy_arn = "${aws_iam_policy.bbrie-lambda-points-rds-policy.arn}"
-}
-

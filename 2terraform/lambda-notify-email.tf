@@ -33,8 +33,13 @@ resource "aws_lambda_function" "bbr-notify-email" {
 
   environment {
     variables = {
-      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr4-db.address}' user='bbr' password='${var.db_password}' dbname='${aws_db_instance.bbr4-db.name}'"
+      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr4-db.address}' user='bbr' password='${var.db_password_bbr}' dbname='${aws_db_instance.bbr4-db.name}'"
     }
+  }
+
+  vpc_config {
+    subnet_ids=["${aws_default_subnet.default_az1.id}","${aws_default_subnet.default_az2.id}"]
+    security_group_ids=["${aws_default_security_group.default.id}"]
   }
 
 }
@@ -65,6 +70,9 @@ resource "aws_iam_policy" "bbrie-lambda-email-ses-policy" {
     {
 	"Effect": "Allow",
         "Action": [
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DeleteNetworkInterface",
           "ses:SendEmail"
         ],
         "Resource": "*"

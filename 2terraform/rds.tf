@@ -17,6 +17,6 @@ resource "aws_db_instance" "bbr4-db" {
     publicly_accessible = false
     multi_az = false
     skip_final_snapshot = false
-    vpc_security_group_ids = ["${aws_security_group.db_traffic.id}"]
+    vpc_security_group_ids = ["${aws_security_group.db_traffic.id}", "${aws_default_security_group.default.id}"]
 }
 
