@@ -50,14 +50,17 @@ def lambda_handler(event, context):
 
   email_subject = parsedMessage["notification"]["subject"]
   email_text = parsedMessage["notification"]["message"]
-  email_address = parsedMessage["notification"]["thingOld"][0]["fields"]["email"]
+  try:
+    email_address = parsedMessage["notification"]["thingOld"][0]["fields"]["email"]
+  except KeyError:
+    email_address = None
 
   try:
     auto_send = AUTO_SEND[notifyContextPath]
   except KeyError:
     auto_send = False
 
-  if auto_send:
+  if auto_send and email_address:
     send_email(email_address, notifyContextPath, email_subject, email_text)
   else:
 
