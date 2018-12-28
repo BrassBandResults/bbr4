@@ -61,3 +61,20 @@ resource "aws_security_group_rule" "ssh_inbound_work" {
     security_group_id = "${aws_security_group.admin_access.id}"
 }
  
+resource "aws_security_group" "db_traffic" {
+    name="db-traffic-security-group"
+    description="Allow access from the database from the web tier"
+
+    tags {
+        "Name"="Database Traffic from Web Tier"
+    }
+}
+ 
+resource "aws_security_group_rule" "db_inbound_webtier" {
+    type = "ingress"
+    from_port = 5432
+    to_port = 5432
+    protocol = "tcp"
+    source_security_group_id = "${aws_security_group.web_traffic.id}"
+    security_group_id = "${aws_security_group.db_traffic.id}"
+}
