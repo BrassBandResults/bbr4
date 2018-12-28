@@ -34,7 +34,7 @@ resource "aws_lambda_function" "bbr-award-points" {
 
   environment {
     variables = {
-      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr-db.address}' user='bbradmin' password='${var.db_password}' dbname='${aws_db_instance.bbr-db.name}'"
+      BBR_DB_CONNECT_STRING = "host='${aws_db_instance.bbr4-db.address}' user='bbradmin' password='${var.db_password}' dbname='${aws_db_instance.bbr4-db.name}'"
     }
   }
 }

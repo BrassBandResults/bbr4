@@ -37,9 +37,9 @@ data "template_file" "pgpass" {
     template = "$${pg_host}:$${pg_port}:$${pg_dbname}:$${pg_username}:$${pg_password}"
 
     vars {
-        pg_host = "${aws_db_instance.bbr-db.address}"
-        pg_port = "${aws_db_instance.bbr-db.port}"
-        pg_dbname = "${aws_db_instance.bbr-db.name}"
+        pg_host = "${aws_db_instance.bbr4-db.address}"
+        pg_port = "${aws_db_instance.bbr4-db.port}"
+        pg_dbname = "${aws_db_instance.bbr4-db.name}"
         pg_username = "bbradmin"
         pg_password = "${var.db_password}"
     }
@@ -67,7 +67,7 @@ data "template_file" "bootstrap-bbr" {
 data "template_file" "django-settings-live" {
     template = "${file("settings-live.tpl.py")}" 
     vars {
-        dbHost = "${aws_db_instance.bbr-db.address}"
+        dbHost = "${aws_db_instance.bbr4-db.address}"
         dbPasswordBbr = "${var.db_password_bbr}"
         djangoSecretKey = "${var.django_secret_key}"
         googleMapsKey = "${var.google_maps_key}"

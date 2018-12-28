@@ -1,4 +1,4 @@
-resource "aws_db_instance" "bbr-db" {
+resource "aws_db_instance" "bbr4-db" {
     allocated_storage = 20
     allow_major_version_upgrade = false
     apply_immediately = true
@@ -9,9 +9,9 @@ resource "aws_db_instance" "bbr-db" {
     engine = "postgres"
     engine_version = "10.4"
     final_snapshot_identifier = "${var.prefix}-snapshot-final"
-    identifier = "${var.prefix}-db"
+    identifier = "bbr-db"
     instance_class = "db.t2.micro"
-    name = "${var.prefix}"
+    name = "bbr"
     username = "bbradmin"
     password = "${var.db_password}"
     publicly_accessible = false
