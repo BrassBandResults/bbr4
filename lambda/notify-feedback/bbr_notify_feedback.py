@@ -22,6 +22,7 @@ def lambda_handler(event, context):
     email_subject = "Feedback" 
     email_text = parsedMessage["notification"]["message"]
     email_text = email_text.replace("!NEW_LINE!", "\n")
+    email_text = email_text.replace("&#39;", "'")
     email_address = parsedMessage["notification"]["destination"]
     if email_address == "None":
       email_address = None
@@ -33,7 +34,7 @@ def lambda_handler(event, context):
 
     ses_client = boto3.client('ses',region_name='eu-west-1')
     response = ses_client.send_email(
-      Source='contact@brassbandresults.co.uk',
+      Source='BrassBandResults <contact@brassbandresults.co.uk>',
       Destination={
         'ToAddresses': [email_address,],
         'CcAddresses': [],

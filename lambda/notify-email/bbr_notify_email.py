@@ -10,7 +10,7 @@ def send_email(email_address, notifyContextPath, email_subject, email_text):
 
   ses_client = boto3.client('ses',region_name='eu-west-1')
   response = ses_client.send_email(
-    Source='contact@brassbandresults.co.uk',
+    Source='BrassBandResults <contact@brassbandresults.co.uk>',
     Destination={
       'ToAddresses': [email_address,],
       'CcAddresses': [],
@@ -50,6 +50,8 @@ def lambda_handler(event, context):
 
   email_subject = parsedMessage["notification"]["subject"]
   email_text = parsedMessage["notification"]["message"]
+  email_text = email_text.replace("!NEW_LINE!", "\n")
+  email_text = email_text.replace("&#39;", "'")
   try:
     email_address = parsedMessage["notification"]["thingOld"][0]["fields"]["email"]
   except KeyError:
