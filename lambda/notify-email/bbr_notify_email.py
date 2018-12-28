@@ -62,30 +62,3 @@ def lambda_handler(event, context):
 
   if auto_send and email_address:
     send_email(email_address, notifyContextPath, email_subject, email_text)
-  else:
-
-    db_connect_string = os.environ['BBR_DB_CONNECT_STRING']
-    print ("Connect to database")
-    conn = psycopg2.connect(db_connect_string)
-    print ("Connected")
-
-    sql = """SELECT u.email, n.notify_type, n.name_match 
-             FROM users_usernotification n
-	     INNER JOIN auth_user u ON (n.notify_user_id = u.id)
-             WHERE n.enabled = true
-             AND u.is_active = true 
-             AND n.type = %s"""
-
-    cursor = conn.cursor()
-    cursor.execute(sql, (notifyContextPath,))
-    rows = cursor.fetchall()
-    for row in rows:
-      email_address = row[0]
-      notify_type = row[1]
-      name_match = row[2]
-
-      send_email(email_address, notifyContextPath, email_subject, email_text)
-    
-    cursor.close()
-
-  conn.close()

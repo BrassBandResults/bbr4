@@ -47,9 +47,6 @@ Temporary Items
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
-
 # Distribution / packaging
 .Python
 build/
@@ -238,4 +235,4 @@ buildNumber.properties
 
 
 # End of https://www.gitignore.io/api/java,maven
-
+target/*
