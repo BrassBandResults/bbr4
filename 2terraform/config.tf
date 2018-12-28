@@ -4,3 +4,10 @@ provider "aws" {
     region = "${var.region}"
 }
 
+terraform {
+    backend "s3" {
+        bucket = "bbrie-terraform-state"
+        key = "tfstate"
+        region = "eu-west-1" 
+    }
+}

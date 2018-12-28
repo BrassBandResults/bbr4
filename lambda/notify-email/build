@@ -3,7 +3,7 @@
 rm -r target
 mkdir -p target/build
 
-cp -r $VIRTUALENVWRAPPER_HOOK_DIR/bbr-notify-email/lib/python3.6/site-packages/* target/build
+#cp -r $VIRTUALENVWRAPPER_HOOK_DIR/bbr-notify-email/lib/python3.6/site-packages/* target/build
 cp *.py target/build
 cp -r psycopg2 target/build
 
