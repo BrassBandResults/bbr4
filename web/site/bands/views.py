@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.db import connection
 from django.db.models.query_utils import Q
 from django.template.loader import render_to_string
