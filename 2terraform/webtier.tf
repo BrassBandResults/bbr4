@@ -200,6 +200,9 @@ resource "aws_instance" "bbr-web" {
 }
 
 resource "aws_eip" "web-tier-ip-address" {
-    vpc = false
-    instance = "${aws_instance.bbr-web.id}"
 }
+
+resource "aws_eip_association" "eip-web-association" {
+    instance_id = "${aws_instance.bbr-web.id}"
+    allocation_id = "${aws_eip.web-tier-ip-address.id}"
+} 

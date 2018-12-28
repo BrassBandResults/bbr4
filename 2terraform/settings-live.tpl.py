@@ -22,7 +22,7 @@ SECRET_KEY = '${djangoSecretKey}'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['bbr4.brassbandresults.co.uk','brassbandresults.co.uk',]
+ALLOWED_HOSTS = ['bbr4b.brassbandresults.co.uk','brassbandresults.co.uk',]
 
 ADMINS = (
     ('Tim Sawyer', 'bbr.errors@brassbandresults.com'),
