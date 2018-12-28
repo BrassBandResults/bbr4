@@ -42,7 +42,7 @@
   <tr>
     <th>{% trans "Adjudicators"%}:</th>
 {% if Adjudicators %}   
-      <td class="adjudicators">{% for contest_adjudicator in Adjudicators %}<span class="adjudicator">{{contest_adjudicator.adjudicator.name}}</span>{% if not forloop.last %}, {%endif%}{% endfor %}</td>
+      <td class="adjudicators">{% for contest_adjudicator in Adjudicators %}<span class="adjudicator">{{contest_adjudicator.person.name}}</span>{% if not forloop.last %}, {%endif%}{% endfor %}</td>
 {% else %}
         <td><font color="red">{% trans "Unknown, do you know?"%}</font></td>
 {% endif %}   
