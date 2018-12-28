@@ -17,6 +17,7 @@ from bands.forms import EditBandForm, EditBandSuperuserForm, BandTalkEditForm
 from contests.models import Contest, ContestGroup, ContestAchievementAward, CurrentChampion, ContestTag
 
 from bbr.siteutils import slugify, browser_details
+from bbr.notification import notification
 
 
 def check_results_complete(pResults, pContestGroups, pCurrentUser):
