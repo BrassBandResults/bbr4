@@ -2,7 +2,7 @@ limit_req_zone  $binary_remote_addr  zone=one:10m   rate=1r/s;
 
 server {
 	listen   80;
-	server_name  bbr4b.brassbandresults.co.uk;
+	server_name  bbr5.brassbandresults.co.uk;
 
 	access_log  /var/log/bbr/web-access.log;
 	error_log   /var/log/bbr/web-error.log;
@@ -14,7 +14,7 @@ server {
 		rewrite ^(.*)$ http://$host_without_www$1 permanent; 
 	}
 
-        if ($host !~* ^(bbr4b.brassbandresults.co.uk|brassbandresults.co.uk)$) {
+        if ($host !~* ^(bbr5.brassbandresults.co.uk|brassbandresults.co.uk)$) {
                 return 444;
         }
 

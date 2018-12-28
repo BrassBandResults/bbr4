@@ -58,7 +58,7 @@ sudo systemctl enable gu-bbr
 # configure nginx
 sudo mkdir /var/log/bbr
 sudo cp ~/nginx-bbr4 /etc/nginx/sites-available/bbr4
-sudo cp ~/nginx-bbr4-com /etc/nginx/sites-available/bbr4com
+sudo cp ~/nginx-bbr4http /etc/nginx/sites-available/bbr4http
 sudo ln -s /etc/nginx/sites-available/bbr4 /etc/nginx/sites-enabled/bbr4
 sudo ln -s /etc/nginx/sites-available/bbr4com /etc/nginx/sites-enabled/bbr4com
 sudo /etc/init.d/nginx restart
