@@ -1,0 +1,5 @@
+server {
+        listen   80;
+        server_name  brassbandresults.co.uk brassbandresults.com;
+        return 301 https://brassbandresults.co.uk$request_uri;
+}
