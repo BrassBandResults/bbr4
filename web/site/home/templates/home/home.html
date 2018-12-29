@@ -118,8 +118,10 @@
 {% for event in RecentResults %}
       <tr>
         <td width="15%" class="text-nowrap"><a href="/contests/{{event.contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
-        <td width="50%">{{event.contest.name}}</td>
         <td>{% for winner in event.winners %}<a href="/bands/{{winner.band.slug}}/">{{winner.band_name}}</a> {%endfor%}</td>
+      </tr>
+      <tr>
+        <td colspan="2">{{event.contest.name}}</td>
       </tr>
 {% endfor %}
 </table>
@@ -131,8 +133,10 @@
 {% for event in RecentlyAdded %}
    <tr>
      <td width="15%" class="text-nowrap"><a href="/contests/{{event.contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a></td>
-     <td width="50%">{{event.contest.name}}</td>
      <td>{% for winner in event.winners %}<a href="/bands/{{winner.band.slug}}/">{{winner.band_name}}</a> {%endfor%}</td>
+   </tr>
+   <tr>
+     <td colspan="2">{{event.contest.name}}</td>
    </tr>
 {% endfor %}
 </table>  
