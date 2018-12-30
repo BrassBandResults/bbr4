@@ -32,6 +32,7 @@ resource "aws_lambda_function" "bbr-thumbnail" {
   runtime = "java8"
   memory_size = "192"
   timeout = "60"
+  provider = "aws.london"
 }
 
 resource "aws_lambda_permission" "bbr-thumbnail-allow-bucket-access" {
@@ -40,10 +41,12 @@ resource "aws_lambda_permission" "bbr-thumbnail-allow-bucket-access" {
   function_name = "${aws_lambda_function.bbr-thumbnail.arn}"
   principal = "s3.amazonaws.com"
   source_arn = "${aws_s3_bucket.bbr-uploads-bucket.arn}"  
+  provider = "aws.london"
 }
 
 resource "aws_s3_bucket_notification" "lambda-image-bucket-notification" {
   bucket = "${aws_s3_bucket.bbr-uploads-bucket.id}"
+  provider = "aws.london"
 
   lambda_function {
     lambda_function_arn = "${aws_lambda_function.bbr-thumbnail.arn}"

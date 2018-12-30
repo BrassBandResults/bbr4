@@ -1,5 +1,7 @@
 resource "aws_s3_bucket" "bbr-uploads-bucket" {
-    bucket = "${var.prefix}-media-upload"
+    bucket = "bbr-media-upload"
+    provider = "aws.london"
+    region = "eu-west-2"
     acl = "private"
     policy = <<EOF
 {
@@ -12,7 +14,7 @@ resource "aws_s3_bucket" "bbr-uploads-bucket" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.prefix}-media-upload/*",
+      "Resource": "arn:aws:s3:::bbr-media-upload/*",
       "Principal": "*"
     }
   ]
@@ -25,7 +27,9 @@ EOF
 }
 
 resource "aws_s3_bucket" "bbr-uploads-thumbnail-bucket" {
-    bucket = "${var.prefix}-media-upload-thumbnail"
+    bucket = "bbr-media-upload-thumbnail"
+    provider = "aws.london"
+    region = "eu-west-2"
     acl = "private"
     policy = <<EOF
 {
@@ -38,7 +42,7 @@ resource "aws_s3_bucket" "bbr-uploads-thumbnail-bucket" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.prefix}-media-upload-thumbnail/*",
+      "Resource": "arn:aws:s3:::bbr-media-upload-thumbnail/*",
       "Principal": "*"
     }
   ]
@@ -51,7 +55,9 @@ EOF
 }
 
 resource "aws_s3_bucket" "bbr-media" {
-    bucket = "${var.prefix}-site-media"
+    bucket = "bbr-site-media"
+    provider = "aws.london"
+    region = "eu-west-2"
     acl = "private"
     policy = <<EOF
 {
@@ -64,7 +70,7 @@ resource "aws_s3_bucket" "bbr-media" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.prefix}-site-media/*",
+      "Resource": "arn:aws:s3:::bbr-site-media/*",
       "Principal": "*"
     }
   ]
@@ -75,3 +81,4 @@ EOF
         error_document = "404.html"
     }
 }
+
