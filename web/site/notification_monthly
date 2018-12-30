@@ -11,7 +11,7 @@ django.setup()
 
 from django.contrib.auth.models import User
 from bands.models import Band
-from bands.tasks import notification as band_notification
+from bbr.notification import notification
 
 print ("Running monthly notification tasks")
 lToday = datetime.today()
@@ -19,4 +19,4 @@ lOneMonthAgo = datetime.today() - timedelta(days=32)
 
 lNewBands = Band.objects.filter(created__lte=lToday, created__gte=lOneMonthAgo)
 lTjsUser = User.objects.filter(username='tjs')[0]
-band_notification.delay(None, lNewBands, 'new_band', 'monthly', lTjsUser, ('',''), pAdditionalContext={'StartDate' : lOneMonthAgo, 'EndDate': lToday})
+notification(None, lNewBands, 'bands', 'new_band', 'monthly', lTjsUser, ('',''), pAdditionalContext={'StartDate' : lOneMonthAgo, 'EndDate': lToday})
