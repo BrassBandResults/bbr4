@@ -16,7 +16,7 @@ from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.models import User
 from feedback.models import SiteFeedback
 from users.models import UserProfile
-from feedback.tasks import notification as feedback_notification
+from bbr.notification import notification
 
 # Look through owned feedback without a claim date that is not done 
 # - if it is older than 7 days, put it into the feedback queue
@@ -33,23 +33,23 @@ for feedback in lFeedback:
       feedback.status = 'Queue'
       feedback.save("Auto moved to Feedback Queue from %s" % lOwner)
       lMessage = "MOVED TO QUEUE"
-      feedback_notification.delay(None, feedback, 'feedback', 'autoqueue', lTjsUser, ('127.0.0.1','feedback_batch'), pAdditionalContext={'QueuedFrom' : lOwner})
+      notification.delay(None, feedback, 'feedback', 'autoqueue', lTjsUser, ('127.0.0.1','feedback_batch'), pAdditionalContext={'QueuedFrom' : lOwner})
       lCount += 1
       
   print ("%d - %s %s - %s (%s)" % (feedback.id, lFeedbackSubmitted, lOwner, feedback.status, lMessage))
 print ("%d queued" % lCount)
 
-print ("Looking for users that haven't logged in for over a year and expiring")
-lDeltaDate = datetime.now() - timedelta(days=366)
-lOldUsers = UserProfile.objects.filter(user__last_login__lt=lDeltaDate).exclude(user__email="expired@brassbandresults.co.uk").order_by('-user__last_login')
-print (" - %d found" % len(lOldUsers))
-for profile in lOldUsers:
-  lExpired = str(datetime.now() - profile.user.last_login)
-  lExpired = lExpired[:-15]
-  print ("%s - %s" % (profile.user.username, lExpired))
-  profile.new_email_required = True
-  profile.user.email = "expired@brassbandresults.co.uk"
-  profile.save()
-  profile.user.save()
+#print ("Looking for users that haven't logged in for over 1000 days and expiring")
+#lDeltaDate = datetime.now() - timedelta(days=366)
+#lOldUsers = UserProfile.objects.filter(user__last_login__lt=lDeltaDate).exclude(user__email="expired@brassbandresults.co.uk").order_by('-user__last_login')
+#print (" - %d found" % len(lOldUsers))
+#for profile in lOldUsers:
+#  lExpired = str(datetime.now() - profile.user.last_login)
+#  lExpired = lExpired[:-15]
+#  print ("%s - %s" % (profile.user.username, lExpired))
+#  profile.new_email_required = True
+#  profile.user.email = "expired@brassbandresults.co.uk"
+#  profile.save()
+#  profile.user.save()
 
 
