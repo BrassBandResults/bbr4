@@ -33,7 +33,7 @@ for feedback in lFeedback:
       feedback.status = 'Queue'
       feedback.save("Auto moved to Feedback Queue from %s" % lOwner)
       lMessage = "MOVED TO QUEUE"
-      notification.delay(None, feedback, 'feedback', 'autoqueue', lTjsUser, ('127.0.0.1','feedback_batch'), pAdditionalContext={'QueuedFrom' : lOwner})
+      notification(None, feedback, 'feedback', 'feedback', 'autoqueue', lTjsUser, ('127.0.0.1','feedback_batch'), pAdditionalContext={'QueuedFrom' : lOwner})
       lCount += 1
       
   print ("%d - %s %s - %s (%s)" % (feedback.id, lFeedbackSubmitted, lOwner, feedback.status, lMessage))
