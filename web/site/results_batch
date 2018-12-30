@@ -5,7 +5,7 @@ import sys, os
 from datetime import date, timedelta
 
 print (sys.path)
-os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr4.settingslive'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settingslive'
 #os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settings'
 
 import django

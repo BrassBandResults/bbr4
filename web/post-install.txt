@@ -1,0 +1,13 @@
+This txt file lists the things that were done to the server after it was provisioned.
+
+
+=== As Root ===
+
+certbot --nginx -n --agree-tos --email certbot@brassbandresults.co.uk --domains brassbandresults.co.uk
+
+nginx config modifed so that port 80/http redirects to port 443/https
+
+"certbot renew" added to cron daily
+
+=== As bbr ===
+
