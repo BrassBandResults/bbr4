@@ -10,7 +10,7 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User
-from contests.tasks import notification as contest_notification
+from bbr.notification import notification
 from contests.models import ContestEvent
 from audit.models import AuditEntry
 
@@ -33,5 +33,5 @@ for event in lTwoAndThreeDaysAgoEvents:
 			lComplete = False
 			
 	if not lComplete:
-		contest_notification.delay(None, event, 'contest', 'results_missing', lTjsUser, ('127.0.0.1','Notify'))
+		cnotification(None, event, 'contests', 'contest', 'results_missing', lTjsUser, ('127.0.0.1','Notify'))
 		

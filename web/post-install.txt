@@ -11,3 +11,6 @@ nginx config modifed so that port 80/http redirects to port 443/https
 
 === As bbr ===
 
+cron:
+
+30 2 * * * workon bbr4 && cd ~/bbr4/web/site && feedback_batch
