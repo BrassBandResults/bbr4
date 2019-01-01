@@ -6,6 +6,14 @@ variable "work_ip" {
     type = "string"
 }
 
+variable "mail_server_primary" {
+    type = "string"
+}
+
+variable "mail_server_secondary" {
+    type = "string"
+}
+
 variable "region" {
     type = "string"
     default = "eu-west-1"
