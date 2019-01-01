@@ -32,9 +32,9 @@ lContext = {
     'EndDate' : lToday,
 }
 
-lRenderedEmail = render_to_string('bands/notify/new_band_monthly.txt', lContext)
+lRenderedEmail = render_to_string('bands/notify/monthly_new_band.txt', lContext)
          
-lSubject = render_to_string('bands/notify/new_band_monthly_subject.txt', lContext)
+lSubject = render_to_string('bands/notify/monthly_new_band_subject.txt', lContext)
 lSubject = ''.join(lSubject.splitlines()) #  *must not* contain newlines
 
 
