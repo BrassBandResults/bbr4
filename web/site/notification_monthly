@@ -10,13 +10,32 @@ import django
 django.setup()
 
 from django.contrib.auth.models import User
-from bands.models import Band
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 from bbr.notification import notification
+from bands.models import Band
+
+DESTINATIONS = [
+  'monthly@brassbandresults.com',
+]
+
 
 print ("Running monthly notification tasks")
 lToday = datetime.today()
 lOneMonthAgo = datetime.today() - timedelta(days=32)
 
 lNewBands = Band.objects.filter(created__lte=lToday, created__gte=lOneMonthAgo)
-lTjsUser = User.objects.filter(username='tjs')[0]
-notification(None, lNewBands, 'bands', 'new_band', 'monthly', lTjsUser, ('',''), pAdditionalContext={'StartDate' : lOneMonthAgo, 'EndDate': lToday})
+
+lContext = {
+    'ThingNew' : lNewBands,
+    'StartDate' : lOneMonthAgo,
+    'EndDate' : lToday,
+}
+
+lRenderedEmail = render_to_string('bands/notify/new_band_monthly.txt', lContext)
+         
+lSubject = render_to_string('bands/notify/new_band_monthly_subject.txt', lContext)
+lSubject = ''.join(lSubject.splitlines()) #  *must not* contain newlines
+
+
+send_mail(lSubject, lRenderedEmail, 'BrassBandResults <monthly@brassbandresults.co.uk>', DESTINATIONS, fail_silently=False)
