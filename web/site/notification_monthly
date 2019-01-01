@@ -38,4 +38,4 @@ lSubject = render_to_string('bands/notify/monthly_new_band_subject.txt', lContex
 lSubject = ''.join(lSubject.splitlines()) #  *must not* contain newlines
 
 
-send_mail(lSubject, lRenderedEmail, 'BrassBandResults <monthly@brassbandresults.co.uk>', DESTINATIONS, fail_silently=False)
+send_mail(lSubject, lRenderedEmail, 'BrassBandResults <notify@brassbandresults.co.uk>', DESTINATIONS, fail_silently=False)
