@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^feeds/', include('feeds.urls')),
     url(r'^leaderboard/', include('leaderboard.urls')),
     url(r'^map/', include('bandmap.urls')),
+    url(r'^map2/', include('map2.urls')),
     url(r'^messages/', include('usermessages.urls')),
     url(r'^move/', include('move.urls')),
     url(r'^myresults/', include('myresults.urls')),

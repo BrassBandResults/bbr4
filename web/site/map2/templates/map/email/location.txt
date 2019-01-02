@@ -1,0 +1,15 @@
+{{Thing.name}} Moved
+
+Latitude was {{OldThing.latitude}}, now {{Thing.latitude}}
+Longitude was {{OldThing.longitude}}, now {{Thing.longitude}}
+Postcode was {{OldThing.postcode}}, now {{Thing.postcode}}
+Rehearsal Night 1 was {{OldThing.rehearsal_night_1}}, now {{Thing.rehearsal_night_1}}
+Rehearsal Night 2 was {{OldThing.rehearsal_night_2}}, now {{Thing.rehearsal_night_2}}
+
+https://brassbandresults.co.uk/bands/{{Thing.slug}}/
+
+https://brassbandresults.co.uk/revert/location/{{Thing.slug}}/{{OldThing.latitude}}/{{OldThing.longitude}}/
+
+{{User.username}}
+{{IpAddress}}
+{{UserAgent}}

@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+
+{%block title %}Brass Bands Map{% endblock %}
+
+{%block keywords %}Map{% endblock %}
+
+{%block head %}{% endblock %}
+
+{%block bands-map-selected%}class="selected"{%endblock%}
+
+{%block feedback %}{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+{% if Band.latitude %}
+<h1>Move Band On Map</h1>
+<p>{{Band.name}} is currently at the following latitide and longitude.  Please correct the values and re-submit.</p>
+{% else %}
+<h1>Add Band To Map</h1>
+<p>{{Band.name}} is currently not on the map.  Please fill in the location details below.</p>
+{% endif %}
+<p>This change will be recorded.</p>
+<form action="." method="post">{% csrf_token %}
+<table>
+	{{form.as_table}}
+</table>	
+<input type="Submit" value="Save Position"></input>
+</form>
+</div>
+{% endblock %}

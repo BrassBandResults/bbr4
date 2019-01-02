@@ -1,0 +1,160 @@
+{% extends "template.html" %}
+
+{%block title %}Brass Bands Map{% endblock %}
+
+{%block keywords %}Map{% endblock %}
+
+{%block description %}Brass Bands Map{% endblock %}
+
+{%block bands-mapsearch-selected%}class="selected"{%endblock%}
+
+{%block head %}
+<script src="{{ STATIC_URL }}map/js/infobubble-compiled.js"></script>
+<script src="/map/search/map_script.js?lat={{Latitude}}&lng={{Longitude}}&distance={{Distance}}&type={{Type}}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Search Brass Band Map</h1>
+<div id="search_form">
+  <p>
+    Search for location or postcode <input type="text" name="location" id="location_field" value="{% if From != "band" and From != "venue"%}{{Location}}{%endif%}" max_length="50" size="20"/> and show bands within <input type="text" name="distance" value="{{Distance}}" id="distance_field" max_length="5" size="5"/>
+    <select id="type_select">
+      <option value="mi"{% if Type == 'mi'%}selected="selected"{%endif%}>miles</option>
+      <option value="km"{% if Type == 'km'%}selected="selected"{%endif%}>kilometers</option>
+    </select>
+  </p>
+  <p><input type="checkbox" name="driving" id="driving_distance_checkbox"> show driving distances</p>
+  <p>[<a href='#' id="search">search now</a>]</p>  
+</div>
+{% if Latitude %}
+<h2>Bands within {{Distance}}{{TypeDisplay}} of {{Location}} as the crow flies.</h2>
+<p>This map is intended to give a general indication of where a band rehearses.  Please contact the band directly to obtain full directions.</p>
+<!--[if IE]> 
+<p><font color="red">The map doesn't work in older versions of Internet Explorer, please upgrade to IE8 or later.</font></p>
+<![endif]-->
+<br/>
+<div id="map_canvas" style="width: 100%; height: 500px"></div>
+
+<br/>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="bands" class="table table-hover">
+  <thead>
+  <tr>
+    <th>Band</th>
+    <th>Crow Flies Distance</th>
+{% if BandsDrivingDistance %}    
+    <th>Driving Time</th>
+    <th>Driving Distance</th>
+{% endif %}    
+    <th>Type</th>
+  </tr>
+</thead>
+<tbody>
+{% for eachband in Bands %}
+  <tr id="band_result{{forloop.counter0}}">
+    <td>
+     {% ifnotequal eachband.region.name "Unknown" %}
+      <img src="{{ STATIC_URL }}flags/{{eachband.region.country_code|lower}}.png" title="{{eachband.region.name}}"/>
+    {% endifnotequal %}
+      <a href="/bands/{{eachband.slug}}/">{{eachband.name}}</a>
+    </td>
+{%if Type == 'mi'%}    
+    <td>{{eachband.distance.mi|floatformat}} {{TypeDisplay}}</td>
+{% else %}
+    <td>{{eachband.distance.km|floatformat}} {{TypeDisplay}}</td>
+{% endif %}
+{% if BandsDrivingDistance %}        
+{% if forloop.counter0 < 25 %}     
+    <td class="driving_time"></td>
+    <td class="driving_distance"></td>
+{% else %}
+    <td colspan="2" class="disabled"></td>
+{% endif %}
+{% endif %}
+    {% if eachband.national_grading %}
+    <td><b>{{ eachband.national_grading }} Section</b></td>
+    {% else %}
+    <td>{% if eachband.status %}{{ eachband.get_status_display }}{% endif %}</td>
+    {% endif %}
+  </tr>
+{% empty %}
+  <tr><td colspan="3">No bands found.</td></tr>  
+{% endfor %}
+</tbody>
+</table>
+  {% if BandsDrivingDistance and Bands.count > 25 %}
+    <p>Driving distance and time is only available for first 25 results.</p>
+  {% endif %}
+{% endif %}
+</div>
+{% endblock %}
+
+{%block scriptfooter%}
+<script>
+  var gGeocoder = new google.maps.Geocoder();
+  $('#search').click(function(){
+    var lLocation = $('#location_field').val();
+    gGeocoder.geocode({
+      'address': lLocation
+      }, function(pResults, pStatus) {
+          if (pStatus === google.maps.GeocoderStatus.OK) {
+              var lPosition = pResults[0].geometry.location;
+              var lDistance = $('#distance_field').val();
+              var lDrivingDirections = 'N';
+              var lType = $('#type_select option:selected').val();
+              if ($('#driving_distance_checkbox').is(':checked')){
+                lDrivingDirections = 'Y';
+              }
+              var lNewUrl = './?location=' + lLocation + "&lat=" + lPosition.lat() + "&lng=" + lPosition.lng() + "&distance=" + lDistance + "&driving=" + lDrivingDirections + "&type=" + lType;
+              location.replace(lNewUrl);
+          } else {
+              alert('Could not find geocoordinates for the following reason: ' + pStatus);
+          }
+      });
+  });
+
+{% if BandsDrivingDistance %}  
+  function renderDrivingDistances(pResponse, pStatus) {
+    for(var i=0; i<pResponse.rows[0].elements.length; i++)
+    {
+      var lBandDestination = pResponse.rows[0].elements[i];
+{% if Type == 'mi'%}      
+      $('#band_result' + i + " td.driving_distance").html(lBandDestination.distance.text + "les");
+{% else %}
+      $('#band_result' + i + " td.driving_distance").html(lBandDestination.distance.text);
+{% endif %}      
+      $('#band_result' + i + " td.driving_time").html(lBandDestination.duration.text);
+    }
+  }
+  
+  var gDistanceMatrix = new google.maps.DistanceMatrixService();
+  gDistanceMatrix.getDistanceMatrix(
+    {
+      origins: [new google.maps.LatLng({{Latitude}}, {{Longitude}})],
+      destinations: [
+{% for band in BandsDrivingDistance %}
+        new google.maps.LatLng({{band.latitude}}, {{band.longitude}}),
+{% endfor %}      
+      ],
+      travelMode: google.maps.TravelMode.DRIVING,
+{% if Type == 'mi'%}      
+      unitSystem: google.maps.UnitSystem.IMPERIAL
+{% else %}
+      unitSystem: google.maps.UnitSystem.METRIC
+{% endif %}      
+    }, renderDrivingDistances);
+{% endif %}    
+
+{% if Bands %}
+  $('#bands').tablesorter();
+
+  $('button.reset').click(function(){
+      $('#bands').trigger('sortReset');
+      return false;
+  });
+{% endif %}
+</script>
+</div>
+{%endblock%}

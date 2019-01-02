@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'home',
     'usermessages',
     'leaderboard',
+    'map2',
     'move',
     'myresults',
     'notification',
