@@ -25,7 +25,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GOOGLE_MAPS_API_KEY = "AIzaSyDRGGo0pfBGKEE5n6iS7IEqhWeSHYiEI2c"
+MAPBOX_ACCESS_TOKEN = "XXX"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

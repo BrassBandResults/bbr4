@@ -71,6 +71,7 @@ data "template_file" "django-settings-live" {
         dbPasswordBbr = "${var.db_password_bbr}"
         djangoSecretKey = "${var.django_secret_key}"
         googleMapsKey = "${var.google_maps_key}"
+        mapboxAccessToken = "${var.mapbox_access_token}"
         notificationTopicArn = "${aws_sns_topic.bbr-notify.arn}"
         prefix = "${var.prefix}"
         region = "${var.region}"

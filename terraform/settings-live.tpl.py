@@ -58,6 +58,7 @@ NOTIFICATIONS_ENABLED = True
 NOTIFICATION_TOPIC_ARN = "${notificationTopicArn}"
 
 GOOGLE_MAPS_API_KEY = "${googleMapsKey}"
+MAPBOX_ACCESS_TOKEN = "${maboxAccessToken}"
 
 STRIPE_PUBLIC_DATA_KEY = "${stripePublicDataKey}"
 STRIPE_SECRET_KEY = "${stripeSecretKey}"

@@ -76,6 +76,10 @@ variable "google_maps_key" {
     type = "string"
 }
 
+variable "mapbox_access_token" {
+    type = "string"
+}
+
 variable "stripe_public_data_key" {
     type = "string"
 }
