@@ -57,18 +57,18 @@
         <div class="dropdown-menu">
           <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/">List Contests</a>
 {% if request.user.profile.superuser %} 
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/groups/">Groups</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/groups/">Groups</a>
 {% endif %}
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/">Calendar</a></li>
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/">Years</a></li>
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/">List Venues</a></li>
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/map/venues/">Venue Map</a></li>
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/programmes/">Programmes</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/">Calendar</a>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/years/">Years</a>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/venues/">List Venues</a>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/map/venues/">Venue Map</a>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/programmes/">Programmes</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addresults/">Add Results</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addresults/">Add Results</a>
 {% if request.user.profile.enhanced_functionality %}
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/upload/programme/">Upload Programme</a></li>
-          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addwhitfriday/">Add Whit Friday</a></li>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/upload/programme/">Upload Programme</a>
+          <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addwhitfriday/">Add Whit Friday</a>
 {% endif %}                         
         </div>
       </div>
