@@ -12,7 +12,7 @@ from bbr.decorators import login_required_pro_user
 
 
 from bbr.talkutils import fetch_recent_talk_changes
-from bands.models import Band, BandTalkPage
+from bands.models import Band, BandTalkPage, PreviousBandName
 from bands.forms import EditBandForm, EditBandSuperuserForm, BandTalkEditForm
 from contests.models import Contest, ContestGroup, ContestAchievementAward, CurrentChampion, ContestTag
 
