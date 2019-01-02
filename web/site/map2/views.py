@@ -19,7 +19,7 @@ def home(request):
     """
     Show google map of bands
     """
-    return render_auth(request, 'map2/map.html', {'GoogleMapsApiKey': settings.GOOGLE_MAPS_API_KEY})
+    return render_auth(request, 'map2/map.html', {'MapboxAccessToken': settings.MAPBOX_ACCESS_TOKEN})
 
 def home_venues(request):
     """
