@@ -25,8 +25,9 @@ class EditBandSuperuserForm(ModelForm):
         Validate latitude is in correct format
         """
         lLatitude = self.cleaned_data['latitude']
-        lValue = lLatitude.strip()
-        if lValue:
+        if lLatitude:
+          lValue = lLatitude.strip()
+          if lValue:
             lRegEx = re.compile(CO_ORD_REGEX) 
             if lRegEx.match(lValue) == None:
                 raise forms.ValidationError("Please enter the location in decimal notation, for example 53.768761  If it ends with N it's positive, if S, then it's negative.")
@@ -37,8 +38,9 @@ class EditBandSuperuserForm(ModelForm):
         Validation longitude is in correct format
         """
         lLongitude = self.cleaned_data['longitude']
-        lValue = lLongitude.strip()
-        if lValue:
+        if lLongitude:
+          lValue = lLongitude.strip()
+          if lValue:
             lRegEx = re.compile(CO_ORD_REGEX) 
             if lRegEx.match(lValue) == None:
                 raise forms.ValidationError("Please enter the location in decimal notation, for example -1.82182  If it ends with E it's positive, if W, then it's negative.")
