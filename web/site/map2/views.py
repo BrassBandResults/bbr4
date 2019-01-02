@@ -19,13 +19,13 @@ def home(request):
     """
     Show google map of bands
     """
-    return render_auth(request, 'map/map.html', {'GoogleMapsApiKey': settings.GOOGLE_MAPS_API_KEY})
+    return render_auth(request, 'map2/map.html', {'GoogleMapsApiKey': settings.GOOGLE_MAPS_API_KEY})
 
 def home_venues(request):
     """
     Show map of venues
     """
-    return render_auth(request, 'map/venues_map.html', {'GoogleMapsApiKey': settings.GOOGLE_MAPS_API_KEY})
+    return render_auth(request, 'map2/venues_map.html', {'GoogleMapsApiKey': settings.GOOGLE_MAPS_API_KEY})
 
 
 def _get_map_search_parameters(request):
@@ -61,7 +61,7 @@ def map_script(request):
     Or if lat/lng passed as parameters, find bands within given distance miles of a point.  Return a map_script.js centered on that point, showing bands within 10 miles
     """
     lBands = Band.objects.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
-    return render_auth(request, 'map/map_script.js', {
+    return render_auth(request, 'map2/map_script.js', {
                                                       "Bands" : lBands,
                                                      })    
 
@@ -85,7 +85,7 @@ def map_script_search(request):
         # showing full map
         lBands = []
         lVenues = []
-    return render_auth(request, 'map/map_script.js', {
+    return render_auth(request, 'map2/map_script.js', {
                                                       "Bands" : lBands,
                                                       "Venues" : lVenues,
                                                       "Latitude" : lLatitude,
@@ -129,7 +129,7 @@ def search_map(request):
     except KeyError:
         lFrom = None
             
-    return render_auth(request, 'map/search_map.html', {
+    return render_auth(request, 'map2/search_map.html', {
                                                         "Latitude" : lLatitude,
                                                         "Longitude" : lLongitude,
                                                         "Distance" : lDistance,
@@ -150,8 +150,8 @@ def add_band(request):
     lBands = Band.objects.filter(latitude="")
     if request.POST:
         lBandSlug = request.POST['band']
-        return HttpResponseRedirect('/map/coordwrong/%s/' % lBandSlug)
-    return render_auth(request, 'map/addband.html', {"Bands" : lBands})
+        return HttpResponseRedirect('/map2/coordwrong/%s/' % lBandSlug)
+    return render_auth(request, 'map2/addband.html', {"Bands" : lBands})
 
 @login_required
 def move_band(request):
@@ -160,9 +160,9 @@ def move_band(request):
     """
     if request.POST:
         lBandSlug = request.POST['band']
-        return HttpResponseRedirect('/map/coordwrong/%s/' % lBandSlug)
+        return HttpResponseRedirect('/map2/coordwrong/%s/' % lBandSlug)
     lBands = Band.objects.exclude(latitude="")
-    return render_auth(request, 'map/moveband.html', {"Bands" : lBands})
+    return render_auth(request, 'map2/moveband.html', {"Bands" : lBands})
 
 
 @login_required
@@ -185,8 +185,8 @@ def move_specific_band(request, pBandSlug):
             lNewBand.save()
             notification(lOldBand, lNewBand, 'bands', 'band_map', 'move', request.user, browser_details(request))
 
-            return HttpResponseRedirect('/map/coordwrong/%s/saved/' % lBand.slug)
-    return render_auth(request, 'map/movespecificband.html', {"Band" : lBand,
+            return HttpResponseRedirect('/map2/coordwrong/%s/saved/' % lBand.slug)
+    return render_auth(request, 'map2/movespecificband.html', {"Band" : lBand,
                                                               "form" : lForm})
     
 @login_required
@@ -198,7 +198,7 @@ def move_specific_band_done(request, pBandSlug):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'map/movespecificbanddone.html', {"Band" : lBand })
+    return render_auth(request, 'map2/movespecificbanddone.html', {"Band" : lBand })
 
 def specific_band(request, pBandSlug):
     """
@@ -217,7 +217,7 @@ def specific_band(request, pBandSlug):
     except KeyError:
         pass
     
-    return render_auth(request, 'map/map.html', {"Band" : lBand,
+    return render_auth(request, 'map2/map.html', {"Band" : lBand,
                                                  "ShowExtinct" : lShowExtinct })
     
 def specific_venue(request, pVenueSlug):
@@ -229,7 +229,7 @@ def specific_venue(request, pVenueSlug):
     except IndexError:
         raise Http404()
     
-    return render_auth(request, 'map/map.html', {"Venue" : lVenue,
+    return render_auth(request, 'map2/map.html', {"Venue" : lVenue,
                                                  "ShowExtinct" : False,
                                                  "ShowVenues" : True,
                                                 })    
@@ -244,7 +244,7 @@ def specific_band_map_script(request, pBandSlug):
         raise Http404()
     lBands = Band.objects.exclude(latitude="").order_by('latitude', 'longitude')
     lVenues = Venue.objects.exclude(latitude="").order_by('latitude', 'longitude')
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_auth(request, 'map2/map_script.js', { "Bands" : lBands,
                                                        "Center" : lBand,
                                                        "Zoom" : "12",
                                                        "Venues" : lVenues,
@@ -261,7 +261,7 @@ def specific_venue_map_script(request, pVenueSlug):
         raise Http404()
     lBands = Band.objects.exclude(latitude="").order_by('latitude', 'longitude')
     lVenues = Venue.objects.exclude(latitude="").order_by('latitude', 'longitude')
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_auth(request, 'map2/map_script.js', { "Bands" : lBands,
                                                        "Center" : lVenue,
                                                        "Zoom" : "12",
                                                        "Venues" : lVenues,
@@ -278,7 +278,7 @@ def specific_region_map_script(request, pRegionSlug):
         raise Http404()
     
     lBands = Band.objects.exclude(latitude="").order_by('latitude', 'longitude').filter(region=lRegion)
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_auth(request, 'map2/map_script.js', { "Bands" : lBands,
                                                        "Center" : lRegion,
                                                        "Zoom" : lRegion.default_map_zoom,
                                                        "ShowExtinct" : True,
@@ -328,7 +328,7 @@ def specific_contest_event_map_script(request, pContestEventId):
     if lMaxDistance > 10000:
         lZoom = "1"
     
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_auth(request, 'map2/map_script.js', { "Bands" : lBands,
                                                        "Center" : lVenue,
                                                        "Zoom" : lZoom,
                                                        "Venues" : lVenues,
