@@ -52,7 +52,7 @@
   var bandmap = L.map('mapid').setView([53.800,-1.454], 8);
 
   function onEachFeature(feature, layer) {
-    return;
+    layer.bindPopup(feature.properties.name);
   }
 
   var icon_championship = L.icon({iconUrl: '/site_media/map/championship.png'});
