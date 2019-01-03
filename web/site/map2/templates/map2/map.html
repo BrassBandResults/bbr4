@@ -50,9 +50,7 @@
     return;
   }
 
-  var championship = L.icon({
-    iconUrl: '/site_media/map/championship.png'
-  });
+  var championship = L.icon({iconUrl: '/site_media/map/championship.png'});
 
   var dataurl = '/map2/data/champ.json';
   $.getJSON(dataurl, function(events){
@@ -62,7 +60,7 @@
       },
       onEachFeature: onEachFeature,
       pointToLayer: function(feature, latlng){
-        return L.marker(latlng, {icon: championship}); 
+        return L.marker(latlng, {icon: this[feature.properties.section}); 
       }
     }).addTo(bandmap);
   });
