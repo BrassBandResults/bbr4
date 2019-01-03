@@ -26,6 +26,8 @@ def jsondata(request, pDataSlug):
     Return geojson relating to the slug
     """
     lBands = Band.objects.filter(region__name='Yorkshire')
+    lBands = lBands.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
+
     return render_auth(request, 'map2/section.json', {'Bands' : lBands})
 
 
