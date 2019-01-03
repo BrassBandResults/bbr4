@@ -25,7 +25,8 @@ def jsondata(request, pDataSlug):
     """
     Return geojson relating to the slug
     """
-    return render_auth(request, 'map2/section.json')
+    lBands = Band.objects.filter(section__name='Championship')
+    return render_auth(request, 'map2/section.json' {'Bands' : lBands})
 
 
 

@@ -1,10 +1,12 @@
 {
   "type": "FeatureCollection",
   "features" : [
+{% for band in Bands %}
     {
-      "geometry": { "type": "Point", "coordinates": [-1.478954,53.717601] },
+      "geometry": { "type": "Point", "coordinates": [{{band.longitude}},{{band.latitude}}] },
       "type" : "Feature",
-      "properties" : {"name": "Rothwell Temperance", "section": "first", "slug":"rothwell-temperance", "rday1": "monday", "rday2": "wednesday"}
-    }
+      "properties" : {"name": "{{band.name}}", "type": "{{band.map_icon_name}}", "slug":"{{band.slug}}", "rday1": "{{band.rehearsal_day_1}}", "rday2": "{{band.rehearsal_day_2}}"}
+    }{% if not forloop.last%},{%endif%}
+{% endfor %}
   ]
 }
