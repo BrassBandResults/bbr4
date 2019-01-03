@@ -76,7 +76,7 @@
       },
       onEachFeature: onEachFeature,
       pointToLayer: function(feature, latlng){
-        return L.marker(latlng, {icon: this["icon_" + feature.properties.section]}); 
+        return L.marker(latlng, {icon: this["icon_" + feature.properties.type]}); 
       }
     }).addTo(bandmap);
   });
