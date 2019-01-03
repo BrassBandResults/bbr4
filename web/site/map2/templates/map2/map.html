@@ -50,15 +50,19 @@
     return;
   }
 
+  var championship = L.icon({
+    iconUrl: '/site_media/map/championship.png'
+  });
+
   var dataurl = '/map2/data/champ.json';
   $.getJSON(dataurl, function(events){
     L.geoJSON(events, {
       style: function(feature){
-        return feature.properties && feature.properties.style;
+        return {};
       },
       onEachFeature: onEachFeature,
       pointToLayer: function(feature, latlng){
-        return L.marker(latlng); 
+        return L.marker(latlng, {icon: championship}); 
       }
     }).addTo(bandmap);
   });
