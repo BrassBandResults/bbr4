@@ -52,7 +52,7 @@
 
   var dataurl = '/map2/data/champ.json';
   $.getJSON(dataurl, function(events){
-    L.geoJSON(events), {
+    L.geoJSON(events, {
       style: function(feature){
         return feature.properties && feature.properties.style;
       },
