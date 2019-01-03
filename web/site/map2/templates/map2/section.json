@@ -1,0 +1,8 @@
+{
+  "type": "FeatureCollection",
+  "features" : [{
+    "geometry": { "type": "Point", "coordinates": [53.717601,-1.478954] },
+    "type" : "Feature",
+    "properties" : {"name": "Rothwell Temperance"}
+  ]
+}

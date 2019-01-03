@@ -21,6 +21,19 @@ def home(request):
     """
     return render_auth(request, 'map2/map.html', {'MapboxAccessToken': settings.MAPBOX_ACCESS_TOKEN})
 
+def jsondata(request, pDataSlug):
+    """
+    Return geojson relating to the slug
+    """
+    return render_auth(request, 'map2/section.json')
+
+
+
+
+
+
+
+
 def home_venues(request):
     """
     Show map of venues
