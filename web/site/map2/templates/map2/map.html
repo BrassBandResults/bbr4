@@ -50,7 +50,23 @@
     return;
   }
 
-  var championship = L.icon({iconUrl: '/site_media/map/championship.png'});
+  var icon_championship = L.icon({iconUrl: '/site_media/map/championship.png'});
+  var icon_first = L.icon({iconUrl: '/site_media/map/first.png'});
+  var icon_second = L.icon({iconUrl: '/site_media/map/second.png'});
+  var icon_third = L.icon({iconUrl: '/site_media/map/third.png'});
+  var icon_fourth = L.icon({iconUrl: '/site_media/map/fourth.png'});
+  var icon_fifth = L.icon({iconUrl: '/site_media/map/fifth.png'});
+  var icon_elite = L.icon({iconUrl: '/site_media/map/elite.png'});
+  var icon_excellence = L.icon({iconUrl: '/site_media/map/excellence.png'});
+  var icon_band = L.icon({iconUrl: '/site_media/map/band.png'});
+  var icon_extinct = L.icon({iconUrl: '/site_media/map/extinct.png'});
+  var icon_youth = L.icon({iconUrl: '/site_media/map/youth.png'});
+  var icon_non_competing = L.icon({iconUrl: '/site_media/map/non_competing.png'});
+  var icon_sa = L.icon({iconUrl: '/site_media/map/sa.png'});
+  var icon_a_grade = L.icon({iconUrl: '/site_media/map/a_grade.png'});
+  var icon_b_grade = L.icon({iconUrl: '/site_media/map/b_grade.png'});
+  var icon_c_grade = L.icon({iconUrl: '/site_media/map/c_grade.png'});
+  var icon_d_grade = L.icon({iconUrl: '/site_media/map/d_grade.png'});
 
   var dataurl = '/map2/data/champ.json';
   $.getJSON(dataurl, function(events){
@@ -60,7 +76,7 @@
       },
       onEachFeature: onEachFeature,
       pointToLayer: function(feature, latlng){
-        return L.marker(latlng, {icon: this[feature.properties.section]}); 
+        return L.marker(latlng, {icon: this["icon_" + feature.properties.section]}); 
       }
     }).addTo(bandmap);
   });

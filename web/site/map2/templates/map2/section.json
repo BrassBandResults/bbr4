@@ -4,7 +4,7 @@
     {
       "geometry": { "type": "Point", "coordinates": [-1.478954,53.717601] },
       "type" : "Feature",
-      "properties" : {"name": "Rothwell Temperance", "section": "championship", "slug":"rothwell-temperance", "rday1": "monday", "rday2": "wednesday"}
+      "properties" : {"name": "Rothwell Temperance", "section": "first", "slug":"rothwell-temperance", "rday1": "monday", "rday2": "wednesday"}
     }
   ]
 }
