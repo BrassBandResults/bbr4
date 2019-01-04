@@ -13,6 +13,9 @@
  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
    crossorigin=""></script>
+ <link rel="stylesheet" href="/site_media/map/leaflet/spin.css"/>
+ <script src="/site_media/map/leaflet/spin.js"></script>
+ <script src="/site_media/map/leaflet/Leaflet.Spin-1.1.0/leaflet.spin.min.js"></script>
 <!-- 
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.clss"/>
@@ -53,6 +56,12 @@
 
   function onEachFeature(feature, layer) {
     layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
+    bandmap.spin(false);
+  }
+
+  function mapFilter(feature, layer) {
+    if (feature.properties.type === "extinct") return false;
+    return true;
   }
 
   var icon_championship = L.icon({iconUrl: '/site_media/map/championship.png'});
@@ -74,11 +83,13 @@
   var icon_d_grade = L.icon({iconUrl: '/site_media/map/d_grade.png'});
 
   var dataurl = '/map2/data/champ.json';
+  bandmap.spin(true);
   $.getJSON(dataurl, function(events){
     L.geoJSON(events, {
       style: function(feature){
         return {};
       },
+      filter: mapFilter,
       onEachFeature: onEachFeature,
       pointToLayer: function(feature, latlng){
         return L.marker(latlng, {icon: this["icon_" + feature.properties.type]}); 
