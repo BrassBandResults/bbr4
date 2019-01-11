@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <sitemap>
-      <loc>https://brassbandresults.co.uk/adjudicators/sitemap.xml</loc>
-      <lastmod>{{AdjudicatorLastModified|date:"Y-m-d"}}</lastmod>
-   </sitemap>
-   <sitemap>
       <loc>https://brassbandresults.co.uk/people/sitemap.xml</loc>
       <lastmod>{{PersonLastModified|date:"Y-m-d"}}</lastmod>
    </sitemap>
@@ -13,15 +9,7 @@
       <lastmod>{{BandLastModified|date:"Y-m-d"}}</lastmod>
    </sitemap>
    <sitemap>
-      <loc>https://brassbandresults.co.uk/conductors/sitemap.xml</loc>
-      <lastmod>{{ConductorLastModified|date:"Y-m-d"}}</lastmod>
-   </sitemap>
-   <sitemap>
       <loc>https://brassbandresults.co.uk/contests/sitemap.xml</loc>
       <lastmod>{{ContestLastModified|date:"Y-m-d"}}</lastmod>
-   </sitemap>
-   <sitemap>
-      <loc>https://brassbandresults.co.uk/composers/sitemap.xml</loc>
-      <lastmod>{{ComposerLastModified|date:"Y-m-d"}}</lastmod>
    </sitemap>
 </sitemapindex>
