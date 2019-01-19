@@ -29,7 +29,7 @@
 </head>
 <body {% block bodyattrib %}{% endblock %}>
 
-<nav class="navbar navbar-expand-xl bg-dark navbar-dark">
+<nav class="navbar navbar-expand-xl bg-light navbar-light">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bbrnav" aria-controls="bbrnav" aria-expanded="false" aria-label="Toggle Navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -51,12 +51,12 @@
           <a class="dropdown-item" aria-labelledby="bandsDropdown" href="/bands/winners/">Winning Bands</a>
         </div>
       </div>
-      
+
       <div class="dropdown">
         <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="contestsDropdown" aria-haspopup="true" aria-expanded="false">Contests</a>
         <div class="dropdown-menu">
           <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/">List Contests</a>
-{% if request.user.profile.superuser %} 
+{% if request.user.profile.superuser %}
           <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/groups/">Groups</a>
 {% endif %}
           <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/calendar/">Calendar</a>
@@ -69,7 +69,7 @@
 {% if request.user.profile.enhanced_functionality %}
           <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/contests/upload/programme/">Upload Programme</a>
           <a class="dropdown-item" aria-labelledby="contestsDropdown" href="/addwhitfriday/">Add Whit Friday</a>
-{% endif %}                         
+{% endif %}
         </div>
       </div>
 
@@ -123,18 +123,18 @@
           <a class="dropdown-item" aria-labelledby="mergesDropdown" href="/move/pieces/">Pieces</a>
         </div>
       </div>
-{% endif %}   
+{% endif %}
 
 {% if not request.user.is_authenticated %}
       <a class="nav-item nav-link" href="/account/register/">Create Account</a>
-{% ifequal request.path "/accounts/logout/" %}            
+{% ifequal request.path "/accounts/logout/" %}
       <a class="nav-item nav-link"  href="/accounts/login/?next=/">Sign In</a>
 {% else %}
       <a class="nav-item nav-link"  href="/accounts/login/?next={{request.path}}">Sign In</a>
 {% endifequal %}
 {% else %}
       <a class="nav-item nav-link"  href="/users/{{user.username}}/">Profile</a>
-      <a class="nav-item nav-link"  href="/accounts/logout/">Logout</a>         
+      <a class="nav-item nav-link"  href="/accounts/logout/">Logout</a>
 {% endif %}
 
     </div>
@@ -153,8 +153,8 @@
 {% badge_notifications_for_user user %}
 {% endif %}
 
-{% block adbar %}  
-<div id="adBarTop"> 
+{% block adbar %}
+<div id="adBarTop">
 {% if not user.profile.pro_member %}
 <div class="container pt-1">
 <!-- BrassBandResults Header -->
@@ -197,7 +197,7 @@
     document.write('   name="x_owner" ');
     document.write('   value="{{OwnerId}}">');
   </script>
-  <noscript> <!-- for non-JavaScript browsers --> 
+  <noscript> <!-- for non-JavaScript browsers -->
   {% trans "Copy the URL in your browser's address bar and paste it here."%}<br>
   <input type="text" name="x_url" size="19">
   <br>
@@ -212,7 +212,7 @@
 
 <p class="printonly"><br/><br/>Printed from https://brassbandresults.co.uk/</p>
 
-{% block adbarBottom %}  
+{% block adbarBottom %}
 {% if request.user.is_anonymous %}
 <br/>
 <div id="adBarBottom">
