@@ -31,7 +31,6 @@ for event in lTwoAndThreeDaysAgoEvents:
 	for result in lResults:
 		if result.results_position == 9999:
 			lComplete = False
-			
+
 	if not lComplete:
-		cnotification(None, event, 'contests', 'contest', 'results_missing', lTjsUser, ('127.0.0.1','Notify'))
-		
+		notification(None, event, 'contests', 'contest', 'results_missing', lTjsUser, ('127.0.0.1','Notify'))

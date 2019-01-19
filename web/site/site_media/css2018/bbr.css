@@ -14,7 +14,7 @@
 .BandTwoBar {
     color: black !important
     font-color: black !important;
-    background-color: #99ccff !important;   
+    background-color: #99ccff !important;
 }
 
 /* Contest Calendar */
@@ -114,7 +114,7 @@
 
 /* Gold/Silver/Bronze results highlight */
 tbody tr.result-1 td, td.result-1 {
-    background-color: gold !important;  
+    background-color: gold !important;
 }
 
 tbody tr.result-2 td, td.result-2 {
@@ -207,4 +207,8 @@ tbody tr.result-3 td, td.result-3 {
   border: 1px solid black;
   padding: 10px;
   margin-bottom: 5px;
+}
+
+a {
+  font-color: #006699 !important;
 }
