@@ -13,7 +13,7 @@
 {% if ResultsWithPosition > 0 %}
 {% if Wins > 0 or TopSixNotWin > 0 %}
   var lPieData = [
-    { label: "Wins", data: {{Wins}}, color: "#ffc600" },  
+    { label: "Wins", data: {{Wins}}, color: "#ffc600" },
     { label: "Top Six", data: {{TopSixNotWin}}, color: "#99ccff" },
     { label: "Unplaced", data: {{Unplaced}}, color: "#316497" }
     ];
@@ -33,13 +33,14 @@
           show: false
       }
   });
-{% endif %}       
-{% endif %}   
+{% endif %}
+{% endif %}
   });
 </script>
 {% endblock %}
 
 {% block content %}
+<div id="content" class="container pt-1">
 <h1>Contests for user {{User.username}}</h1>
 <span style="float: right; text-align:right;"><a href="/faq/#avatar" title="Click for FAQ on how to change this Gravatar">{% gravatar User 40 %}</a></span>
 <br/>
@@ -65,7 +66,7 @@
         {% for conductor in HistoryConductors %}
         {% ifnotequal Filter "conductor" %}
         <a class="hourglass" href="/myresults/{{User.username}}/conductor/{{conductor.slug}}/" title="{% trans "Click to filter to"%} {{conductor.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a>
-        {% endifnotequal %} 
+        {% endifnotequal %}
         <a href="/people/{{conductor.slug}}/">{{conductor.name}}</a>
         {% if not forloop.last%}, {%endif%}
         {%endfor%}</p>
@@ -95,7 +96,7 @@
 			<th>Result</th>
 {% if ProMember %}
 			<th>Position</th>
-{% endif %}			
+{% endif %}
 		</tr>
 	</thead>
 	<tbody>
@@ -129,38 +130,39 @@
       {% endifnotequal %}
       <a href="/people/{{result.result.person_conducting.slug}}/">{{result.result.person_conducting.name}}</a>
 {% endifequal %}
-{% endifnotequal %}     
-{% endif %}  
+{% endifnotequal %}
+{% endif %}
 			</td>
 			<td>{{result.result.results_position_display}}</td>
 {% if ProMember %}
 			<td>{{result.instrument.name}}</td>
-{% endif %}			
-			
+{% endif %}
+
 		</tr>
-{% endfor %}		
+{% endfor %}
 	</tbody>
 </table>
 <p>Want your own list like this?  Find contests that you played at on this site, then click the "I played at this contest" link to get started.</p>
 {% endif %}
+</div>
 {% endblock %}
 
 {%block scriptfooter%}
 <script type="application/javascript">
-$("#contest-history").tablesorter({headers:{0: {sorter: 'dayMonthYear'}, 4: {sorter: 'digit'}}, widgets: ['zebra']});   
-  
-{% if ContestResults %}  
+$("#contest-history").tablesorter({headers:{0: {sorter: 'dayMonthYear'}, 4: {sorter: 'digit'}}, widgets: ['zebra']});
 
-var lFlotData = [ 
+{% if ContestResults %}
+
+var lFlotData = [
   {
     label: "lines",
     lines:  { show: true },
     color: '#99ccff',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for history in ContestResults %}{% if history.result.results_position < 27 %}[new Date("{{history.result.contest_event.date_of_event|date:"Y/m/d"}}"), {{history.result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
@@ -168,11 +170,11 @@ var lFlotData = [
     ],
     points: { show: true, fillColor: "#3d7dbd" },
     color: '#3d7dbd',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for history in ContestResults %}{% if history.result.results_position < 27 and history.result.results_position > 3 %}[new Date("{{history.result.contest_event.date_of_event|date:"Y/m/d"}}"), {{history.result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
@@ -180,11 +182,11 @@ var lFlotData = [
     ],
     points: { show: true, fillColor: "#ffc600" },
     color: '#ffc600',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for history in ContestResults %}{% if history.result.results_position == 1 %}[new Date("{{history.result.contest_event.date_of_event|date:"Y/m/d"}}"), {{history.result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
@@ -192,29 +194,29 @@ var lFlotData = [
     ],
     points: { show: true, fillColor: "#919191" },
     color: '#919191',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for history in ContestResults %}{% if history.result.results_position == 2 %}[new Date("{{history.result.contest_event.date_of_event|date:"Y/m/d"}}"), {{history.result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
-{% for history in ContestResults %}{% if history.result.results_position == 3 %}["{{history.result.contest_event.event_date}}<br/>{{history.result.contest_event.contest.name}},<br/>{{ history.result.results_position|ordinal }} {% if history.result.bands_competing%}of {{history.result.bands_competing}}{%endif%}<br/>{{history.result.conductor.name}}"],{% endif %}{% endfor %}    
+{% for history in ContestResults %}{% if history.result.results_position == 3 %}["{{history.result.contest_event.event_date}}<br/>{{history.result.contest_event.contest.name}},<br/>{{ history.result.results_position|ordinal }} {% if history.result.bands_competing%}of {{history.result.bands_competing}}{%endif%}<br/>{{history.result.conductor.name}}"],{% endif %}{% endfor %}
     ],
     points: { show: true, fillColor: "#7a6e55" },
     color: '#7a6e55',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for history in ContestResults %}{% if history.result.results_position == 3 %}[new Date("{{history.result.contest_event.date_of_event|date:"Y/m/d"}}"), {{history.result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   }
   ];
 
-var lFlotOptions = { 
+var lFlotOptions = {
                 grid: {
-                          hoverable: true, 
+                          hoverable: true,
                           clickable: false,
                           autoHighlight: true,
                           borderWidth: 0
@@ -229,13 +231,13 @@ var lFlotOptions = {
                            ticks: [1, 5, 10, 15, 20, 25],
                            color: "#000000"
                      },
-                xaxis: { 
+                xaxis: {
                            mode: "time",
                            color: "#000000"
                     }
                       };
-                 
-                 
+
+
 plot = $.plot($("#flot_chart"), lFlotData, lFlotOptions);
 
 function showTooltip(x, y, contents) {
@@ -256,7 +258,7 @@ $("#flot_chart").bind("plothover", function (event, pos, item) {
 });
 
 {% endif %}
-  
+
 </script>
 {%endblock%}
 
