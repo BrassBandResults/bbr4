@@ -12,6 +12,7 @@
 
 
 {% block content %}
+<div class="container pt-1">
 <h1 class="band">{{Venue.name}} {% trans "Aliases"%}</h1>
 <p>&lt;&lt;&lt; {% trans "Back to"%} <a href="/venues/{{Venue.slug}}/">{{Venue.name}}</a></p>
 <form action="." method="post">{% csrf_token %}
@@ -27,9 +28,9 @@
  <tr>
   <td>{{alias.name}}</td>
   <td>
-{% if user.profile.superuser %}  
+{% if user.profile.superuser %}
     [<a href="/venues/{{Venue.slug}}/aliases/{{alias.id}}/delete/">{% trans "delete"%}</a>]
-{% endif %}  
+{% endif %}
   </td>
  </tr>
 {%endfor%}
@@ -41,4 +42,5 @@
 </tfoot>
 </table>
 </form>
+</div>
 {% endblock %}

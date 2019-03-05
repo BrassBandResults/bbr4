@@ -18,6 +18,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 <h1 class="venue">{{Venue.name}}
 {% if user.profile.enhanced_functionality %}
 {%if ShowEdit %} [<a href="/venues/edit/{{Venue.slug}}/" title="{% trans "Edit this venue's details"%}">edit</a>]{%endif%}
@@ -72,7 +73,7 @@
 <p><input type="checkbox" id="move_contests"/> {% trans "Request move all of these contests to"%} <span id="venue_to_move_to">{% trans "another venue"%}.</span></p>
 </form>
 {% endif %}
-
+</div>
 {% endblock %}
 
 {% block scriptfooter %}
@@ -82,10 +83,10 @@
     var lChecked = $('#move_contests').prop('checked');
     if (lChecked) {
       var lHtml = '<select name="moveToVenue"><option>{% trans "loading"%}...</option></select>';
-      $('#venue_to_move_to').html(lHtml);  
+      $('#venue_to_move_to').html(lHtml);
       $.get('/venues/options/?exclude={{Venue.id}}', function(data){
           lHtml = '<select name="moveToVenue">' + data + '</select><input type="submit" value="{% trans "Move Contests"%}"/>';
-          $('#venue_to_move_to').html(lHtml);  
+          $('#venue_to_move_to').html(lHtml);
       });
     } else {
       $('#venue_to_move_to').html("{% trans "another venue"%}.");
