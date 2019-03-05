@@ -37,7 +37,7 @@ class EditVenueForm(ModelForm):
         Validation longitude is in correct format
         """
         lLongitude = self.cleaned_data['longitude']
-        if longitude:
+        if lLongitude:
             lValue = lLongitude.strip()
             if lValue:
                 lRegEx = re.compile(CO_ORD_REGEX)
