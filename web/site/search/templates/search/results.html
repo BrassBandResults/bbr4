@@ -23,7 +23,7 @@
 			<th>Type</th>
 {% if user.is_staff %}
  			<th></th>
-{% endif %}			
+{% endif %}
 		</tr>
 	</thead>
 	<tbody>
@@ -32,8 +32,8 @@
     		<td class="{{result.htmlclass}}"><a href="/{{result.url}}/{{result.slug}}/" title="{{result.title}}">{{result.name}}</a> {{result.suffix}}</td>
 			<td>{{result.type}}</td>
 {% if user.is_staff %}
- 			<td>{% if result.admin_offset %}[<a href="{{result.admin_offset}}delete/">delete</a>]{%endif%}</td>
-{% endif %}						
+ 			<td>{% if result.admin_offset %}[<a href="{{result.delete_offset}}">delete</a>]{%endif%}</td>
+{% endif %}
 		</tr>
 {% endfor %}
 	</tbody>
