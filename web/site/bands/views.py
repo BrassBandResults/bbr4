@@ -581,7 +581,7 @@ def update_whit_friday_conductors(request, pBandSlug):
             if request.user.profile.superuser:
                 lOldResult = ContestResult.objects.filter(id=lResult.id)[0]
                 lResult.save()
-                notification(lOldResult, lResult, 'bands', 'contest_result', 'edit', request.user, browser_details(request))
+                notification(lOldResult, lResult, 'contests', 'contest_result', 'edit', request.user, browser_details(request))
 
     return HttpResponseRedirect('/bands/%s/#whitfriday-tab' % pBandSlug)
 
