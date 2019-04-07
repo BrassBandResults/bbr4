@@ -15,6 +15,7 @@ from bbr.talkutils import fetch_recent_talk_changes
 from bands.models import Band, BandTalkPage, PreviousBandName
 from bands.forms import EditBandForm, EditBandSuperuserForm, BandTalkEditForm
 from contests.models import Contest, ContestGroup, ContestResult, ContestAchievementAward, CurrentChampion, ContestTag
+from people.models import Person
 
 from bbr.siteutils import slugify, browser_details
 from bbr.notification import notification
@@ -27,7 +28,7 @@ def check_results_complete(pResults, pContestGroups, pCurrentUser):
     lOwner = False
     lConductors = {}
     if pResults == None:
-        return lOwner, lConductors 
+        return lOwner, lConductors
     for result in pResults:
         if result.owner == pCurrentUser:
             lOwner = True
@@ -39,14 +40,14 @@ def check_results_complete(pResults, pContestGroups, pCurrentUser):
             for group in pContestGroups:
                 if group.id == result.contest_event.contest.group_id:
                     result.contest_event.contest.group = group
-            
+
             #if result.event_max_result > result.event_result_count:
             #    result.complete = False
             #if result.event_max_draw > result.event_result_count:
             #    result.complete = False
             if result.event_result_count <= 4:
                 result.complete = False
-                
+
             if result.complete == False:
                 if result.event_result_count == 1:
                     result.result_tooltip = "We only have 1 record for this contest and so aren't sure how many bands competed.  Please add more results if you know them."
@@ -54,7 +55,7 @@ def check_results_complete(pResults, pContestGroups, pCurrentUser):
                     result.result_tooltip = "We only have %d records for this contest and so aren't sure how many bands competed.  Please add more results if you know them." % result.event_result_count
             elif result.event_result_count < 10:
                 result.result_tooltip = "About %d bands competed at this contest" % result.event_result_count
-    return lOwner, lConductors 
+    return lOwner, lConductors
 
 
 def bands_list(request, pLetter='A'):
@@ -68,7 +69,7 @@ def bands_list(request, pLetter='A'):
     for row in rows:
         lResults[row[0]] = row[1]
     cursor.close()
-    
+
     lBandsQuery = Band.objects.all().select_related()
     if pLetter == 'ALL':
         lBands = lBandsQuery
@@ -88,7 +89,7 @@ def bands_list(request, pLetter='A'):
                                                      "BandCount" : lBandCount,
                                                      "StartsWith" : pLetter})
 
-@login_required  
+@login_required
 def add_band(request):
     """
     Add a new band
@@ -110,9 +111,9 @@ def add_band(request):
         form = EditBandForm()
 
     return render_auth(request, 'bands/new_band.html', {'form': form})
-    
-    
-@login_required  
+
+
+@login_required
 def edit_band(request, pBandSlug):
     """
     Edit a band
@@ -121,15 +122,15 @@ def edit_band(request, pBandSlug):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    
+
     lSuperuser = request.user.profile.superuser
     lEnhancedUserAndOwner = request.user.profile.enhanced_functionality and lBand.owner == request.user
-    lRegionalSuperuserAndBandInRightRegion = request.user.profile.is_regional_superuser_region(lBand.region)   
+    lRegionalSuperuserAndBandInRightRegion = request.user.profile.is_regional_superuser_region(lBand.region)
     lRegionalSuperuser = request.user.profile.regional_superuser
-    
+
     if not (lSuperuser or lEnhancedUserAndOwner or lRegionalSuperuserAndBandInRightRegion or lRegionalSuperuser):
         raise Http404
-        
+
     if lSuperuser or lRegionalSuperuserAndBandInRightRegion:
         lFormClass = EditBandSuperuserForm
     else:
@@ -139,7 +140,7 @@ def edit_band(request, pBandSlug):
         if form.is_valid():
             lOldBand = Band.objects.filter(id=lBand.id)[0]
             lNewBand = form.save(commit=False)
-            
+
             if lNewBand.name.lower() != lOldBand.name.lower():
                 try:
                     lOldBandMatchingAlias = PreviousBandName.objects.filter(band=lNewBand, old_name__iexact=lOldBand.name)[0]
@@ -153,49 +154,49 @@ def edit_band(request, pBandSlug):
                     lPreviousBandName.visible = True
                     lPreviousBandName.band = lNewBand
                     lPreviousBandName.save()
-                
+
             lNewBand.lastChangedBy = request.user
             lNewBand.save()
-            
+
             notification(lOldBand, lNewBand, 'bands', 'band', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/bands/%s/' % lBand.slug)
     else:
         form = lFormClass(instance=lBand)
 
-    return render_auth(request, 'bands/edit_band.html', {'form': form, "Band" : lBand})    
+    return render_auth(request, 'bands/edit_band.html', {'form': form, "Band" : lBand})
 
-   
+
 class TwitterReturn(object):
-    pass   
-   
+    pass
+
 def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContestSlug=None, pFilterTagSlug=None):
     """
-    Show details of a single band.  
-    
+    Show details of a single band.
+
     If pContestGroupSlug is populated, show results filtered to that group.
     If pContestSlug is populated, show results filtered to that contest
     If pFilterTagSlug is populated, show results filtered to contests tagged with that tag
     """
-    
+
     try:
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-        
+
     lTemplate = 'bands/band.html'
-    
+
     lContestGroups = ContestGroup.objects.all()
-    
+
     lResults = lBand.contestresult_set.extra(select={
                                  'event_result_count' : "SELECT count(*) FROM contests_contestresult cr WHERE cr.contest_event_id=contests_contestresult.contest_event_id",
                                  'event_max_result' : "SELECT max(results_position) FROM contests_contestresult cr WHERE cr.contest_event_id=contests_contestresult.contest_event_id",
                                  'event_max_draw' : "SELECT max(draw) FROM contests_contestresult cr WHERE cr.contest_event_id=contests_contestresult.contest_event_id",
                                  'marked_complete' : "SELECT complete FROM contests_contestevent ce WHERE ce.id=contests_contestresult.contest_event_id",
                                  },).select_related('contest_event', 'contest_event__contest','contest_event__contest__group', 'person_conducting', 'owner')
-    
+
     lRunsBase = ContestAchievementAward.objects.filter(band=lBand).filter(award="run")
-    
+
     lFilterSlug = None
     lFilteredTo = None
     if pFilterContestSlug:
@@ -218,8 +219,8 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
         lUnplaced = lBand.unplaced.filter(contest_event__contest__slug=lContestFilterSlug).count()
         lResultsWithPosition = lBand.results_with_placings.filter(contest_event__contest__slug=lContestFilterSlug).count()
         lRuns = lRunsBase.filter(contest=lFilterContest)
-        
-    
+
+
     elif pFilterContestGroupSlug:
         # Group Filter
         lFilterSlug = pFilterContestGroupSlug
@@ -238,7 +239,7 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
         lUnplaced = lBand.unplaced.filter(contest_event__contest__group__slug=lGroupFilterSlug).count()
         lResultsWithPosition = lBand.results_with_placings.filter(contest_event__contest__group__slug=lGroupFilterSlug).count()
         lRuns = lRunsBase.filter(contest__group=lFilterGroup)
-       
+
     else:
         # No Filter
         lContestResults = lResults.exclude(contest_event__contest__group__group_type='W')
@@ -250,21 +251,21 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
         lUnplaced = len(lBand.unplaced)
         lResultsWithPosition = len(lBand.results_with_placings)
         lRuns = lRunsBase.filter(band=lBand)
-        
+
     lResultOwner, lContestConductors = check_results_complete(lContestResults, lContestGroups, request.user)
     lWhitFridayOwner, lWhitFridayConductors = check_results_complete(lWhitFridayResults, lContestGroups, request.user)
     if len(lRuns) == 0:
-        lRuns = None     
-        
+        lRuns = None
+
     lShowTabs = False
     if lWhitFridayResults and lWhitFridayResults.count() > 0 and lContestResults.count() > 0:
         lShowTabs = True
     elif lRuns and len(lRuns) > 0:
         lShowTabs = True
-        
+
     lConductors = {}
     lConductors.update(lWhitFridayConductors)
-    
+
     lWhitFridayMarches = {}
     if lWhitFridayResults:
         lWhitFridayMarches['unknown'] = None
@@ -274,7 +275,7 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
 
     lStartDate = lBand.start_date or (lBand.first_parent and lBand.first_parent.end_date) or (lBand.second_parent and lBand.second_parent.end_date)
     lEndDate = lBand.end_date
-    
+
     lShowOnMap = False
     if lBand.longitude and lBand.latitude and len(lBand.longitude) > 0 and len(lBand.latitude) > 0:
         lShowOnMap = True
@@ -282,18 +283,18 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
     if request.user.is_anonymous() == False:
         lSuperuser = request.user.profile.superuser
         lEnhancedFunctionalityAndOwner = request.user.profile.enhanced_functionality and request.user == lBand.owner
-        lRegionalSuperuserAndBandInRightRegion = request.user.profile.is_regional_superuser_region(lBand.region) 
+        lRegionalSuperuserAndBandInRightRegion = request.user.profile.is_regional_superuser_region(lBand.region)
         lRegionalSuperuser = request.user.profile.regional_superuser
         lShowEdit = lSuperuser or lEnhancedFunctionalityAndOwner or lRegionalSuperuserAndBandInRightRegion or lRegionalSuperuser
         lWhitFridayOwner = lWhitFridayOwner or request.user.profile.superuser
-        
+
     lFirstResultYear = None
     if lBand.earliest_result():
         lFirstResultYear = lBand.earliest_result().contest_event.date_of_event.year
     lLastResultYear = None
     if lBand.latest_result():
         lLastResultYear = lBand.latest_result().contest_event.date_of_event.year
-    
+
     # twitter
     try:
         lAuth = tweepy.OAuthHandler(settings.TWEEPY_CONSUMER_TOKEN, settings.TWEEPY_CONSUMER_SECRET)
@@ -305,17 +306,17 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
         lTwitter.status = lTwitter.timeline[0]
     except:
         lTwitter = None
-        
+
     lCurrentChampions = CurrentChampion.objects.filter(band=lBand)
     lAwards = ContestAchievementAward.objects.filter(band=lBand).exclude(award='Hat trick')
-    
+
     lDescendants = Band.objects.filter(Q(first_parent=lBand)|Q(second_parent=lBand))
     lAncestors = []
     if lBand.first_parent:
         lAncestors.append(lBand.first_parent)
     if lBand.second_parent:
         lAncestors.append(lBand.second_parent)
-        
+
     if pFilterTagSlug:
         try:
             lContestTag = ContestTag.objects.filter(slug=pFilterTagSlug)[0]
@@ -330,10 +331,10 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
         lContestResults = lFilteredResults
         lFilteredTo = lContestTag
 
-    
+
     return render_auth(request, lTemplate, {        "Band" : lBand,
                                                     "ContestResults" : lContestResults,
-                                                    "WhitFridayResults" : lWhitFridayResults, 
+                                                    "WhitFridayResults" : lWhitFridayResults,
                                                     "Wins": lWins,
                                                     "Seconds": lSeconds,
                                                     "Thirds": lThirds,
@@ -398,13 +399,13 @@ def single_band_aliases(request, pBandSlug):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    
+
     lSuperuser = request.user.profile.superuser
     lEnhancedUserAndOwner = request.user.profile.enhanced_functionality and lBand.owner == request.user
-    
+
     if not (lSuperuser or lProfileOwner or lEnhancedUserAndOwner):
-        raise Http404()  
-    
+        raise Http404()
+
     if request.POST:
         lNewAlias = request.POST['new_alias_name']
         lBandAlias = PreviousBandName()
@@ -415,14 +416,14 @@ def single_band_aliases(request, pBandSlug):
         lBandAlias.save()
         notification(None, lBandAlias, 'bands', 'band_alias', 'new', request.user, browser_details(request))
         return HttpResponseRedirect('/bands/%s/aliases/' % lBand.slug)
-    
+
     lBandAliases = PreviousBandName.objects.filter(band=lBand)
-    
+
     return render_auth(request, "bands/band_aliases.html", {'Band' : lBand,
                                                             'Aliases' : lBandAliases,
                                                             })
-    
-    
+
+
 @login_required
 def single_band_alias_show(request, pBandSlug, pAliasSerial):
     """
@@ -432,18 +433,18 @@ def single_band_alias_show(request, pBandSlug, pAliasSerial):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    
+
     lSuperuser = request.user.profile.superuser
     lEnhancedUserAndOwner = request.user.profile.enhanced_functionality and lBand.owner == request.user
-    
+
     if not (lSuperuser or lEnhancedUserAndOwner):
-        raise Http404()  
-    
+        raise Http404()
+
     try:
         lBandAlias = PreviousBandName.objects.filter(band__slug=pBandSlug, id=pAliasSerial)[0]
     except IndexError:
         raise Http404
-    
+
     lBandAlias.hidden = False
     lBandAlias.lastChangedBy = request.user
     lBandAlias.save()
@@ -460,18 +461,18 @@ def single_band_alias_hide(request, pBandSlug, pAliasSerial):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    
+
     lSuperuser = request.user.profile.superuser
     lEnhancedUserAndOwner = request.user.profile.enhanced_functionality and lBand.owner == request.user
-    
+
     if not (lSuperuser or lEnhancedUserAndOwner):
-        raise Http404()  
-    
+        raise Http404()
+
     try:
         lBandAlias = PreviousBandName.objects.filter(band__slug=pBandSlug, id=pAliasSerial)[0]
     except IndexError:
         raise Http404
-    
+
     lBandAlias.hidden = True
     lBandAlias.lastChangedBy = request.user
     lBandAlias.save()
@@ -486,12 +487,12 @@ def single_band_alias_delete(request, pBandSlug, pAliasSerial):
     """
     if request.user.profile.superuser == False:
         raise Http404()
-    
+
     try:
         lBandAlias = PreviousBandName.objects.filter(band__slug=pBandSlug, id=pAliasSerial)[0]
     except IndexError:
         raise Http404
-    
+
     notification(None, lBandAlias, 'bands', 'band_alias', 'delete', request.user, browser_details(request))
     lBandAlias.delete()
     return HttpResponseRedirect('/bands/%s/aliases/' % pBandSlug)
@@ -509,7 +510,7 @@ def chart_json(request, pBandSlug):
     return render_auth(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
-    
+
 def chart_json_filter(request, pBandSlug, pContestSlug):
     """
     Return the data for a band chart of results
@@ -521,8 +522,8 @@ def chart_json_filter(request, pBandSlug, pContestSlug):
     return render_auth(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(pContestSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
-    
-    
+
+
 def chart_json_filter_group(request, pBandSlug, pContestGroupSlug):
     """
     Return the data for a band chart of results
@@ -534,7 +535,7 @@ def chart_json_filter_group(request, pBandSlug, pContestGroupSlug):
     return render_auth(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(pContestGroupSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
-    
+
 def band_results_embed(request, pBandSlug):
     """
     Show instructions on how to embed contest results on other website
@@ -546,7 +547,7 @@ def band_results_embed(request, pBandSlug):
     lBandSlugUnderscores = lBand.slug.replace('-','_')
     return render_auth(request, 'bands/embed.html', {"Band" : lBand,
                                                      "BandSlugUnderscores" : lBandSlugUnderscores})
-    
+
 @login_required
 def update_whit_friday_conductors(request, pBandSlug):
     """
@@ -555,33 +556,33 @@ def update_whit_friday_conductors(request, pBandSlug):
     """
     if request.method == "GET":
         raise Http404
-    
+
     lConductorSlug = request.POST['WhitFridayConductor']
     lMarchSlug = request.POST['WhitFridayMarch']
-    
+
     try:
         lConductor = Person.objects.filter(slug=lConductorSlug)[0]
     except IndexError:
         raise Http404
-    
+
     lMarch = None
     if lMarchSlug != None and len(lMarchSlug) > 0 and lMarchSlug!= 'unknown':
         try:
             lMarch = TestPiece.objects.filter(slug=lMarchSlug)[0]
         except IndexError:
             raise Http404
-    
+
     for key, value in request.POST.items():
         if key.startswith('select-'):
             lResultSerial = key[len('select-'):]
             lResult = ContestResult.objects.filter(id=lResultSerial)[0]
             lResult.person_conducting = lConductor
-            lResult.test_piece = lMarch 
+            lResult.test_piece = lMarch
             if request.user.profile.superuser:
                 lOldResult = ContestResult.objects.filter(id=lResult.id)[0]
                 lResult.save()
                 contest_notification(lOldResult, lResult, 'bands', 'contest_result', 'edit', request.user, browser_details(request))
-            
+
     return HttpResponseRedirect('/bands/%s/#whitfriday-tab' % pBandSlug)
 
 
@@ -602,12 +603,12 @@ def band_results_csv(request, pBandSlug):
                                  },).select_related()
     lContestResults = lResults.exclude(contest_event__contest__group__group_type='W')
     lWhitFridayResults = lResults.filter(contest_event__contest__group__group_type='W')
-    
+
     lCsvFile = render_to_string('bands/results.csv', {"Band" : lBand,
                                                       "ContestResults" : lContestResults,
                                                       "WhitFridayResults" : lWhitFridayResults,
                                                       })
-    
+
     lResponse = HttpResponse(content_type="text/csv")
     lResponse['Content-Disposition'] = "attachment; filename=%s.csv" % lBand.slug
     lResponse.write(lCsvFile)
@@ -624,7 +625,7 @@ def band_options(request):
         lBands = Band.objects.exclude(id=lExclude)
     except KeyError:
         lBands = Band.objects.all()
-    
+
     return render_auth(request, 'bands/option_list.htm', {"Bands" : lBands})
 
 
@@ -635,26 +636,26 @@ def talk(request, pSlug):
     """
     if request.user.profile.superuser == False:
         raise Http404
-   
+
     try:
         lObjectLink = Band.objects.filter(slug=pSlug)[0]
     except IndexError:
         raise Http404
-    
+
     try:
         lTalk = BandTalkPage.objects.filter(object_link=lObjectLink)[0]
     except IndexError:
         lTalk = None
-        
+
     lRecentTalkChanges = fetch_recent_talk_changes(request)
-        
+
     return render_auth(request, 'talk/talk.html', {
                                                     'Talk' : lTalk,
                                                     'ObjectLink' : lObjectLink,
                                                     'Offset' : 'bands',
                                                     'RecentTalkChanges' : lRecentTalkChanges,
                                                    })
-    
+
 @login_required
 def talk_edit(request, pSlug):
     """
@@ -662,12 +663,12 @@ def talk_edit(request, pSlug):
     """
     if request.user.profile.superuser == False:
         raise Http404
-    
+
     try:
         lObjectLink = Band.objects.filter(slug=pSlug)[0]
     except IndexError:
         raise Http404
-    
+
     try:
         lTalk = BandTalkPage.objects.filter(object_link=lObjectLink)[0]
     except IndexError:
@@ -687,19 +688,19 @@ def talk_edit(request, pSlug):
             lTalk.save()
 
             # notification(None, lTalk, 'bands', 'talk', 'edit', request.user, browser_details(request))
-        
+
             return HttpResponseRedirect('/bands/%s/talk/' % lObjectLink.slug)
-        
+
     else:
-        form = BandTalkEditForm(instance=lTalk)        
-        
+        form = BandTalkEditForm(instance=lTalk)
+
     return render_auth(request, 'talk/talk_edit.html', {
                                                     'Talk' : lTalk,
                                                     'ObjectLink' : lObjectLink,
                                                     'Offset' : 'bands',
                                                     'form' : form,
-                                                    })        
-    
+                                                    })
+
 @login_required_pro_user
 def delete_single_band(request, pSlug):
     """
@@ -707,24 +708,24 @@ def delete_single_band(request, pSlug):
     """
     if request.user.profile.superuser == False:
         raise Http404
-    
+
     try:
         lBand = Band.objects.filter(slug=pSlug)[0]
     except IndexError:
         raise Http404
-    
+
     lResultsCount = ContestResult.objects.filter(band_id=lBand.id).count()
-    
+
     if (lResultsCount > 0):
         raise Http404
-    
+
     lBand.delete()
-    
+
     return HttpResponseRedirect('/bands/')
 
 
 class ResultObject:
-    pass  
+    pass
 
 @login_required_pro_user
 def contest_winners(request):
@@ -733,9 +734,9 @@ def contest_winners(request):
     """
     lBands = []
     cursor = connection.cursor()
-    
+
     cursor.execute("""
-WITH 
+WITH
   winners AS
    (SELECT band_id, count(*) as winners
     FROM contests_contestresult r
@@ -756,7 +757,7 @@ SELECT b.slug, b.name, w.winners, t.contests
 FROM bands_band b
 INNER JOIN winners w ON b.id = w.band_id
 INNER JOIN total t ON b.id = t.band_id
-ORDER BY 3 desc""") 
+ORDER BY 3 desc""")
     rows = cursor.fetchall()
     for row in rows:
         lBand = ResultObject()
@@ -771,4 +772,3 @@ ORDER BY 3 desc""")
     return render_auth(request, 'bands/winners.html', {
                                                        'Bands' : lBands,
                                                        })
-   
