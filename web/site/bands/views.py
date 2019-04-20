@@ -16,6 +16,7 @@ from bands.models import Band, BandTalkPage, PreviousBandName
 from bands.forms import EditBandForm, EditBandSuperuserForm, BandTalkEditForm
 from contests.models import Contest, ContestGroup, ContestResult, ContestAchievementAward, CurrentChampion, ContestTag
 from people.models import Person
+from pieces.models import TestPiece
 
 from bbr.siteutils import slugify, browser_details
 from bbr.notification import notification
