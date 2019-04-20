@@ -584,8 +584,8 @@ def single_contest_event(request, pContestSlug, pDate):
                                             "ShowDraw" : lShowDraw,
                                             "ShowSecondDraw" : lShowSecondDraw,
                                             "ShowEdit" : lShowEdit,
-                                            "ContestProgrammeCover" : lProgrammeCover,
-                                            "ContestProgrammePages" : lProgrammePages,
+                                            "ContestProgrammeCover" : None,
+                                            "ContestProgrammePages" : None,
                                             "ExtraTestPieces" : lContestTestPieces,
                                             "EventLinks" : lContestEventLinks,
                                             "Statistics" : lStatistics,
@@ -847,8 +847,8 @@ def single_contest_event_programme(request, pContestSlug, pDate):
     return render_auth(request, 'contests/contest_event_programme.html', {
                                                                     "ContestEvent" : lContestEvent,
                                                                     "Contest" : lContestEvent.contest,
-                                                                    "ContestProgrammeCover" : lProgrammeCover,
-                                                                    "ContestProgrammePages" : lProgrammePages,
+                                                                    "ContestProgrammeCover" : None,
+                                                                    "ContestProgrammePages" : None,
                                                                          })
 
 
