@@ -42,7 +42,7 @@
 </ul>
 {% endif %}
 </article>
-    
+
 {% if EventsToday %}
 <article class="col bg-light rounded pt-1" id="events-today">
 <h3>{% trans "Today's Events"%}</h3>
@@ -56,8 +56,8 @@
 </ul>
 </article>
 {% endif %}
-      
-      
+
+
 {% if EventsTomorrow %}
 <article class="col bg-light rounded pt-1" id="events-tomorrow">
 <h3>{% trans "Tomorrow's Events"%}</h3>
@@ -80,17 +80,17 @@
     <h3><a href="{{RandomProfile.get_absolute_url}}" class="text-white">{{RandomProfile.name}}</a></h3>
     <p>
       {% if RandomProfile.picture %}<a href="{{RandomProfile.get_absolute_url}}">{% thumbnail RandomProfile.picture "70x70"%}</a>{% endif %}
-      {{RandomProfile.profile|truncatewords_html:"50"|bbrize}} 
+      {{RandomProfile.profile|truncatewords_html:"50"|bbrize}}
       [<a href="{{RandomProfile.get_absolute_url}}">{% trans "more"%}</a>]
       </p>
   </div>
-    
+
   {% if SecondRandomProfile %}
   <div class="col d-none d-lg-block border border-light rounded text-light bg-dark pt-1" id="profile-2">
     <h3><a href="{{SecondRandomProfile.get_absolute_url}}" class="text-white">{{SecondRandomProfile.name}}</a></h3>
     <p>
       {% if SecondRandomProfile.picture %}<a href="{{SecondRandomProfile.get_absolute_url}}">{% thumbnail SecondRandomProfile.picture "70x70"%}</a></a>{% endif %}
-      {{SecondRandomProfile.profile|truncatewords_html:"50"|bbrize}} 
+      {{SecondRandomProfile.profile|truncatewords_html:"50"|bbrize}}
       [<a href="{{SecondRandomProfile.get_absolute_url}}">{% trans "more"%}</a>]
       </p>
   </div>
@@ -123,6 +123,8 @@
       <tr>
         <td colspan="2">{{event.contest.name}}</td>
       </tr>
+      <tr>
+      </tr>
 {% endfor %}
 </table>
 </article>
@@ -139,7 +141,7 @@
      <td colspan="2">{{event.contest.name}}</td>
    </tr>
 {% endfor %}
-</table>  
+</table>
     </td></tr>
     </table>
     </td>
@@ -150,7 +152,7 @@
 
 <div class="container">
 <h2>{% trans "Disclaimer"%}</h2>
-<p>The contents of this site are not affiliated with any other website, and we provide no guarantee of accuracy of any of the information on here.  
+<p>The contents of this site are not affiliated with any other website, and we provide no guarantee of accuracy of any of the information on here.
 We think most of them are right, but if you find mistakes please fill in the feedback form and we'll endeavour to get them corrected.</p>
 <p>We use cookies.  For more details see the <a href="/privacy/">Privacy Policy</a></p>
 <p>We do not claim copyright over any of the programme scans - these are purely provided for historical interest and to aid in building up our results collection.  If you own the copyright for a programme and would like us to remove it from the site, please let us know.</p>
@@ -163,5 +165,5 @@ We think most of them are right, but if you find mistakes please fill in the fee
               var addy=name+'@'+domain;
               document.write('<'+'a href="mailto:'+addy+'">'+addy+'<'+'/a'+'>'); //-->
               </script>.</p>
-</div>             
+</div>
 {% endblock %}
