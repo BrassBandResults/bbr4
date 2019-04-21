@@ -1,5 +1,5 @@
-{% for result in ContestResults %}"{{ result.contest_event.event_date }}","{{ result.contest_event.name }}","{{result.band_name}}","{{ result.results_position_display }}",{% if result.points %}"{{result.points_display}}"{% endif %},{% if result.draw %}"{{ result.draw }}"{% endif %},"{{result.person_conducting.name}}"
+{% for result in ContestResults %}"{{ result.contest_event.event_date }}","{{ result.contest_event.name }}","{{result.band_name}}","{{ result.results_position_display }}",{% if result.points %}"{{result.points_display}}"{% endif %},{% if result.draw %}"{{ result.draw }}"{% endif %},"{{result.person_conducting.name}}", {% if result.piece_played %}{{result.piece_played.name}}{%endif%}
 {% endfor %}
 
-{% for result in WhitFridayResults %}"{{ result.contest_event.event_date }}","{{ result.contest_event.name }}","{{result.band_name}}","{{ result.results_position_display }}",{% if result.points %}"{{result.points_display}}"{% endif %},{% if result.draw %}"{{ result.draw }}"{% endif %},"{{result.person_conducting.name}}"
+{% for result in WhitFridayResults %}"{{ result.contest_event.event_date }}","{{ result.contest_event.name }}","{{result.band_name}}","{{ result.results_position_display }}",{% if result.points %}"{{result.points_display}}"{% endif %},{% if result.draw %}"{{ result.draw }}"{% endif %},"{{result.person_conducting.name}}", {% if result.piece_played %}{{result.piece_played.name}}{%endif%}
 {% endfor %}
