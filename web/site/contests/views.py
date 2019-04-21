@@ -237,6 +237,7 @@ def single_contest_group(request, pGroupSlugUpper):
             lYears[event.date_of_event.year] = 1
     lYearTuples = [(key, lYears[key]) for key in lYears]
     lYearTuples.sort()
+    lYearTuples = reversed(lYearTuples)
     print (lYearTuples)
 
     lContestGroupAliases = ContestGroupAlias.objects.filter(group=lContestGroup).exclude()
