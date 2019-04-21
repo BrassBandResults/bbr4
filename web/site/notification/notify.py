@@ -84,7 +84,7 @@ class MessageWrapper:
           lContext['ThingOldJson'] = '!NEW_LINE!'.join(lThingOldJson.splitlines()) #  *must not* contain newlines
         if self.thingNew:
           lThingNewJson = serializers.serialize("json", [self.thingNew,])
-          lThingNewJson = v.replace('\t', '  ')
+          lThingNewJson = lThingNewJson.replace('\t', '  ')
           lContext['ThingNewJson'] = '!NEW_LINE!'.join(lThingNewJson.splitlines()) #  *must not* contain newlines
         if self.browserDetails:
           lContext['Ip']  =  self.browserDetails[0]
