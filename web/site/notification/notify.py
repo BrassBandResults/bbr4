@@ -193,10 +193,12 @@ class MessageWrapper:
         }
 
         if self.thingOld:
+          self.thingOld.notes = ""
           lThingOldJson = serializers.serialize("json", [self.thingOld,])
           lThingOldJson = lThingOldJson.replace('\t', '  ')
           lContext['ThingOldJson'] = '!NEW_LINE!'.join(lThingOldJson.splitlines()) #  *must not* contain newlines
         if self.thingNew:
+          self.thingNew.notes = ""
           lThingNewJson = serializers.serialize("json", [self.thingNew,])
           lThingNewJson = lThingNewJson.replace('\t', '  ')
           lContext['ThingNewJson'] = '!NEW_LINE!'.join(lThingNewJson.splitlines()) #  *must not* contain newlines
