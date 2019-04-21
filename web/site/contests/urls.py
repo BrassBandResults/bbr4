@@ -45,7 +45,6 @@ urlpatterns = [
     url(r'^([\w\-]+)/([\d\-]+)/PropagateMarch/$', views.single_contest_event_propagate_march),
     url(r'^([\w\-]+)/([\d\-]+)/map/$', views.single_contest_event_map),
     url(r'^([\w\-]+)/([\d\-]+)/competitors/$', views.single_contest_event_competitors),
-    url(r'^([\w\-]+)/([\d\-]+)/programme/$', views.single_contest_event_programme),
     url(r'^([\w\-]+)/([\d\-]+)/AddToContestHistory/$', views.add_to_contest_history),
     url(r'^([\w\-]+)/([\d\-]+)/TakeOwnership/$', views.take_ownership),
     url(r'^([\w\-]+)/([\d\-]+)/autodraw/([\w\-]+)/(\d+)/$', views.autodraw),
