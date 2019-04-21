@@ -45,6 +45,7 @@ class MessageWrapper:
         Send message
         """
         lMessageToSend, lSubjectToSend = self.asJson()
+        print (lMessageToSend)
         if settings.NOTIFICATIONS_ENABLED == True:
           client.publish(
             TopicArn = settings.NOTIFICATION_TOPIC_ARN,
@@ -54,7 +55,7 @@ class MessageWrapper:
           )
         else:
           print (lSubjectToSend)
-          print (lMessageToSend)  
+          print (lMessageToSend)
           json.loads(lMessageToSend)
 
     def asJson(self):
@@ -79,9 +80,11 @@ class MessageWrapper:
 
         if self.thingOld:
           lThingOldJson = serializers.serialize("json", [self.thingOld,])
+          lThingOldJson = lThingOldJson.replace('\t', '  ')
           lContext['ThingOldJson'] = '!NEW_LINE!'.join(lThingOldJson.splitlines()) #  *must not* contain newlines
         if self.thingNew:
           lThingNewJson = serializers.serialize("json", [self.thingNew,])
+          lThingNewJson = v.replace('\t', '  ')
           lContext['ThingNewJson'] = '!NEW_LINE!'.join(lThingNewJson.splitlines()) #  *must not* contain newlines
         if self.browserDetails:
           lContext['Ip']  =  self.browserDetails[0]
@@ -90,14 +93,14 @@ class MessageWrapper:
         lRenderedEmail = render_to_string('%s/notify/%s_%s.txt' % (self.module, self.changeType, self.objectType), lContext)
         lRenderedEmailText = '\\n'.join(lRenderedEmail.splitlines()) #  *must not* contain newlines
         lContext['Message'] = '!NEW_LINE!'.join(lRenderedEmail.splitlines()) #  *must not* contain newlines
-         
+
         lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
         lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) #  *must not* contain newlines
         lContext['Subject'] = lRenderedEmailSubject
 
         lRenderedJsonText = render_to_string('notify/default_message.json', lContext)
         lRenderedJsonText = ''.join(lRenderedJsonText.splitlines()) #  *must not* contain newlines
-        
+
         lSnsContext = {
           'emailText' : lRenderedEmailText,
           'jsonText' : lRenderedJsonText.replace('"','\\"')
