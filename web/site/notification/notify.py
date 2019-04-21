@@ -165,7 +165,6 @@ class MessageWrapper:
             TopicArn = settings.NOTIFICATION_TOPIC_ARN,
             Message = lMessageToSend,
             Subject = lSubjectToSend,
-            MessageStructure = "json",
           )
         else:
           print (lSubjectToSend)
