@@ -11,6 +11,7 @@
 {% block feedback %}{% endblock %}
 
 {% block content %}
+<div class="container pt-1">
 <h1>Edit {{Profile.name}} Profile</h1>
 <form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
 <table>
@@ -23,4 +24,5 @@
 <p><b>[bands/carlton-main-frickley-colliery-band|Carlton Main Frickley Colliery Band]</b></p>
 <p>The first part of these is the bit of the url after brassbandresults.co.uk, and the second part (after the vertical bar) is the name to display for the link.</p>
 </ul>
+</div>
 {% endblock %}

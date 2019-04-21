@@ -10,6 +10,7 @@
 
 
 {% block content %}
+<div class="container pt-1">
 <h1 class="person"><a href="/people/{{Person.slug}}/">{{Person.name}}</a> {% trans "Aliases"%}
 </h1>
 <form action="." method="post">{% csrf_token %}
@@ -31,7 +32,7 @@
   [<a href="/people/{{Person.slug}}/aliases/{{alias.id}}/show/">{% trans "show"%}</a>]
 {% else %}
   [<a href="/people/{{Person.slug}}/aliases/{{alias.id}}/hide/">{% trans "hide"%}</a>]</td>
-{% endif %}  
+{% endif %}
     </td>
  </tr>
 {%endfor%}
@@ -43,4 +44,5 @@
 </tfoot>
 </table>
 </form>
+</div>
 {% endblock %}
