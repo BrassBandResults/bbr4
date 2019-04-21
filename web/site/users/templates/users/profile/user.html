@@ -9,14 +9,14 @@
 {% block adbarBottom %}<br/>{% endblock %}
 
 {% block content %}
-<div class="container pt-1">
+<div class="container pt-1" id="content">
 <div id="UserProfile">
 <h1>{{User.username}}</h1>
 <span class="screenonly">
  [<a href="/users/{{User.username}}/change_password/">change password</a>]
 {% if user.is_authenticated and user.profile.superuser %}
  [<a href="/users/{{User.username}}/talk/">talk</a>]
-{% endif %} 
+{% endif %}
 {% if user.is_superuser %}
  [<a href="/bbradmin/auth/user/{{User.id}}/">admin user</a>]
  [<a href="/bbradmin/users/userprofile/{{User.profile.id}}/">admin profile</a>]
@@ -68,24 +68,24 @@
 {% if user.profile.superuser %}
         <td><a href="/feedback/detail/{{feedback.id}}/">{{feedback.created|date:"jS M Y"}}</a></td>
 {% else %}
-{% if feedback.claim_date %}      
+{% if feedback.claim_date %}
         <td>{{feedback.created|date:"jS M Y"}}</td>
 {% else %}
         <td><b>{{feedback.created|date:"jS M Y"}}</b></td>
 {% endif %}
-{% endif %}      
+{% endif %}
         <td><a href="{{feedback.url}}">{{feedback.url}}</a><br/>{{feedback.comment|linebreaksbr}}</td>
         <td>{% if feedback.reporter%}<a href="/users/{{feedback.reporter.username}}/">{{feedback.reporter.username}}</a>{%endif%}</td>
         <td id="feedback-{{feedback.id}}">
-          [<a onclick="javascript:mark_fixed('{{feedback.id}}');" href="javascript:void(0);">mark&nbsp;fixed</a>] 
+          [<a onclick="javascript:mark_fixed('{{feedback.id}}');" href="javascript:void(0);">mark&nbsp;fixed</a>]
           [<a onclick="javascript:release_to_queue('{{feedback.id}}');" href="javascript:void(0);">send&nbsp;to&nbsp;admin</a>]
 {% if user.profile.superuser %}
           [<a onclick="javascript:send_to_admin_queue('{{feedback.id}}');" href="javascript:void(0);">send&nbsp;to&nbsp;site&nbsp;owners</a>]
-{% endif %}        
+{% endif %}
         </td>
       </tr>
 {% empty %}
-      <tr><td colspan="6">No Outstanding Feedback</td></tr>    
+      <tr><td colspan="6">No Outstanding Feedback</td></tr>
 {% endfor %}
     </tbody>
   </table>
@@ -107,7 +107,7 @@
         $('#feedback-' + pFeedbackSerial).html('done');
     });
   }
-  
+
   function release_to_queue(pFeedbackSerial)
   {
     var lUrl = "/users/{{User.username}}/queue/" + pFeedbackSerial + "/";
@@ -115,7 +115,7 @@
         $('#feedback-' + pFeedbackSerial).html('queued');
     });
   }
-  
+
   function send_to_admin_queue(pFeedbackSerial)
   {
     $('<div id="blanket"></div><div id="popup">Loading...</div>').appendTo('#content');
