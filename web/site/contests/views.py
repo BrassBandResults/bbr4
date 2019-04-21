@@ -235,9 +235,9 @@ def single_contest_group(request, pGroupSlugUpper):
             lYears[event.date_of_event.year] = lExistingCount
         except KeyError:
             lYears[event.date_of_event.year] = 1
-
-    # Fetch programme covers for group
-    lProgrammeCovers = ContestProgrammeCover.objects.filter(contest_group=lContestGroup)
+    lYearTuples = [(key, lYears[key]) for key in lYears]
+    lYearTuples.sort()
+    print (lYearTuples)
 
     lContestGroupAliases = ContestGroupAlias.objects.filter(group=lContestGroup).exclude()
 
@@ -245,8 +245,7 @@ def single_contest_group(request, pGroupSlugUpper):
                                             'GroupAliases' : lContestGroupAliases,
                                             'Contests' : lContests,
                                             'ExtinctContests' : lExtinctContests,
-                                            'Years' : lYears,
-                                            'ProgrammeCovers' : lProgrammeCovers,
+                                            'Years' : lYearTuples,
                                             })
 
 

@@ -11,7 +11,7 @@
   	$("#contests").tablesorter();
     $("#extinctcontests").tablesorter();
     $("#years-table").tablesorter();
-    
+
     $('#tabs').tabs();
   });
 </script>
@@ -19,7 +19,7 @@
 
 {% block content %}
 <div class="container pt-1">
-<h1>{{ContestGroup.name}} 
+<h1>{{ContestGroup.name}}
   {% if user.profile.superuser %}
   [<a href="/contests/{{ContestGroup.actual_slug}}/talk/" title="{% trans "Contest Group Talk Page"%}">{% trans "talk"%}</a>]
   {% endif %}
@@ -32,11 +32,8 @@
     <ul class="screenonly">
       <li><a href="#contests-tab">{% trans "Contests"%}</a></li>
       <li><a href="#years-tab">{% trans "Years"%}</a></li>
-{% if ProgrammeCovers %}
-      <li><a href="#programmes-tab">{% trans "Programmes"%}</a></li>
-{% endif %}      
     </ul>
-  
+
 <div id="contests-tab">
 {% if Contests %}
 <table id="contests" class="table table-hover">
@@ -87,7 +84,7 @@
     </tr>
   </thead>
   <tbody>
-{% for year, eventcount in Years.items %}
+{% for year, eventcount in Years %}
     <tr>
       <td><a href="/contests/{{ContestGroup.actual_slug}}/{{year}}/">{{year}}</a></td>
       <td>{{eventcount}}</td>
@@ -97,20 +94,12 @@
 </table>
 </div>
 
-{% if ProgrammeCovers %}
-<div id="programmes-tab">
-{% for cover in ProgrammeCovers %}
-<a href="/contests/{{cover.contest_group.slug|upper}}/{{cover.event_date.year}}/" title="{{cover.contest_group.name}} {{cover.event_date|date:"Y"}}" data-lightbox="programme" data-title="{{ContestEvent.name}} Programme Cover, {{ContestEvent.event_date}}"><img src="{{cover.image.url_80x100}}"/></a>
-{% endfor %}
-</div>
-{% endif %} 
-
 </div> <!-- endtabs -->
 
 <br/>
 <div id="tags">
   {% for tag in ContestGroup.tag_list %}<a href="/tags/{{tag.slug}}/">{{tag.name}}</a> {%endfor%}<br/>
-  {% if user.profile.superuser or user.profile.regional_superuser %}  
+  {% if user.profile.superuser or user.profile.regional_superuser %}
   <p>
     <form method="post" action="/tags/new/">{% csrf_token %}
       <input type="hidden" name="type" value="group"/>
@@ -119,7 +108,7 @@
       <input type="submit" value="Add Tag">
     </form>
   </p>
-  {% endif %} 
+  {% endif %}
 </div>
 
 
