@@ -20,7 +20,7 @@
 
 {% block content %}
 <div class="container pt-1">
-<h1 class="test-piece">{{Piece.name}}{% if Piece.year%} ({{Piece.year}}){%endif%}, <a href="/people/{{Piece.composer.slug}}/">{{Piece.composer.name}}</a>{% if Piece.arranger %} arranged <a href="/people/{{Piece.arranger.slug}}/">{{Piece.arranger.name}}</a>{%endif%} 
+<h1 class="test-piece">{{Piece.name}}{% if Piece.year%} ({{Piece.year}}){%endif%}, <a href="/people/{{Piece.composer.slug}}/">{{Piece.composer.name}}</a>{% if Piece.arranger %} arranged <a href="/people/{{Piece.arranger.slug}}/">{{Piece.arranger.name}}</a>{%endif%}
 {% if ShowEdit %} [<a href="/pieces/edit/{{Piece.slug}}/" title="Edit this test piece's details">{% trans "edit"%}</a>]{%endif%}
 {% if user.is_staff and perms.pieces.change_testpiece %} [<a href="/bbradmin/pieces/testpiece/{{Piece.id}}/" title="Edit this piece in the admin site">admin</a>]{% endif %}
 </h1>
@@ -46,7 +46,7 @@
       <td><a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a></td>
       <td>{{result.results_position_display}}</td>
     </tr>
-{% endfor %}    
+{% endfor %}
   </tbody>
 </table>
 {% endif %}
@@ -124,7 +124,7 @@
 
 {% if Piece.notes %}
 <h2>{% trans "Notes"%}</h2>
-<p>{{Piece.notes|safe}}</p>
+<p>{{Piece.notes|safe|linebreaksbr}}</p>
 {% endif %}
 
 {% if user.profile.superuser %}
@@ -155,10 +155,10 @@
     var lChecked = $('#move_pieces').prop('checked');
     if (lChecked) {
       var lHtml = '<select name="moveToPiece"><option>{% trans "loading"%}...</option></select>';
-      $('#piece_to_move_to').html(lHtml);  
+      $('#piece_to_move_to').html(lHtml);
       $.get('/pieces/options/?exclude={{Piece.id}}', function(data){
           lHtml = '<select name="moveToPiece">' + data + '</select><input type="submit" value="{% trans "Move Pieces"%}"/>';
-          $('#piece_to_move_to').html(lHtml);  
+          $('#piece_to_move_to').html(lHtml);
       });
     } else {
       $('#piece_to_move_to').html("{% trans "another piece"%}.");
@@ -166,44 +166,44 @@
   });
 {% endif %}
 
-var lFlotData = [ 
+var lFlotData = [
   {
     label: "lines",
     lines:  { show: true },
     color: '#99ccff',
-    hoverable: false, 
+    hoverable: false,
     clickable: false,
-    data: [ {{SetTestChartData|safe}} ] 
+    data: [ {{SetTestChartData|safe}} ]
   },
   {
     label: [ ],
     points: { show: true, fillColor: "#3d7dbd" },
     color: '#99ccff',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
-    data: [ {{SetTestChartData|safe }} ] 
+    data: [ {{SetTestChartData|safe }} ]
   },
     {
     label: "lines",
     lines:  { show: true },
     color: '#3d7dbd',
-    hoverable: false, 
+    hoverable: false,
     clickable: false,
-    data: [ {{OwnChoiceChartData|safe}} ] 
+    data: [ {{OwnChoiceChartData|safe}} ]
   },
   {
     label: [ ],
     points: { show: true, fillColor: "#3d7dbd" },
     color: '#3d7dbd',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
-    data: [ {{OwnChoiceChartData|safe }} ] 
+    data: [ {{OwnChoiceChartData|safe }} ]
   }
   ];
 
-var lFlotOptions = { 
+var lFlotOptions = {
                 grid: {
-                          hoverable: true, 
+                          hoverable: true,
                           clickable: false,
                           autoHighlight: true,
                           borderWidth: 0
@@ -217,15 +217,15 @@ var lFlotOptions = {
                              return (val.toFixed(0));
                            }
                 },
-                xaxis: { 
+                xaxis: {
                            color: "#000000",
                            tickFormatter: function suffixFormatter(val, axis) {
                              return (val.toFixed(0));
                            }
                 }
            };
-                 
-                 
+
+
 plot = $.plot($("#flot_chart"), lFlotData, lFlotOptions);
 </script>
 

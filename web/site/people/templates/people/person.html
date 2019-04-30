@@ -15,7 +15,7 @@
 {% block content %}
 <div class="container pt-1">
 <h1 class="person">{{Person.name}}</h1>
-<span class="screenonly"> 
+<span class="screenonly">
 {% if ShowEdit %} [<a href="/people/edit/{{Person.slug}}/" title="Edit this person's details">{% trans "edit"%}</a>]{%endif%}
 {% if user.profile.superuser %} [<a href="/people/{{Person.slug}}/aliases/" title="Edit person aliases">{% trans "aliases"%}</a>]{% endif %}
 {% if user.is_staff and perms.pieces.change_composer %} [<a href="/bbradmin/people/person/{{Person.id}}/" title="Edit this person in the admin site">admin</a>]{% endif %}
@@ -23,8 +23,8 @@
 </span>
 {% if Aliases %}
 <p class="alias"><b>{% trans "Also/previously known as"%}:</b> {%for alias in Aliases%}{{alias.name}}{%if not forloop.last%}, {%endif%}{%endfor%}</p>
-{% endif %} 
-{% if Person.bandname %}   
+{% endif %}
+{% if Person.bandname %}
 <p class="alias"><b>{% trans "Known For"%}</b>: {{Person.bandname}}</p>
 {% endif %}
 {% if RelationsOut or RelationsBack %}
@@ -34,7 +34,7 @@
 {% endfor %}
 {% for relation in RelationsBack %}
 {%firstof relation.reverse_relation relation.relation%} - <a href="/people/{{relation.source_person.slug}}/">{{relation.source_person.name}}</a>
-{% endfor %}  
+{% endfor %}
 </p>
 {% endif %}
 
@@ -112,16 +112,16 @@
 {% if ContestResults %}
         <li><a href="#contests-tab">Conducting Results{%if user.profile.pro_member%} ({{ContestResultsCount}}){%endif%}</a></li>
 {% endif %}
-{% if WhitFridayResults %}        
+{% if WhitFridayResults %}
         <li><a href="#whitfriday-tab">Whit Friday{%if user.profile.pro_member%} ({{WhitFridayResultsCount}}){%endif%}</a></li>
 {% endif %}
 {% if Adjudications %}
         <li><a href="#adjudicator-tab">Adjudications{%if user.profile.pro_member%} ({{AdjudicationsCount}}){%endif%}</a></li>
-{% endif %}        
-{% if ComposedPieces %}        
+{% endif %}
+{% if ComposedPieces %}
         <li><a href="#composer-tab">Compositions{%if user.profile.pro_member%} ({{ComposedPiecesCount}}){%endif%}</a></li>
 {% endif %}
-{% if ArrangedPieces %}        
+{% if ArrangedPieces %}
         <li><a href="#arranger-tab">Arrangements{%if user.profile.pro_member%} ({{ArrangedPiecesCount}}){%endif%}</a></li>
 {% endif %}
     </ul>
@@ -166,8 +166,8 @@
 		<td class="band-contest-points">{% if result.points %}{{result.points_display}}{% endif %}</td>
 		<td class="band-contest-draw">{% if result.draw %}{{ result.draw }}{% endif %}</td>
 {% if user.is_staff and perms.contests.change_contestresult %}
-			<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>			
-{% endif %}		
+			<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>
+{% endif %}
       </tr>
 {% endfor %}
     </tbody>
@@ -202,8 +202,8 @@
 		<td class="band"><a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{ result.band_name }}</a></td>
 		<td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}</td>
 {% if user.is_staff and perms.contests.change_contestresult %}
-			<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>			
-{% endif %}		
+			<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>
+{% endif %}
       </tr>
 {% endfor %}
     </tbody>
@@ -259,7 +259,7 @@
 		<td class="band">{% for band in adjudication.winners %}<a href="/bands/{{ band.slug }}/">{{ band.name }}</a>{% if not forloop.last %}<br/>{%endif%}{% endfor %}</td>
 {% else %}
         <td></td>
-{% endif %}		
+{% endif %}
       </tr>
 {% endfor %}
     </tbody>
@@ -285,12 +285,12 @@
       <td class="testpiece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
 {% ifequal Person.name piece.composer.name %}
       <td class="composer">{{piece.composer.name}}</td>
-{% else %}      
+{% else %}
       <td class="composer"><a href="/person/{{piece.composer.slug}}/">{{piece.composer.name}}</a></td>
 {% endifequal %}
 {% ifequal Composer.name piece.arranger.name %}
       <td class="composer">{{piece.arranger.name}}</td>
-{% else %}      
+{% else %}
       <td class="composer"><a href="/person/{{piece.arranger.slug}}/">{{piece.arranger.name}}</a></td>
 {% endifequal %}
 	  <td>{{piece.year}}</td>
@@ -320,12 +320,12 @@
       <td class="testpiece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
 {% ifequal Person.name piece.composer.name %}
       <td class="composer">{{piece.composer.name}}</td>
-{% else %}      
+{% else %}
       <td class="composer"><a href="/person/{{piece.composer.slug}}/">{{piece.composer.name}}</a></td>
 {% endifequal %}
 {% ifequal Person.name piece.arranger.name %}
       <td class="composer">{{piece.arranger.name}}</td>
-{% else %}      
+{% else %}
       <td class="composer"><a href="/person/{{piece.arranger.slug}}/">{{piece.arranger.name}}</a></td>
 {% endifequal %}
 	  <td>{{piece.year}}</td>
@@ -362,15 +362,15 @@
     $("#arrangements").tablesorter({widgets: ['zebra']});
     $("#adjudications").tablesorter({widgets: ['zebra']});
     $("#contests").tablesorter({headers:{0: {sorter: 'dayMonthYear'} }, widgets: ['zebra']});
-    
-    {% if ShowTabs %}    
+
+    {% if ShowTabs %}
     $("#tabs").tabs();
     {% endif %}
-    
+
     {% if user.profile.pro_member and ResultsWithPosition > 0 %}
-    {% if Wins > 0 or TopSixNotWin > 0 %}    
+    {% if Wins > 0 or TopSixNotWin > 0 %}
         var lPieData = [
-        { label: "Wins", data: {{Wins}}, color: "#ffc600" },  
+        { label: "Wins", data: {{Wins}}, color: "#ffc600" },
         { label: "Top Six", data: {{TopSixNotWin}}, color: "#99ccff" },
         { label: "Unplaced", data: {{Unplaced}}, color: "#316497" }
         ];
@@ -390,71 +390,73 @@
               show: false
           }
       });
-    {% endif %}  
     {% endif %}
+    {% endif %}
+
+    $('#move_person').click(function(){
+      var lChecked = $('#move_person').prop('checked');
+      if (lChecked) {
+        var lHtml = '<select name="moveToPerson"><option>{% trans "loading"%}...</option></select>';
+        $('#person_to_move_to').html(lHtml);
+        $.get('/people/options/?exclude={{Person.id}}', function(data){
+            lHtml = '<select name="moveToPerson">' + data + '</select><input type="submit" value="{% trans "Merge People"%}"/>';
+            $('#person_to_move_to').html(lHtml);
+        });
+      } else {
+        $('#person_to_move_to').html("{% trans "another person"%}.");
+      }
+    });
+
+
+    $("#slider-range").slider({
+  		range: true,
+  		min: {{FirstResultYear}},
+  		max: {{LastResultYear}},
+  		values: [ {{FirstResultYear}}, {{LastResultYear}} ],
+  		slide: function( event, ui ) {
+  			$("#slider-amount").html(ui.values[0] + " - " + ui.values[1]);
+  			for (var i={{FirstResultYear}};i<={{LastResultYear}};i++){
+  				$('.year-' + i).show();
+  				if (i < ui.values[0])
+  				{
+  					$('.year-' + i).hide();
+  				}
+  				if (i > ui.values[1])
+  				{
+  					$('.year-' + i).hide();
+  				}
+  			}
+
+  			var lFromDate = new Date(ui.values[0] + '/1/1');
+  	    var lToDate = new Date(ui.values[1] + '/12/31');
+  	    plot = $.plot($("#flot_chart"), lFlotData, $.extend(true, {}, lFlotOptions, {
+  	        xaxis: { min: lFromDate, max: lToDate }
+  	    }));
+  		}
+  	});
+  	$("#slider-amount").html($("#slider-range").slider("values", 0) + " - " + $("#slider-range").slider("values", 1));
     
-  });  
+  });
 
 
   function toggleFilter(pResultId){
 	  $('.tags-'+pResultId).toggle("slow");
   }
 
-  $('#move_person').click(function(){
-    var lChecked = $('#move_person').prop('checked');
-    if (lChecked) {
-      var lHtml = '<select name="moveToPerson"><option>{% trans "loading"%}...</option></select>';
-      $('#person_to_move_to').html(lHtml);  
-      $.get('/people/options/?exclude={{Person.id}}', function(data){
-          lHtml = '<select name="moveToPerson">' + data + '</select><input type="submit" value="{% trans "Merge People"%}"/>';
-          $('#person_to_move_to').html(lHtml);  
-      });
-    } else {
-      $('#person_to_move_to').html("{% trans "another person"%}.");
-    }
-  });
-  
-  
-  $("#slider-range").slider({
-		range: true,
-		min: {{FirstResultYear}},
-		max: {{LastResultYear}},
-		values: [ {{FirstResultYear}}, {{LastResultYear}} ],
-		slide: function( event, ui ) {
-			$("#slider-amount").html(ui.values[0] + " - " + ui.values[1]);
-			for (var i={{FirstResultYear}};i<={{LastResultYear}};i++){
-				$('.year-' + i).show();
-				if (i < ui.values[0])
-				{
-					$('.year-' + i).hide();
-				}
-				if (i > ui.values[1])
-				{
-					$('.year-' + i).hide();
-				}
-			}
-			
-			var lFromDate = new Date(ui.values[0] + '/1/1');
-	    var lToDate = new Date(ui.values[1] + '/12/31');
-	    plot = $.plot($("#flot_chart"), lFlotData, $.extend(true, {}, lFlotOptions, {
-	        xaxis: { min: lFromDate, max: lToDate }
-	    }));
-		}
-	});
-	$("#slider-amount").html($("#slider-range").slider("values", 0) + " - " + $("#slider-range").slider("values", 1));
 
-	{% if ResultsWithPosition > 1 %}  
 
-	var lFlotData = [ 
+	{% if ResultsWithPosition > 1 %}
+
+	var lFlotData = [
 	  {
 	    label: "lines",
 	    lines:  { show: true },
 	    color: '#99ccff',
-	    hoverable: true, 
+	    hoverable: true,
 	    clickable: false,
 	    data: [
 	{% for result in ContestResults %}{% if result.results_position < 27 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-	    ] 
+	    ]
 	  },
 	  {
 	    label: [
@@ -462,11 +464,11 @@
 	    ],
 	    points: { show: true, fillColor: "#3d7dbd" },
 	    color: '#3d7dbd',
-	    hoverable: true, 
+	    hoverable: true,
 	    clickable: false,
 	    data: [
 	{% for result in ContestResults %}{% if result.results_position < 27 and result.results_position > 3 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-	    ] 
+	    ]
 	  },
 	  {
 	    label: [
@@ -474,11 +476,11 @@
 	    ],
 	    points: { show: true, fillColor: "#ffc600" },
 	    color: '#ffc600',
-	    hoverable: true, 
+	    hoverable: true,
 	    clickable: false,
 	    data: [
 	{% for result in ContestResults %}{% if result.results_position == 1 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-	    ] 
+	    ]
 	  },
 	  {
 	    label: [
@@ -486,29 +488,29 @@
 	    ],
 	    points: { show: true, fillColor: "#919191" },
 	    color: '#919191',
-	    hoverable: true, 
+	    hoverable: true,
 	    clickable: false,
 	    data: [
 	{% for result in ContestResults %}{% if result.results_position == 2 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-	    ] 
+	    ]
 	  },
 	  {
 	    label: [
-	{% for result in ContestResults %}{% if result.results_position == 3 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}    
+	{% for result in ContestResults %}{% if result.results_position == 3 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}
 	    ],
 	    points: { show: true, fillColor: "#7a6e55" },
 	    color: '#7a6e55',
-	    hoverable: true, 
+	    hoverable: true,
 	    clickable: false,
 	    data: [
 	{% for result in ContestResults %}{% if result.results_position == 3 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-	    ] 
+	    ]
 	  }
 	  ];
 
-	var lFlotOptions = { 
+	var lFlotOptions = {
 	                grid: {
-	                          hoverable: true, 
+	                          hoverable: true,
 	                          clickable: false,
 	                          autoHighlight: true,
 	                          borderWidth: 0
@@ -523,13 +525,13 @@
 	                           ticks: [1, 5, 10, 15, 20, 25],
 	                           color: "#000000"
 	                     },
-	                xaxis: { 
+	                xaxis: {
 	                           mode: "time",
 	                           color: "#000000"
 	                    }
 	                      };
-	                 
-	                 
+
+
 	var plot = $.plot($("#flot_chart"), lFlotData, lFlotOptions);
 
 	function showTooltip(x, y, contents) {
