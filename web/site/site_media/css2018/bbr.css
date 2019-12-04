@@ -212,3 +212,45 @@ tbody tr.result-3 td, td.result-3 {
 a {
   color: #003366 !important;
 }
+
+#twitterStatus {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+  -moz-box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+  box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+}
+
+.twitterAvatar {
+  float: right;
+  border: 1px solid white;
+  margin: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#twitterDate {
+  width: 100%;
+  font-weight: bold;
+  font-size: 0.8em;
+  text-align: right;
+  padding-bottom: 2px;
+  padding-right: 2px;
+}
+
+#champions {
+  border: 2px solid #FFD700;
+  margin-bottom: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#champions li {
+  list-style-image: url('/site_media/icons/trophy.png');
+}
