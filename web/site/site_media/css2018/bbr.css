@@ -252,5 +252,5 @@ a {
 }
 
 #champions li {
-  list-style-image: url('/site_media/icons/trophy.png');
+  list-style-image: url('/../icons/trophy.png');
 }
