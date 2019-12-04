@@ -61,7 +61,7 @@ class ContestResultAdmin(BbrAdmin):
                 'fields' : ('draw_second_part','points_first_part','points_second_part','points_third_part','points_fourth_part','penalty_points')
                              })
     )
-    raw_id_fields = ("band", "person_conducting", "second_person_conducting")
+    raw_id_fields = ("band", "person_conducting", "second_person_conducting", "test_piece")
 
 
 
