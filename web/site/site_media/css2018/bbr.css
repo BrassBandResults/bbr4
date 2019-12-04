@@ -216,20 +216,15 @@ a {
 #twitterStatus {
   border: 1px solid #ddd;
   margin-bottom: 10px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,.5);
-  -moz-box-shadow: 2px 2px 3px rgba(0,0,0,.5);
   box-shadow: 2px 2px 3px rgba(0,0,0,.5);
+  text-align: left;
 }
 
 .twitterAvatar {
   float: right;
   border: 1px solid white;
   margin: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   border-radius: 5px;
 }
 

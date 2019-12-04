@@ -120,6 +120,7 @@
 
 {% if request.user.is_authenticated %}
 {% if Twitter %}
+<br/>
 <div id="twitterStatus">
 <a href="https://twitter.com/{{Band.twitter_name}}"><img class="twitterAvatar" src="{{Twitter.user.profile_image_url}}"/></a>
 <p title="Band twitter feed"><a href="https://twitter.com/{{Band.twitter_name}}">@{{Band.twitter_name}}</a>: {{Twitter.status.text|twitterize}}</p>
