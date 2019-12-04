@@ -13,9 +13,9 @@
 {% block content %}
 <div class="container pt-1">
 <h1 class="band">{{Band.name}}</h1>
-<span class="screenonly"> 
+<span class="screenonly">
 {% if user.profile.enhanced_functionality %}
-{%if ShowEdit %} 
+{%if ShowEdit %}
   [<a href="/bands/edit/{{Band.slug}}/" title="{% trans "Edit this band's details"%}">{% trans "edit"%}</a>]
 {%endif%}
 {%endif%}
@@ -53,7 +53,7 @@
 {% ifequal Band.status 0 %}
     <tr><td colspan="2">{% trans "This band no longer exists."%}</td></tr>
 {% endifequal %}
-   
+
 {% ifequal Band.status 2 %}
     <tr><td colspan="2">{% trans "This is a non-competing band."%}</td></tr>
 {% endifequal %}
@@ -81,33 +81,33 @@
     <tr><th>{% trans "Region"%}:</th><td class="region"><a href="/regions/{{Band.region.slug}}/">{{Band.region.name}}</a></td></tr>
 {% if Band.start_date or Band.end_date %}
     <tr><th>{% trans "Years active"%}:</th><td>{%if Band.start_date%}{{Band.start_date|date:"Y"}}{%endif%} - {% if Band.end_date %}{{Band.end_date|date:"Y"}}{%endif%}</td></tr>
-{% endif %}    
+{% endif %}
 {% if Band.rehearsal_night_1%}
     <tr><th>{% trans "Rehearsals"%}:</th><td>{{Band.get_rehearsal_night_1_display}}{% if Band.rehearsal_night_2%} and {{Band.get_rehearsal_night_2_display}}{%endif%}</td></tr>
-{%endif%}  
+{%endif%}
 {% if Ancestors %}
     <tr><th>Ancestors:</th><td>{% for band in Ancestors %}<a href="/bands/{{band.slug}}/">{{band.name}}</a>{%if not forloop.last%}, {%endif%}{%endfor%}</td></tr>
 {% endif %}
-{% if Descendants %}    
+{% if Descendants %}
     <tr><th>Descendants:</th><td>{% for band in Descendants %}<a href="/bands/{{band.slug}}/">{{band.name}}</a>{%if not forloop.last%}, {%endif%}{%endfor%}</td></tr>
-{% endif %}    
+{% endif %}
     <tr><th></th><td></td></tr>
-{% if ContestResults and user.pro_member %}  
+{% if ContestResults and user.pro_member %}
     <tr><th>{% trans "Wins"%}:</th><td>{{Wins}}</td></tr>
     <tr><th nowrap="nowrap">{% trans "Second Places"%}:</th><td>{{Seconds}}</td></tr>
     <tr><th nowrap="nowrap">{% trans "Third Places"%}:</th><td>{{Thirds}}</td></tr>
 {% endif %}
-  </table>  	
+  </table>
   	<div id="link_buttons">
 {% if ShowOnMap %}
       <a href="/map/band/{{Band.slug}}/{% ifequal Band.status 0 %}?show_extinct=Y{%endifequal%}"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "View On Map"%}</button></a>
       <a href="/map/search/?location={{Band.name}}&lat={{Band.latitude}}&lng={{Band.longitude}}&distance=10&type=mi&from=band"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "Nearby Bands"%}</button></a>
 {% endif %}
-{% if ContestResults %}  
+{% if ContestResults %}
       <a href="/compare/bands/{{Band.slug}}/"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">Compare</button></a>
       <a href="/bands/{{Band.slug}}/embed/" rel="nofollow"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "Embed Results"%}</button></a>
       <a href="/bands/{{Band.slug}}/csv/" rel="nofollow"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "Results as CSV"%}</button></a>
-{% endif %}  
+{% endif %}
     </div>
     <br/>
   </div>
@@ -118,7 +118,7 @@
   </div>
 </div>
 
-{% if user.is_authenticated %}
+{% if request.user.is_authenticated %}
 {% if Twitter %}
 <div id="twitterStatus">
 <a href="https://twitter.com/{{Band.twitter_name}}"><img class="twitterAvatar" src="{{Twitter.user.profile_image_url}}"/></a>
@@ -173,12 +173,12 @@
 <div id="tabs">
     <ul class="screenonly">
         <li><a href="#contests-tab">{% trans "Contests"%}</a></li>
-{% if WhitFridayResults %}        
+{% if WhitFridayResults %}
         <li><a href="#whitfriday-tab">{% trans "Whit Friday"%}</a></li>
 {% endif %}
-{% if Runs %}        
+{% if Runs %}
         <li><a href="#runs-tab">{% trans "Contest Runs"%}</a></li>
-{% endif %}        
+{% endif %}
     </ul>
 {% endif %}
 
@@ -222,17 +222,17 @@
 {% ifnotequal result.results_position_display "W" %}
 {% ifequal result.person_conducting.name "Unknown" %}
 			<font color="red">{% trans "Unknown, do you know?"%}</font>
-{% else %}			
+{% else %}
 			<a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
 			{% if result.second_person_conducting %}
             <br/><a href="/people/{{result.second_person_conducting.slug}}/">{{result.second_person_conducting.name}}</a>
             {% endif %}
 {% endifequal %}
-{% endifnotequal %}			
+{% endifnotequal %}
 {% endif %}
 		</td>
 {% if user.is_staff and perms.contests.change_contestresult %}
-		<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>	
+		<td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>
 {% endif %}
       </tr>
 {% endfor %}
@@ -247,13 +247,13 @@
 <p>{% trans "Whit Friday results are not included in the statistics and charts above."%}</p>
 {% if WhitFridayOwner %}
 <form action="/bands/{{Band.slug}}/WhitFridayConductors/" method="post">{%csrf_token%}
-{% endif %}     
+{% endif %}
 <table id="whitfriday" class="table table-hover">
 	<thead>
 		<tr>
 {% if WhitFridayOwner %}
       <th></th>
-{% endif %}		  
+{% endif %}
 			<th>{% trans "Date"%}</th>
 			<th>{% trans "Contest"%}</th>
 			<th>{% trans "Position"%}</th>
@@ -271,20 +271,20 @@
       <td>
         {% if request.user == result.owner or user.profile.superuser %}<input type="checkbox" name="select-{{result.id}}"/>{%endif%}
       </td>
-{% endif %} 
+{% endif %}
         <td class="contest-event"><a href="/contests/{{result.contest_event.contest.slug}}/{{ result.contest_event.date_of_event|date:"Y-m-d" }}/">{{ result.contest_event.event_date }}</a></td>
 		    <td class="contest-event-name">{{ result.contest_event.name }}</td>
 		    <td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}icons/comment.png" border="0"/></a>{%endif%}</td>
 		    <td class="conductor">
 {% ifequal result.person_conducting.name "Unknown" %}
 			    <font color="red">{% trans "Unknown, do you know?"%}</font>
-{% else %}			
+{% else %}
 			    <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
-{% endifequal %}			
+{% endifequal %}
 		    </td>
 		    <td class="test_piece">{% if result.test_piece%}<a href="/pieces/{{result.test_piece.slug}}/">{{result.test_piece.name}}</a>{%endif%}</td>
 {% if user.is_staff and perms.contests.change_contestresult %}
-		    <td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>	
+		    <td>[<a href="/bbradmin/contests/contestresult/{{result.id}}/">admin</a>]</td>
 {% endif %}
       </tr>
 {% endfor %}
@@ -389,21 +389,21 @@
 		$('tr.result-off-3').addClass('result-3').removeClass('result-off-3');
 		$('.show_highlights').removeClass('show_highlights').addClass('hide_highlights').html('{% trans "Hide Highlight"%}');
 	});
-	
+
 {% if not Filter and user.is_authenticated %}
 	$('#move_results').click(function(){
 		var lChecked = $('#move_results').prop('checked');
 		if (lChecked) {
 			var lHtml = '<select name="moveToBand"><option>{% trans "loading"%}...</option></select>';
-			$('#band_to_move_to').html(lHtml);	
+			$('#band_to_move_to').html(lHtml);
 			$.get('/bands/options/?exclude={{Band.id}}', function(data){
 			    lHtml = '<select name="moveToBand">' + data + '</select><input type="submit" value="{% trans "Move Results"%}"/>';
-			    $('#band_to_move_to').html(lHtml);	
+			    $('#band_to_move_to').html(lHtml);
 			});
 		} else {
 			$('#band_to_move_to').html("{% trans "another band"%}.");
 		}
-		
+
 	});
 {% endif %}
 
@@ -436,27 +436,27 @@ $("#slider-range").slider({
 
 		var lFromDate = new Date(ui.values[0] + '/1/1');
 		var lToDate = new Date(ui.values[1] + '/12/31');
-{% if user.profile.pro_member %}		
+{% if user.profile.pro_member %}
     plot = $.plot($("#flot_chart"), lFlotData, $.extend(true, {}, lFlotOptions, {
         xaxis: { min: lFromDate, max: lToDate }
     }));
-{% endif %}    
+{% endif %}
 	}
 });
 $("#slider-amount").html($("#slider-range").slider("values", 0) + " - " + $("#slider-range").slider("values", 1));
 
-{% if ResultsWithPosition > 1 %}  
+{% if ResultsWithPosition > 1 %}
 
-var lFlotData = [ 
+var lFlotData = [
   {
     label: "lines",
     lines:  { show: true },
     color: '#99ccff',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for result in ContestResults %}{% if result.results_position < 27 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
@@ -464,11 +464,11 @@ var lFlotData = [
     ],
     points: { show: true, fillColor: "#3d7dbd" },
     color: '#3d7dbd',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for result in ContestResults %}{% if result.results_position < 27 and result.results_position > 3 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
@@ -476,11 +476,11 @@ var lFlotData = [
     ],
     points: { show: true, fillColor: "#ffc600" },
     color: '#ffc600',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for result in ContestResults %}{% if result.results_position == 1 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
@@ -488,29 +488,29 @@ var lFlotData = [
     ],
     points: { show: true, fillColor: "#919191" },
     color: '#919191',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for result in ContestResults %}{% if result.results_position == 2 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   },
   {
     label: [
-{% for result in ContestResults %}{% if result.results_position == 3 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}    
+{% for result in ContestResults %}{% if result.results_position == 3 %}["{{result.contest_event.event_date}}<br/>{{result.contest_event.contest.name}},<br/>{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%}<br/>{{result.conductor.name}}"],{% endif %}{% endfor %}
     ],
     points: { show: true, fillColor: "#7a6e55" },
     color: '#7a6e55',
-    hoverable: true, 
+    hoverable: true,
     clickable: false,
     data: [
 {% for result in ContestResults %}{% if result.results_position == 3 %}[new Date("{{result.contest_event.date_of_event|date:"Y/m/d"}}"), {{result.results_position}}],{% endif %}{% endfor %}
-    ] 
+    ]
   }
   ];
 
-var lFlotOptions = { 
+var lFlotOptions = {
                 grid: {
-                          hoverable: true, 
+                          hoverable: true,
                           clickable: false,
                           autoHighlight: true,
                           borderWidth: 0
@@ -525,13 +525,13 @@ var lFlotOptions = {
                            ticks: [1, 5, 10, 15, 20, 25],
                            color: "#000000"
                      },
-                xaxis: { 
+                xaxis: {
                            mode: "time",
                            color: "#000000"
                     }
                       };
-                 
-                 
+
+
 plot = $.plot($("#flot_chart"), lFlotData, lFlotOptions);
 
 function showTooltip(x, y, contents) {

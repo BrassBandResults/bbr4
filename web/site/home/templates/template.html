@@ -147,7 +147,7 @@
 
 <div class="clear"></div>
 <br/>
-{% if user.is_authenticated %}
+{% if request.user.is_authenticated %}
 {% badge_notifications_for_user user %}
 {% endif %}
 
