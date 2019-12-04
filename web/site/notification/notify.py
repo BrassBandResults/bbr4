@@ -212,6 +212,7 @@ class MessageWrapper:
 
         lRenderedEmailSubject = render_to_string('%s/notify/%s_%s_subject.txt' % (self.module, self.changeType, self.objectType), lContext)
         lRenderedEmailSubject = ''.join(lRenderedEmailSubject.splitlines()) #  *must not* contain newlines
+        lRenderedEmailSubject = lRenderedEmailSubject.replace("&", "&amp;")
         lContext['Subject'] = lRenderedEmailSubject
 
         lRenderedJsonText = render_to_string('notify/default_message.json', lContext)
