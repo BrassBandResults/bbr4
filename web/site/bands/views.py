@@ -1,5 +1,7 @@
 # (c) 2009, 2012, 2015, 2017 Tim Sawyer, All Rights Reserved
 
+import tweepy
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
