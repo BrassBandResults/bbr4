@@ -5,7 +5,7 @@ import sys, os, re
 from datetime import datetime, timedelta
 from os.path import expanduser
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settingslive'
 
 import django
 django.setup()
