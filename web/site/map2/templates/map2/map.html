@@ -16,7 +16,7 @@
  <link rel="stylesheet" href="/site_media/map/leaflet/spin.css"/>
  <script src="/site_media/map/leaflet/spin.js"></script>
  <script src="/site_media/map/leaflet/Leaflet.Spin-1.1.0/leaflet.spin.min.js"></script>
-<!-- 
+<!--
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.clss"/>
  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js">
@@ -28,23 +28,6 @@
 <h1>Brass Band Map</h1>
 <p>[<a href="/map/search/">Search The Map</a>]</p>
 <p>This map is intended to give a general indication of where a band rehearses.  Please contact the band directly to obtain full directions.</p>
-[<a href="#" id="clear_all">clear all</a>] [<a href="#" id="select_all">select all</a>]<br/>
-<input type="checkbox" checked="checked" id="champ_checkbox">Championship/Elite
-<input type="checkbox" checked="checked" id="first_checkbox">1
-<input type="checkbox" checked="checked" id="second_checkbox">2
-<input type="checkbox" checked="checked" id="third_checkbox">3
-<input type="checkbox" checked="checked" id="fourth_checkbox">4
-<input type="checkbox" checked="checked" id="fifth_checkbox">5
-<input type="checkbox" checked="checked" id="youth_checkbox">Youth
-<input type="checkbox" checked="checked" id="a_checkbox">A
-<input type="checkbox" checked="checked" id="b_checkbox">B
-<input type="checkbox" checked="checked" id="c_checkbox">C
-<input type="checkbox" checked="checked" id="d_checkbox">D<br/>
-<input type="checkbox" checked="checked" id="non_competing_checkbox">Non-competing
-<input type="checkbox" checked="checked" id="sa_checkbox">Salvation Army
-<input type="checkbox" id="extinct_checkbox"{% if ShowExtinct%} checked="checked"{%endif%}>Extinct
-<input type="checkbox" checked="checked" id="others_checkbox">Others
-</p> 
 <div id="mapid" style="width: 100%; height: 500px"></div>
 <p>[<a href="/map/addband/">My Band isn't on this map</a>] [<a href="/map/coordwrong/">My Band is in the wrong place</a>]</p>
 </div>
@@ -57,11 +40,6 @@
   function onEachFeature(feature, layer) {
     layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
     bandmap.spin(false);
-  }
-
-  function mapFilter(feature, layer) {
-    if (feature.properties.type === "extinct") return false;
-    return true;
   }
 
   var icon_championship = L.icon({iconUrl: '/site_media/map/championship.png'});
@@ -92,7 +70,7 @@
       filter: mapFilter,
       onEachFeature: onEachFeature,
       pointToLayer: function(feature, latlng){
-        return L.marker(latlng, {icon: this["icon_" + feature.properties.type]}); 
+        return L.marker(latlng, {icon: this["icon_" + feature.properties.type]});
       }
     }).addTo(bandmap);
   });

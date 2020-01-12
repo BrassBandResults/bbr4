@@ -36,7 +36,7 @@ DATABASES = {
         'NAME': 'bbr3',
         'USER': 'bbr',
         'PASSWORD':'2barsrepeat',
-        'HOST':'sokar',
+        'HOST':'apophis',
         'PORT':'5432',
     }
 }

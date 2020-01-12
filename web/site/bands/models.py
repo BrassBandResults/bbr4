@@ -8,7 +8,7 @@ from django.contrib.gis.geos.factory import fromstr
 from django.db import models
 
 from regions.models import Region
-
+from sections.models import Section
 
 class Band(models.Model):
     """
@@ -32,7 +32,7 @@ class Band(models.Model):
     region = models.ForeignKey(Region)
     postcode = models.CharField(max_length=10, null=True, blank=True, help_text='Rehearsal room postcode')
     latitude = models.CharField(max_length=15, blank=True, null=True)
-    longitude = models.CharField(max_length=15, blank=True, null=True) 
+    longitude = models.CharField(max_length=15, blank=True, null=True)
     map_location = geomodels.PointField(dim=3, blank=True, null=True, editable=False)
     point = geomodels.PointField(dim=3, geography=True, blank=True, null=True, editable=False)
     DAY_CHOICES = (
@@ -65,14 +65,15 @@ class Band(models.Model):
                       )
     status = models.IntegerField(blank=True, null=True, choices=STATUS_CHOICES)
     national_grading = models.CharField(max_length=20, blank=True, null=True)
+    section_link = models.ForeignKey(Section, blank=True, null=True)
     scratch_band = models.BooleanField(default=False)
     lastChangedBy = models.ForeignKey(User, editable=False, related_name='BandLastChangedBy')
     owner = models.ForeignKey(User, editable=False, related_name='BandOwner')
     objects = geomodels.GeoManager()
-    
+
     def __str__(self):
         return "%s" % self.name
-    
+
     @property
     def date_range_display(self):
         lReturn = ""
@@ -83,11 +84,11 @@ class Band(models.Model):
         elif self.end_date:
             lReturn += ' [-%d]' % (self.end_date.year)
         return lReturn
-            
-    
+
+
     def get_absolute_url(self):
-        return "/bands/%s/" % self.slug    
-    
+        return "/bands/%s/" % self.slug
+
     def save(self):
         if self.latitude != None and len(self.latitude) > 0 and self.longitude != None and len(self.longitude) > 0:
             lString = 'POINT(%s %s)' % (self.longitude.strip(), self.latitude.strip())
@@ -95,7 +96,7 @@ class Band(models.Model):
             self.point = fromstr(lString)
         self.last_modified = datetime.now()
         super(Band, self).save()
-        
+
     @property
     def section(self):
         if self.status == 0 or self.status == 2 or self.status == 4:
@@ -106,14 +107,15 @@ class Band(models.Model):
         try:
             lRecentResult = self.contestresult_set.filter(contest_event__contest__section__isnull=False).filter(contest_event__date_of_event__gte=lThreeYearsAgo).filter(contest_event__date_of_event__lte=lEndOfYear).order_by('-contest_event__date_of_event')[0]
             self.national_grading = lRecentResult.contest_event.contest.section.name
+            self.section_link = lRecentResult.contest_event.contest.section
             if not self.status:
                 self.status = 1
             self.save()
-            return lRecentResult.contest_event.contest.section
+            return self.section_link
         except IndexError:
             self._auto_update_status()
             return None
-        
+
     def _auto_update_status(self):
         """
         If the latest result is ten years ago, and status is null, then set status to extinct
@@ -128,7 +130,7 @@ class Band(models.Model):
                     self.save()
             except IndexError:
                 pass
-        
+
     def map_icon_name(self):
         lReturn = "band"
         if self.status == 2:
@@ -143,12 +145,12 @@ class Band(models.Model):
             lSection = self.national_grading
             if lSection:
                 lReturn = lSection.lower().replace(' ','_')
-        return lReturn 
-    
+        return lReturn
+
     def name_for_map_title(self):
         lName = self.name
         return lName.replace("'","\\'")
-    
+
     def type_description(self):
         if self.status == 0:
             lReturn = "Extinct Band"
@@ -165,8 +167,8 @@ class Band(models.Model):
             else:
                 lReturn = "Unknown Type"
         return lReturn
-        
-        
+
+
     def rehearsal_nights(self):
         """
         Return rehearsal nights as a string
@@ -178,7 +180,7 @@ class Band(models.Model):
                 if len(self.rehearsal_night_2) > 0:
                     lReturn += ", %s" % Band.DAY_CHOICES[int(self.rehearsal_night_2)][1]
         return lReturn
-        
+
     @property
     def website_url(self):
         if self.website.strip() == 'http://':
@@ -187,39 +189,39 @@ class Band(models.Model):
             return ''
         else:
             return self.website
-        
+
     @property
     def wins(self):
         return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position=1)
-    
+
     @property
     def seconds(self):
-        return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position=2) 
-    
+        return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position=2)
+
     @property
     def thirds(self):
         return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position=3)
-    
+
     @property
     def top_six_not_win(self):
-        return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position__gte=2, results_position__lte=6) 
-    
+        return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position__gte=2, results_position__lte=6)
+
     @property
     def results_with_placings(self):
         return self.contestresult_set.exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today()).filter(results_position__lt=999)
-    
+
     def earliest_result(self):
         try:
             return self.contestresult_set.all().order_by('contest_event__date_of_event')[0]
         except IndexError:
             return None
-    
+
     def latest_result(self):
         try:
             return self.contestresult_set.all().order_by('-contest_event__date_of_event')[0]
         except IndexError:
-            return None  
-    
+            return None
+
     @property
     def unplaced(self):
         return self.contestresult_set.exclude(results_position__lt=7).exclude(contest_event__contest__group__group_type='W').exclude(contest_event__date_of_event__gt=date.today())
@@ -247,25 +249,25 @@ class Band(models.Model):
             if not result.marked_complete:
                 if result.event_result_count <= 4:
                     result.complete = False
-                
+
                 if result.complete == False:
                     result.bands_competing = None
                 elif result.event_result_count < 10:
                     result.bands_competing = "about %d" % result.event_result_count
 
         return lResultsToReturn
-    
+
     def previous_band_names(self):
         return self.previousbandname_set.filter(hidden=False)
-    
+
     def location(self):
         lLocation = "%s,%s" % (self.latitude.strip(), self.longitude.strip())
         return lLocation
-    
+
     class Meta:
         ordering = ['name']
-    
-        
+
+
 class PreviousBandName(models.Model):
     """
     A previous name for a brass band
@@ -279,37 +281,37 @@ class PreviousBandName(models.Model):
     hidden = models.BooleanField(default=False)
     lastChangedBy = models.ForeignKey(User, editable=False, blank=True, null=True, related_name='PreviousBandNameLastChangedBy')
     owner = models.ForeignKey(User, editable=False, blank=True, null=True, related_name='PreviousBandNameOwner')
-        
+
     def __str__(self):
         return "%s -> %s" % (self.old_name, self.band.name)
-    
+
     def save(self):
         self.last_modified = datetime.now()
         super(PreviousBandName, self).save()
-        
+
     @property
     def name(self):
         return self.old_name
-        
+
     @property
     def start_date(self):
         if self.alias_start_date:
             return self.alias_start_date
         return self.band.start_date
-    
+
     @property
     def end_date(self):
         if self.alias_end_date:
             return self.alias_end_date
         return self.band.end_date
-    
+
     @property
     def slug(self):
         return self.band.slug
-    
+
     class Meta:
         ordering = ['old_name']
-        
+
 class BandRelationship(models.Model):
     """
     A relationship between two bands
@@ -333,28 +335,28 @@ class BandRelationship(models.Model):
     end_date = models.DateField(blank=True, null=True)
     lastChangedBy = models.ForeignKey(User, editable=False, related_name='BandRelationshipLastChangedBy')
     owner = models.ForeignKey(User, editable=False, related_name='BandRelationshipOwner')
-    
+
     def __str__(self):
         return "%s ->[%s]-> %s" % (self.left_band.name, self.relationship, self.right_band.name)
-    
-    
+
+
 class BandTalkPage(models.Model):
     """
     A wiki page for superusers about the band
-    """    
+    """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
     lastChangedBy = models.ForeignKey(User, editable=False, related_name='BandTalkPageLastChangedBy')
     owner = models.ForeignKey(User, editable=False, related_name='BandTalkPageOwner')
     object_link = models.ForeignKey(Band, on_delete=models.deletion.CASCADE)
     text = models.TextField()
-    
+
     def save(self):
         self.last_modified = datetime.now()
         super(BandTalkPage, self).save()
-        
+
     def __str__(self):
         return "%s" % self.object_link.name
-    
+
     def get_absolute_url(self):
-        return "/bands/%s/talk/" % self.object_link.slug 
+        return "/bands/%s/talk/" % self.object_link.slug
