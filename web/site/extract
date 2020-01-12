@@ -1,0 +1,7 @@
+#!/bin/bash
+source ~/.venv/bbr4/bin/activate
+python extract.py
+cd ~/web/bbr-data
+git add .
+git commit -m "Autocommit"
+git push
