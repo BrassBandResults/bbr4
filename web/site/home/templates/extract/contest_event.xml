@@ -1,0 +1,38 @@
+<contest-event id="{{ContestEvent.id}}">
+  <event-date date="{{ContestEvent.date_of_event.year}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.day}}">{{ContestEvent.date_of_event}}<event-date>
+  <event-date-resolution>{{ContestEvent.date_resolution}}</event-date-resolution>
+  <name>{{ContestEvent.name}}</name>
+  <contest id="{{ContestEvent.contest.id}}">
+    <name>{{ContestEvent.contest.name}}</name>
+    <order>{{ContestEvent.contest.ordering}}</order>
+    <contest-type id="{{ContestEvent.contest.contest_type_link.id}}">{{ContestEvent.contest.contest_type_link.name}}</contest-type>
+    <group id="{{ContestEvent.contest.group.id}}">{{ContestEvent.contest.group.name}}</group>
+    <slug>{{ContestEvent.contest.slug}}</slug>
+    {% if ContestEvent.contest.qualifies_for %}<qualifies-for id="{{ContestEvent.contest.qualifies_for.id}}">{{ContestEvent.contest.qualifies_for.name}}</qualifies-for>{% endif %}
+    <notes>{{ContestEvent.contest.notes}}</notes>
+    {% if ContestEvent.contest.region %}<region id="{{ContestEvent.contest.region.id}}">{{ContestEvent.contest.region.name}}</region>{% endif %}
+    {% if ContestEvent.contest.section %}<section id="{{ContestEvent.contest.section.id}}">{{ContestEvent.contest.section.name}}</section>{% endif %}
+  </contest>
+  {% if ContestEvent.contest_type_override_link %}<contest-type-override id="{{ContestEvent.contest_type_override_link.id}}">{{ContestEvent.contest_type_override_link.name}}</contest-type-override>{% endif %}
+  <test-piece>
+    {% if ContestEvent.test_piece %}<test-piece id="{{ContestEvent.test_piece.id}}">{{ContestEvent.test_piece.name}}</test-piece>{%endif%}
+  </test-piece>
+
+  {% if ContestEvent.venue_link %}<venue id="{{ContestEvent.venue_link.id}}">{{ContestEvent.venue_link.name}}</venue>{% endif %}
+  {% if ContestEvent.no_contest %}<no-contest>{{ContestEvent.notes}}</no-contest>{% else %}<notes>{{ContestEvent.notes}}</notes>{% endif %}
+
+  <created>{{ContestEvent.created}}</created>
+  <last-modified>{{ContestEvent.last_modified}}</last-modified>
+
+  <results>
+    {% for result in ContestEvent.contestresult_set.all %}
+    <result id="{{result.id}}">
+      <result code="{{result.results_position_display}}">{{result.results_position_display_long}}</result>
+      <band id="{{result.band.id}}">{{result.band.name}}</band>
+      <conductor id="{{result.person_conducting.id}}">{{result.person_conducting.name}}</conductor>{% if result.second_person_conducting %}
+      <conductor id="{{result.second_person_conducting.id}}">{{result.second_person_conducting.name}}</conductor>{% endif %}{% if result.test_piece %}
+      <test-piece id="{{result.test_piece.id}}">{{result.test_piece.name}}</test-piece>{% endif %}
+    </result>
+    {% endfor %}
+  </results>
+</contest-event>
