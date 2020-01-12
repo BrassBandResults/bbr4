@@ -1,4 +1,7 @@
 #!/bin/bash
+cd ~/web/bbr-data
+rm -r *
+cd -
 source ~/.venv/bbr4/bin/activate
 python extract.py
 cd ~/web/bbr-data
