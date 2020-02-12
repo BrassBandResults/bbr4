@@ -25,12 +25,17 @@
 
 {%block scriptfooter%}
 <script>
+  function onEachFeature(feature, layer) {
+    layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
+  }
+
   function addSection(sectionName){
     $.ajax({
       dataType: "json",
       url: '/map2/data/' + sectionName + '.json',
       success: function(data) {
         L.geoJson(data, {
+          onEachFeature: onEachFeature,
           pointToLayer: function (feature, latlng) {
             var icon_name = feature.properties.type
             console.log(icon_name);
@@ -42,8 +47,6 @@
       }
     });
   }
-
-
 
   var bandmap = L.map('mapid').setView([53.800,-1.454], 8);
 
