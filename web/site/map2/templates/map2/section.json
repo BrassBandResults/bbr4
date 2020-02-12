@@ -5,7 +5,7 @@
     {
       "geometry": { "type": "Point", "coordinates": [{{band.longitude}},{{band.latitude}}] },
       "type" : "Feature",
-      "properties" : {"name": "{{band.name}}", "type": "{{band.map_icon_name}}", "slug":"{{band.slug}}", "rday1": "{{band.rehearsal_night_1}}", "rday2": "{{band.rehearsal_night_2}}"}
+      "properties" : {"name": "{{band.name}}", "slug":"{{band.slug}}", "rday1": "{{band.rehearsal_night_1}}", "rday2": "{{band.rehearsal_night_2}}"}
     }{% if not forloop.last%},{%endif%}
 {% endfor %}
   ]

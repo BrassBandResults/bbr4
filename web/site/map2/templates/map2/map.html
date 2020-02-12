@@ -7,82 +7,76 @@
 {%block description %}Brass Bands Map{% endblock %}
 
 {%block head %}
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-   crossorigin=""/>
- <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-   crossorigin=""></script>
- <link rel="stylesheet" href="/site_media/map/leaflet/spin.css"/>
- <script src="/site_media/map/leaflet/spin.js"></script>
- <script src="/site_media/map/leaflet/Leaflet.Spin-1.1.0/leaflet.spin.min.js"></script>
-<!--
- <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
- <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.clss"/>
- <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js">
--->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
 {% endblock %}
 
 {% block content %}
 <div class="container pt-1">
 <h1>Brass Band Map</h1>
-<p>[<a href="/map/search/">Search The Map</a>]</p>
 <p>This map is intended to give a general indication of where a band rehearses.  Please contact the band directly to obtain full directions.</p>
 <div id="mapid" style="width: 100%; height: 500px"></div>
-<p>[<a href="/map/addband/">My Band isn't on this map</a>] [<a href="/map/coordwrong/">My Band is in the wrong place</a>]</p>
 </div>
 {% endblock %}
 
 {%block scriptfooter%}
 <script>
-  var bandmap = L.map('mapid').setView([53.800,-1.454], 8);
-
-  function onEachFeature(feature, layer) {
-    layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
-    bandmap.spin(false);
+  function addSection(sectionName){
+    $.ajax({
+      dataType: "json",
+      url: '/map2/data/' + sectionName + '.json',
+      success: function(data) {
+        L.geoJson(data, {
+          pointToLayer: function (feature, latlng) {
+            var icon_name = feature.properties.type
+            console.log(icon_name);
+            return L.marker(latlng, {
+                icon: icons.get(sectionName)
+            });
+          }
+        }).addTo(bandmap);
+      }
+    });
   }
 
-  var icon_championship = L.icon({iconUrl: '/site_media/map/championship.png'});
-  var icon_first = L.icon({iconUrl: '/site_media/map/first.png'});
-  var icon_second = L.icon({iconUrl: '/site_media/map/second.png'});
-  var icon_third = L.icon({iconUrl: '/site_media/map/third.png'});
-  var icon_fourth = L.icon({iconUrl: '/site_media/map/fourth.png'});
-  var icon_fifth = L.icon({iconUrl: '/site_media/map/fifth.png'});
-  var icon_elite = L.icon({iconUrl: '/site_media/map/elite.png'});
-  var icon_excellence = L.icon({iconUrl: '/site_media/map/excellence.png'});
-  var icon_band = L.icon({iconUrl: '/site_media/map/band.png'});
-  var icon_extinct = L.icon({iconUrl: '/site_media/map/extinct.png'});
-  var icon_youth = L.icon({iconUrl: '/site_media/map/youth.png'});
-  var icon_non_competing = L.icon({iconUrl: '/site_media/map/non_competing.png'});
-  var icon_sa = L.icon({iconUrl: '/site_media/map/sa.png'});
-  var icon_a_grade = L.icon({iconUrl: '/site_media/map/a_grade.png'});
-  var icon_b_grade = L.icon({iconUrl: '/site_media/map/b_grade.png'});
-  var icon_c_grade = L.icon({iconUrl: '/site_media/map/c_grade.png'});
-  var icon_d_grade = L.icon({iconUrl: '/site_media/map/d_grade.png'});
-
-  var dataurl = '/map2/data/champ.json';
-  bandmap.spin(true);
-  $.getJSON(dataurl, function(events){
-    L.geoJSON(events, {
-      style: function(feature){
-        return {};
-      },
-      filter: mapFilter,
-      onEachFeature: onEachFeature,
-      pointToLayer: function(feature, latlng){
-        return L.marker(latlng, {icon: this["icon_" + feature.properties.type]});
-      }
-    }).addTo(bandmap);
-  });
 
 
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox.streets',
-    accessToken: '{{MapboxAccessToken}}'
+  var bandmap = L.map('mapid').setView([53.800,-1.454], 8);
+
+  let icons = new Map();
+  icons.set('Championship', L.icon({iconUrl: '/site_media/map/championship.png'}));
+  icons.set('First', L.icon({iconUrl: '/site_media/map/first.png'}));
+  icons.set('Second', L.icon({iconUrl: '/site_media/map/second.png'}));
+  icons.set('Third', L.icon({iconUrl: '/site_media/map/third.png'}));
+  icons.set('Fourth', L.icon({iconUrl: '/site_media/map/fourth.png'}));
+  icons.set('Fifth', L.icon({iconUrl: '/site_media/map/fifth.png'}));
+  icons.set('Elite', L.icon({iconUrl: '/site_media/map/elite.png'}));
+  icons.set('Excellence', L.icon({iconUrl: '/site_media/map/excellence.png'}));
+  icons.set('Band', L.icon({iconUrl: '/site_media/map/band.png'}));
+  icons.set('Extinct', L.icon({iconUrl: '/site_media/map/extinct.png'}));
+  icons.set('Youth', L.icon({iconUrl: '/site_media/map/youth.png'}));
+  icons.set('Non_competing', L.icon({iconUrl: '/site_media/map/non_competing.png'}));
+  icons.set('Sa', L.icon({iconUrl: '/site_media/map/sa.png'}));
+  icons.set('A_grade', L.icon({iconUrl: '/site_media/map/a_grade.png'}));
+  icons.set('B_grade', L.icon({iconUrl: '/site_media/map/b_grade.png'}));
+  icons.set('C_grade', L.icon({iconUrl: '/site_media/map/c_grade.png'}));
+  icons.set('D_grade', L.icon({iconUrl: '/site_media/map/d_grade.png'}));
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
   }).addTo(bandmap);
 
+  L.control.scale().addTo(bandmap);
 
+  addSection('Championship');
+  addSection('First');
+  addSection('Second');
+  addSection('Third');
+  addSection('Forth');
 </script>
 {%endblock%}
