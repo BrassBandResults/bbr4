@@ -37,8 +37,6 @@
         L.geoJson(data, {
           onEachFeature: onEachFeature,
           pointToLayer: function (feature, latlng) {
-            var icon_name = feature.properties.type
-            console.log(icon_name);
             return L.marker(latlng, {
                 icon: icons.get(sectionName)
             });
