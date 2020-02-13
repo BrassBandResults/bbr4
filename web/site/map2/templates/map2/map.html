@@ -20,6 +20,7 @@
 <h1>Brass Band Map</h1>
 <p>This map is intended to give a general indication of where a band rehearses.  Please contact the band directly to obtain full directions.</p>
 <div id="mapid" style="width: 100%; height: 500px"></div>
+<p><input type="checkbox" checked="checked" id="championship"> Championship</p>
 </div>
 {% endblock %}
 
@@ -29,10 +30,10 @@
     layer.bindPopup('<b>' + feature.properties.name + '</b><br/><br/>[<a href="/bands/' + feature.properties.slug + '/">More Details</a>]');
   }
 
-  function addSection(sectionName){
+  function addSection(type, sectionName, icons, bandmap){
     $.ajax({
       dataType: "json",
-      url: '/map2/data/' + sectionName + '.json',
+      url: '/map2/' + type + '/' + sectionName + '.json',
       success: function(data) {
         L.geoJson(data, {
           onEachFeature: onEachFeature,
@@ -46,38 +47,68 @@
     });
   }
 
-  var bandmap = L.map('mapid').setView([53.800,-1.454], 8);
+  function buildIcons() {
+    let icons = new Map();
+    icons.set('Championship', L.icon({iconUrl: '/site_media/map/championship.png'}));
+    icons.set('First', L.icon({iconUrl: '/site_media/map/first.png'}));
+    icons.set('Second', L.icon({iconUrl: '/site_media/map/second.png'}));
+    icons.set('Third', L.icon({iconUrl: '/site_media/map/third.png'}));
+    icons.set('Fourth', L.icon({iconUrl: '/site_media/map/fourth.png'}));
+    icons.set('Fifth', L.icon({iconUrl: '/site_media/map/fifth.png'}));
+    icons.set('Elite', L.icon({iconUrl: '/site_media/map/elite.png'}));
+    icons.set('Excellence', L.icon({iconUrl: '/site_media/map/excellence.png'}));
+    icons.set('Band', L.icon({iconUrl: '/site_media/map/band.png'}));
+    icons.set('Extinct', L.icon({iconUrl: '/site_media/map/extinct.png'}));
+    icons.set('Youth', L.icon({iconUrl: '/site_media/map/youth.png'}));
+    icons.set('Non_competing', L.icon({iconUrl: '/site_media/map/non_competing.png'}));
+    icons.set('SA', L.icon({iconUrl: '/site_media/map/sa.png'}));
+    icons.set('A_grade', L.icon({iconUrl: '/site_media/map/a_grade.png'}));
+    icons.set('B_grade', L.icon({iconUrl: '/site_media/map/b_grade.png'}));
+    icons.set('C_grade', L.icon({iconUrl: '/site_media/map/c_grade.png'}));
+    icons.set('D_grade', L.icon({iconUrl: '/site_media/map/d_grade.png'}));
 
-  let icons = new Map();
-  icons.set('Championship', L.icon({iconUrl: '/site_media/map/championship.png'}));
-  icons.set('First', L.icon({iconUrl: '/site_media/map/first.png'}));
-  icons.set('Second', L.icon({iconUrl: '/site_media/map/second.png'}));
-  icons.set('Third', L.icon({iconUrl: '/site_media/map/third.png'}));
-  icons.set('Fourth', L.icon({iconUrl: '/site_media/map/fourth.png'}));
-  icons.set('Fifth', L.icon({iconUrl: '/site_media/map/fifth.png'}));
-  icons.set('Elite', L.icon({iconUrl: '/site_media/map/elite.png'}));
-  icons.set('Excellence', L.icon({iconUrl: '/site_media/map/excellence.png'}));
-  icons.set('Band', L.icon({iconUrl: '/site_media/map/band.png'}));
-  icons.set('Extinct', L.icon({iconUrl: '/site_media/map/extinct.png'}));
-  icons.set('Youth', L.icon({iconUrl: '/site_media/map/youth.png'}));
-  icons.set('Non_competing', L.icon({iconUrl: '/site_media/map/non_competing.png'}));
-  icons.set('Sa', L.icon({iconUrl: '/site_media/map/sa.png'}));
-  icons.set('A_grade', L.icon({iconUrl: '/site_media/map/a_grade.png'}));
-  icons.set('B_grade', L.icon({iconUrl: '/site_media/map/b_grade.png'}));
-  icons.set('C_grade', L.icon({iconUrl: '/site_media/map/c_grade.png'}));
-  icons.set('D_grade', L.icon({iconUrl: '/site_media/map/d_grade.png'}));
+    return icons;
+  }
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-  }).addTo(bandmap);
+  function initMap(){
+    var bandmap = L.map('mapid').setView([53.800,-1.454], 8);
+    let icon_markers = buildIcons();
 
-  L.control.scale().addTo(bandmap);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(bandmap);
 
-  addSection('Championship');
-  addSection('First');
-  addSection('Second');
-  addSection('Third');
-  addSection('Forth');
+    L.control.scale().addTo(bandmap);
+
+    //addSection('section', 'Championship', icon_markers, bandmap);
+    //addSection('section', 'First', icon_markers, bandmap);
+    //addSection('section', 'Second', icon_markers, bandmap);
+    //addSection('section', 'Third', icon_markers, bandmap);
+    //addSection('section', 'Forth', icon_markers, bandmap);
+    //addSection('section', 'Elite', icon_markers, bandmap);
+    //addSection('section', 'Excellence', icon_markers, bandmap);
+    addSection('section', 'A_grade', icon_markers, bandmap);
+    addSection('section', 'B_grade', icon_markers, bandmap);
+    addSection('section', 'C_grade', icon_markers, bandmap);
+    addSection('section', 'D_grade', icon_markers, bandmap);
+
+    //addSection('status', 'Extinct', icon_markers, bandmap);
+    //addSection('status', 'Non_competing', icon_markers, bandmap);
+    //addSection('status', 'Youth', icon_markers, bandmap);
+    //addSection('status', 'SA', icon_markers, bandmap);
+  }
+
+  function initClickListeners(){
+    $('#champ').click(function(){
+
+    });
+  }
+
+  $(document).ready(function(){
+    initMap();
+    initClickListeners();
+  });
+
 </script>
 {%endblock%}

@@ -21,11 +21,34 @@ def home(request):
     """
     return render_auth(request, 'map2/map.html')
 
-def jsondata(request, pDataSlug):
+def jsonSection(request, pDataSlug):
     """
     Return geojson relating to the slug
     """
-    lBands = Band.objects.all().filter(national_grading=pDataSlug)
+    lDataSlug = pDataSlug
+    if lDataSlug == "A_grade": lDataSlug = 'A Grade'
+    elif lDataSlug == "B_grade": lDataSlug = 'B Grade'
+    elif lDataSlug == "C_grade": lDataSlug = 'C Grade'
+    elif lDataSlug == "D_grade": lDataSlug = 'D Grade'
+    lBands = Band.objects.all().filter(national_grading=lDataSlug)
+    lBands = lBands.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
+
+    return render_auth(request, 'map2/section.json', {'Bands' : lBands})
+
+def jsonStatus(request, pStatus):
+    """
+    Return geojson relating to a band status
+    """
+    lBands = Band.objects.all()
+    if pStatus == 'Extinct':
+        lBands = lBands.filter(status=0)
+    elif pStatus == 'Non_competing':
+        lBands = lBands.filter(status=2)
+    elif pStatus == 'Youth':
+        lBands = lBands.filter(status=3)
+    elif pStatus == 'SA':
+        lBands = lBands.filter(status=4)
+
     lBands = lBands.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
 
     return render_auth(request, 'map2/section.json', {'Bands' : lBands})

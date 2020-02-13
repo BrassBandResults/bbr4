@@ -6,7 +6,8 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home),
-    url(r'^data/([a-zA-Z_]+).json', views.jsondata),
+    url(r'^section/([a-zA-Z_]+).json', views.jsonSection),
+    url(r'^status/([a-zA-Z_]+).json', views.jsonStatus),
 
 #    url(r'^venues/$', views.home_venues),
 #    url(r'^band/([0-9a-z\-]+)/$', views.specific_band),
