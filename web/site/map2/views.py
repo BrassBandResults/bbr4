@@ -52,3 +52,12 @@ def jsonStatus(request, pStatus):
     lBands = lBands.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
 
     return render_auth(request, 'map2/section.json', {'Bands' : lBands})
+
+def jsonVenues(request):
+    """
+    Return geojson for all venues
+    """
+    lVenues = Venue.objects.all()
+    lVenues = lVenues.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
+
+    return render_auth(request, 'map2/venues.json', {'Venues' : lVenues})

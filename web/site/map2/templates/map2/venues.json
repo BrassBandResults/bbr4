@@ -1,0 +1,12 @@
+{
+  "type": "FeatureCollection",
+  "features" : [
+{% for venue in Venues %}
+    {
+      "geometry": { "type": "Point", "coordinates": [{{venue.longitude}},{{venue.latitude}}] },
+      "type" : "Feature",
+      "properties" : {"name": "{{venue.name}}", "slug":"{{venue.slug}}"}
+    }{% if not forloop.last%},{%endif%}
+{% endfor %}
+  ]
+}
