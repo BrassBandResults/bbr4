@@ -24,7 +24,7 @@ def home(request):
     lToday = datetime.date.today()
     lYesterday = lToday - datetime.timedelta(days=1)
     lTomorrow = lToday + datetime.timedelta(days=1)
-    
+
     lLatestContests = ContestEvent.objects.all().order_by('-id')[:5]
     lFutureEvents = {}
     lFutureContestEvents = ContestEvent.objects.filter(date_of_event__gt=lTomorrow).order_by('date_of_event').select_related('contest', 'contest__group').exclude(no_contest=True)[:20]
@@ -39,22 +39,22 @@ def home(request):
             event.contest_name = event.contest.group.name
             lKey = str(event.date_of_event) + event.contest.group.slug
             lFutureEvents[lKey] = event
-            
+
     lFutureEventDates = lFutureEvents.items()
     lFutureEventsSorted = [value for key, value in sorted(lFutureEventDates)]
-    
+
     lEventsYesterday = ContestEvent.objects.filter(date_of_event=lYesterday).order_by('contest__group__id', 'contest__ordering').select_related('contest', 'contest__group').exclude(no_contest=True).filter(date_resolution='D')[:20]
     lEventsToday = ContestEvent.objects.filter(date_of_event=lToday).order_by('contest__group__id', 'contest__ordering').select_related('contest', 'contest__group').exclude(no_contest=True).filter(date_resolution='D')[:20]
     lEventsTomorrow = ContestEvent.objects.filter(date_of_event=lTomorrow).order_by('contest__group__id', 'contest__ordering').select_related('contest', 'contest__group').exclude(no_contest=True).filter(date_resolution='D')[:20]
 
     lRecentlyAdded = ContestEvent.objects.all().order_by('-id').select_related('contest', 'contest__group')[:24]
     lRecentResults = ContestEvent.objects.filter(date_of_event__lt=lYesterday).order_by('-date_of_event').select_related('contest', 'contest__group').exclude(no_contest=True)[:24]
-        
+
     if len(lEventsYesterday) + len(lEventsToday) + len(lEventsTomorrow) == 0:
         lThisWeek = _fetch_this_week_in_history()
     else:
         lThisWeek = None
-    
+
     # Get random person profile.
     lProfileRoot = ClassifiedPerson.objects.filter(visible=True, show_on_homepage=True)
     lProfileCount = lProfileRoot.count()
@@ -64,7 +64,7 @@ def home(request):
         lRandomProfile = lProfileRoot.all()[randint(0, lProfileCount-1)]
         if lProfileCount > 1:
             lSecondRandomProfile = lProfileRoot.exclude(id=lRandomProfile.id)[randint(0, lProfileCount-2)]
-        
+
     return render_auth(request, 'home/home.html', {
                                               'LatestContests' : lLatestContests,
                                               'FutureEvents' : lFutureEventsSorted[:6],
@@ -90,6 +90,12 @@ def robotstxt(request):
     Show robots.txt
     """
     return render_auth(request, 'robots.txt')
+
+def adstxt(request):
+    """
+    Show ads.txt
+    """
+    return render_auth(request, 'ads.txt')
 
 def about(request):
     """
@@ -118,4 +124,3 @@ def sitemap_index(request):
                                                       'ContestLastModified':lContestLastModified,
                                                       'PersonLastModified':lPersonLastModified,
                                                      })
-    

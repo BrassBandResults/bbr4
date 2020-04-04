@@ -64,18 +64,19 @@ urlpatterns = [
     
     url(r'^sitemap.xml$', home_views.sitemap_index),
     url(r'^robots.txt$', home_views.robotstxt),
-       
+    url(r'^ads.txt$', home_views.adstxt),
+
     url(r'^accounts/login/$', auth_views.login,  {'template_name': 'accounts/login.html'}),
     url(r'^accounts/logout/$', auth_views.logout,  {'template_name': 'accounts/logout.html'}),
     url(r'^accounts/forgottenpassword/$', user_views.forgotten_password),
     url(r'^accounts/forgottenpassword/sent/$', user_views.forgotten_password_sent),
     url(r'^accounts/resetpassword/([A-Za-z0-9]+)/$', user_views.reset_password),
     url(r'^accounts/changepassword/$', auth_views.password_change, {'template_name' : 'users/changepassword.html', 'post_change_redirect' : '/'}),
-    
+
     url(r'^accounts/loginpro/$', auth_views.login, {'template_name' : 'accounts/loginpro.html',}),
     url(r'^accounts/upgrade/$', user_views.pro_upgrade),
     url(r'^accounts/paid/$', user_views.pro_paid),
     url(r'^accounts/pro/thanks/$', user_views.pro_thanks),
-    
+
     url(r'^account/', include('registration.backends.hmac.urls')),
 ]
