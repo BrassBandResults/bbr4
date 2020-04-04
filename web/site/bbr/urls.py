@@ -61,7 +61,7 @@ urlpatterns = [
     url(r'^users/', include('users.urls')),
     url(r'^venues/', include('venues.urls')),
     url(r'^years/', include('years.urls')),
-    
+
     url(r'^sitemap.xml$', home_views.sitemap_index),
     url(r'^robots.txt$', home_views.robotstxt),
     url(r'^ads.txt$', home_views.adstxt),
@@ -78,5 +78,7 @@ urlpatterns = [
     url(r'^accounts/paid/$', user_views.pro_paid),
     url(r'^accounts/pro/thanks/$', user_views.pro_thanks),
 
-    url(r'^account/', include('registration.backends.hmac.urls')),
+    url(r'^signup/$', account_views.anti_spam),
+
+    url(r'^acc/', include('registration.backends.hmac.urls')),
 ]

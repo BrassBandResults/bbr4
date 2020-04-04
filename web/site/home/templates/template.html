@@ -125,7 +125,7 @@
 {% endif %}
 
 {% if not request.user.is_authenticated %}
-      <a class="nav-item nav-link" href="/account/register/">Create Account</a>
+      <a class="nav-item nav-link" href="/signup/">Create Account</a>
 {% ifequal request.path "/accounts/logout/" %}
       <a class="nav-item nav-link"  href="/accounts/login/?next=/">Sign In</a>
 {% else %}

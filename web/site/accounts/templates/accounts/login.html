@@ -14,7 +14,7 @@
 <div class="container pt-1">
 <form method="post" action=".">{% csrf_token %}
 <h1>Sign In</h1>
-<p>Not joined yet?  <a href="/account/register/">Register here</a> to create your account.</p>
+<p>Not joined yet?  <a href="/signup/">Register here to create your account.</a></p>
 {% if form.errors %}
 <p><font color="red">Invalid username/password. Please try again.</font></p>
 {% endif %}
@@ -30,4 +30,4 @@
 
 {%block feedback %}{% endblock %}
 {% block adbar %}{%endblock%}
-{% block adbarBottom %}{%endblock%}  
+{% block adbarBottom %}{%endblock%}
