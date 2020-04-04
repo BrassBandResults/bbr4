@@ -1,4 +1,7 @@
-# (c) 2009, 2012, 2015, 2017 Tim Sawyer, All Rights Reserved
+# (c) 2020 Tim Sawyer, All Rights Reserved
+
+from bbr.render import render_auth
+from django.http import HttpResponseRedirect
 
 def anti_spam(request):
     """
