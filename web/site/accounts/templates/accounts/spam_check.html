@@ -6,6 +6,7 @@
 <div class="container pt-1">
 <p>To prove you're a real person and not a computer creating spam accounts, please look at the picture below.  Which section of the band is this?</p>
 <img src="https://bbr-site-media.s3.eu-west-2.amazonaws.com/SectionQuestion.jpg"/>
+<br/>
 <form method="post" action=".">{% csrf_token %}
 <select name="section">
   <option value="ww">Woodwind</option>
