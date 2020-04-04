@@ -7,7 +7,7 @@ def anti_spam(request):
     if request.method != 'POST':
         return render_auth(request, 'accounts/spam_check.html')
     else:
-        if request.POST['section'] == "bs"
+        if request.POST['section'] == "bs":
             return HttpResponseRedirect("/acc/register/")
         else:
             return HttpResponseRedirect("/accounts/loginpro/")
