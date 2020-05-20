@@ -44,7 +44,7 @@ def people_list_filter_letter(request, pLetter):
     for row in rows:
         lConducting[row[0]] = row[1]
     cursor.close()
-    
+
     cursor = connection.cursor()
     cursor.execute("SELECT second_person_conducting_id, count(*) FROM contests_contestresult WHERE second_person_conducting_id IS NOT NULL GROUP BY second_person_conducting_id")
     rows = cursor.fetchall()
@@ -64,7 +64,7 @@ def people_list_filter_letter(request, pLetter):
     for row in rows:
         lWithdrawns[row[0]] = row[1]
     cursor.close()
-    
+
     lAdjudications = {}
     cursor = connection.cursor()
     cursor.execute("SELECT person_id, count(*) FROM adjudicators_contestadjudicator WHERE person_id IS NOT NULL GROUP BY person_id")
@@ -74,14 +74,14 @@ def people_list_filter_letter(request, pLetter):
     cursor.close()
 
 
-    lCompositions = {}        
+    lCompositions = {}
     cursor = connection.cursor()
     cursor.execute("SELECT composer_id, count(*) FROM pieces_testpiece WHERE composer_id IS NOT NULL GROUP BY composer_id")
     rows = cursor.fetchall()
     for row in rows:
         lCompositions[row[0]] = row[1]
     cursor.close()
-    
+
     lArrangements = {}
     cursor = connection.cursor()
     cursor.execute("SELECT arranger_id, count(*) FROM pieces_testpiece WHERE arranger_id IS NOT NULL GROUP BY  arranger_id")
@@ -89,11 +89,11 @@ def people_list_filter_letter(request, pLetter):
     for row in rows:
         lArrangements[row[0]] = row[1]
     cursor.close()
-    
+
     lComposerArranger = {}
     lComposerArranger.update(lCompositions)
     lComposerArranger.update(lArrangements)
-    
+
     if pLetter == 'ALL':
         if request.user.is_authenticated() == False:
             raise Http404
@@ -109,15 +109,15 @@ def people_list_filter_letter(request, pLetter):
         try:
             person.conducting_count = lConducting[person.id]
         except KeyError:
-            person.conducting_count = 0  
+            person.conducting_count = 0
         try:
             person.withdrawn_count = lWithdrawns[person.id]
         except KeyError:
-            person.withdrawn_count = 0  
+            person.withdrawn_count = 0
         try:
             person.adjudications_count = lAdjudications[person.id]
         except KeyError:
-            person.adjudications_count = 0  
+            person.adjudications_count = 0
         try:
             person.composition_count = lCompositions[person.id]
         except KeyError:
@@ -125,29 +125,29 @@ def people_list_filter_letter(request, pLetter):
         try:
             person.arrangement_count = lArrangements[person.id]
         except KeyError:
-            person.arrangement_count = 0            
-           
+            person.arrangement_count = 0
+
     if pLetter == 'NOTHING':
-        lNothingPeople = [] 
+        lNothingPeople = []
         for person in lPeople:
             if person.conducting_count==0 and person.adjudications_count==0 and person.composition_count==0 and person.arrangement_count==0 and person.withdrawn_count == 0:
                 lNothingPeople.append(person)
         lPeople = lNothingPeople
-            
+
     lAllPeopleCount = Person.objects.all().count()
-    
+
     lConductorsCheck = len(lConducting.keys())
     lAdjudicatorsCheck = len(lAdjudications.keys())
     lComposerArrangerCheck = len(lComposerArranger.keys())
-    
+
     lVennAllCount = len(lConducting.keys() & lAdjudications.keys() & lComposerArranger.keys())
     lVennConductorAdjudicatorCount = len(lConducting.keys() & lAdjudications.keys()) - lVennAllCount
-    lVennConductorComposerCount = len(lConducting.keys() & lComposerArranger.keys()) - lVennAllCount 
-    lVennComposerAdjudicatorCount = len(lAdjudications.keys() & lComposerArranger.keys()) - lVennAllCount 
+    lVennConductorComposerCount = len(lConducting.keys() & lComposerArranger.keys()) - lVennAllCount
+    lVennComposerAdjudicatorCount = len(lAdjudications.keys() & lComposerArranger.keys()) - lVennAllCount
     lVennConductorOnlyCount = len(lConducting) - lVennConductorAdjudicatorCount - lVennConductorComposerCount - lVennAllCount
     lVennAdjudicatorOnlyCount = len(lAdjudications) - lVennComposerAdjudicatorCount - lVennConductorAdjudicatorCount - lVennAllCount
     lVennComposerArrangerOnlyCount = len(lComposerArranger) - lVennConductorComposerCount - lVennComposerAdjudicatorCount - lVennAllCount
-    
+
     return render_auth(request, "people/people.html", {"People": lPeople,
                                                        "PeopleCount" : len(lPeople),
                                                        "AllPeopleCount" : lAllPeopleCount,
@@ -163,19 +163,19 @@ def people_list_filter_letter(request, pLetter):
                                                        "AdjudicatorsCheck" : lAdjudicatorsCheck,
                                                        "ComposerArrangerCheck" : lComposerArrangerCheck,
                                                       })
-    
-    
+
+
 def _fetch_piece_details(pPerson):
     """
     Fetch composer/arranger details for this person
     """
     lComposedPieces = TestPiece.objects.filter(composer=pPerson)
     lArrangedPieces = TestPiece.objects.filter(arranger=pPerson)
-    
-    return (lComposedPieces, lArrangedPieces)  
+
+    return (lComposedPieces, lArrangedPieces)
 
 class ResultObject:
-    pass  
+    pass
 
 def _fetch_adjudication_details(pPerson):
     """
@@ -194,12 +194,12 @@ SELECT event.date_of_event,
 FROM contests_contestresult result
 right outer join contests_contestevent event on (result.results_position = 1 and result.contest_event_id = event.id)
 inner join contests_contest contest on contest.id = event.contest_id
-WHERE event.id IN (SELECT adjudicator.contest_event_id 
+WHERE event.id IN (SELECT adjudicator.contest_event_id
                    FROM adjudicators_contestadjudicator adjudicator
                    WHERE adjudicator.person_id = %d)
 ORDER BY event.date_of_event desc
                    """ % pPerson.id)
- 
+
     rows = cursor.fetchall()
     lContestEvent = ContestEvent()
     lPreviousResult = None
@@ -225,12 +225,12 @@ ORDER BY event.date_of_event desc
             if lPreviousResult.event_name == result.event_name and lPreviousResult.date_of_event == result.date_of_event:
                 lPreviousResult.winners.append(lBand)
                 continue
-            
+
         lAdjudications.append(result)
         lPreviousResult = result
     cursor.close()
-        
-    return lAdjudications 
+
+    return lAdjudications
 
 def _fetch_conducting_details(pPerson, pContestFilterSlug, pGroupFilterSlug, pFilterTagSlug):
     """
@@ -241,7 +241,7 @@ def _fetch_conducting_details(pPerson, pContestFilterSlug, pGroupFilterSlug, pFi
     lThreeMonths = date.today() + timedelta(days=90)
     lContestResults = lContestResults.exclude(contest_event__date_of_event__gt=lThreeMonths) # Exclude more than 90 days in future
     lWhitFridayResults = lResults.filter(contest_event__contest__group__group_type='W')
-    
+
     if pContestFilterSlug:
         lContest = Contest.objects.filter(slug=pContestFilterSlug)[0]
         lFiltered = True
@@ -253,8 +253,8 @@ def _fetch_conducting_details(pPerson, pContestFilterSlug, pGroupFilterSlug, pFi
         lTopSixNotWin = pPerson.top_six_not_win.filter(contest_event__contest__slug=pContestFilterSlug).count()
         lUnplaced = pPerson.unplaced.filter(contest_event__contest__slug=pContestFilterSlug).count()
         lResultsWithPosition = pPerson.results_with_placings.filter(contest_event__contest__slug=pContestFilterSlug).count()
-        
-        
+
+
     elif pGroupFilterSlug:
         lGroup = ContestGroup.objects.filter(slug=pGroupFilterSlug.lower())[0]
         lFiltered = True
@@ -266,7 +266,7 @@ def _fetch_conducting_details(pPerson, pContestFilterSlug, pGroupFilterSlug, pFi
         lTopSixNotWin = pPerson.top_six_not_win.filter(contest_event__contest__group__slug=pGroupFilterSlug).count()
         lUnplaced = pPerson.unplaced.filter(contest_event__contest__group__slug=pGroupFilterSlug).count()
         lResultsWithPosition = pPerson.results_with_placings.filter(contest_event__contest__group__slug=pGroupFilterSlug).count()
-        
+
     elif pFilterTagSlug:
         lContestTag = ContestTag.objects.filter(slug=pFilterTagSlug)[0]
         lFiltered = True
@@ -282,9 +282,9 @@ def _fetch_conducting_details(pPerson, pContestFilterSlug, pGroupFilterSlug, pFi
             for tag in result.contest_event.tag_list():
                 if lContestTag.id == tag.id:
                     lFilteredResults.append(result)
-                    if result.results_position == 1: 
+                    if result.results_position == 1:
                         lWins += 1
-                    elif result.results_position == 2: 
+                    elif result.results_position == 2:
                         lSeconds += 1
                         lTopSixNotWin += 1
                     elif result.results_position == 3:
@@ -312,7 +312,7 @@ def _fetch_conducting_details(pPerson, pContestFilterSlug, pGroupFilterSlug, pFi
         lTopSixNotWin = len(pPerson.top_six_not_win)
         lUnplaced = len(pPerson.unplaced)
         lResultsWithPosition = len(pPerson.results_with_placings)
-    
+
     return (lContestResults, lWhitFridayResults, lFiltered, lFilteredTo, lWins, lSeconds, lThirds, lTopSixNotWin, lUnplaced, lResultsWithPosition)
 
 
@@ -330,8 +330,8 @@ def single_person_filter_group(request, pConductorSlug, pContestGroupSlug):
     Show single conductor page, filtered to a given contest
     """
     return single_person(request, pConductorSlug, pGroupFilterSlug=pContestGroupSlug)
-    
-    
+
+
 @login_required_pro_user
 def single_person_filter_tag(request, pConductorSlug, pTagSlug):
     """
@@ -339,29 +339,29 @@ def single_person_filter_tag(request, pConductorSlug, pTagSlug):
     """
     return single_person(request, pConductorSlug, pFilterTagSlug=pTagSlug)
 
-        
-    
+
+
 def single_person(request, pPersonSlug, pContestFilterSlug=None, pGroupFilterSlug=None, pFilterTagSlug=None):
     """
     Show details of a single person
     """
     if pPersonSlug == 'unknown':
         raise Http404()
-    
+
     if pContestFilterSlug or pGroupFilterSlug or pFilterTagSlug:
         if request.user.profile.pro_member == False:
             raise Http404()
-    
+
     try:
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
         lPersonAliases = PersonAlias.objects.filter(person=lPerson).exclude(hidden=True)
     except IndexError:
         raise Http404()
-    
+
     lComposedPieces, lArrangedPieces = _fetch_piece_details(lPerson)
     lAdjudications = _fetch_adjudication_details(lPerson)
     lContestResults, lWhitFridayResults, lFiltered, lFilteredTo, lWins, lSeconds, lThirds, lTopSixNotWin, lUnplaced, lResultsWithPosition = _fetch_conducting_details(lPerson, pContestFilterSlug, pGroupFilterSlug, pFilterTagSlug)
-    
+
     lArraysWithEntries = 0
     if len(lComposedPieces) > 0:
         lArraysWithEntries += 1
@@ -372,39 +372,39 @@ def single_person(request, pPersonSlug, pContestFilterSlug=None, pGroupFilterSlu
     if len(lContestResults) > 0:
         lArraysWithEntries += 1
     if len(lWhitFridayResults) > 0:
-        lArraysWithEntries += 1        
-        
+        lArraysWithEntries += 1
+
     if lArraysWithEntries > 1:
         lShowTabs = True
     else:
         lShowTabs = False
-        
+
     lShowEdit = False
     if request.user.is_anonymous() == False:
-        lShowEdit = request.user.profile.superuser or (request.user.profile.enhanced_functionality and request.user.id == lPerson.owner.id)    
-        
+        lShowEdit = request.user.profile.superuser or (request.user.profile.enhanced_functionality and request.user.id == lPerson.owner.id)
+
     try:
         lClassifiedProfile = ClassifiedPerson.objects.filter(person=lPerson,visible=True)[0]
     except IndexError:
-        lClassifiedProfile = None  
-        
+        lClassifiedProfile = None
+
     lFirstResultYear = None
     if lPerson.earliest_result():
         lFirstResultYear = lPerson.earliest_result().contest_event.date_of_event.year
     lLastResultYear = None
     if lPerson.latest_result():
-        lLastResultYear = lPerson.latest_result().contest_event.date_of_event.year          
-        
+        lLastResultYear = lPerson.latest_result().contest_event.date_of_event.year
+
     lUserResultsForThisAdjudicator = []
     if request.user.is_anonymous == False and len(lAdjudications) > 0 and request.user.profile.pro_member:
         # find this users adjudications by this person from their contest history
         lContestEvents = []
-        
+
         # Get list of contest events adjudicated
         lContestAdjudications = ContestAdjudicator.objects.filter(person=lPerson).select_related('contest_event')
         for lContestAdjudication in lContestAdjudications:
             lContestEvents.append(lContestAdjudication.contest_event)
-        
+
         lUserResultsForThisAdjudicatorWithDate = []
         lUserHistoryThisPiece = PersonalContestHistory.objects.filter(user=request.user, status='accepted', result__contest_event__in=lContestEvents).select_related('result', 'result__band', 'result__contest_event', 'result__contest_event__contest')
         if len(lUserHistoryThisPiece):
@@ -413,10 +413,10 @@ def single_person(request, pPersonSlug, pContestFilterSlug=None, pGroupFilterSlu
 
         for result in lUserResultsForThisAdjudicatorWithDate:
             lUserResultsForThisAdjudicator.append(result[1])
-            
+
     lRelationsOut = PersonRelation.objects.filter(source_person=lPerson)
     lRelationsBack = PersonRelation.objects.filter(relation_person=lPerson)
-    
+
     return render_auth(request, 'people/person.html', {"Person" : lPerson,
                                                        "ContestResults" : lContestResults,
                                                        "WhitFridayResults" : lWhitFridayResults,
@@ -458,7 +458,7 @@ def people_options(request):
         lPeople = Person.objects.exclude(id=lExclude)
     except KeyError:
         lPeople = Person.objects.all()
-        
+
     return render_auth(request, 'people/option_list.htm', {"People" : lPeople})
 
 @login_required
@@ -470,7 +470,7 @@ def people_options_json(request):
     return render_auth(request, 'people/option_list.json', {"People" : lPeople})
 
 
-@login_required  
+@login_required
 def add_person(request):
     """
     Add a new person
@@ -489,17 +489,17 @@ def add_person(request):
             lNewPerson.lastChangedBy = request.user
             lNewPerson.owner = request.user
             lNewPerson.save()
-            
+
             notification(None, lNewPerson, 'people', 'person', 'new', request.user, browser_details(request))
-            
+
             return HttpResponseRedirect('/people/')
     else:
         form = lFormType()
 
     return render_auth(request, 'people/new_person.html', {'form': form})
-    
-    
-@login_required  
+
+
+@login_required
 def edit_person(request, pPersonSlug):
     """
     Edit a person
@@ -513,25 +513,25 @@ def edit_person(request, pPersonSlug):
         lFormType = EditPersonAsSuperuserForm
     if request.user.profile.superuser == False:
         if request.user.id != lPerson.owner.id:
-            raise Http404() 
+            raise Http404()
         if request.user.profile.enhanced_functionality == False:
             raise Http404()
     if request.method == 'POST':
         form = lFormType(request.POST, instance=lPerson)
         if form.is_valid():
             lOriginalPerson = Person.objects.filter(id=lPerson.id)[0]
-            
+
             lNewPerson = form.save(commit=False)
             lNewPerson.lastChangedBy = request.user
             lNewPerson.save()
-            
+
             notification(lOriginalPerson, lNewPerson, 'people', 'person', 'edit', request.user, browser_details(request))
 
             return HttpResponseRedirect('/people/%s/' % lPerson.slug)
     else:
         form = lFormType(instance=lPerson)
 
-    return render_auth(request, 'people/edit_person.html', {'form': form, "Person" : lPerson})    
+    return render_auth(request, 'people/edit_person.html', {'form': form, "Person" : lPerson})
 
 
 @login_required
@@ -541,15 +541,15 @@ def single_person_aliases(request, pPersonSlug):
     """
     if pPersonSlug == 'unknown':
         raise Http404()
-    
+
     if request.user.profile.superuser == False:
         raise Http404()
-    
+
     try:
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404()
-    
+
     if request.POST:
         lNewAlias = request.POST['new_alias_name']
         lPersonAlias = PersonAlias()
@@ -560,15 +560,15 @@ def single_person_aliases(request, pPersonSlug):
         lPersonAlias.save()
         notification(None, lPersonAlias, 'people', 'person_alias', 'new', request.user, browser_details(request))
         return HttpResponseRedirect('/people/%s/aliases/' % lPerson.slug)
-    
+
     lPeopleAliases = PersonAlias.objects.filter(person=lPerson)
-    
+
     return render_auth(request, "people/person_aliases.html", {
                                                                      'Person' : lPerson,
                                                                      'Aliases' : lPeopleAliases,
                                                                      })
-    
-    
+
+
 @login_required
 def single_person_alias_show(request, pPersonSlug, pAliasSerial):
     """
@@ -576,12 +576,12 @@ def single_person_alias_show(request, pPersonSlug, pAliasSerial):
     """
     if request.user.profile.superuser == False:
         raise Http404()
-    
+
     try:
         lPersonAlias = PersonAlias.objects.filter(person__slug=pPersonSlug, id=pAliasSerial)[0]
     except IndexError:
         raise Http404
-    
+
     lPersonAlias.hidden = False
     lPersonAlias.lastChangedBy = request.user
     lPersonAlias.save()
@@ -596,12 +596,12 @@ def single_person_alias_hide(request, pPersonSlug, pAliasSerial):
     """
     if request.user.profile.superuser == False:
         raise Http404()
-    
+
     try:
         lPersonAlias = PersonAlias.objects.filter(person__slug=pPersonSlug, id=pAliasSerial)[0]
     except IndexError:
         raise Http404
-    
+
     lPersonAlias.hidden = True
     lPersonAlias.lastChangedBy = request.user
     lPersonAlias.save()
@@ -616,17 +616,17 @@ def single_person_alias_delete(request, pPersonSlug, pAliasSerial):
     """
     if request.user.profile.superuser == False:
         raise Http404()
-    
+
     try:
         lPersonAlias = PersonAlias.objects.filter(person__slug=pPersonSlug, id=pAliasSerial)[0]
     except IndexError:
         raise Http404
-    
+
     notification(None, lPersonAlias, 'people', 'person_alias', 'delete', request.user, browser_details(request))
     lPersonAlias.delete()
     return HttpResponseRedirect('/people/%s/aliases/' % pPersonSlug)
-    
-    
+
+
 @login_required_pro_user
 def single_person_csv(request, pPersonSlug):
     """
@@ -636,20 +636,20 @@ def single_person_csv(request, pPersonSlug):
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404()
-    
+
     lResults = ContestResult.objects.filter(Q(person_conducting=lPerson)|Q(second_person_conducting=lPerson)).select_related()
     lContestResults = lResults.exclude(contest_event__contest__group__group_type='W').exclude(results_position=10001)
     lWhitFridayResults = lResults.filter(contest_event__contest__group__group_type='W')
-        
+
     lCsvFile = render_to_string('people/results.csv', {"Person" : lPerson,
                                                        "ContestResults" : lContestResults,
                                                        "WhitFridayResults" : lWhitFridayResults,
                                                        })
-    
+
     lResponse = HttpResponse(content_type="text/csv")
     lResponse['Content-Disposition'] = "attachment; filename=%s.csv" % lPerson.slug
     lResponse.write(lCsvFile)
-    return lResponse    
+    return lResponse
 
 @login_required_pro_user
 def new_classified(request, pPersonSlug):
@@ -660,22 +660,22 @@ def new_classified(request, pPersonSlug):
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404
-    
+
     if request.user.is_anonymous == True or request.user.profile.pro_member == False:
         raise Http404
-    
+
     lMaxProfiles = request.user.profile.max_profile_count
     lActualPeopleProfilesCount = ClassifiedPerson.objects.filter(owner=request.user).count()
-        
+
     if (lActualPeopleProfilesCount >= lMaxProfiles):
         return HttpResponseRedirect("/people/%s/newclassified/too_many/?username=%s" % (lPerson.slug,request.user.username))
-    
+
     lProfile = None
     try:
         lProfile = ClassifiedPerson.objects.filter(person=lPerson)[0]
     except IndexError:
         lProfile = None
-    
+
     if request.method == 'POST':
         if lProfile:
             if lProfile.owner != request.user:
@@ -692,10 +692,10 @@ def new_classified(request, pPersonSlug):
             lNewProfile.visible = True
             lNewProfile.show_on_homepage = False
             lNewProfile.save()
-            
+
             # email notification
             notification(None, lNewProfile, 'people', 'profile', 'new', request.user, browser_details(request))
-            
+
             # redirect to person page
             return HttpResponseRedirect('/people/%s/' % pPersonSlug)
     else:
@@ -703,11 +703,11 @@ def new_classified(request, pPersonSlug):
             lForm = EditClassifiedProfileForm(instance=lProfile)
         else:
             lForm = EditClassifiedProfileForm()
-        
+
     return render_auth(request, 'people/edit_classified.html', {"Person" : lPerson,
                                                                 "form" : lForm,
                                                                })
-    
+
 @login_required_pro_user
 def edit_classified(request, pPersonSlug):
     """
@@ -717,16 +717,16 @@ def edit_classified(request, pPersonSlug):
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404
-    
+
     if request.user.is_anonymous == True or request.user.profile.pro_member == False:
         raise Http404
-    
+
     lProfile = None
     try:
         lProfile = ClassifiedPerson.objects.filter(person=lPerson)[0]
     except IndexError:
         lProfile = None
-    
+
     if request.method == 'POST':
         if lProfile:
             if lProfile.owner != request.user:
@@ -741,10 +741,10 @@ def edit_classified(request, pPersonSlug):
             lNewProfile.lastChangedBy = request.user
             lNewProfile.owner = request.user
             lNewProfile.save()
-            
+
             # email notification
             notification(None, lNewProfile, 'people', 'profile', 'edit', request.user, browser_details(request))
-            
+
             # redirect to person page
             return HttpResponseRedirect('/people/%s/' % pPersonSlug)
     else:
@@ -752,23 +752,23 @@ def edit_classified(request, pPersonSlug):
             lForm = EditClassifiedProfileForm(instance=lProfile)
         else:
             lForm = EditClassifiedProfileForm()
-        
+
     return render_auth(request, 'people/edit_classified.html', {"Person" : lPerson,
                                                                 "form" : lForm,
-                                                               })    
-    
+                                                               })
+
 @login_required_pro_user
 def too_many_classified(request, pPersonSlug):
     """
     User already has profiles
     """
     lPeople = ClassifiedPerson.objects.filter(owner=request.user)
-    
+
     return render_auth(request, 'people/too_many_classified.html', {
                                                                     'Classifieds': lPeople,
                                                                     })
-    
- 
+
+
 def chart_json(request, pPersonSlug):
     """
     Get the json to show the chart for a conductor
@@ -779,9 +779,9 @@ def chart_json(request, pPersonSlug):
         raise Http404()
     return render_auth(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(),
                                                             "ShowBand" : True,
-                                                            "ShowConductor" : False})    
-    
-    
+                                                            "ShowConductor" : False})
+
+
 def chart_json_filter(request, pPersonSlug, pContestSlug):
     """
     Get the json to show the chart for a conductor, filtered by contest
@@ -793,8 +793,8 @@ def chart_json_filter(request, pPersonSlug, pContestSlug):
     return render_auth(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(pContestSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
-    
-    
+
+
 def chart_json_filter_group(request, pPersonSlug, pContestGroupSlug):
     """
     Get the json to show the chart for a conductor, filtered by contest group
@@ -805,16 +805,16 @@ def chart_json_filter_group(request, pPersonSlug, pContestGroupSlug):
         raise Http404()
     return render_auth(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(pContestGroupSlug),
                                                             "ShowBand" : False,
-                                                            "ShowConductor" : True})     
-    
+                                                            "ShowConductor" : True})
+
 def about_profile(request):
     """
     How to get your own profile
     """
     return render_auth(request, 'people/about_profile.html')
-    
-    
-    
+
+
+
 def people_hash_by_letter(request):
     """
     Return the people list hashes, one for the first letter by surname
@@ -831,19 +831,19 @@ def people_hash_by_letter(request):
                     lList = u""
                 lList += u"!" + smart_text(person.first_names) + u"," + smart_text(person.surname);
                 lPeopleStructure[lFirstLetter] = lList
-            
+
     lHashes = {}
-    
+
     for letter in lPeopleStructure.keys():
         lPeople = lPeopleStructure[letter]
         lHash = hashlib.sha256(lPeople.encode('utf-8')).hexdigest()
         lHashes[letter] = lHash
-        
+
     return render_auth(request, 'people/hashes.json', {
                                                        'Hashes' : lHashes,
                                                        })
-     
-@login_required   
+
+@login_required
 def people_list_by_letter(request, pLetter):
     """
     Return JSON representing people starting with a certain letter
@@ -852,7 +852,43 @@ def people_list_by_letter(request, pLetter):
     return render_auth(request, 'people/people.json', {
                                                        'People' : lPeople,
                                                        })
-    
+
+
+@login_required_pro_user
+def contest_winners(request):
+    """
+    Show list of which conductors have taken the most bands
+    """
+    lPeople = []
+    cursor = connection.cursor()
+
+    cursor.execute("""
+WITH bands AS (
+  SELECT r.person_conducting_id, count(distinct r.band_id) as bandcount
+  FROM contests_contestresult r
+  GROUP BY r.person_conducting_id
+  ORDER BY 2 desc
+)
+SELECT p.slug, p.surname, p.first_names, b.bandcount
+FROM people_person p
+INNER JOIN bands b ON b.person_conducting_id = p.id
+WHERE b.bandcount > 4
+AND b.person_conducting_id != 310730 -- unknown
+ORDER BY 4 desc
+    """)
+
+    rows = cursor.fetchall()
+    for row in rows:
+        lPerson = ResultObject()
+        lPerson.slug = row[0]
+        lPerson.surname = row[1]
+        lPerson.first_names = row[2]
+        lPerson.bandcount = row[3]
+        lPeople.append(lPerson)
+    cursor.close()
+    return render_auth(request, 'people/bandcount.html', {
+                                                       'People' : lPeople,
+                                                       })
 @login_required_pro_user
 def contest_winners(request):
     """
@@ -860,9 +896,9 @@ def contest_winners(request):
     """
     lPeople = []
     cursor = connection.cursor()
-    
+
     cursor.execute("""
-WITH 
+WITH
   winners AS
    (SELECT person_conducting_id, count(*) as winners
     FROM contests_contestresult r
@@ -885,7 +921,7 @@ SELECT p.slug, p.surname, p.first_names, p.bandname, w.winners, t.contests
 FROM people_person p
 INNER JOIN winners w ON p.id = w.person_conducting_id
 INNER JOIN total t ON p.id = t.person_conducting_id
-ORDER BY 5 desc""") 
+ORDER BY 5 desc""")
     rows = cursor.fetchall()
     for row in rows:
         lPerson = ResultObject()
@@ -902,9 +938,3 @@ ORDER BY 5 desc""")
     return render_auth(request, 'people/winners.html', {
                                                        'People' : lPeople,
                                                        })
-
-        
-        
-        
-    
-    

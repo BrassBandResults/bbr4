@@ -1,0 +1,46 @@
+{% extends "template.html" %}
+{% load i18n %}
+
+{%block title %}Conductors of Multiple Bands{% endblock %}
+
+{%block description%}List of people who have conducted multiple bands{%endblock%}
+
+{%block head %}
+<script src="https://d3js.org/d3.v3.js" charset="utf-8"></script>
+{%endblock%}
+
+{%block scriptfooter%}
+<script>
+  $(document).ready(function(){
+    $("#people").tablesorter();
+
+    $('button.reset').click(function(){
+      $('#people').trigger('sortReset');
+      return false;
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container pt-1">
+<h1>Conductors of Multiple Bands</h1>
+<button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
+<table id="people" class="table table-hover">
+	<thead>
+		<tr>
+			<th>{% trans "Name"%}</th>
+			<th>{% trans "Bands"%}</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for person in People %}
+ 		<tr>
+ 			<td class="person"><a href="/people/{{person.slug}}/">{{person.first_names}} {{person.surname}}{% if person.bandname%} ({{person.bandname}}){%endif%}</a></td>
+			<td>{{person.bandcount}}</td>
+		</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}

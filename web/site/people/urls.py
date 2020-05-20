@@ -22,9 +22,10 @@ urlpatterns = [
     url(r'^about_profile/$', views.about_profile),
     url(r'^([\w\-]+)/newclassified/$', views.new_classified),
     url(r'^([\w\-]+)/newclassified/too_many/$', views.too_many_classified),
-    url(r'^([\w\-]+)/edit_classified/$', views.edit_classified),    
+    url(r'^([\w\-]+)/edit_classified/$', views.edit_classified),
     url(r'^add/$', views.add_person),
     url(r'^winners/$', views.contest_winners),
+    url(r'^bands/$', views.number_bands),
     url(r'^edit/([-\w]+)/$', views.edit_person),
     url(r'^options/$', views.people_options),
     url(r'^options.json/$', views.people_options_json),
@@ -40,5 +41,5 @@ urlpatterns = [
     url(r'^([\w\-]+)/tag/([A-Za-z0-9\-]+)/$', views.single_person_filter_tag),
     url(r'^([\w\-]+)/([a-z0-9\-]+)/$', views.single_person_filter_contest),
     url(r'^([\w\-]+)/([A-Z0-9\-]+)/$', views.single_person_filter_group),
-    
+
 ]
