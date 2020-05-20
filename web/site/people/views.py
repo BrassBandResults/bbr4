@@ -855,7 +855,7 @@ def people_list_by_letter(request, pLetter):
 
 
 @login_required_pro_user
-def contest_winners(request):
+def number_bands(request):
     """
     Show list of which conductors have taken the most bands
     """
