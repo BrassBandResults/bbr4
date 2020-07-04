@@ -18,8 +18,10 @@ def _tweet_ContestResults(notification):
   contestEventDate = time.strftime("%a, %-d %b %Y")
   contestEventUrl = "https://brassbandresults.co.uk%s" % notification["url"]
   winnersTwitter = notification["_WinnersTwitter"]
+  if winnersTwitter:
+      winnersTwitter = "@" + winnersTwitter
   return "%s on %s updated: %s %s" % (contestName, contestEventDate, contestEventUrl, winnersTwitter)
-    
+
 
 def _tweet_BandMapMove(notification):
   """
@@ -37,7 +39,7 @@ def _tweet_BandMapMove(notification):
 
 
 TWITTER_TEMPLATES = {
-  "contests.contestevent.results_added" : _tweet_ContestResults, 
+  "contests.contestevent.results_added" : _tweet_ContestResults,
   "bands.band_map.move" : _tweet_BandMapMove,
 }
 
@@ -57,25 +59,25 @@ def _tweet(message):
       #send_mail('Error Tweeting', lErrorMessage, 'twitter@brassbandresults.co.uk', ['errors@brassbandresults.co.uk'], fail_silently=True)
 
 def lambda_handler(event, context):
-  print(event)    
+  print(event)
   print(event["Records"][0]["Sns"]["Message"])
   parsedMessage = json.loads(event["Records"][0]["Sns"]["Message"])
   print (parsedMessage)
-  
+
   notifyModule = parsedMessage["notification"]["module"]
   notifyType = parsedMessage["notification"]["type"]
   notifyChange = parsedMessage["notification"]["change"]
 
   notifyContextPath = "%s.%s.%s" % (notifyModule, notifyType, notifyChange)
-  
+
   print("Looking for notification path %s" % notifyContextPath)
-  
+
   tweetFunction = None
   try:
     tweetFunction = TWITTER_TEMPLATES[notifyContextPath]
   except KeyError:
     print ("No matching tweet template found")
-  
+
   if tweetFunction:
     messageToTweet = tweetFunction(parsedMessage["notification"])
     print("Tweeting %s" % messageToTweet)
