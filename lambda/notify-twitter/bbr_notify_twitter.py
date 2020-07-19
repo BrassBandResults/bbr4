@@ -15,7 +15,7 @@ def _tweet_ContestResults(notification):
   contestName = contestEvent["name"]
   contestEventDateRaw = contestEvent["date_of_event"]
   contestEventDateParsed = parse(contestEventDateRaw)
-  contestEventDate = time.strftime("%a, %-d %b %Y")
+  contestEventDate = contestEventDateParsed.strftime("%a, %-d %b %Y")
   contestEventUrl = "https://brassbandresults.co.uk%s" % notification["url"]
   winnersTwitter = notification["_WinnersTwitter"]
   if winnersTwitter:
