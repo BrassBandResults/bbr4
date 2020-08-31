@@ -1,6 +1,7 @@
 #!/bin/bash
 cd ~/web/bbr-data
 rm -r "Contest Events"
+rm -r "Bands"
 cd -
 source ~/.venv/bbr4/bin/activate
 python extract.py

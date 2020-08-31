@@ -15,7 +15,6 @@ from django.template.loader import render_to_string
 
 from contests.models import ContestEvent
 
-print ("Extracting %d Contest Events" % ContestEvent.objects.count())
 HOME = expanduser("~/web/bbr-data")
 
 def write_file(filepath, filename, contents):
@@ -26,6 +25,7 @@ def write_file(filepath, filename, contents):
 	f.write(contents)
 	f.close()
 
+print ("Extracting %d Contest Events" % ContestEvent.objects.count())
 lAllEvents = ContestEvent.objects.all().order_by('-date_of_event')
 lYear = None
 for event in lAllEvents:
@@ -38,3 +38,16 @@ for event in lAllEvents:
 	lFilename = "%s.xml" % event.name
 	lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
 	write_file(lFilepath, lFilename, lContestXml)
+
+print ("Extracting %d Bands" % Band.objects.count())
+lAllBands = Band.objects.all().order_by('name')
+for band in lAllBands:
+	print ("\t%s" % band.name)
+	try:
+		lDir = band.slug[0:1]
+	except IndexError:
+		lDir = "_"
+	lFilepath = "%s/Bands/%s" % (HOME, lDir)
+	lFilename = "%s.xml" % band.slug
+	lBandXml = render_to_string('extract/band.xml', { 'Band' : band, })
+	write_file(lFilepath, lFilename, lBandXml)
