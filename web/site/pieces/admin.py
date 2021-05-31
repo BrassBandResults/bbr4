@@ -13,7 +13,10 @@ class TestPieceAdmin(BbrAdmin):
     prepopulated_fields = {"slug" : ("name",)}
     inlines = [TestPieceAliasInline]
     search_fields = ['name']
-    
+
+class TestPieceAliasAdmin(BbrAdmin):
+    search_fields = ['name']
+
 class DownloadStoreAdmin(BbrAdmin):
     search_fields = ['name',]
 
@@ -25,11 +28,12 @@ class DownloadAlbumAdmin(BbrAdmin):
     inlines = [DownloadTrackInline]
     search_fields = ['title',]
     list_display = ('title','type', 'band_name')
-    
+
 class DownloadTrackAdmin(BbrAdmin):
     search_fields = ['title',]
 
 admin.site.register(TestPiece, TestPieceAdmin)
+admin.site.register(TestPieceAlias, TestPieceAliasAdmin)
 admin.site.register(DownloadStore, DownloadStoreAdmin)
 admin.site.register(DownloadAlbum, DownloadAlbumAdmin)
 admin.site.register(DownloadTrack, DownloadTrackAdmin)
