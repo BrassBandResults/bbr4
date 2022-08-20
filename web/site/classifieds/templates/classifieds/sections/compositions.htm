@@ -13,16 +13,16 @@
 {% for piece in Pieces %}
     <tr>
       <td class="testpiece"><a href="/pieces/{{piece.slug}}/">{{piece.name}}</a></td>
-{% ifequal Composer.name piece.composer.name %}
+{% if Composer.name == piece.composer.name %}
       <td class="composer">{{piece.composer.name}}</td>
 {% else %}      
       <td class="composer"><a href="/composers/{{piece.composer.slug}}/">{{piece.composer.name}}</a></td>
-{% endifequal %}
-{% ifequal Composer.name piece.arranger.name %}
+{% endif %}
+{% if Composer.name == piece.arranger.name %}
       <td class="composer">{{piece.arranger.name}}</td>
 {% else %}      
       <td class="composer"><a href="/composers/{{piece.arranger.slug}}/">{{piece.arranger.name}}</a></td>
-{% endifequal %}
+{% endif %}
 	  <td>{{piece.year}}</td>  
     </tr>
 {% endfor %}

@@ -50,19 +50,19 @@
 <div id="top-block">
   <div id="left-top-block">
   <table>
-{% ifequal Band.status 0 %}
+{% if Band.status == 0 %}
     <tr><td colspan="2">{% trans "This band no longer exists."%}</td></tr>
-{% endifequal %}
+{% endif %}
 
-{% ifequal Band.status 2 %}
+{% if Band.status == 2 %}
     <tr><td colspan="2">{% trans "This is a non-competing band."%}</td></tr>
-{% endifequal %}
-{% ifequal Band.status 4 %}
+{% endif %}
+{% if Band.status == 4 %}
     <tr><td colspan="2">{% trans "This is a Salvation Army band."%}</td></tr>
-{% endifequal %}
-{% ifequal Band.status 5 %}
+{% endif %}
+{% if Band.status == 5 %}
     <tr><td colspan="2">{% trans "This band is now a wind band."%}</td></tr>
-{% endifequal %}
+{% endif %}
 {% if Band.scratch_band %}
     <tr><td colspan="2">{% trans "This is a scratch band, formed for this event."%}</td></tr>
 {% endif %}
@@ -70,13 +70,13 @@
     <tr><th>{% trans "Section"%}:</th><td>{{BandSection.name}}</td></tr>
 {% endif %}
 
-{% ifequal Band.website "http://" %}
-  {% ifnotequal Band.status 0 %}
+{% if Band.website "http://" %}
+  {% if Band.status != 0 %}
     <tr><th>{% trans "Website"%}:</th><td><font color="red">{% trans "Unknown, do you know?"%}</font></td></tr>
-  {%endifnotequal%}
+  {%endif%}
 {% else %}
     <tr><th>{% trans "Website"%}:</th><td class="band-website"><a href="{{Band.website_url}}" target="_blank">{{Band.website_url}}</a></td></tr>
-{% endifequal %}
+{% endif %}
 
     <tr><th>{% trans "Region"%}:</th><td class="region"><a href="/regions/{{Band.region.slug}}/">{{Band.region.name}}</a></td></tr>
 {% if Band.start_date or Band.end_date %}
@@ -100,7 +100,7 @@
   </table>
   	<div id="link_buttons">
 {% if ShowOnMap %}
-      <a href="/map/band/{{Band.slug}}/{% ifequal Band.status 0 %}?show_extinct=Y{%endifequal%}"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "View On Map"%}</button></a>
+      <a href="/map/band/{{Band.slug}}/{% if Band.status == 0 %}?show_extinct=Y{%endif%}"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "View On Map"%}</button></a>
       <a href="/map/search/?location={{Band.name}}&lat={{Band.latitude}}&lng={{Band.longitude}}&distance=10&type=mi&from=band"><button class="screenonly btn btn-outline-primary btn-sm float-left mb-1 mr-1">{% trans "Nearby Bands"%}</button></a>
 {% endif %}
 {% if ContestResults %}
@@ -158,9 +158,9 @@
 {% endif %}
 <br/>
 {% if not ShowOnMap %}
-{% ifnotequal Band.status 0 %}
+{% if Band.status != 0 %}
 <p><font color="red">{% trans "This band is not on"%} <a href="/map/">{% trans "the map"%}</a>.  {% trans "Do you know where they rehearse?"%}  <a href="/map/coordwrong/{{Band.slug}}/">{% trans "Click here to add them!"%}</a></font></p>
-{% endifnotequal %}
+{% endif %}
 {% endif %}
 {% if Filter %}
 <p class="alert alert-warning">{% trans "This view of the band's results is filtered to"%} <b>{{FilteredTo.name}}</b>.  [<a href="/bands/{{Band.slug}}/">{% trans "Remove Filter"%}</a>].</p>
@@ -220,16 +220,16 @@
 		<td class="band-contest-draw">{% if result.draw %}{{ result.draw }}{% endif %}</td>
 		<td class="conductor">
 {% if not result.contest_event.moreThanThreeMonthsInFuture %}
-{% ifnotequal result.results_position_display "W" %}
-{% ifequal result.person_conducting.name "Unknown" %}
+{% if result.results_position_display != "W" %}
+{% if result.person_conducting.name == "Unknown" %}
 			<font color="red">{% trans "Unknown, do you know?"%}</font>
 {% else %}
 			<a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
 			{% if result.second_person_conducting %}
             <br/><a href="/people/{{result.second_person_conducting.slug}}/">{{result.second_person_conducting.name}}</a>
             {% endif %}
-{% endifequal %}
-{% endifnotequal %}
+{% endif %}
+{% endif %}
 {% endif %}
 		</td>
 {% if user.is_staff and perms.contests.change_contestresult %}
@@ -277,11 +277,11 @@
 		    <td class="contest-event-name">{{ result.contest_event.name }}</td>
 		    <td class="band-contest-position" title="{{result.result_tooltip}}">{{ result.results_position_display }}{% if result.notes %} &nbsp;<a href="#" title="{{result.notes}}"><img src="{{ STATIC_URL }}icons/comment.png" border="0"/></a>{%endif%}</td>
 		    <td class="conductor">
-{% ifequal result.person_conducting.name "Unknown" %}
+{% if result.person_conducting.name == "Unknown" %}
 			    <font color="red">{% trans "Unknown, do you know?"%}</font>
 {% else %}
 			    <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
-{% endifequal %}
+{% endif %}
 		    </td>
 		    <td class="test_piece">{% if result.test_piece%}<a href="/pieces/{{result.test_piece.slug}}/">{{result.test_piece.name}}</a>{%endif%}</td>
 {% if user.is_staff and perms.contests.change_contestresult %}

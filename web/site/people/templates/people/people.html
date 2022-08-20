@@ -55,45 +55,45 @@
 {% endif %}
 
 
-{% ifequal StartsWith "ALL" %}
+{% if StartsWith == "ALL" %}
 <h1>{% trans "All People"%}</h1>
 {% else %}
 <h1>{% trans "People starting with"%} {{StartsWith}}</h1>
-{% endifequal %}
+{% endif %}
 <p>{% trans "Showing"%} {{PeopleCount}} {% trans "of"%} {{AllPeopleCount}} {% trans "people"%}</p>
 {% if user.profile.enhanced_functionality %}
 <p>[<a href="/people/add/">{% trans "Add New Person"%}</a>]</p>
 {% endif %}
 <p>{% trans "Starts with"%}:
-{% ifequal StartsWith "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/people/A/">A</a>{%endifequal%}
-{% ifequal StartsWith "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/people/B/">B</a>{%endifequal%}
-{% ifequal StartsWith "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/people/C/">C</a>{%endifequal%}
-{% ifequal StartsWith "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/people/D/">D</a>{%endifequal%}
-{% ifequal StartsWith "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/people/E/">E</a>{%endifequal%}
-{% ifequal StartsWith "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/people/F/">F</a>{%endifequal%}
-{% ifequal StartsWith "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/people/G/">G</a>{%endifequal%}
-{% ifequal StartsWith "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/people/H/">H</a>{%endifequal%}
-{% ifequal StartsWith "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/people/I/">I</a>{%endifequal%}
-{% ifequal StartsWith "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/people/J/">J</a>{%endifequal%}
-{% ifequal StartsWith "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/people/K/">K</a>{%endifequal%}
-{% ifequal StartsWith "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/people/L/">L</a>{%endifequal%}
-{% ifequal StartsWith "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/people/M/">M</a>{%endifequal%}
-{% ifequal StartsWith "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/people/N/">N</a>{%endifequal%}
-{% ifequal StartsWith "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/people/O/">O</a>{%endifequal%}
-{% ifequal StartsWith "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/people/P/">P</a>{%endifequal%}
-{% ifequal StartsWith "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/people/Q/">Q</a>{%endifequal%}
-{% ifequal StartsWith "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/people/R/">R</a>{%endifequal%}
-{% ifequal StartsWith "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/people/S/">S</a>{%endifequal%}
-{% ifequal StartsWith "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/people/T/">T</a>{%endifequal%}
-{% ifequal StartsWith "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/people/U/">U</a>{%endifequal%}
-{% ifequal StartsWith "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/people/V/">V</a>{%endifequal%}
-{% ifequal StartsWith "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/people/W/">W</a>{%endifequal%}
-{% ifequal StartsWith "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/people/X/">X</a>{%endifequal%}
-{% ifequal StartsWith "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/people/Y/">Y</a>{%endifequal%}
-{% ifequal StartsWith "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/people/Z/">Z</a>{%endifequal%}
+{% if StartsWith == "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/people/A/">A</a>{%endif%}
+{% if StartsWith == "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/people/B/">B</a>{%endif%}
+{% if StartsWith == "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/people/C/">C</a>{%endif%}
+{% if StartsWith == "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/people/D/">D</a>{%endif%}
+{% if StartsWith == "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/people/E/">E</a>{%endif%}
+{% if StartsWith == "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/people/F/">F</a>{%endif%}
+{% if StartsWith == "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/people/G/">G</a>{%endif%}
+{% if StartsWith == "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/people/H/">H</a>{%endif%}
+{% if StartsWith == "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/people/I/">I</a>{%endif%}
+{% if StartsWith == "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/people/J/">J</a>{%endif%}
+{% if StartsWith == "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/people/K/">K</a>{%endif%}
+{% if StartsWith == "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/people/L/">L</a>{%endif%}
+{% if StartsWith == "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/people/M/">M</a>{%endif%}
+{% if StartsWith == "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/people/N/">N</a>{%endif%}
+{% if StartsWith == "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/people/O/">O</a>{%endif%}
+{% if StartsWith == "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/people/P/">P</a>{%endif%}
+{% if StartsWith == "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/people/Q/">Q</a>{%endif%}
+{% if StartsWith == "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/people/R/">R</a>{%endif%}
+{% if StartsWith == "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/people/S/">S</a>{%endif%}
+{% if StartsWith == "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/people/T/">T</a>{%endif%}
+{% if StartsWith == "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/people/U/">U</a>{%endif%}
+{% if StartsWith == "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/people/V/">V</a>{%endif%}
+{% if StartsWith == "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/people/W/">W</a>{%endif%}
+{% if StartsWith == "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/people/X/">X</a>{%endif%}
+{% if StartsWith == "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/people/Y/">Y</a>{%endif%}
+{% if StartsWith == "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/people/Z/">Z</a>{%endif%}
 {% if request.user.profile.pro_member %}
-{% ifequal StartsWith "ALL" %}<span class="bg-dark text-light rounded p-1">Show All</span>{%else%}<a href="/people/ALL/">{% trans "Show All"%}</a>{%endifequal%}
-{% ifequal StartsWith "NOTHING" %}<span class="bg-dark text-light rounded p-1">Nothing</span>{%else%}<a href="/people/NOTHING/">{% trans "Did Nothing"%}</a>{%endifequal%}
+{% if StartsWith == "ALL" %}<span class="bg-dark text-light rounded p-1">Show All</span>{%else%}<a href="/people/ALL/">{% trans "Show All"%}</a>{%endif%}
+{% if StartsWith == "NOTHING" %}<span class="bg-dark text-light rounded p-1">Nothing</span>{%else%}<a href="/people/NOTHING/">{% trans "Did Nothing"%}</a>{%endif%}
 {% endif %}
 </p>
 <button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
@@ -128,35 +128,35 @@
 	</tbody>
 </table>
 <p>{% trans "Starts with"%}: 
-{% ifequal StartsWith "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/people/A/">A</a>{%endifequal%}
-{% ifequal StartsWith "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/people/B/">B</a>{%endifequal%}
-{% ifequal StartsWith "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/people/C/">C</a>{%endifequal%}
-{% ifequal StartsWith "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/people/D/">D</a>{%endifequal%}
-{% ifequal StartsWith "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/people/E/">E</a>{%endifequal%}
-{% ifequal StartsWith "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/people/F/">F</a>{%endifequal%}
-{% ifequal StartsWith "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/people/G/">G</a>{%endifequal%}
-{% ifequal StartsWith "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/people/H/">H</a>{%endifequal%}
-{% ifequal StartsWith "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/people/I/">I</a>{%endifequal%}
-{% ifequal StartsWith "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/people/J/">J</a>{%endifequal%}
-{% ifequal StartsWith "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/people/K/">K</a>{%endifequal%}
-{% ifequal StartsWith "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/people/L/">L</a>{%endifequal%}
-{% ifequal StartsWith "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/people/M/">M</a>{%endifequal%}
-{% ifequal StartsWith "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/people/N/">N</a>{%endifequal%}
-{% ifequal StartsWith "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/people/O/">O</a>{%endifequal%}
-{% ifequal StartsWith "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/people/P/">P</a>{%endifequal%}
-{% ifequal StartsWith "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/people/Q/">Q</a>{%endifequal%}
-{% ifequal StartsWith "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/people/R/">R</a>{%endifequal%}
-{% ifequal StartsWith "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/people/S/">S</a>{%endifequal%}
-{% ifequal StartsWith "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/people/T/">T</a>{%endifequal%}
-{% ifequal StartsWith "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/people/U/">U</a>{%endifequal%}
-{% ifequal StartsWith "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/people/V/">V</a>{%endifequal%}
-{% ifequal StartsWith "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/people/W/">W</a>{%endifequal%}
-{% ifequal StartsWith "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/people/X/">X</a>{%endifequal%}
-{% ifequal StartsWith "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/people/Y/">Y</a>{%endifequal%}
-{% ifequal StartsWith "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/people/Z/">Z</a>{%endifequal%}
+{% if StartsWith == "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/people/A/">A</a>{%endif%}
+{% if StartsWith == "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/people/B/">B</a>{%endif%}
+{% if StartsWith == "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/people/C/">C</a>{%endif%}
+{% if StartsWith == "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/people/D/">D</a>{%endif%}
+{% if StartsWith == "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/people/E/">E</a>{%endif%}
+{% if StartsWith == "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/people/F/">F</a>{%endif%}
+{% if StartsWith == "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/people/G/">G</a>{%endif%}
+{% if StartsWith == "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/people/H/">H</a>{%endif%}
+{% if StartsWith == "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/people/I/">I</a>{%endif%}
+{% if StartsWith == "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/people/J/">J</a>{%endif%}
+{% if StartsWith == "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/people/K/">K</a>{%endif%}
+{% if StartsWith == "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/people/L/">L</a>{%endif%}
+{% if StartsWith == "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/people/M/">M</a>{%endif%}
+{% if StartsWith == "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/people/N/">N</a>{%endif%}
+{% if StartsWith == "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/people/O/">O</a>{%endif%}
+{% if StartsWith == "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/people/P/">P</a>{%endif%}
+{% if StartsWith == "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/people/Q/">Q</a>{%endif%}
+{% if StartsWith == "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/people/R/">R</a>{%endif%}
+{% if StartsWith == "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/people/S/">S</a>{%endif%}
+{% if StartsWith == "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/people/T/">T</a>{%endif%}
+{% if StartsWith == "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/people/U/">U</a>{%endif%}
+{% if StartsWith == "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/people/V/">V</a>{%endif%}
+{% if StartsWith == "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/people/W/">W</a>{%endif%}
+{% if StartsWith == "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/people/X/">X</a>{%endif%}
+{% if StartsWith == "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/people/Y/">Y</a>{%endif%}
+{% if StartsWith == "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/people/Z/">Z</a>{%endif%}
 {% if request.user.profile.pro_member %}
-{% ifequal StartsWith "ALL" %}<span class="bg-dark text-light rounded p-1">Show All</span>{%else%}<a href="/people/ALL/">{% trans "Show All"%}</a>{%endifequal%}
-{% ifequal StartsWith "NOTHING" %}<span class="bg-dark text-light rounded p-1">Nothing</span>{%else%}<a href="/people/NOTHING/">{% trans "Did Nothing"%}</a>{%endifequal%}
+{% if StartsWith == "ALL" %}<span class="bg-dark text-light rounded p-1">Show All</span>{%else%}<a href="/people/ALL/">{% trans "Show All"%}</a>{%endif%}
+{% if StartsWith == "NOTHING" %}<span class="bg-dark text-light rounded p-1">Nothing</span>{%else%}<a href="/people/NOTHING/">{% trans "Did Nothing"%}</a>{%endif%}
 {% endif %}
 </p>
 </div>

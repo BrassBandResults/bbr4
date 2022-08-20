@@ -56,17 +56,17 @@
       <p>This users average position at a contest is {{AveragePosition|floatformat:"1"}}.</p>
       <p><b>Bands</b>:
         {% for band in HistoryBands %}
-        {% ifnotequal Filter "band" %}
+        {% if Filter != "band" %}
     	  <a class="hourglass" href="/myresults/{{User.username}}/band/{{band.slug}}/" title="{% trans "Click to filter to"%} {{band.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a>
-		{% endifnotequal %}
+		{% endif %}
         <a href="/bands/{{band.slug}}/">{{band.name}}</a>
         {% if not forloop.last%}, {%endif%}
         {%endfor %}</p>
       <p><b>Conductors</b>:
         {% for conductor in HistoryConductors %}
-        {% ifnotequal Filter "conductor" %}
+        {% if Filter != "conductor" %}
         <a class="hourglass" href="/myresults/{{User.username}}/conductor/{{conductor.slug}}/" title="{% trans "Click to filter to"%} {{conductor.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a>
-        {% endifnotequal %}
+        {% endif %}
         <a href="/people/{{conductor.slug}}/">{{conductor.name}}</a>
         {% if not forloop.last%}, {%endif%}
         {%endfor%}</p>
@@ -105,32 +105,32 @@
 		<tr class="result-{{result.result.results_position_display}} year-{{result.result.contest_event.date_of_event|date:"Y"}}">
 		  <td><a href="/contests/{{result.result.contest_event.contest.slug}}/{{result.result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.result.contest_event.event_date}}</a></td>
 		  {% if result.result.contest_event.contest.group_id %}
-      <td class="contest-event-name">{% ifnotequal Filter "group" %}{% if ProMember %}<a class="hourglass" href="/myresults/{{User.username}}/group/{{result.result.contest_event.contest.group.slug}}/" title="{% trans "Click to filter to"%} {{result.result.contest_event.contest.group.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a> {%endif%}{%endifnotequal%}{{result.result.contest_event.contest.name}}</td>
+      <td class="contest-event-name">{% if Filter != "group" %}{% if ProMember %}<a class="hourglass" href="/myresults/{{User.username}}/group/{{result.result.contest_event.contest.group.slug}}/" title="{% trans "Click to filter to"%} {{result.result.contest_event.contest.group.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a> {%endif%}{%endif%}{{result.result.contest_event.contest.name}}</td>
       {% else %}
-      <td class="contest-event-name">{% ifnotequal Filter "contest" %}{% if ProMember %}<a class="hourglass" href="/myresults/{{User.username}}/contest/{{result.result.contest_event.contest.actual_slug}}/" title="{% trans "Click to filter to"%} {{result.result.contest_event.contest.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a> {%endif%}{%endifnotequal%}{{result.result.contest_event.contest.name}}</td>
+      <td class="contest-event-name">{% if Filter != "contest" %}{% if ProMember %}<a class="hourglass" href="/myresults/{{User.username}}/contest/{{result.result.contest_event.contest.actual_slug}}/" title="{% trans "Click to filter to"%} {{result.result.contest_event.contest.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a> {%endif%}{%endif%}{{result.result.contest_event.contest.name}}</td>
       {% endif %}
     	<td>
-    	      {% ifnotequal Filter "band" %}
+    	      {% if Filter != "band" %}
     	      {% if ProMember %}
 			  <a class="hourglass" href="/myresults/{{User.username}}/band/{{result.result.band.slug}}/" title="{% trans "Click to filter to"%} {{result.result.band.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a>
 			  {% endif %}
-			  {% endifnotequal %}
+			  {% endif %}
 			  <a href="/bands/{{result.result.band.slug}}/" title="{{result.result.band.name}}">{{result.result.band_name}}</a>
 			</td>
 			<td class="conductor">
 {% if not result.result.contest_event.moreThanThreeMonthsInFuture %}
-{% ifnotequal result.result.results_position_display "W" %}
-{% ifequal result.result.conductor.name "Unknown" %}
+{% if result.result.results_position_display != "W" %}
+{% if result.result.conductor.name == "Unknown" %}
       <font color="red">{% trans "Unknown, do you know?"%}</font>
 {% else %}
-      {% ifnotequal Filter "conductor" %}
+      {% if Filter != "conductor" %}
       {% if ProMember %}
       <a class="hourglass" href="/myresults/{{User.username}}/conductor/{{result.result.conductor.slug}}/" title="{% trans "Click to filter to"%} {{result.result.conductor.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a>
       {% endif %}
-      {% endifnotequal %}
+      {% endif %}
       <a href="/people/{{result.result.person_conducting.slug}}/">{{result.result.person_conducting.name}}</a>
-{% endifequal %}
-{% endifnotequal %}
+{% endif %}
+{% endif %}
 {% endif %}
 			</td>
 			<td>{{result.result.results_position_display}}</td>

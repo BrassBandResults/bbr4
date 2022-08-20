@@ -1,19 +1,19 @@
 An edit has been made to {{ThingNew.date_of_event|date:"Y-m-d"}} {{ThingNew.contest.name|safe}}. 
 
-Date: {{ThingNew.date_of_event|date:"Y-m-d"}}{% ifnotequal ThingNew.date_of_event ThingOld.date_of_event %} [was {{ThingOld.date_of_event|date:"Y-m-d"}}]{%endifnotequal%}
-Date Resolution: {{ThingNew.get_date_resolution_display}}{% ifnotequal ThingNew.date_resolution ThingOld.date_resolution %} [was {{ThingOld.get_date_resolution_display}}]{%endifnotequal%}
-Contest Name: {{ThingNew.contest.name|safe}}{% ifnotequal ThingNew.contest.name ThingOld.contest.name %} [was {{ThingOld.contest.name|safe}}]{%endifnotequal%}
-Event Name: {{ThingNew.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
-Test Piece: {{ThingNew.test_piece|safe}}{% ifnotequal ThingNew.test_piece ThingOld.test_piece %} [was {{ThingOld.test_piece|safe}}]{%endifnotequal%}
-Venue: {{ThingNew.venue_link.name|safe}}{% ifnotequal ThingNew.venue_link.name ThingOld.venue_link.name %} [was {{ThingOld.venue_link.name|safe}}]{%endifnotequal%}
-Contest Type Override: {{ThingNew.contest_type_override_link.name}}{% ifnotequal ThingNew.contest_type_override_link.name ThingOld.contest_type_override_link.name %} [was {{ThingOld.contest_type_override_link.name}}]{%endifnotequal%}
-Complete: {{ThingNew.complete}}{% ifnotequal ThingNew.complete ThingOld.complete %} [was {{ThingOld.complete}}]{%endifnotequal%}
-No Contest: {{ThingNew.no_contest}}{% ifnotequal ThingNew.no_contest ThingOld.no_contest %} [was {{ThingOld.no_contest}}]{%endifnotequal%}
-Requires Input: {{ThingNew.requires_input}}{% ifnotequal ThingNew.requires_input ThingOld.requires_input %} [was {{ThingOld.requires_input}}]{%endifnotequal%}
+Date: {{ThingNew.date_of_event|date:"Y-m-d"}}{% if ThingNew.date_of_event != ThingOld.date_of_event %} [was {{ThingOld.date_of_event|date:"Y-m-d"}}]{%endif%}
+Date Resolution: {{ThingNew.get_date_resolution_display}}{% if ThingNew.date_resolution != ThingOld.date_resolution %} [was {{ThingOld.get_date_resolution_display}}]{%endif%}
+Contest Name: {{ThingNew.contest.name|safe}}{% if ThingNew.contest.name != ThingOld.contest.name %} [was {{ThingOld.contest.name|safe}}]{%endif%}
+Event Name: {{ThingNew.name|safe}}{% if ThingNew.name != ThingOld.name %} [was {{ThingOld.name|safe}}]{%endif%}
+Test Piece: {{ThingNew.test_piece|safe}}{% if ThingNew.test_piece != ThingOld.test_piece %} [was {{ThingOld.test_piece|safe}}]{%endif%}
+Venue: {{ThingNew.venue_link.name|safe}}{% if ThingNew.venue_link.name != ThingOld.venue_link.name %} [was {{ThingOld.venue_link.name|safe}}]{%endif%}
+Contest Type Override: {{ThingNew.contest_type_override_link.name}}{% if ThingNew.contest_type_override_link.name != ThingOld.contest_type_override_link.name %} [was {{ThingOld.contest_type_override_link.name}}]{%endif%}
+Complete: {{ThingNew.complete}}{% if ThingNew.complete != ThingOld.complete %} [was {{ThingOld.complete}}]{%endif%}
+No Contest: {{ThingNew.no_contest}}{% if ThingNew.no_contest != ThingOld.no_contest %} [was {{ThingOld.no_contest}}]{%endif%}
+Requires Input: {{ThingNew.requires_input}}{% if ThingNew.requires_input != ThingOld.requires_input %} [was {{ThingOld.requires_input}}]{%endif%}
 
 Notes: {{ThingNew.notes|safe}}
 
-{% ifnotequal ThingNew.notes ThingOld.notes %} [was {{ThingOld.notes}}]{%endifnotequal%}
+{% if ThingNew.notes != ThingOld.notes %} [was {{ThingOld.notes}}]{%endif%}
 
 Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
 Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}

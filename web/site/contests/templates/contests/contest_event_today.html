@@ -170,9 +170,9 @@
 {% if ShowPoints %}
       <th>{{ContestEvent.contest_type.total_points}}</th>
 {% endif %}      
-{% ifequal ContestEvent.owner request.user %}
+{% if ContestEvent.owner == request.user %}
             <th></th>
-{% endifequal %}
+{% endif %}
 {% if user.is_staff and perms.contests.change_contestresult  %}
             <th></th>
 {% endif %}
@@ -187,18 +187,18 @@
             <td class="band"><img src="{{ STATIC_URL }}flags/{{result.band.region.country_code|lower}}.png" title="{{result.band.region.name}}"> <a href="/bands/{{result.band.slug}}/" title="{{result.band.name}}">{{result.band_name}}</a></td>
 {% if not ContestEvent.moreThanThreeMonthsInFuture %}            
             <td class="conductor">
-{% ifnotequal result.results_position_display "W" %}
+{% if result.results_position_display != "W" %}
 {% if not ContestEvent.no_contest %}
-{% ifequal result.person_conducting.slug "unknown" %}
+{% if result.person_conducting.slug == "unknown" %}
                 <font color="red">{% trans "Unknown, do you know?"%}</font>
 {% else %}            
                 <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
                 {% if result.second_person_conducting %}
                 <br/><a href="/people/{{result.second_person_conducting.slug}}/">{{result.second_person_conducting.name}}</a>
                 {% endif %}
-{% endifequal %}
 {% endif %}
-{% endifnotequal %}                
+{% endif %}
+{% endif %}                
             </td>
 {% endif %}
 {% if HasOwnChoice %}
@@ -269,7 +269,7 @@
 {% if not ContestEvent.complete %}
 
 <span class="screenonly">
-{% ifequal ContestEvent.owner user %}
+{% if ContestEvent.owner == user %}
 [<a href="/addresults/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/5/">Add More Results</a>] [<a href="/addresults/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/amend/">{% trans "Amend Existing Results"%}</a>]
 {% else %}
 {% if user.profile.enhanced_functionality %}
@@ -279,7 +279,7 @@
 <p class="screenonly">This contest does not appear to have complete results.  <a href="/addresults/{{ContestEvent.contest.slug}}/{{ContestEvent.date_of_event|date:"Y-m-d"}}/5/">{% trans "Add More Here"%}</a>.</p>
 {% endif %}
 {% endif %}
-{% endifequal %}
+{% endif %}
 </span>
 
 {% endif %}

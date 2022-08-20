@@ -26,7 +26,7 @@
 {% if ContestQualifiesFrom %}
 <p class="alias">{% trans "Bands qualify for this contest from"%} {% for contest in ContestQualifiesFrom%}<a href="/contests/{{contest.slug}}/">{{contest.name}}</a>{% if not forloop.last%}, {%else%}.{%endif%}{%endfor%}</p>
 {% endif %}
-{% if Contest.description %}{% ifnotequal Contest.description Contest.name%}<p>{{Contest.description|safe|linebreaksbr}}</p>{%endifnotequal%}{%endif%}
+{% if Contest.description %}{% if Contest.description != Contest.name%}<p>{{Contest.description|safe|linebreaksbr}}</p>{%endif%}{%endif%}
 {% if Contest.contact_info %}
 <h2>{% trans "Contact Info"%}</h2>
 <p>{{Contest.contact_info}}</p>
@@ -69,7 +69,7 @@
 {% if FutureEvents %}
 <ul>
 {% for event in FutureEvents %}
-  <li>We believe this contest will be run on <a href="/contests/{{Contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a>{% if event.venue_link %} at <a href="/venues/{{event.venue_link.slug}}/">{{event.venue_link.name}}</a>{%endif%}.{%if event.test_piece%}  The testpiece will be <a href="/pieces/{{event.test_piece.slug}}/">{{event.test_piece.name}}</a>.{%endif%}  {% ifequal user event.owner %}[<a href="/contests/{{Contest.slug}}/deletefuture/{{event.id}}/">Delete</a>]{%endifequal%}</li>
+  <li>We believe this contest will be run on <a href="/contests/{{Contest.slug}}/{{event.date_of_event|date:"Y-m-d"}}/">{{event.event_date}}</a>{% if event.venue_link %} at <a href="/venues/{{event.venue_link.slug}}/">{{event.venue_link.name}}</a>{%endif%}.{%if event.test_piece%}  The testpiece will be <a href="/pieces/{{event.test_piece.slug}}/">{{event.test_piece.name}}</a>.{%endif%}  {% if user == event.owner %}[<a href="/contests/{{Contest.slug}}/deletefuture/{{event.id}}/">Delete</a>]{%endif%}</li>
 {% endfor %}
 </ul>
 {% endif %}
@@ -119,11 +119,11 @@
 			<td>
 			  {% for winner in event.winners %}
 			    <div class="conductor">
-			      {% ifequal winner.conductor_name "Unknown Unknown" %}
+			      {% if winner.conductor_name == "Unknown Unknown" %}
 			        <font color="red">{% trans "Unknown, do you know?"%}</font>
 			      {% else %}
 			        <a href="/people/{{winner.conductor_slug}}/">{{winner.conductor_name}}</a>
-  			      {% endifequal %}
+  			      {% endif %}
 			  </div>
 			  {%endfor%}
 			</td>

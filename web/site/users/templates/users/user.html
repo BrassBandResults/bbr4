@@ -59,11 +59,11 @@
 			<td>{{result.result.contest_event.contest.name}}</td>
 			<td><a href="/bands/{{result.result.band.slug}}/" title="{{result.result.band.name}}">{{result.result.band_name}}</a></td>
       <td>
-{% ifequal result.result.conductor.name "Unknown" %}
+{% if result.result.conductor.name == "Unknown" %}
         <font color="red">Unknown, do you know?</font>
 {% else %}      
         <a href="/people/{{result.result.person_conducting.slug}}/">{{result.result.person_conducting.name}}</a>
-{% endifequal %}      
+{% endif %}      
       </td>
 			<td>{{result.result.results_position_display}}</td>
 		</tr>

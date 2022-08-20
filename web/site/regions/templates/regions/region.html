@@ -102,15 +102,15 @@
 	<tbody>
 {% for band in Region.bands %}
 		<tr class="
-                    {%ifequal band.status 0 %} extinct table-danger{%endifequal%}
-                    {%ifequal band.status 2 %} table-warning{%endifequal%}
-                    {%ifequal band.status 4 %} table-info{%endifequal%}
+                    {%if band.status == 0 %} extinct table-danger{%endif%}
+                    {%if band.status == 2 %} table-warning{%endif%}
+                    {%if band.status == 4 %} table-info{%endif%}
                   ">
 			<td class="band"><a href="/bands/{{band.slug}}/">{{band.name}}</a></td>
             <td>
-              {%ifequal band.status 0 %}{% trans "Extinct"%}{%endifequal%}
-              {%ifequal band.status 2 %}{% trans "Non-competing"%}{%endifequal%}
-              {%ifequal band.status 4 %}{% trans "Salvation Army"%}{%endifequal%}
+              {%if band.status == 0 %}{% trans "Extinct"%}{%endif%}
+              {%if band.status == 2 %}{% trans "Non-competing"%}{%endif%}
+              {%if band.status == 4 %}{% trans "Salvation Army"%}{%endif%}
             </td>
 			<td>{{band.resultcount}}</td>
 		</tr>

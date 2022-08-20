@@ -34,7 +34,7 @@
       "font-size": 10,
       "values" :   [{% for result in Results %}{
                       "value": {{ result.results_position }},
-                      {% ifequal result.results_position 1 %}"colour": "#FF0000",{%endifequal%}
+                      {% if result.results_position == 1 %}"colour": "#FF0000",{%endif%}
                       "tip": "{{ result.results_position|ordinal }} {% if result.bands_competing%}of {{result.bands_competing}}{%endif%} : {{ result.contest_event.name }} {{ result.contest_event.date_of_event|date:"M Y" }}{%if ShowBand%}, {{result.band.name}}{%endif%}{%if ShowConductor%}, {{result.conductor.name}}{%endif%}"
                     }{% if not forloop.last %},
                     {% endif %}{% endfor %}],

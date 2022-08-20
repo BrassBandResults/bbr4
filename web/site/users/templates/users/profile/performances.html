@@ -53,9 +53,9 @@
 <p>Who do you want to be able to see your contest history?</p>
 <form action="." method="post">{% csrf_token %}
 <table>
-  <tr><td><input type="radio" name="privacy" value="public"{% ifequal ContestHistoryVisibility "public" %} checked="checked"{%endifequal%}/></td><td>Anyone who looks at <a href="http://brassbandresults.co.uk/myresults/{{user.username}}/">http://brassbandresults.co.uk/myresults/{{user.username}}/</a></td></tr>
-  <tr><td><input type="radio" name="privacy" value="site"{% ifequal ContestHistoryVisibility "site" %} checked="checked"{%endifequal%}/></td><td>Anyone who looks at http://brassbandresults.co.uk/users/{{user.username}}/ and is logged into brassbandresults.</td></tr>
-  <tr><td><input type="radio" name="privacy" value="private"{% ifequal ContestHistoryVisibility "private" %} checked="checked"{%endifequal%}/></td><td>Hide it so that only I can see it.</td></tr>
+  <tr><td><input type="radio" name="privacy" value="public"{% if ContestHistoryVisibility == "public" %} checked="checked"{%endif%}/></td><td>Anyone who looks at <a href="http://brassbandresults.co.uk/myresults/{{user.username}}/">http://brassbandresults.co.uk/myresults/{{user.username}}/</a></td></tr>
+  <tr><td><input type="radio" name="privacy" value="site"{% if ContestHistoryVisibility == "site" %} checked="checked"{%endif%}/></td><td>Anyone who looks at http://brassbandresults.co.uk/users/{{user.username}}/ and is logged into brassbandresults.</td></tr>
+  <tr><td><input type="radio" name="privacy" value="private"{% if ContestHistoryVisibility == "private" %} checked="checked"{%endif%}/></td><td>Hide it so that only I can see it.</td></tr>
   <tr><td></td><td><input type="submit" value="Update Privacy Settings"></td></tr>
 </table>
 </form>
@@ -135,11 +135,11 @@
       <td>{{result.result.contest_event.contest.name}}</td>
       <td><a href="/bands/{{result.result.band.slug}}/" title="{{result.result.band.name}}">{{result.result.band_name}}</a></td>
       <td>
-{% ifequal result.result.conductor.name "Unknown" %}
+{% if result.result.conductor.name == "Unknown" %}
         <font color="red">Unknown, do you know?</font>
 {% else %}      
         <a href="/people/{{result.result.person_conducting.slug}}/">{{result.result.person_conducting.name}}</a>
-{% endifequal %}
+{% endif %}
       </td>
 {% if result.result.test_piece %}      
       <td><a href="/pieces/{{result.result.test_piece.slug}}/">{{result.result.test_piece.name}}</a></td>
@@ -150,11 +150,11 @@
 {% if user.profile.pro_member %}      
       <td id="position-{{result.id}}">{{result.instrument.name}}</td>
 {% endif %}      
-{% ifequal result.status "pending" %}
+{% if result.status == "pending" %}
       <td>
         [<a href="/users/{{user.username}}/contesthistory/{{result.id}}/approve_contest/">approve</a>]
       </td>
-{% endifequal %}      
+{% endif %}      
     </tr>
 {% endfor %}    
   </tbody>

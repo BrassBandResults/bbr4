@@ -41,11 +41,11 @@ Competed at this contest <a href="/bands/{{band.slug}}/{{ContestEvent.contest.sl
   <td><a href="/contests/{{result.contest_event.contest.slug}}/{{result.contest_event.date_of_event|date:"Y-m-d"}}/">{{result.contest_event.date_of_event|date:"Y"}}</a> {{result.short_name}}</td>
   <td>{{result.results_position_display_long|ordinal}}</td>
   {% if result.results_position < 9000 %}
-  <td>{% ifequal result.conductor.name "Unknown" %}
+  <td>{% if result.conductor.name == "Unknown" %}
       <font color="red">{% trans "Unknown, do you know?"%}</font>
     {% else %}  
       <a href="/people/{{result.person_conducting.slug}}/">{{result.person_conducting.name}}</a>
-    {% endifequal %}
+    {% endif %}
   </td>
   {% else %}
   <td></td>

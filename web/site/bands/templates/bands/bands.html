@@ -20,44 +20,44 @@
 
 {% block content %}
 <div class="container pt-1">
-{% ifequal StartsWith "ALL" %}
+{% if StartsWith == "ALL" %}
 <h2>{% trans "All Bands"%}</h2>
 {% else %}
 <h2>{% trans "Bands starting with"%} {{StartsWith}}</h2>
-{% endifequal %}
+{% endif %}
 <p>{% trans "Showing"%} {{ResultCount}} {% trans "of"%} {{BandCount}} {% trans "bands"%}.  {% trans "This is a list of current or last known names, previous band names can be found by searching."%}</p>
 {% if user.profile.enhanced_functionality %}
 <p>[<a href="/bands/add/">{% trans "Add New Band"%}</a>]</p>
 {% endif %}
 <p>Starts with:
-{% ifequal StartsWith "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/bands/A/">A</a>{%endifequal%}
-{% ifequal StartsWith "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/bands/B/">B</a>{%endifequal%}
-{% ifequal StartsWith "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/bands/C/">C</a>{%endifequal%}
-{% ifequal StartsWith "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/bands/D/">D</a>{%endifequal%}
-{% ifequal StartsWith "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/bands/E/">E</a>{%endifequal%}
-{% ifequal StartsWith "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/bands/F/">F</a>{%endifequal%}
-{% ifequal StartsWith "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/bands/G/">G</a>{%endifequal%}
-{% ifequal StartsWith "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/bands/H/">H</a>{%endifequal%}
-{% ifequal StartsWith "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/bands/I/">I</a>{%endifequal%}
-{% ifequal StartsWith "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/bands/J/">J</a>{%endifequal%}
-{% ifequal StartsWith "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/bands/K/">K</a>{%endifequal%}
-{% ifequal StartsWith "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/bands/L/">L</a>{%endifequal%}
-{% ifequal StartsWith "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/bands/M/">M</a>{%endifequal%}
-{% ifequal StartsWith "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/bands/N/">N</a>{%endifequal%}
-{% ifequal StartsWith "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/bands/O/">O</a>{%endifequal%}
-{% ifequal StartsWith "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/bands/P/">P</a>{%endifequal%}
-{% ifequal StartsWith "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/bands/Q/">Q</a>{%endifequal%}
-{% ifequal StartsWith "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/bands/R/">R</a>{%endifequal%}
-{% ifequal StartsWith "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/bands/S/">S</a>{%endifequal%}
-{% ifequal StartsWith "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/bands/T/">T</a>{%endifequal%}
-{% ifequal StartsWith "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/bands/U/">U</a>{%endifequal%}
-{% ifequal StartsWith "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/bands/V/">V</a>{%endifequal%}
-{% ifequal StartsWith "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/bands/W/">W</a>{%endifequal%}
-{% ifequal StartsWith "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/bands/X/">X</a>{%endifequal%}
-{% ifequal StartsWith "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/bands/Y/">Y</a>{%endifequal%}
-{% ifequal StartsWith "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/bands/Z/">Z</a>{%endifequal%}
-{% ifequal StartsWith "0" %}<span class="bg-dark text-light rounded p-1">0-9</span>{%else%}<a href="/bands/0/">0-9</a>{%endifequal%}
-{% ifequal StartsWith "ALL" %}<span class="bg-dark text-light rounded p-1">{% trans "Show All"%}</span>{%else%}<a href="/bands/ALL/">{% trans "Show All"%}</a>{%endifequal%}
+{% if StartsWith == "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/bands/A/">A</a>{%endif%}
+{% if StartsWith == "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/bands/B/">B</a>{%endif%}
+{% if StartsWith == "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/bands/C/">C</a>{%endif%}
+{% if StartsWith == "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/bands/D/">D</a>{%endif%}
+{% if StartsWith == "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/bands/E/">E</a>{%endif%}
+{% if StartsWith == "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/bands/F/">F</a>{%endif%}
+{% if StartsWith == "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/bands/G/">G</a>{%endif%}
+{% if StartsWith == "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/bands/H/">H</a>{%endif%}
+{% if StartsWith == "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/bands/I/">I</a>{%endif%}
+{% if StartsWith == "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/bands/J/">J</a>{%endif%}
+{% if StartsWith == "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/bands/K/">K</a>{%endif%}
+{% if StartsWith == "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/bands/L/">L</a>{%endif%}
+{% if StartsWith == "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/bands/M/">M</a>{%endif%}
+{% if StartsWith == "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/bands/N/">N</a>{%endif%}
+{% if StartsWith == "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/bands/O/">O</a>{%endif%}
+{% if StartsWith == "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/bands/P/">P</a>{%endif%}
+{% if StartsWith == "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/bands/Q/">Q</a>{%endif%}
+{% if StartsWith == "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/bands/R/">R</a>{%endif%}
+{% if StartsWith == "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/bands/S/">S</a>{%endif%}
+{% if StartsWith == "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/bands/T/">T</a>{%endif%}
+{% if StartsWith == "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/bands/U/">U</a>{%endif%}
+{% if StartsWith == "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/bands/V/">V</a>{%endif%}
+{% if StartsWith == "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/bands/W/">W</a>{%endif%}
+{% if StartsWith == "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/bands/X/">X</a>{%endif%}
+{% if StartsWith == "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/bands/Y/">Y</a>{%endif%}
+{% if StartsWith == "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/bands/Z/">Z</a>{%endif%}
+{% if StartsWith == "0" %}<span class="bg-dark text-light rounded p-1">0-9</span>{%else%}<a href="/bands/0/">0-9</a>{%endif%}
+{% if StartsWith == "ALL" %}<span class="bg-dark text-light rounded p-1">{% trans "Show All"%}</span>{%else%}<a href="/bands/ALL/">{% trans "Show All"%}</a>{%endif%}
 </p>
 <button class="reset btn btn-outline-primary btn-sm float-right mb-1">Reset Sort</button>
 <table id="bands" class="table table-hover">
@@ -72,45 +72,45 @@
 {% for band in Bands %}
     <tr>
   	  <td class="band"><a href="/bands/{{band.slug}}/">{{band.name}}</a> {{band.date_range_display}}</td>
-    {% ifequal band.region.name "Unknown" %}
+    {% if band.region.name "Unknown" %}
       <td class="region"><font color="red">{% trans "Unknown, do you know?"%}</font></td>
     {% else %} 
 			<td class="region"><img src="{{ STATIC_URL }}flags/{{band.region.country_code|lower}}.png"/> <a href="/regions/{{band.region.slug}}/">{{band.region.name}}</a></td>
-    {% endifequal %}
+    {% endif %}
 			<td class="band-contest-count">{{band.resultcount}}</td>
 		</tr>
 {% endfor %}
 	</tbody>
 </table>
 <p>Starts with:
-{% ifequal StartsWith "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/bands/A/">A</a>{%endifequal%}
-{% ifequal StartsWith "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/bands/B/">B</a>{%endifequal%}
-{% ifequal StartsWith "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/bands/C/">C</a>{%endifequal%}
-{% ifequal StartsWith "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/bands/D/">D</a>{%endifequal%}
-{% ifequal StartsWith "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/bands/E/">E</a>{%endifequal%}
-{% ifequal StartsWith "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/bands/F/">F</a>{%endifequal%}
-{% ifequal StartsWith "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/bands/G/">G</a>{%endifequal%}
-{% ifequal StartsWith "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/bands/H/">H</a>{%endifequal%}
-{% ifequal StartsWith "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/bands/I/">I</a>{%endifequal%}
-{% ifequal StartsWith "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/bands/J/">J</a>{%endifequal%}
-{% ifequal StartsWith "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/bands/K/">K</a>{%endifequal%}
-{% ifequal StartsWith "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/bands/L/">L</a>{%endifequal%}
-{% ifequal StartsWith "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/bands/M/">M</a>{%endifequal%}
-{% ifequal StartsWith "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/bands/N/">N</a>{%endifequal%}
-{% ifequal StartsWith "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/bands/O/">O</a>{%endifequal%}
-{% ifequal StartsWith "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/bands/P/">P</a>{%endifequal%}
-{% ifequal StartsWith "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/bands/Q/">Q</a>{%endifequal%}
-{% ifequal StartsWith "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/bands/R/">R</a>{%endifequal%}
-{% ifequal StartsWith "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/bands/S/">S</a>{%endifequal%}
-{% ifequal StartsWith "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/bands/T/">T</a>{%endifequal%}
-{% ifequal StartsWith "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/bands/U/">U</a>{%endifequal%}
-{% ifequal StartsWith "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/bands/V/">V</a>{%endifequal%}
-{% ifequal StartsWith "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/bands/W/">W</a>{%endifequal%}
-{% ifequal StartsWith "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/bands/X/">X</a>{%endifequal%}
-{% ifequal StartsWith "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/bands/Y/">Y</a>{%endifequal%}
-{% ifequal StartsWith "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/bands/Z/">Z</a>{%endifequal%}
-{% ifequal StartsWith "0" %}<span class="bg-dark text-light rounded p-1">0-9</span>{%else%}<a href="/bands/0/">0-9</a>{%endifequal%}
-{% ifequal StartsWith "ALL" %}<span class="bg-dark text-light rounded p-1">{% trans "Show All"%}</span>{%else%}<a href="/bands/ALL/">{% trans "Show All"%}</a>{%endifequal%}
+{% if StartsWith == "A" %}<span class="bg-dark text-light rounded p-1">A</span>{%else%}<a href="/bands/A/">A</a>{%endif%}
+{% if StartsWith == "B" %}<span class="bg-dark text-light rounded p-1">B</span>{%else%}<a href="/bands/B/">B</a>{%endif%}
+{% if StartsWith == "C" %}<span class="bg-dark text-light rounded p-1">C</span>{%else%}<a href="/bands/C/">C</a>{%endif%}
+{% if StartsWith == "D" %}<span class="bg-dark text-light rounded p-1">D</span>{%else%}<a href="/bands/D/">D</a>{%endif%}
+{% if StartsWith == "E" %}<span class="bg-dark text-light rounded p-1">E</span>{%else%}<a href="/bands/E/">E</a>{%endif%}
+{% if StartsWith == "F" %}<span class="bg-dark text-light rounded p-1">F</span>{%else%}<a href="/bands/F/">F</a>{%endif%}
+{% if StartsWith == "G" %}<span class="bg-dark text-light rounded p-1">G</span>{%else%}<a href="/bands/G/">G</a>{%endif%}
+{% if StartsWith == "H" %}<span class="bg-dark text-light rounded p-1">H</span>{%else%}<a href="/bands/H/">H</a>{%endif%}
+{% if StartsWith == "I" %}<span class="bg-dark text-light rounded p-1">I</span>{%else%}<a href="/bands/I/">I</a>{%endif%}
+{% if StartsWith == "J" %}<span class="bg-dark text-light rounded p-1">J</span>{%else%}<a href="/bands/J/">J</a>{%endif%}
+{% if StartsWith == "K" %}<span class="bg-dark text-light rounded p-1">K</span>{%else%}<a href="/bands/K/">K</a>{%endif%}
+{% if StartsWith == "L" %}<span class="bg-dark text-light rounded p-1">L</span>{%else%}<a href="/bands/L/">L</a>{%endif%}
+{% if StartsWith == "M" %}<span class="bg-dark text-light rounded p-1">M</span>{%else%}<a href="/bands/M/">M</a>{%endif%}
+{% if StartsWith == "N" %}<span class="bg-dark text-light rounded p-1">N</span>{%else%}<a href="/bands/N/">N</a>{%endif%}
+{% if StartsWith == "O" %}<span class="bg-dark text-light rounded p-1">O</span>{%else%}<a href="/bands/O/">O</a>{%endif%}
+{% if StartsWith == "P" %}<span class="bg-dark text-light rounded p-1">P</span>{%else%}<a href="/bands/P/">P</a>{%endif%}
+{% if StartsWith == "Q" %}<span class="bg-dark text-light rounded p-1">Q</span>{%else%}<a href="/bands/Q/">Q</a>{%endif%}
+{% if StartsWith == "R" %}<span class="bg-dark text-light rounded p-1">R</span>{%else%}<a href="/bands/R/">R</a>{%endif%}
+{% if StartsWith == "S" %}<span class="bg-dark text-light rounded p-1">S</span>{%else%}<a href="/bands/S/">S</a>{%endif%}
+{% if StartsWith == "T" %}<span class="bg-dark text-light rounded p-1">T</span>{%else%}<a href="/bands/T/">T</a>{%endif%}
+{% if StartsWith == "U" %}<span class="bg-dark text-light rounded p-1">U</span>{%else%}<a href="/bands/U/">U</a>{%endif%}
+{% if StartsWith == "V" %}<span class="bg-dark text-light rounded p-1">V</span>{%else%}<a href="/bands/V/">V</a>{%endif%}
+{% if StartsWith == "W" %}<span class="bg-dark text-light rounded p-1">W</span>{%else%}<a href="/bands/W/">W</a>{%endif%}
+{% if StartsWith == "X" %}<span class="bg-dark text-light rounded p-1">X</span>{%else%}<a href="/bands/X/">X</a>{%endif%}
+{% if StartsWith == "Y" %}<span class="bg-dark text-light rounded p-1">Y</span>{%else%}<a href="/bands/Y/">Y</a>{%endif%}
+{% if StartsWith == "Z" %}<span class="bg-dark text-light rounded p-1">Z</span>{%else%}<a href="/bands/Z/">Z</a>{%endif%}
+{% if StartsWith == "0" %}<span class="bg-dark text-light rounded p-1">0-9</span>{%else%}<a href="/bands/0/">0-9</a>{%endif%}
+{% if StartsWith == "ALL" %}<span class="bg-dark text-light rounded p-1">{% trans "Show All"%}</span>{%else%}<a href="/bands/ALL/">{% trans "Show All"%}</a>{%endif%}
 </p>
 </div>
 {% endblock %}

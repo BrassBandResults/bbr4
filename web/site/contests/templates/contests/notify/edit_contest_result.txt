@@ -1,24 +1,24 @@
 Contest Result Edited
 
-Contest: {{ThingNew.contest_event.name|safe}}{% ifnotequal ThingNew.name ThingOld.name %} [was {{ThingOld.name|safe}}]{%endifnotequal%}
-Date: {{ThingNew.contest_event.event_date}}{% ifnotequal ThingNew.contest_event.date_of_event ThingOld.contest_event.date_of_event %} [was {{ThingOld.contest_event.event_date}}]{%endifnotequal%}
-Band: {{ThingNew.band.name|safe}}{% ifnotequal ThingNew.band.name ThingOld.band.name %} [was {{ThingOld.band.name|safe}}]{%endifnotequal%}
-Competed As: {{ThingNew.band_name|safe}}{% ifnotequal ThingNew.band_name ThingOld.band_name %} [was {{ThingOld.band_name|safe}}]{%endifnotequal%}
-Conductor: {{ThingNew.conductor.name|safe}}{% ifnotequal ThingNew.conductor.name ThingOld.conductor.name %} [was {{ThingOld.conductor.name|safe}}]{%endifnotequal%}
-Entered As: {{ThingNew.conductor_name|safe}}{% ifnotequal ThingNew.conductor_name ThingOld.conductor_name %} [was {{ThingOld.conductor_name|safe}}]{%endifnotequal%}
-Test Piece: {{ThingNew.test_piece.name|safe}}{% ifnotequal ThingNew.test_piece.name ThingOld.test_piece.name %} [was {{ThingOld.test_piece.name|safe}}]{%endifnotequal%}
-Position: {{ThingNew.results_position}}{% ifnotequal ThingNew.results_position ThingOld.results_position %} [was {{ThingOld.results_position}}]{%endifnotequal%}
-1st Draw: {{ThingNew.draw}}{% ifnotequal ThingNew.draw ThingOld.draw %} [was {{ThingOld.draw}}]{%endifnotequal%}
-2nd Draw: {{ThingNew.draw_second_part}}{% ifnotequal ThingNew.draw_second_part ThingOld.draw_second_part %} [was {{ThingOld.draw_second_part}}]{%endifnotequal%}
-1st Points: {{ThingNew.points_first_part}}{% ifnotequal ThingNew.points_first_part ThingOld.points_first_part %} [was {{ThingOld.points_first_part}}]{%endifnotequal%}
-2nd Points: {{ThingNew.points_second_part}}{% ifnotequal ThingNew.points_second_part ThingOld.points_second_part %} [was {{ThingOld.points_second_part}}]{%endifnotequal%}
-3rd Points: {{ThingNew.points_third_part}}{% ifnotequal ThingNew.points_third_part ThingOld.points_third_part %} [was {{ThingOld.points_third_part}}]{%endifnotequal%}
-4th Points: {{ThingNew.points_fourth_part}}{% ifnotequal ThingNew.points_fourth_part ThingOld.points_fourth_part %} [was {{ThingOld.points_fourth_part}}]{%endifnotequal%}
-Penalty Points: {{ThingNew.penalty_points}}{% ifnotequal ThingNew.penalty_points ThingOld.penalty_points %} [was {{ThingOld.penalty_points}}]{%endifnotequal%}
+Contest: {{ThingNew.contest_event.name|safe}}{% if ThingNew.name != ThingOld.name %} [was {{ThingOld.name|safe}}]{%endif%}
+Date: {{ThingNew.contest_event.event_date}}{% if ThingNew.contest_event.date_of_event != ThingOld.contest_event.date_of_event %} [was {{ThingOld.contest_event.event_date}}]{%endif%}
+Band: {{ThingNew.band.name|safe}}{% if ThingNew.band.name != ThingOld.band.name %} [was {{ThingOld.band.name|safe}}]{%endif%}
+Competed As: {{ThingNew.band_name|safe}}{% if ThingNew.band_name != ThingOld.band_name %} [was {{ThingOld.band_name|safe}}]{%endif%}
+Conductor: {{ThingNew.conductor.name|safe}}{% if ThingNew.conductor.name != ThingOld.conductor.name %} [was {{ThingOld.conductor.name|safe}}]{%endif%}
+Entered As: {{ThingNew.conductor_name|safe}}{% if ThingNew.conductor_name != ThingOld.conductor_name %} [was {{ThingOld.conductor_name|safe}}]{%endif%}
+Test Piece: {{ThingNew.test_piece.name|safe}}{% if ThingNew.test_piece.name != ThingOld.test_piece.name %} [was {{ThingOld.test_piece.name|safe}}]{%endif%}
+Position: {{ThingNew.results_position}}{% if ThingNew.results_position != ThingOld.results_position %} [was {{ThingOld.results_position}}]{%endif%}
+1st Draw: {{ThingNew.draw}}{% if ThingNew.draw != ThingOld.draw %} [was {{ThingOld.draw}}]{%endif%}
+2nd Draw: {{ThingNew.draw_second_part}}{% if ThingNew.draw_second_part != ThingOld.draw_second_part %} [was {{ThingOld.draw_second_part}}]{%endif%}
+1st Points: {{ThingNew.points_first_part}}{% if ThingNew.points_first_part != ThingOld.points_first_part %} [was {{ThingOld.points_first_part}}]{%endif%}
+2nd Points: {{ThingNew.points_second_part}}{% if ThingNew.points_second_part != ThingOld.points_second_part %} [was {{ThingOld.points_second_part}}]{%endif%}
+3rd Points: {{ThingNew.points_third_part}}{% if ThingNew.points_third_part != ThingOld.points_third_part %} [was {{ThingOld.points_third_part}}]{%endif%}
+4th Points: {{ThingNew.points_fourth_part}}{% if ThingNew.points_fourth_part != ThingOld.points_fourth_part %} [was {{ThingOld.points_fourth_part}}]{%endif%}
+Penalty Points: {{ThingNew.penalty_points}}{% if ThingNew.penalty_points != ThingOld.penalty_points %} [was {{ThingOld.penalty_points}}]{%endif%}
 
 Notes: {{ThingNew.notes|safe}} 
 
-{% ifnotequal ThingNew.notes ThingOld.notes %} [was {{ThingOld.notes|safe}}]{%endifnotequal%}
+{% if ThingNew.notes != ThingOld.notes %} [was {{ThingOld.notes|safe}}]{%endif%}
 
 Last Changed By: {{ThingNew.lastChangedBy.username}} on {{ThingNew.last_modified}}
 Owner: {{ThingNew.owner.username}}, created {{ThingNew.created}}

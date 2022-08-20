@@ -11,7 +11,7 @@
 OWNER="bbr"
 NAME="bbr4"
 PORT=8224
-WORKERS=2
+WORKERS=5
 VIRTUALENV="bbr4"
 
 CONFDIR="/home/$OWNER/bbr4/web/site"

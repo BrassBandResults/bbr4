@@ -55,9 +55,9 @@
 {% for eachband in Bands %}
   <tr id="band_result{{forloop.counter0}}">
     <td>
-     {% ifnotequal eachband.region.name "Unknown" %}
+     {% if eachband.region.name != "Unknown" %}
       <img src="{{ STATIC_URL }}flags/{{eachband.region.country_code|lower}}.png" title="{{eachband.region.name}}"/>
-    {% endifnotequal %}
+    {% endif %}
       <a href="/bands/{{eachband.slug}}/">{{eachband.name}}</a>
     </td>
 {%if Type == 'mi'%}    

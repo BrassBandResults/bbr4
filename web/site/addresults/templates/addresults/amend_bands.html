@@ -73,7 +73,7 @@
            
 {% if ContestEvent.contest_type.second_draw %}
         <div class="innerbox">
-          <b>Position</b>: {% ifnotequal unplacedResult.results_position 9999%}<b>{{unplacedResult.results_position_display}}</b>{%else%}<input type="text" name="position-{{unplacedResult.id}}" size="4" maxlength="4"/>{%endifnotequal%}
+          <b>Position</b>: {% if unplacedResult.results_position != 9999%}<b>{{unplacedResult.results_position_display}}</b>{%else%}<input type="text" name="position-{{unplacedResult.id}}" size="4" maxlength="4"/>{%endif%}
         </div>
         <div class="innerbox">
           <b>Draw</b>

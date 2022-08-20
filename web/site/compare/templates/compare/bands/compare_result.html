@@ -43,18 +43,18 @@
 	<tbody>
 {% for result in CompareResults %}
 	<tr>
-{% ifequal result.band_one 9999 %}
+{% if result.band_one == 9999 %}
 		<td>{% trans "Unknown"%}</td>
 {% else %}
 		<td>{{result.band_one|safe}}</td>
-{% endifequal %}
+{% endif %}
 		<td><a href="/contests/{{result.slug}}/{{result.date|date:"Y-m-d"}}/">{{result.event_date}}</a></td>
 		<td>{% if not Filter %}<a class="hourglass" href="/compare/bands/{{BandOne.slug}}/{{BandTwo.slug}}/{{result.slug}}/" title="{% trans "Click to filter to"%} {{result.name}}"><img src="{{ STATIC_URL }}icons/magnifier.png" border="0"/></a> {%endif%}{{result.name}}</td>
-{% ifequal result.band_two 9999 %}
+{% if result.band_two == 9999 %}
 		<td>{% trans "Unknown"%}</td>
 {% else %}
 		<td>{{result.band_two|safe}}</td> 
-{% endifequal %}		
+{% endif %}		
 	</tr>
 {% endfor %}
 	</tbody>
