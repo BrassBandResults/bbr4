@@ -10,7 +10,7 @@ def login_required_pro_user(function=None, redirect_field_name=REDIRECT_FIELD_NA
     to the log-in page if necessary.
     """
     actual_decorator = user_passes_test(
-        lambda u: u.is_authenticated() and u.profile.pro_member,
+        lambda u: u.is_authenticated and u.profile.pro_member,
         login_url='/accounts/loginpro/',
         redirect_field_name=redirect_field_name
     )

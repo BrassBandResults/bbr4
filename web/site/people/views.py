@@ -95,7 +95,7 @@ def people_list_filter_letter(request, pLetter):
     lComposerArranger.update(lArrangements)
 
     if pLetter == 'ALL':
-        if request.user.is_authenticated() == False:
+        if request.user.is_authenticated == False:
             raise Http404
         if request.user.profile.pro_member == False:
             raise Http404
