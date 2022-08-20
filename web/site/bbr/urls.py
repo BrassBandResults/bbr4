@@ -69,12 +69,12 @@ urlpatterns = [
     re_path(r'^robots.txt$', home_views.robotstxt),
     re_path(r'^ads.txt$', home_views.adstxt),
 
-    re_path(r'^accounts/login/$', LoginView.as_view(),  {'template_name': 'accounts/login.html'}),
-    re_path(r'^accounts/logout/$', LogoutView.as_view(),  {'template_name': 'accounts/logout.html'}),
+    re_path(r'^accounts/login/$', LoginView.as_view(template_name='accounts/login.html')),
+    re_path(r'^accounts/logout/$', LogoutView.as_view(template_name='accounts/logout.html')),
     re_path(r'^accounts/forgottenpassword/$', user_views.forgotten_password),
     re_path(r'^accounts/forgottenpassword/sent/$', user_views.forgotten_password_sent),
     re_path(r'^accounts/resetpassword/([A-Za-z0-9]+)/$', user_views.reset_password),
-    re_path(r'^accounts/changepassword/$', PasswordChangeView.as_view(), {'template_name' : 'users/changepassword.html', 'post_change_redirect' : '/'}),
+    re_path(r'^accounts/changepassword/$', PasswordChangeView.as_view(template_name='users/changepassword.html', post_change_redirect='/')),
 
     re_path(r'^accounts/loginpro/$', LoginView.as_view(), {'template_name' : 'accounts/loginpro.html',}),
     re_path(r'^accounts/upgrade/$', user_views.pro_upgrade),
