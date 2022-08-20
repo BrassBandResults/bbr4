@@ -11,7 +11,7 @@ from django.db import connection
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 from adjudicators.models import ContestAdjudicator
 from bands.models import Band
@@ -829,7 +829,7 @@ def people_hash_by_letter(request):
                     lList = lPeopleStructure[lFirstLetter]
                 except KeyError:
                     lList = u""
-                lList += u"!" + smart_text(person.first_names) + u"," + smart_text(person.surname);
+                lList += u"!" + smart_str(person.first_names) + u"," + smart_str(person.surname);
                 lPeopleStructure[lFirstLetter] = lList
 
     lHashes = {}

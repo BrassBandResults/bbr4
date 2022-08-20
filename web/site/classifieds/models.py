@@ -30,8 +30,8 @@ class PlayerPosition(models.Model):
                        ('pc','Percussion'),
                        )
     section = models.CharField(max_length=2, choices=SECTION_CHOICES, help_text="Section in the band this position is from")
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='PlayerPositionLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='PlayerPositionOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PlayerPositionLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PlayerPositionOwner')
     
     def __str__(self):
         return " %s" % (self.name)

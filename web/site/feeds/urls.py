@@ -3,10 +3,10 @@
 
 
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url(r'^testpiecexml/$', views.testpiecexml),
+    re_path(r'^testpiecexml/$', views.testpiecexml),
 ]

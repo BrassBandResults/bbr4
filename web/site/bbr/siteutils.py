@@ -5,7 +5,7 @@ import http.client
 import re
 import unicodedata
 from django.conf import settings
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.text import slugify as django_slugify
 
 

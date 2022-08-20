@@ -30,8 +30,8 @@ class Person(models.Model):
     old_composer_slug = models.SlugField(blank=True, null=True, help_text="The slug of this person as a composer/arranger")
     combined_name = models.CharField(max_length=200, blank=True, null=True, editable=False)
     profile_discount_code = models.CharField(max_length=30, default='', blank=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='PersonLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='PersonOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonOwner')
     
     def __str__(self):
         lSuffix = ""
@@ -170,12 +170,12 @@ class PersonRelation(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    source_person = models.ForeignKey(Person, related_name="SourcePerson")
-    relation_person = models.ForeignKey(Person, related_name="RelationPerson")
+    source_person = models.ForeignKey(Person, on_delete=models.PROTECT, related_name="SourcePerson")
+    relation_person = models.ForeignKey(Person, on_delete=models.PROTECT, related_name="RelationPerson")
     relation = models.CharField(max_length=20)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='PersonRelationLastChangedBy')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonRelationLastChangedBy')
     reverse_relation = models.CharField(max_length=20, blank=True, null=True) 
-    owner = models.ForeignKey(User, editable=False, related_name='PersonRelationOwner')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonRelationOwner')
     
     def __str__(self):
         return "%s --(%s)--> %s" % (self.source_person.name, self.relation, self.relation_person.name)
@@ -192,10 +192,10 @@ class PersonAlias(models.Model):
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=100)
-    person = models.ForeignKey(Person)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     hidden = models.BooleanField(default=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='PersonAliasLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='PersonAliasOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonAliasLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonAliasOwner')
         
     def __str__(self):
         return "%s (%s)" % (self.name, self.person.name)
@@ -239,8 +239,8 @@ class ClassifiedPerson(models.Model):
     person = models.ForeignKey(Person, blank=True, null=True, on_delete=models.PROTECT)
     visible = models.BooleanField(default=False)
     show_on_homepage = models.BooleanField(default=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ClassifiedPersonLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ClassifiedPersonOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ClassifiedPersonLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ClassifiedPersonOwner')
     
     def __str__(self):
         return "%s" % self.person.name

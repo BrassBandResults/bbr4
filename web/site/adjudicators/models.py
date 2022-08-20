@@ -22,11 +22,11 @@ class ContestAdjudicator(models.Model):
     """ 
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest_event = models.ForeignKey(ContestEvent)
+    contest_event = models.ForeignKey(ContestEvent, on_delete=models.CASCADE)
     person = models.ForeignKey(Person, on_delete=models.PROTECT, blank=True, null=True)
     adjudicator_name = models.CharField(max_length=100,blank=True,null=True, help_text="Original adjudicator name entered")
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestAdjudicatorLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestAdjudicatorOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestAdjudicatorLastChangedBy')
+    owner = models.ForeignKey(User, editable=False, on_delete=models.PROTECT, related_name='ContestAdjudicatorOwner')
     
         
     def __str__(self):

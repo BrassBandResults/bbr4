@@ -3,12 +3,12 @@
 
 
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.enter_contest_name),
-    url(r'^([\w-]+)/$', views.enter_contest_date),
-    url(r'^([\w-]+)/([\d-]+)/$', views.enter_results),
+    re_path(r'^$', views.enter_contest_name),
+    re_path(r'^([\w-]+)/$', views.enter_contest_date),
+    re_path(r'^([\w-]+)/([\d-]+)/$', views.enter_results),
 ]

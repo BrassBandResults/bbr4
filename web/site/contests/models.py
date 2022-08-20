@@ -30,17 +30,17 @@ class Venue(models.Model):
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
-    country = models.ForeignKey(Region, blank=True, null=True)
+    country = models.ForeignKey(Region, on_delete=models.PROTECT, blank=True, null=True)
     latitude = models.CharField(max_length=15, blank=True, null=True)
     longitude = models.CharField(max_length=15, blank=True, null=True)
     point = geomodels.PointField(dim=3, geography=True, blank=True, null=True, editable=False)
     postcode = models.CharField(max_length=10, blank=True, null=True)
     exact = models.BooleanField(default=False, help_text="True if latitude and longitude is for a building, rather than a town")
-    mapper = models.ForeignKey(User, editable=False, related_name='VenueMapper', blank=True, null=True)
-    parent = models.ForeignKey("self", blank=True, null=True)
+    mapper = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='VenueMapper', blank=True, null=True)
+    parent = models.ForeignKey("self", on_delete=models.PROTECT, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='VenueLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='VenueOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='VenueLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='VenueOwner')
         
     def __str__(self):
         return "%s" % (self.name)
@@ -82,9 +82,9 @@ class VenueAlias(models.Model):
     name = models.CharField(max_length=200, help_text='Name of Venue Alias')
     alias_start_date = models.DateField(blank=True, null=True, help_text="Start date for this alias (yyyy-mm-dd)")
     alias_end_date = models.DateField(blank=True, null=True, help_text="End date for this alias (yyyy-mm-dd)")
-    venue = models.ForeignKey(Venue)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='VenueAliasLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='VenueAliasOwner')
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='VenueAliasLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='VenueAliasOwner')
     
     def save(self):
         self.last_modified = datetime.now()
@@ -127,8 +127,8 @@ class ContestGroup(models.Model):
     group_type = models.CharField(max_length=1, default='S', choices=TYPE_CHOICES)
     notes = models.TextField(blank=True, null=True)
     tags = models.ManyToManyField(ContestTag, blank=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestGroupLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestGroupOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupOwner')
     
     def save(self):
         self.last_modified = datetime.now()
@@ -210,9 +210,9 @@ class ContestGroupAlias(models.Model):
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=100, help_text='Name of Contest Group')
-    group = models.ForeignKey(ContestGroup)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestGroupAliasLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestGroupAliasOwner')
+    group = models.ForeignKey(ContestGroup, on_delete=models.CASCADE)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupAliasLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupAliasOwner')
     
     def save(self):
         self.last_modified = datetime.now()
@@ -259,8 +259,8 @@ class ContestType(models.Model):
     entertainments = models.BooleanField(default=False, blank=True, help_text="Contest has entertainments part")
     statistics = models.BooleanField(default=False, help_text="Show Adjudicator A/B/C Statistics")
     statistics_limit = models.IntegerField(default=2, help_text="Number of points fields to use for stats")
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestTypeLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestTypeOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestTypeLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestTypeOwner')
     
     def save(self):
         self.last_modified = datetime.now()
@@ -283,11 +283,11 @@ class Contest(models.Model):
     group = models.ForeignKey(ContestGroup, blank=True, null=True, on_delete=models.PROTECT)
     slug = models.SlugField()
     description = models.TextField(blank=True)
-    region = models.ForeignKey(Region, blank=True, null=True, help_text='Region bands are drawn from.  Leave blank for non-region limited contests.')
-    section = models.ForeignKey(Section, blank=True, null=True, help_text='Section for contest.  Leave blank if not applicable or contest is not nationally graded')
+    region = models.ForeignKey(Region, on_delete=models.PROTECT, blank=True, null=True, help_text='Region bands are drawn from.  Leave blank for non-region limited contests.')
+    section = models.ForeignKey(Section, on_delete=models.PROTECT, blank=True, null=True, help_text='Section for contest.  Leave blank if not applicable or contest is not nationally graded')
     ordering = models.IntegerField(default=0, help_text='Order to show contest in group.  Higher numbers are later in the list')
-    contest_type_link = models.ForeignKey(ContestType, default=12, help_text="This controls the draw and points fields shown when adding/editing an event for this contest")
-    qualifies_for = models.ForeignKey('Contest', blank=True, null=True, help_text='Finals for this contest')
+    contest_type_link = models.ForeignKey(ContestType, on_delete=models.PROTECT, default=12, help_text="This controls the draw and points fields shown when adding/editing an event for this contest")
+    qualifies_for = models.ForeignKey('Contest', on_delete=models.PROTECT, blank=True, null=True, help_text='Finals for this contest')
     hashtag = models.CharField(max_length=25, blank=True, null=True)
     contact_info = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
@@ -297,8 +297,8 @@ class Contest(models.Model):
     period = models.IntegerField(blank=True, null=True, help_text="Number of years this contest repeats over.  If this is non null, allows contests between 14 months and 60 months to be included in current champions")
     prevent_future_bands = models.BooleanField(default=False, help_text="If true, prevents bands being added to the contest event whilst it is still in the future")
     tags = models.ManyToManyField(ContestTag, blank=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestOwner')
     
     def __str__(self):
         return "%s" % (self.name)
@@ -398,9 +398,9 @@ class ContestAlias(models.Model):
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=100, help_text='Name of Contest')
-    contest = models.ForeignKey(Contest)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestAliasLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestAliasOwner')
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestAliasLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestAliasOwner')
     
     def save(self):
         self.last_modified = datetime.now()
@@ -439,18 +439,18 @@ class ContestEvent(models.Model):
         ('Y', 'Year'),
     )
     date_resolution = models.CharField(max_length=1, default='D', choices=DATE_RESOLUTION_CHOICES)
-    contest = models.ForeignKey(Contest)
+    contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
     name = models.CharField(max_length=100)
     test_piece = models.ForeignKey(TestPiece, blank=True, null=True, on_delete=models.PROTECT)
     notes = models.TextField(blank=True)
     venue_link = models.ForeignKey(Venue, blank=True, null=True, on_delete=models.PROTECT)
     complete = models.BooleanField(default=False, help_text='Complete means stop prompting with "add more results"')
     no_contest = models.BooleanField(default=False, help_text='Set to true if no contest took place this year')
-    contest_type_override_link = models.ForeignKey(ContestType, blank=True, null=True)
+    contest_type_override_link = models.ForeignKey(ContestType, on_delete=models.PROTECT, blank=True, null=True)
     requires_input = models.BooleanField(default=False, help_text="There is data to input from scanned programme pages")
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestEventLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestEventOwner')
-    original_owner = models.ForeignKey(User, editable=False, blank=True, null=True, related_name='ContestEventOriginalOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestEventLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestEventOwner')
+    original_owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, blank=True, null=True, related_name='ContestEventOriginalOwner')
         
     def __str__(self):
         return "%s: %s" % (self.date_of_event, self.name)
@@ -633,7 +633,7 @@ class ContestResult(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest_event = models.ForeignKey(ContestEvent)
+    contest_event = models.ForeignKey(ContestEvent, on_delete=models.PROTECT)
     band = models.ForeignKey(Band, on_delete=models.PROTECT)
     results_position = models.IntegerField(help_text="Position at contest, or 9999 for Unknown, 10000 for Disqualified, 10001 for Withdrawn")
     band_name = models.CharField(max_length=100)
@@ -650,9 +650,9 @@ class ContestResult(models.Model):
     conductor_name = models.CharField(max_length=100, blank=True, null=True, help_text="Originally entered conductor name")
     notes = models.TextField(blank=True)
     test_piece = models.ForeignKey(TestPiece, blank=True, null=True, help_text="(Own choice contest only)", on_delete=models.PROTECT)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestResultLastChangedBy')
-    owner = models.ForeignKey(User, related_name='ContestResultOwner')
-    original_owner = models.ForeignKey(User, editable=False, blank=True, null=True, related_name='ContestResultOriginalOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestResultLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name='ContestResultOwner')
+    original_owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, blank=True, null=True, related_name='ContestResultOriginalOwner')
     
         
     def __str__(self):
@@ -762,12 +762,12 @@ class ContestWeblink(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest = models.ForeignKey(Contest)
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
     order = models.IntegerField(default=10)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestWeblinkLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestWeblinkOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestWeblinkLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestWeblinkOwner')
         
     def __str__(self):
         return "%s %s %s" % (self.name, self.contest.name, self.website)
@@ -793,12 +793,12 @@ class ContestGroupWeblink(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest_group = models.ForeignKey(ContestGroup)
+    contest_group = models.ForeignKey(ContestGroup, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
     order = models.IntegerField(default=10)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestGroupWeblinkLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestGroupWeblinkOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupWeblinkLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupWeblinkOwner')
         
     def __str__(self):
         return "%s %s %s" % (self.name, self.contest_group.name, self.website)
@@ -824,12 +824,12 @@ class ContestEventWeblink(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest_event = models.ForeignKey(ContestEvent)
+    contest_event = models.ForeignKey(ContestEvent, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     website = models.CharField(max_length=255)
     order = models.IntegerField(default=10)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestEventWeblinkLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestEventWeblinkOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestEventWeblinkLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestEventWeblinkOwner')
         
     def __str__(self):
         return "%s %s %s" % (self.name, self.contest_event.name, self.website)
@@ -853,10 +853,10 @@ class CurrentChampion(models.Model):
     Link to current champions of all contests.  Auto generated overnight by the results_batch script
     """
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest = models.ForeignKey(Contest)
-    contest_event = models.ForeignKey(ContestEvent)
-    band = models.ForeignKey(Band, on_delete=models.deletion.PROTECT)
-    conductor = models.ForeignKey(Person)
+    contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
+    contest_event = models.ForeignKey(ContestEvent, on_delete=models.PROTECT)
+    band = models.ForeignKey(Band, on_delete=models.PROTECT)
+    conductor = models.ForeignKey(Person, on_delete=models.PROTECT)
     
 
 class ContestAchievementAward(models.Model):
@@ -864,11 +864,11 @@ class ContestAchievementAward(models.Model):
     Awards to a band about a contest
     """
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest = models.ForeignKey(Contest)
-    contest_event = models.ForeignKey(ContestEvent, blank=True, null=True)
-    band = models.ForeignKey(Band, on_delete=models.deletion.PROTECT)
+    contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
+    contest_event = models.ForeignKey(ContestEvent, on_delete=models.PROTECT, blank=True, null=True)
+    band = models.ForeignKey(Band, on_delete=models.PROTECT)
     band_name = models.CharField(max_length=100, blank=True, null=True)
-    conductor = models.ForeignKey(Person, blank=True, null=True)
+    conductor = models.ForeignKey(Person, on_delete=models.PROTECT, blank=True, null=True)
     year_of_award = models.CharField(max_length=255)
     award = models.CharField(max_length=30)
     
@@ -889,8 +889,8 @@ class ContestProgrammeCover(models.Model):
     contest = models.ForeignKey(Contest, blank=True, null=True, on_delete=models.PROTECT)
     event_date = models.DateField(help_text="Date of Event, DD/MM/YYYY")
     image = models.ImageField(upload_to='programme_cover/%Y')
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestProgrammeCoverLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestProgrammeCoverOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestProgrammeCoverLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestProgrammeCoverOwner')
     
     def __str__(self):
         if self.contest_group:
@@ -921,12 +921,12 @@ class ContestProgrammePage(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    cover = models.ForeignKey(ContestProgrammeCover)
+    cover = models.ForeignKey(ContestProgrammeCover, on_delete=models.PROTECT)
     number = models.IntegerField(default=1)
     image = models.ImageField(upload_to='programme_page/%Y')
     description = models.CharField(max_length=255, blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestProgrammePageLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestProgrammePageOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestProgrammePageLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestProgrammePageOwner')
     
     def __str__(self):
         return "Programme Page"
@@ -942,15 +942,15 @@ class ContestTestPiece(models.Model):
     """        
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    contest_event = models.ForeignKey(ContestEvent)
+    contest_event = models.ForeignKey(ContestEvent, on_delete=models.PROTECT)
     test_piece = models.ForeignKey(TestPiece, on_delete=models.PROTECT)
     AND_OR_CHOICES = (
                       ('and', 'and'),
                       ('or', 'or'),
                       )
     and_or = models.CharField(max_length=5, default="and", choices=AND_OR_CHOICES)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestTestPieceLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestTestPieceOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestTestPieceLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestTestPieceOwner')
     
     def __str__(self):
         return "%s %s %s" % (self.contest_event.contest.name, self.contest_event.date_of_event, self.test_piece.name)
@@ -970,9 +970,9 @@ class ContestTalkPage(models.Model):
     """    
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestTalkPageLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestTalkPageOwner')
-    object_link = models.ForeignKey(Contest)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestTalkPageLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestTalkPageOwner')
+    object_link = models.ForeignKey(Contest, on_delete=models.PROTECT)
     text = models.TextField()
     
     def save(self):
@@ -992,9 +992,9 @@ class GroupTalkPage(models.Model):
     """    
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ContestGroupTalkPageLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ContestGroupTalkPageOwner')
-    object_link = models.ForeignKey(ContestGroup)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupTalkPageLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ContestGroupTalkPageOwner')
+    object_link = models.ForeignKey(ContestGroup, on_delete=models.PROTECT)
     text = models.TextField()
     
     def save(self):
@@ -1014,10 +1014,10 @@ class ResultPiecePerformance(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='ResultPiecePerformanceLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='ResultPiecePerformanceOwner')
-    result = models.ForeignKey(ContestResult)
-    piece = models.ForeignKey(TestPiece)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ResultPiecePerformanceLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='ResultPiecePerformanceOwner')
+    result = models.ForeignKey(ContestResult, on_delete=models.PROTECT)
+    piece = models.ForeignKey(TestPiece, on_delete=models.PROTECT)
     suffix = models.CharField(max_length=100, blank=True, null=True)
     ordering = models.IntegerField()
         

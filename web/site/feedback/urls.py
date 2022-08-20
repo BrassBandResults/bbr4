@@ -3,15 +3,15 @@
 
 
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.feedback),
-    url(r'^queue/$', views.queue),
-    url(r'^admin/$', views.admin_queue),
-    url(r'^thanks/$', views.thanks),
-    url(r'^detail/(\d+)/$', views.feedback_detail),
-    url(r'^ip/([.\d]+)/$', views.feedback_for_ip),
+    re_path(r'^$', views.feedback),
+    re_path(r'^queue/$', views.queue),
+    re_path(r'^admin/$', views.admin_queue),
+    re_path(r'^thanks/$', views.thanks),
+    re_path(r'^detail/(\d+)/$', views.feedback_detail),
+    re_path(r'^ip/([.\d]+)/$', views.feedback_for_ip),
 ]

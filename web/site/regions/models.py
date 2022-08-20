@@ -18,7 +18,7 @@ class Region(models.Model):
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=100)
-    container = models.ForeignKey('Region', blank=True, null=True, help_text='Containing Region')
+    container = models.ForeignKey('Region', on_delete=models.PROTECT, blank=True, null=True, help_text='Containing Region')
     latitude = models.CharField(max_length=15, blank=True, null=True, help_text="Center location for region map")
     longitude = models.CharField(max_length=15, blank=True, null=True, help_text="Center location for region map") 
     default_map_zoom = models.IntegerField(blank=True, null=True)
@@ -26,8 +26,8 @@ class Region(models.Model):
     slug = models.SlugField()
     country_code = models.CharField(max_length=20, blank=True, null=True)
     seed_contest_group_slug = models.CharField(max_length=50, blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='RegionLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='RegionOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='RegionLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='RegionOwner')
     
     def __str__(self):
         return "%s" % (self.name)

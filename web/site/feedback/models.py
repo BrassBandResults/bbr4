@@ -27,10 +27,10 @@ class SiteFeedback(models.Model):
     additional_comments = models.TextField(blank=True, null=True)
     ip = models.GenericIPAddressField()
     browser_id = models.CharField(max_length=1024)
-    reporter = models.ForeignKey(User, blank=True, null=True)
+    reporter = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     audit_log = models.TextField(blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='FeedbackLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='FeedbackOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='FeedbackLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='FeedbackOwner')
         
     def __str__(self):
         return "%s (%s)" % (self.url, self.status)

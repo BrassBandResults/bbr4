@@ -13,7 +13,7 @@ class UserPayment(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    user_profile = models.ForeignKey(UserProfile)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     payment_date = models.DateField()
     gross_amount = models.DecimalField(max_digits=5, decimal_places=2)
     net_amount = models.DecimalField(max_digits=5, decimal_places=2)

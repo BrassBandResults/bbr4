@@ -15,8 +15,8 @@ class Section(models.Model):
     position = models.IntegerField(default=0, help_text='Position to show in list')
     slug = models.SlugField()
     short_code = models.CharField(max_length=1, blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='SectionLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='SectionOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='SectionLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='SectionOwner')
     
         
     def __str__(self):

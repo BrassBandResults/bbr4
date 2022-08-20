@@ -1,8 +1,7 @@
 # (c) 2009, 2012, 2015, 2017 Tim Sawyer, All Rights Reserved
 
 from django.contrib.contenttypes.models import ContentType
-from django.core import urlresolvers
-from django.core.urlresolvers import NoReverseMatch
+from django.urls import reverse
 from django.db import connection
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
@@ -43,9 +42,9 @@ class ResultWrapper(object):
         self.title = pObjectToWrapper.name
         try:
             lContentType = ContentType.objects.get_for_model(pObjectToWrapper.__class__)
-            self.admin_offset = urlresolvers.reverse("admin:%s_%s_change" % (lContentType.app_label, lContentType.model), args=(pObjectToWrapper.id,))
-            self.delete_offset = urlresolvers.reverse("admin:%s_%s_delete" % (lContentType.app_label, lContentType.model), args=(pObjectToWrapper.id,))
-        except NoReverseMatch:
+            self.admin_offset = reverse("admin:%s_%s_change" % (lContentType.app_label, lContentType.model), args=(pObjectToWrapper.id,))
+            self.delete_offset = reverse("admin:%s_%s_delete" % (lContentType.app_label, lContentType.model), args=(pObjectToWrapper.id,))
+        except:
             self.admin_offset = None
             self.delete_offset = None
 

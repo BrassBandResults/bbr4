@@ -135,3 +135,5 @@ ACCOUNT_ACTIVATION_DAYS = 3
 
 DEFAULT_FROM_EMAIL = 'BrassBandResults <accounts@brassbandresults.co.uk>'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+

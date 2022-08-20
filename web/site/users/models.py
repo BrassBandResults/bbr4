@@ -45,7 +45,7 @@ class PointsAward(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(max_length=25)
     serial = models.IntegerField()
     points_awarded = models.IntegerField()
@@ -75,7 +75,7 @@ class UserProfile(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="profile")
     points = models.IntegerField(default=0)
     display_name = models.CharField(max_length=30, blank=True)
     contest_history_visibility = models.CharField(max_length=10, blank=True, null=True)
@@ -83,12 +83,12 @@ class UserProfile(models.Model):
     pro_member = models.BooleanField(default=False)
     superuser = models.BooleanField(default=False)
     regional_superuser = models.BooleanField(default=False)
-    regional_superuser_region = models.ForeignKey(Region, blank=True, null=True)
+    regional_superuser_region = models.ForeignKey(Region, on_delete=models.PROTECT, blank=True, null=True)
     regional_superuser_regions = models.ManyToManyField(Region, related_name='regions', blank=True)
-    band_1 = models.ForeignKey(Band, blank=True, null=True, related_name='BandOne', on_delete=models.PROTECT)
-    position_1 = models.ForeignKey(PlayerPosition, blank=True, null=True, related_name='PositionOne')
+    band_1 = models.ForeignKey(Band, on_delete=models.PROTECT, blank=True, null=True, related_name='BandOne')
+    position_1 = models.ForeignKey(PlayerPosition, on_delete=models.PROTECT, blank=True, null=True, related_name='PositionOne')
     band_2 = models.ForeignKey(Band, blank=True, null=True, related_name='BandTwo', on_delete=models.PROTECT)
-    position_2 = models.ForeignKey(PlayerPosition, blank=True, null=True, related_name='PositionTwo')
+    position_2 = models.ForeignKey(PlayerPosition, on_delete=models.PROTECT, blank=True, null=True, related_name='PositionTwo')
     RANKINGS_ACCESS = (
                        ('N','Normal Free'),
                        ('B','Basic Paid'),
@@ -194,8 +194,8 @@ class PersonalContestHistory(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    user = models.ForeignKey(User)
-    result = models.ForeignKey(ContestResult)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    result = models.ForeignKey(ContestResult, on_delete=models.PROTECT)
     STATUS_CHOICES = (
                       ('accepted', 'Accepted'),
                       ('pending', 'Pending'),
@@ -220,7 +220,7 @@ class PersonalContestHistoryDateRange(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     band = models.ForeignKey(Band, on_delete=models.PROTECT)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
@@ -266,7 +266,7 @@ class UserNotification(models.Model):
     """ 
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    notify_user = models.ForeignKey(User)
+    notify_user = models.ForeignKey(User, on_delete=models.PROTECT)
     type = models.CharField(max_length=100)
     name_match = models.CharField(max_length=50, blank=True, null=True, help_text="If not empty, only matches where the name of the thing being notified contains this string, case insensitive")
     TYPE_CHOICES = (
@@ -295,8 +295,8 @@ class UserBadge(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    user = models.ForeignKey(User)
-    type = models.ForeignKey(Badge)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    type = models.ForeignKey(Badge, on_delete=models.PROTECT)
     notified = models.BooleanField(default=False, help_text='True if user has been notified of badge')
     
     def __str__(self):
@@ -329,7 +329,7 @@ class UserTalk(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
     text = models.TextField()
     
     @property

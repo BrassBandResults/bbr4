@@ -2,10 +2,10 @@
 # (c) 2009, 2012, 2015 Tim Sawyer, All Rights Reserved
 
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url(r'^([\w\-]+)/$', views.single_composer),
+    re_path(r'^([\w\-]+)/$', views.single_composer),
 ]

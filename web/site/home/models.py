@@ -14,8 +14,8 @@ class FaqSection(models.Model):
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=255)
     position = models.IntegerField()
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='FaqSectionLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='FaqSectionOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='FaqSectionLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='FaqSectionOwner')
         
     def __str__(self):
         return "%s" % (self.name)
@@ -36,9 +36,9 @@ class FaqEntry(models.Model):
     question = models.TextField()
     answer = models.TextField()
     position = models.IntegerField()
-    section = models.ForeignKey(FaqSection)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='FaqEntryLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='FaqEntryOwner')
+    section = models.ForeignKey(FaqSection, on_delete=models.PROTECT)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='FaqEntryLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='FaqEntryOwner')
         
     def __str__(self):
         return "%s" % self.question

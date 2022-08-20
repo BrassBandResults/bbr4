@@ -30,8 +30,8 @@ class TestPiece(models.Model):
     category = models.CharField(max_length=10, default='TestPiece', choices=CATEGORY_CHOICES)
     percussion_required = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='TestPieceLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='TestPieceOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='TestPieceLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='TestPieceOwner')
     
     def __str__(self):
         lName =  self.name
@@ -84,8 +84,8 @@ class TestPieceAlias(models.Model):
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=100)
     piece = models.ForeignKey(TestPiece, on_delete=models.CASCADE)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='TestPieceAliasLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='TestPieceAliasOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='TestPieceAliasLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='TestPieceAliasOwner')
     
     def __str__(self):
         return "%s: %s" % (self.name, self.piece.name)
@@ -120,8 +120,8 @@ class DownloadStore(models.Model):
     created = models.DateTimeField(default=datetime.now,editable=False)
     name = models.CharField(max_length=50)
     link = models.URLField()
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='DownloadStoreLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='DownloadStoreOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='DownloadStoreLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='DownloadStoreOwner')
     
     def __str__(self):
         return "%s" % (self.name)
@@ -137,8 +137,8 @@ class DownloadAlbum(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    store = models.ForeignKey(DownloadStore)
-    band = models.ForeignKey("bands.Band", blank=True, null=True)
+    store = models.ForeignKey(DownloadStore, on_delete=models.PROTECT)
+    band = models.ForeignKey("bands.Band", on_delete=models.PROTECT, blank=True, null=True)
     band_name = models.CharField(max_length=100)
     title = models.CharField(max_length=50)
     link = models.URLField()
@@ -148,8 +148,8 @@ class DownloadAlbum(models.Model):
                     ('download', 'Download Track'),
                     )
     type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='download')
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='DownloadAlbumLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='DownloadAlbumOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='DownloadAlbumLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='DownloadAlbumOwner')
     
     def __str__(self):
         return "%s" % (self.title)
@@ -165,14 +165,14 @@ class DownloadTrack(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    album = models.ForeignKey(DownloadAlbum)
+    album = models.ForeignKey(DownloadAlbum, on_delete=models.PROTECT)
     title = models.CharField(max_length=100)
-    test_piece = models.ForeignKey(TestPiece)
+    test_piece = models.ForeignKey(TestPiece, on_delete=models.PROTECT)
     link = models.URLField(blank=True, null=True)
-    band = models.ForeignKey("bands.Band", blank=True, null=True)
+    band = models.ForeignKey("bands.Band", on_delete=models.PROTECT, blank=True, null=True)
     band_name = models.CharField(max_length=100, blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='DownloadTrackLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='DownloadTrackOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='DownloadTrackLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='DownloadTrackOwner')
     
     def __str__(self):
         return "%s" % (self.title)

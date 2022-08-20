@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, date
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geomodels
 from django.contrib.gis.geos.factory import fromstr
+from django.db.models import Manager as GeoManager
 from django.db import models
 
 from regions.models import Region
@@ -29,7 +30,7 @@ class Band(models.Model):
                       )
     website_review = models.IntegerField(blank=True, null=True, choices=REVIEW_CHOICES)
     twitter_name = models.CharField(max_length=100, blank=True, null=True)
-    region = models.ForeignKey(Region)
+    region = models.ForeignKey(Region, on_delete=models.PROTECT)
     postcode = models.CharField(max_length=10, null=True, blank=True, help_text='Rehearsal room postcode')
     latitude = models.CharField(max_length=15, blank=True, null=True)
     longitude = models.CharField(max_length=15, blank=True, null=True)
@@ -50,9 +51,9 @@ class Band(models.Model):
     website_news_page = models.CharField(max_length=200, blank=True, null=True, help_text="URL of page containing band news")
     website_contact_page = models.CharField(max_length=200, blank=True, null=True, help_text="URL of page containing band contact form")
     notes = models.TextField(blank=True, null=True)
-    mapper = models.ForeignKey(User, editable=False, related_name='BandMapper', blank=True, null=True)
-    first_parent = models.ForeignKey('Band', related_name='FirstParentBand', blank=True, null=True)
-    second_parent = models.ForeignKey('Band', related_name='SecondParentBand', blank=True, null=True, help_text="Used for the parents when a band merges with another")
+    mapper = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandMapper', blank=True, null=True)
+    first_parent = models.ForeignKey('Band', on_delete=models.PROTECT, related_name='FirstParentBand', blank=True, null=True)
+    second_parent = models.ForeignKey('Band', on_delete=models.PROTECT, related_name='SecondParentBand', blank=True, null=True, help_text="Used for the parents when a band merges with another")
     start_date = models.DateField(blank=True, null=True, help_text="Date band started contesting (yyyy-mm-dd)")
     end_date = models.DateField(blank=True, null=True, help_text="Date band folded or merged (yyyy-mm-dd)")
     STATUS_CHOICES = (
@@ -65,11 +66,11 @@ class Band(models.Model):
                       )
     status = models.IntegerField(blank=True, null=True, choices=STATUS_CHOICES)
     national_grading = models.CharField(max_length=20, blank=True, null=True)
-    section_link = models.ForeignKey(Section, blank=True, null=True)
+    section_link = models.ForeignKey(Section, on_delete=models.PROTECT, blank=True, null=True)
     scratch_band = models.BooleanField(default=False)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='BandLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='BandOwner')
-    objects = geomodels.GeoManager()
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandOwner')
+    objects = GeoManager()
 
     def __str__(self):
         return "%s" % self.name
@@ -275,12 +276,12 @@ class PreviousBandName(models.Model):
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
     old_name = models.CharField(max_length=100, help_text='Old band name')
-    band = models.ForeignKey(Band, on_delete=models.deletion.CASCADE)
+    band = models.ForeignKey(Band, on_delete=models.CASCADE)
     alias_start_date = models.DateField(blank=True, null=True, help_text="Start date for this alias (yyyy-mm-dd)")
     alias_end_date = models.DateField(blank=True, null=True, help_text="End date for this alias (yyyy-mm-dd)")
     hidden = models.BooleanField(default=False)
-    lastChangedBy = models.ForeignKey(User, editable=False, blank=True, null=True, related_name='PreviousBandNameLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, blank=True, null=True, related_name='PreviousBandNameOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, blank=True, null=True, related_name='PreviousBandNameLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, blank=True, null=True, related_name='PreviousBandNameOwner')
 
     def __str__(self):
         return "%s -> %s" % (self.old_name, self.band.name)
@@ -318,7 +319,7 @@ class BandRelationship(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    left_band = models.ForeignKey(Band, related_name="LeftBand", on_delete=models.deletion.PROTECT)
+    left_band = models.ForeignKey(Band, related_name="LeftBand", on_delete=models.PROTECT)
     left_band_name = models.CharField(max_length=100, blank=True)
     BAND_RELATIONSHIPS = (
                           ('parent','Is Parent Of'),
@@ -329,12 +330,12 @@ class BandRelationship(models.Model):
                           ('reformed','Reformed As'),
                           )
     relationship = models.CharField(max_length=10, choices=BAND_RELATIONSHIPS)
-    right_band = models.ForeignKey(Band, related_name="RightBand", on_delete=models.deletion.PROTECT)
+    right_band = models.ForeignKey(Band, related_name="RightBand", on_delete=models.PROTECT)
     right_band_name = models.CharField(max_length=100, blank=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='BandRelationshipLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='BandRelationshipOwner')
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandRelationshipLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandRelationshipOwner')
 
     def __str__(self):
         return "%s ->[%s]-> %s" % (self.left_band.name, self.relationship, self.right_band.name)
@@ -346,9 +347,9 @@ class BandTalkPage(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    lastChangedBy = models.ForeignKey(User, editable=False, related_name='BandTalkPageLastChangedBy')
-    owner = models.ForeignKey(User, editable=False, related_name='BandTalkPageOwner')
-    object_link = models.ForeignKey(Band, on_delete=models.deletion.CASCADE)
+    lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandTalkPageLastChangedBy')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='BandTalkPageOwner')
+    object_link = models.ForeignKey(Band, on_delete=models.CASCADE)
     text = models.TextField()
 
     def save(self):

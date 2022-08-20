@@ -19,7 +19,7 @@ class AuditEntry(models.Model):
     object_type = models.CharField(max_length=30)
     change_type = models.CharField(max_length=30)
     message = models.TextField()
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     useragent = models.CharField(max_length=1024, blank=True, null=True)
     address = models.CharField(max_length=16, blank=True, null=True)
     

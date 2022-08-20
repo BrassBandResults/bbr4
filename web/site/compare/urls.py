@@ -3,17 +3,17 @@
 
 
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url(r'^bands/$', views.bands_home),
-    url(r'^bands/([\w\-]+)/$', views.band_compare),
-    url(r'^bands/([\w\-]+)/([\w\-]+)/$', views.bands_compare),
-    url(r'^bands/([\w\-]+)/([\w\-]+)/([\w\-]+)/$', views.bands_compare_contest),
-    url(r'^conductors/$', views.conductors_home),
-    url(r'^conductors/([\w\-]+)/$', views.conductor_compare),
-    url(r'^conductors/([\w\-]+)/([\w\-]+)/$', views.conductors_compare),
-    url(r'^conductors/([\w\-]+)/([\w\-]+)/([\w\-]+)/$', views.conductors_compare_contest),
+    re_path(r'^bands/$', views.bands_home),
+    re_path(r'^bands/([\w\-]+)/$', views.band_compare),
+    re_path(r'^bands/([\w\-]+)/([\w\-]+)/$', views.bands_compare),
+    re_path(r'^bands/([\w\-]+)/([\w\-]+)/([\w\-]+)/$', views.bands_compare_contest),
+    re_path(r'^conductors/$', views.conductors_home),
+    re_path(r'^conductors/([\w\-]+)/$', views.conductor_compare),
+    re_path(r'^conductors/([\w\-]+)/([\w\-]+)/$', views.conductors_compare),
+    re_path(r'^conductors/([\w\-]+)/([\w\-]+)/([\w\-]+)/$', views.conductors_compare_contest),
 ]
