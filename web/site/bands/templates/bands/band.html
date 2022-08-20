@@ -70,7 +70,7 @@
     <tr><th>{% trans "Section"%}:</th><td>{{BandSection.name}}</td></tr>
 {% endif %}
 
-{% if Band.website "http://" %}
+{% if Band.website == "http://" %}
   {% if Band.status != 0 %}
     <tr><th>{% trans "Website"%}:</th><td><font color="red">{% trans "Unknown, do you know?"%}</font></td></tr>
   {%endif%}
