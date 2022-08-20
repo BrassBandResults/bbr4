@@ -8,7 +8,7 @@ from django.http import Http404, HttpResponseRedirect
 from bands.models import Band
 from bbr.notification import notification
 from bbr.siteutils import browser_details
-from bbr.render import render_auth
+from bbr.render import render_auth, render_js
 from contests.models import ContestEvent, Venue
 from bandmap.forms import EditLocationForm
 from regions.models import Region
@@ -61,7 +61,7 @@ def map_script(request):
     Or if lat/lng passed as parameters, find bands within given distance miles of a point.  Return a map_script.js centered on that point, showing bands within 10 miles
     """
     lBands = Band.objects.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
-    return render_auth(request, 'map/map_script.js', {
+    return render_js(request, 'map/map_script.js', {
                                                       "Bands" : lBands,
                                                      })    
 
@@ -85,7 +85,7 @@ def map_script_search(request):
         # showing full map
         lBands = []
         lVenues = []
-    return render_auth(request, 'map/map_script.js', {
+    return render_js(request, 'map/map_script.js', {
                                                       "Bands" : lBands,
                                                       "Venues" : lVenues,
                                                       "Latitude" : lLatitude,
@@ -244,7 +244,7 @@ def specific_band_map_script(request, pBandSlug):
         raise Http404()
     lBands = Band.objects.exclude(latitude="").order_by('latitude', 'longitude')
     lVenues = Venue.objects.exclude(latitude="").order_by('latitude', 'longitude')
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_js(request, 'map/map_script.js', { "Bands" : lBands,
                                                        "Center" : lBand,
                                                        "Zoom" : "12",
                                                        "Venues" : lVenues,
@@ -261,7 +261,7 @@ def specific_venue_map_script(request, pVenueSlug):
         raise Http404()
     lBands = Band.objects.exclude(latitude="").order_by('latitude', 'longitude')
     lVenues = Venue.objects.exclude(latitude="").order_by('latitude', 'longitude')
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_js(request, 'map/map_script.js', { "Bands" : lBands,
                                                        "Center" : lVenue,
                                                        "Zoom" : "12",
                                                        "Venues" : lVenues,
@@ -278,7 +278,7 @@ def specific_region_map_script(request, pRegionSlug):
         raise Http404()
     
     lBands = Band.objects.exclude(latitude="").order_by('latitude', 'longitude').filter(region=lRegion)
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_js(request, 'map/map_script.js', { "Bands" : lBands,
                                                        "Center" : lRegion,
                                                        "Zoom" : lRegion.default_map_zoom,
                                                        "ShowExtinct" : True,
@@ -328,7 +328,7 @@ def specific_contest_event_map_script(request, pContestEventId):
     if lMaxDistance > 10000:
         lZoom = "1"
     
-    return render_auth(request, 'map/map_script.js', { "Bands" : lBands,
+    return render_js(request, 'map/map_script.js', { "Bands" : lBands,
                                                        "Center" : lVenue,
                                                        "Zoom" : lZoom,
                                                        "Venues" : lVenues,

@@ -83,7 +83,7 @@ def feedback(request):
                         }
             notification(None, lFeedback, 'feedback', 'feedback', 'new', request.user, browser_details(request), pDestination=lOwnerEmail, pAdditionalContext=lContext, pUrl=lUrl)
                 
-        lNextUrl = lUrl[len('http://'):]
+        lNextUrl = lUrl[len('https://'):]
         lNextUrl = lNextUrl[lNextUrl.find('/'):]
         return HttpResponseRedirect('/feedback/thanks/?next=%s' % lNextUrl) 
     else:
