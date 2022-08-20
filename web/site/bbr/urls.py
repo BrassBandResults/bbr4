@@ -76,7 +76,7 @@ urlpatterns = [
     re_path(r'^accounts/resetpassword/([A-Za-z0-9]+)/$', user_views.reset_password),
     re_path(r'^accounts/changepassword/$', PasswordChangeView.as_view(template_name='users/changepassword.html')),
 
-    re_path(r'^accounts/loginpro/$', LoginView.as_view(), {'template_name' : 'accounts/loginpro.html',}),
+    re_path(r'^accounts/loginpro/$', LoginView.as_view(template_name='accounts/loginpro.html')),
     re_path(r'^accounts/upgrade/$', user_views.pro_upgrade),
     re_path(r'^accounts/paid/$', user_views.pro_paid),
     re_path(r'^accounts/pro/thanks/$', user_views.pro_thanks),
