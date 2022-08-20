@@ -11,7 +11,7 @@ def badge_notifications_for_user(pUser):
     """
     Return any badge notifications for the current user, then delete them
     """
-    if pUser.is_anonymous() == True:
+    if pUser.is_anonymous == True:
         return ''
 
     lBadgesToAward = UserBadge.objects.filter(user=pUser, notified=False)

@@ -380,7 +380,7 @@ def single_person(request, pPersonSlug, pContestFilterSlug=None, pGroupFilterSlu
         lShowTabs = False
 
     lShowEdit = False
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lShowEdit = request.user.profile.superuser or (request.user.profile.enhanced_functionality and request.user.id == lPerson.owner.id)
 
     try:

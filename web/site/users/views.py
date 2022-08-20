@@ -569,7 +569,7 @@ def _show_public_profile(request, pUser):
     if lProfile.contest_history_visibility == 'public':
         lContestHistory = PersonalContestHistory.objects.filter(user=pUser, status='accepted').select_related()
     elif lProfile.contest_history_visibility == 'site':
-        if request.user.is_anonymous() == False:
+        if request.user.is_anonymous == False:
             lContestHistory = PersonalContestHistory.objects.filter(user=pUser, status='accepted').select_related()
             
     lUserBadges = UserBadge.objects.filter(user=pUser)

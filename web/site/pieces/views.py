@@ -164,7 +164,7 @@ def single_piece(request, pPieceSlug):
 
     # find this user's playing of this piece from their contest history
     lUserResultsForThisPiece = []
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lUserResultsForThisPieceWithDate = []
         lUserHistoryThisPiece = PersonalContestHistory.objects.filter(user=request.user, status='accepted', result__contest_event__test_piece=lPiece).select_related('result', 'result__band', 'result__contest_event', 'result__contest_event__contest')
         if len(lUserHistoryThisPiece):
@@ -229,7 +229,7 @@ def single_piece(request, pPieceSlug):
     # find out results where this piece was used as an own choice test piece
     lUsageOwnChoice = ContestResult.objects.filter(test_piece=lPiece).select_related('band','contest_event', 'contest_event__contest')
     lShowEdit = False
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lShowEdit = request.user.profile.superuser or (request.user.profile.enhanced_functionality and request.user.id == lPiece.owner.id)
 
     lUsageEntertainments = ResultPiecePerformance.objects.filter(piece=lPiece).select_related('result')

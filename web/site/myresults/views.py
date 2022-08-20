@@ -54,7 +54,7 @@ def _show_contest_history_list(request, pUsername, pQuery, pFilter=None, pFilter
     if lResultsWithPositionCount > 0:
         lAveragePosition = lTotalPositions / lResultsWithPositionCount
             
-    lCurrentUserIsPro = request.user.is_anonymous() == False and request.user.profile.pro_member
+    lCurrentUserIsPro = request.user.is_anonymous == False and request.user.profile.pro_member
     lProfileIsForProUser = lProfile.pro_member
     
     lProMember = False

@@ -467,7 +467,7 @@ def single_contest_event(request, pContestSlug, pDate):
     for result in lResults:
         if result.band.region:
             lFlags[result.band.region.country_code] = result.band.region.country_code
-            if request.user.is_anonymous() == False and request.user.profile.is_regional_superuser_region(result.band.region):
+            if request.user.is_anonymous == False and request.user.profile.is_regional_superuser_region(result.band.region):
                 lRegionMatch = True
         if result.test_piece:
             lHasOwnChoice = True
@@ -528,7 +528,7 @@ def single_contest_event(request, pContestSlug, pDate):
     # Take ownership/edit enabled
     lTakeOwnershipEnabled = False
     lShowEdit = False
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lTakeOwnershipEnabled = request.user.profile.superuser
         if request.user.profile.enhanced_functionality and lContestEvent.owner.is_superuser:
             lTakeOwnershipEnabled = True
@@ -551,7 +551,7 @@ def single_contest_event(request, pContestSlug, pDate):
         lStatistics = _build_contest_statistics(lResults, lContestEvent.contest_type)
 
     lSuperuser = False
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lSuperuser = request.user.profile.superuser or (lRegionMatch and request.user.profile.regional_superuser)
 
     lTemplate = 'contests/contest_event.html'

@@ -284,7 +284,7 @@ def single_band(request, pBandSlug, pFilterContestGroupSlug=None, pFilterContest
     if lBand.longitude and lBand.latitude and len(lBand.longitude) > 0 and len(lBand.latitude) > 0:
         lShowOnMap = True
     lShowEdit = False
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lSuperuser = request.user.profile.superuser
         lEnhancedFunctionalityAndOwner = request.user.profile.enhanced_functionality and request.user == lBand.owner
         lRegionalSuperuserAndBandInRightRegion = request.user.profile.is_regional_superuser_region(lBand.region)

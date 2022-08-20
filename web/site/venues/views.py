@@ -100,7 +100,7 @@ def single_venue(request, pVenueSlug):
     lVenue.contests = lSortedResults
     
     lShowEdit = False
-    if request.user.is_anonymous() == False:
+    if request.user.is_anonymous == False:
         lSuperuser = request.user.profile.superuser or request.user.profile.regional_superuser
         lOwner = request.user.profile.enhanced_functionality and request.user == lVenue.owner
         lShowEdit = lSuperuser or lOwner

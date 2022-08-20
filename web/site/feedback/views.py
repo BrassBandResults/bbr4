@@ -69,7 +69,7 @@ def feedback(request):
         lFeedback.owner = lOwner
         lFeedback.ip = lIp
         lFeedback.browser_id = lBrowser
-        if lUser.is_anonymous():
+        if lUser.is_anonymous:
             lFeedback.reporter = None
         else:
             lFeedback.reporter = lUser
@@ -107,7 +107,7 @@ def queue(request):
     """
     Show all unclaimed and new feedback
     """
-    if request.user.is_anonymous() == True:
+    if request.user.is_anonymous == True:
         raise Http404
     if request.user.profile.superuser == False:
         raise Http404
