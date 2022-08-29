@@ -9,4 +9,5 @@ from . import views
 urlpatterns = [
     re_path(r'^bands/english/active/$', views.bands_english_active),
     re_path(r'^bands/english/none/$', views.bands_english_none),
+    re_path(r'^migrate/bands/$', views.bands_migrate),
 ]
