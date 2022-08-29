@@ -3,7 +3,7 @@
   <slug>{{Band.slug}}</slug>
   <website>{{Band.website}}</website>
   <twitter>{{Band.twitter_name}}</twitter>
-  <region id="{{Band.region.id}}">{{Band.region.name}}</region>
+  <region id="{{Band.region.id}}" slug="{{Band.region.slug}}">{{Band.region.name}}</region>
   <latitude>{{Band.latitude}}</latitude>
   <longitude>{{Band.longitude}}</longitude>
   <rehearsal>{{Band.get_rehearsal_night_1_display}}</rehearsal>
@@ -15,12 +15,27 @@
   <status>{{Band.get_status_display}}</status>
   <grading>{{Band.national_grading}}</grading>
   <scratch_band>{{Band.scratch_band}}</scratch_band>
+  <rehearsalNight1>{{band.rehearsal_night_1}}</rehearsalNight1>
+  <rehearsalNight2>{{band.rehearsal_night_2}}</rehearsalNight2>
+  <mapper>{{band.mapper.username}}</mapper>
+  <notes>{{Band.notes}}</notes>
+
+  <lastModified>{{Band.last_modified}}</lastModified>
+  <created>{{Band.created}}</created>
+  <owner>{{Band.owner.username}}</owner>
+  <lastChangedBy>{{Band.lastChangedBy.username}}</lastChangedBy>
 
   <previous_names>
     {% for name in Band.previous_band_names %}
     <name id="{{name.id}}">{{name.old_name}}</name>
     <start>{{name.alias_start_date}}</start>
     <end>{{name.alias_end_date}}</end>
+    <hidden>{{previous_name.hidden}}</hidden>
+
+    <lastModified>{{previous_name.last_modified}}</lastModified>
+    <created>{{previous_name.created}}</created>
+    <owner>{{previous_name.owner.username}}</owner>
+    <lastChangedBy>{{previous_name.lastChangedBy.username}}</lastChangedBy>
     {% endfor %}
   </previous_names>
 </band>

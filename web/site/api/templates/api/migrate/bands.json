@@ -1,29 +1,11 @@
 [{% for band in Bands %}
   {
-  "id":{{band.id}},
-  "lastModified":"{{band.last_modified}}",
-  "created":"{{band.created}}",
-  "owner":"{{band.owner.username}}",
-  "lastChangedBy":"{{band.lastChangedBy.username}}",
-  "name":"{{band.name}}",
-  "slug":"{{band.slug}}",
-  "website":"{{band.website_url}}",
-  "region":"{{band.region.slug}}",
-  "latitude":"{{band.latitude}}",
-  "longitude":"{{band.longitude}}",
-  "notes":"{{band.notes}}",
-  "mapper":"{{band.mapper.username}}",
-  "startDate":"{{band.start_date}}",
-  "endDate":"{{band.end_date}}",
-  "status" :"{{band.get_status_display}}",
-  "section1":"{{band.national_grading}}",
-  "section2":"{{band.section_link.slug}}",
-  "twitter":"{{band.twitter_name}}",
-  "rehearsalNight1":"{{band.rehearsal_night_1}}",
-  "rehearsalNight2":"{{band.rehearsal_night_2}}",
-  "parent1":"{{band.first_parent.id}}",
-  "parent2":"{{band.second_parent.id}}",
-  "scratch":"{{band.scratch_band}}",
+  
+
+
+
+ 
+ 
   "previousNames": [{% for previous_name in Band.previous_band_names %}
     "id":{{previous_name.id}},
     "lastModified":"{{previous_name.last_modified}}",
