@@ -24,7 +24,7 @@
   "parent1":"{{band.first_parent.id}}",
   "parent2":"{{band.second_parent.id}}",
   "scratch":"{{band.scratch_band}}",
-  "previousNames": [{% for previous_name in Bands.previousbandname_set.all %}
+  "previousNames": [{% for previous_name in Band.previous_band_names %}
     "id":{{previous_name.id}},
     "lastModified":"{{previous_name.last_modified}}",
     "created":"{{previous_name.created}}",
