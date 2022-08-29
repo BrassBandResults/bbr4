@@ -1,7 +1,7 @@
 #!/home/bbr/.venv/bbr4/bin/python
 # (c) 2012, 2018 Tim Sawyer, All Rights Reserved
 
-import sys, os, re
+import sys, os, re, time
 from datetime import datetime, timedelta
 from os.path import expanduser
 
@@ -39,6 +39,7 @@ for event in lAllEvents:
 	lFilename = "%s.xml" % event.name
 	lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
 	write_file(lFilepath, lFilename, lContestXml)
+	time.sleep(0.2)
 
 print ("Extracting %d Bands" % Band.objects.count())
 lAllBands = Band.objects.all().order_by('name')
@@ -52,3 +53,4 @@ for band in lAllBands:
 	lFilename = "%s.xml" % band.slug
 	lBandXml = render_to_string('extract/band.xml', { 'Band' : band, })
 	write_file(lFilepath, lFilename, lBandXml)
+	time.sleep(0.1)

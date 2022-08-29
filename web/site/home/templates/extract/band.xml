@@ -30,12 +30,12 @@
     <name id="{{name.id}}">{{name.old_name}}</name>
     <start>{{name.alias_start_date}}</start>
     <end>{{name.alias_end_date}}</end>
-    <hidden>{{previous_name.hidden}}</hidden>
+    <hidden>{{name.hidden}}</hidden>
 
-    <lastModified>{{previous_name.last_modified}}</lastModified>
-    <created>{{previous_name.created}}</created>
-    <owner>{{previous_name.owner.username}}</owner>
-    <lastChangedBy>{{previous_name.lastChangedBy.username}}</lastChangedBy>
+    <lastModified>{{name.last_modified}}</lastModified>
+    <created>{{name.created}}</created>
+    <owner>{{name.owner.username}}</owner>
+    <lastChangedBy>{{name.lastChangedBy.username}}</lastChangedBy>
     {% endfor %}
   </previous_names>
 </band>
