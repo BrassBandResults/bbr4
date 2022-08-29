@@ -26,20 +26,20 @@ def write_file(filepath, filename, contents):
 	f.write(contents)
 	f.close()
 
-print ("Extracting %d Contest Events" % ContestEvent.objects.count())
-lAllEvents = ContestEvent.objects.all().order_by('-date_of_event')
-lYear = None
-for event in lAllEvents:
-	if lYear != event.event_year:
-		print (lYear)
-		lYear = event.event_year
-	print ("\t%s - %s" % (event.date_of_event, event.name))
-
-	lFilepath = "%s/Contest Events/%d/%d/%d" % (HOME, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
-	lFilename = "%s.xml" % event.name
-	lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
-	write_file(lFilepath, lFilename, lContestXml)
-	time.sleep(0.2)
+#print ("Extracting %d Contest Events" % ContestEvent.objects.count())
+#lAllEvents = ContestEvent.objects.all().order_by('-date_of_event')
+#lYear = None
+#for event in lAllEvents:
+#	if lYear != event.event_year:
+#		print (lYear)
+#		lYear = event.event_year
+#	print ("\t%s - %s" % (event.date_of_event, event.name))
+#
+#	lFilepath = "%s/Contest Events/%d/%d/%d" % (HOME, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
+#	lFilename = "%s.xml" % event.name
+#	lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
+#	write_file(lFilepath, lFilename, lContestXml)
+#	time.sleep(0.2)
 
 print ("Extracting %d Bands" % Band.objects.count())
 lAllBands = Band.objects.all().order_by('name')
