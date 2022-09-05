@@ -41,8 +41,8 @@ class PersonMergeRequest(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    source_person = models.ForeignKey(Person, on_delete=models.PROTECT, related_name='PersonFrom')
-    destination_person = models.ForeignKey(Person, on_delete=models.PROTECT, related_name='PersonTo')
+    source_person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='PersonFrom')
+    destination_person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='PersonTo')
     lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PersonMergeLastChangedBy',blank=True,null=True)
     owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=True, related_name='PersonMergeOwner',blank=True,null=True)
     
@@ -65,8 +65,8 @@ class VenueMergeRequest(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    source_venue = models.ForeignKey(Venue, on_delete=models.PROTECT, related_name='VenueFrom')
-    destination_venue = models.ForeignKey(Venue, on_delete=models.PROTECT, related_name='VenueTo')
+    source_venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='VenueFrom')
+    destination_venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='VenueTo')
     lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='VenueMergeLastChangedBy',blank=True,null=True)
     owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=True, related_name='VenueMergeOwner',blank=True,null=True)
     
@@ -87,8 +87,8 @@ class PieceMergeRequest(models.Model):
     """
     last_modified = models.DateTimeField(default=datetime.now,editable=False)
     created = models.DateTimeField(default=datetime.now,editable=False)
-    source_piece = models.ForeignKey(TestPiece, on_delete=models.PROTECT, related_name='PieceFrom')
-    destination_piece = models.ForeignKey(TestPiece, on_delete=models.PROTECT, related_name='PieceTo')
+    source_piece = models.ForeignKey(TestPiece, on_delete=models.CASCADE, related_name='PieceFrom')
+    destination_piece = models.ForeignKey(TestPiece, on_delete=models.CASCADE, related_name='PieceTo')
     lastChangedBy = models.ForeignKey(User, on_delete=models.PROTECT, editable=False, related_name='PieceMergeLastChangedBy',blank=True,null=True)
     owner = models.ForeignKey(User, on_delete=models.PROTECT, editable=True, related_name='PieceMergeOwner',blank=True,null=True)
     
