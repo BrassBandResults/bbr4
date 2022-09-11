@@ -11,15 +11,13 @@ from django.views.decorators.csrf import csrf_exempt
 from adjudicators.models import ContestAdjudicator
 from bbr.siteutils import browser_details
 from bbr.render import render_auth
-from contests.models import ContestResult
+from contests.models import ContestResult, CurrentChampion
 from move.models import PersonMergeRequest
 from bbr.notification import notification
 from people.models import Person, PersonAlias, PersonRelation
 from people.views import _fetch_adjudication_details
 from pieces.models import TestPiece
-from web.site.contests.models import CurrentChampion
-
-
+``
 @login_required
 def merge_request(request, pSourcePersonSlug):
     """
