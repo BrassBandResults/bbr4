@@ -17,6 +17,7 @@ from bbr.notification import notification
 from people.models import Person, PersonAlias, PersonRelation
 from people.views import _fetch_adjudication_details
 from pieces.models import TestPiece
+from web.site.contests.models import CurrentChampion
 
 
 @login_required
@@ -155,8 +156,13 @@ def merge_action(request, pMergePersonRequestSerial):
         relationship.relation_person = lToPerson
         relationship.lastChangedBy = request.user
         relationship.save()
-        
-        
+
+    lChampionsToMove = CurrentChampion.objects.filter(conductor=lFromPerson)
+    for champ in lChampionsToMove:
+        champ.conductor = lToPerson
+        champ.lastChangedBy = request.user
+        champ.save()
+                
     # Process aliases    
     lInitialRegex = "^\w\.\s\w+$"
     if lFromPerson.name.strip() != lToPerson.name.strip():
