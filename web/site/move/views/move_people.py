@@ -17,7 +17,7 @@ from bbr.notification import notification
 from people.models import Person, PersonAlias, PersonRelation
 from people.views import _fetch_adjudication_details
 from pieces.models import TestPiece
-``
+
 @login_required
 def merge_request(request, pSourcePersonSlug):
     """
