@@ -9,7 +9,7 @@
   <rehearsal>{{Band.get_rehearsal_night_1_display}}</rehearsal>
   <rehearsal>{{Band.get_rehearsal_night_2_display}}</rehearsal>
   {% if Band.first_parent %}<parent id="{{Band.first_parent.id}}" slug="{{Band.first_parent.slug}}">{{Band.first_parent.name}}</parent>{% endif %}
-  {% if Band.second_parent %}<parent id="{{Band.second_parent.id}}"slug="{{Band.second_parent.slug}}">{{Band.second_parent.name}}</parent>{% endif %}
+  {% if Band.second_parent %}<parent id="{{Band.second_parent.id}}" slug="{{Band.second_parent.slug}}">{{Band.second_parent.name}}</parent>{% endif %}
   <start>{{Band.start_date}}</start>
   <end>{{Bad.end_date}}</end>
   <status>{{Band.get_status_display}}</status>
