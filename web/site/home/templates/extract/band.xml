@@ -6,17 +6,15 @@
   <region id="{{Band.region.id}}" slug="{{Band.region.slug}}">{{Band.region.name}}</region>
   <latitude>{{Band.latitude}}</latitude>
   <longitude>{{Band.longitude}}</longitude>
-  <rehearsal>{{Band.get_rehearsal_night_1_display}}</rehearsal>
-  <rehearsal>{{Band.get_rehearsal_night_2_display}}</rehearsal>
-  {% if Band.first_parent %}<parent id="{{Band.first_parent.id}}" slug="{{Band.first_parent.slug}}">{{Band.first_parent.name}}</parent>{% endif %}
-  {% if Band.second_parent %}<parent id="{{Band.second_parent.id}}" slug="{{Band.second_parent.slug}}">{{Band.second_parent.name}}</parent>{% endif %}
+  <rehearsal1>{{Band.get_rehearsal_night_1_display}}</rehearsal1>
+  <rehearsal2>{{Band.get_rehearsal_night_2_display}}</rehearsal2>
+  {% if Band.first_parent %}<parent1 id="{{Band.first_parent.id}}" slug="{{Band.first_parent.slug}}">{{Band.first_parent.name}}</parent1>{% endif %}
+  {% if Band.second_parent %}<parent2 id="{{Band.second_parent.id}}" slug="{{Band.second_parent.slug}}">{{Band.second_parent.name}}</parent2{% endif %}
   <start>{{Band.start_date}}</start>
   <end>{{Bad.end_date}}</end>
   <status>{{Band.get_status_display}}</status>
   <grading>{{Band.national_grading}}</grading>
   <scratch_band>{{Band.scratch_band}}</scratch_band>
-  <rehearsalNight1>{{Band.rehearsal_night_1}}</rehearsalNight1>
-  <rehearsalNight2>{{Band.rehearsal_night_2}}</rehearsalNight2>
   <mapper>{{Band.mapper.username}}</mapper>
   <notes>{{Band.notes}}</notes>
 
