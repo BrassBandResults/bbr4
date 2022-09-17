@@ -7,7 +7,7 @@ Region: {{ThingNew.region.name}}{% if ThingNew.region.name != ThingOld.region.na
 Postcode: {{ThingNew.postcode}}{% if ThingNew.postcode != ThingOld.postcode %} [was {{ThingOld.postcode}}]{%endif%}
 Latitude: {{ThingNew.latitude}}{% if ThingNew.latitude != ThingOld.latitude %} [was {{ThingOld.latitude}}]{%endif%}
 Longitude: {{ThingNew.longitude}}{% if ThingNew.longitude != ThingOld.longitude %} [was {{ThingOld.longitude}}]{%endif%}
-Rehearsals: {{ThingNew.rehearsal_night_1}}{% if ThingNew.rehearsal_night_1 != ThingOld.rehearsal_night_1 %} [was {{ThingOld.rehearsal_night_1}}]{%endif%} {{ThingNew.rehearsal_night_2}}{% if ThingNew.rehearsal_night_2 ThingOld.rehearsal_night_2 %} [was {{ThingOld.rehearsal_night_2}}]{%endif%}
+Rehearsals: {{ThingNew.rehearsal_night_1}}{% if ThingNew.rehearsal_night_1 != ThingOld.rehearsal_night_1 %} [was {{ThingOld.rehearsal_night_1}}]{%endif%} {{ThingNew.rehearsal_night_2}}{% if ThingNew.rehearsal_night_2 != ThingOld.rehearsal_night_2 %} [was {{ThingOld.rehearsal_night_2}}]{%endif%}
 
 Email: {{ThingNew.contact_email}}{% if ThingNew.contact_email != ThingOld.contact_email %} [was {{ThingOld.contact_email}}]{%endif%}
 Website: {{ThingNew.website}}{% if ThingNew.website != ThingOld.website %} [was {{ThingOld.website}}]{%endif%}
