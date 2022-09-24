@@ -8,7 +8,7 @@ from datetime import date
 from django.http import Http404
 
 from bands.models import Band
-from bbr.render import render_json
+from bbr.render import render_jsonp
 
 def band_results(request, pBandSlug, pVersion):
     """
@@ -27,7 +27,7 @@ def band_results(request, pBandSlug, pVersion):
     lBandSlugUnderscore = pBandSlug.replace('-','_')
     lToday = date.today()
     lResults = lBand.contestresult_set.filter(contest_event__date_of_event__lte=lToday).select_related()
-    return render_json(request, 'embed/band_results.%d.jsonp' % int(pVersion), {"Band" : lBand,
+    return render_jsonp(request, 'embed/band_results.%d.jsonp' % int(pVersion), {"Band" : lBand,
                                                                            "ContestResults" : lResults,
                                                                            "BandSlugUnderscore" : lBandSlugUnderscore
                                                                           })
