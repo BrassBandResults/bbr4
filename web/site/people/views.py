@@ -17,7 +17,7 @@ from adjudicators.models import ContestAdjudicator
 from bands.models import Band
 from bbr.decorators import login_required_pro_user
 from bbr.siteutils import slugify, browser_details
-from bbr.render import render_auth
+from bbr.render import render_auth, render_json
 from contests.models import ContestResult, ContestGroup, Contest, ContestEvent
 from people.forms import EditPersonForm, EditPersonAsSuperuserForm, EditClassifiedProfileForm
 from people.models import Person, PersonAlias, ClassifiedPerson, PersonRelation
@@ -467,7 +467,7 @@ def people_options_json(request):
     Return <option> tags for droplist of people
     """
     lPeople = Person.objects.all()
-    return render_auth(request, 'people/option_list.json', {"People" : lPeople})
+    return render_json(request, 'people/option_list.json', {"People" : lPeople})
 
 
 @login_required
@@ -777,7 +777,7 @@ def chart_json(request, pPersonSlug):
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(),
+    return render_json(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(),
                                                             "ShowBand" : True,
                                                             "ShowConductor" : False})
 
@@ -790,7 +790,7 @@ def chart_json_filter(request, pPersonSlug, pContestSlug):
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(pContestSlug),
+    return render_json(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(pContestSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
 
@@ -803,7 +803,7 @@ def chart_json_filter_group(request, pPersonSlug, pContestGroupSlug):
         lPerson = Person.objects.filter(slug=pPersonSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(pContestGroupSlug),
+    return render_json(request, 'bands/resultschart.json', {"Results" : lPerson.reverse_results(pContestGroupSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
 
@@ -839,7 +839,7 @@ def people_hash_by_letter(request):
         lHash = hashlib.sha256(lPeople.encode('utf-8')).hexdigest()
         lHashes[letter] = lHash
 
-    return render_auth(request, 'people/hashes.json', {
+    return render_json(request, 'people/hashes.json', {
                                                        'Hashes' : lHashes,
                                                        })
 
@@ -849,7 +849,7 @@ def people_list_by_letter(request, pLetter):
     Return JSON representing people starting with a certain letter
     """
     lPeople = Person.objects.filter(surname__istartswith=pLetter)
-    return render_auth(request, 'people/people.json', {
+    return render_json(request, 'people/people.json', {
                                                        'People' : lPeople,
                                                        })
 

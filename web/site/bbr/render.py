@@ -9,6 +9,11 @@ def render_js(request, pTemplate, pParams=None):
         pParams = {}
     return render(request, pTemplate, pParams, content_type='text/javascript')
 
+def render_json(request, pTemplate, pParams=None):
+    if pParams == None:
+        pParams = {}
+    return render(request, pTemplate, pParams, content_type='application/json')
+
 def render_auth(request, pTemplate, pParams=None):
     if pParams == None:
         pParams = {}

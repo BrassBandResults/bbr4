@@ -2,7 +2,6 @@
 
 import tweepy
 
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.db import connection
@@ -10,7 +9,7 @@ from django.db.models.query_utils import Q
 from django.template.loader import render_to_string
 from django.conf import settings
 
-from bbr.render import render_auth
+from bbr.render import render_auth, render_json
 from bbr.decorators import login_required_pro_user
 
 
@@ -511,7 +510,7 @@ def chart_json(request, pBandSlug):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(),
+    return render_json(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
 
@@ -523,7 +522,7 @@ def chart_json_filter(request, pBandSlug, pContestSlug):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(pContestSlug),
+    return render_json(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(pContestSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
 
@@ -536,7 +535,7 @@ def chart_json_filter_group(request, pBandSlug, pContestGroupSlug):
         lBand = Band.objects.filter(slug=pBandSlug)[0]
     except IndexError:
         raise Http404()
-    return render_auth(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(pContestGroupSlug),
+    return render_json(request, 'bands/resultschart.json', {"Results" : lBand.reverse_results(pContestGroupSlug),
                                                             "ShowBand" : False,
                                                             "ShowConductor" : True})
 

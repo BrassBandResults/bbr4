@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 
 from bands.models import Band
-from bbr.render import render_auth
+from bbr.render import render_auth, render_json
 from contests.models import Contest, ContestGroup
 from people.models import Person
 from users.models import PersonalContestHistory
@@ -152,7 +152,7 @@ def user_chart_json(request, pUsername):
     
     lContestHistory = PersonalContestHistory.objects.filter(user=lUser, status='accepted').select_related()
     
-    return render_auth(request, 'myresults/resultschart.json', {"Results" : lContestHistory.reverse(),
+    return render_json(request, 'myresults/resultschart.json', {"Results" : lContestHistory.reverse(),
                                                                 "ShowBand" : True,
                                                                 "ShowConductor" : False})        
     

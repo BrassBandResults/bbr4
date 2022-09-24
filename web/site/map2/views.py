@@ -8,7 +8,7 @@ from django.http import Http404, HttpResponseRedirect
 from bands.models import Band
 from bbr.notification import notification
 from bbr.siteutils import browser_details
-from bbr.render import render_auth
+from bbr.render import render_auth, render_json
 from contests.models import ContestEvent, Venue
 from bandmap.forms import EditLocationForm
 from regions.models import Region
@@ -33,7 +33,7 @@ def jsonSection(request, pDataSlug):
     lBands = Band.objects.all().filter(national_grading=lDataSlug)
     lBands = lBands.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
 
-    return render_auth(request, 'map2/section.json', {'Bands' : lBands})
+    return render_json(request, 'map2/section.json', {'Bands' : lBands})
 
 def jsonStatus(request, pStatus):
     """
@@ -51,7 +51,7 @@ def jsonStatus(request, pStatus):
 
     lBands = lBands.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
 
-    return render_auth(request, 'map2/section.json', {'Bands' : lBands})
+    return render_json(request, 'map2/section.json', {'Bands' : lBands})
 
 def jsonVenues(request):
     """
@@ -60,4 +60,4 @@ def jsonVenues(request):
     lVenues = Venue.objects.all()
     lVenues = lVenues.exclude(latitude="").exclude(latitude__isnull=True).exclude(longitude="").exclude(longitude__isnull=True).order_by('latitude', 'longitude')
 
-    return render_auth(request, 'map2/venues.json', {'Venues' : lVenues})
+    return render_json(request, 'map2/venues.json', {'Venues' : lVenues})
