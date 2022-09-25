@@ -40,7 +40,6 @@
   <thead>
   <tr>
     <th>Band</th>
-    <th>Crow Flies Distance</th>
 {% if BandsDrivingDistance %}    
     <th>Driving Time</th>
     <th>Driving Distance</th>
@@ -57,11 +56,6 @@
     {% endif %}
       <a href="/bands/{{eachband.slug}}/">{{eachband.name}}</a>
     </td>
-{%if Type == 'mi'%}    
-    <td>{{eachband.distance.mi|floatformat}} {{TypeDisplay}}</td>
-{% else %}
-    <td>{{eachband.distance.km|floatformat}} {{TypeDisplay}}</td>
-{% endif %}
 {% if BandsDrivingDistance %}        
 {% if forloop.counter0 < 25 %}     
     <td class="driving_time"></td>
