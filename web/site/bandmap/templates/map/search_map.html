@@ -93,8 +93,8 @@
 <script src="/map/search/map_script.js?lat={{Latitude}}&lng={{Longitude}}&distance={{Distance}}&type={{Type}}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
 <script>
-  var gGeocoder = new google.maps.Geocoder();
   $('#search').click(function(){
+    var gGeocoder = new google.maps.Geocoder();
     var lLocation = $('#location_field').val();
     gGeocoder.geocode({
       'address': lLocation
