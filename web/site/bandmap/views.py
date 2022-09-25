@@ -112,7 +112,7 @@ def search_map(request):
         lShowDrivingDirections = request.GET.get('driving') == 'Y'
         lLocation = request.GET.get('location')
         lSearchPoint = Point(lLongitude, lLatitude)
-        lBands = Band.objects.exclude(status=0).select_related('region').order_by('distance')
+        lBands = Band.objects.exclude(status=0).select_related('region').order_by('point__distance')
         if lType == 'km':
             lBands = lBands.filter(point__distance_lte=(lSearchPoint, D(km=lDistance)))
             lTypeDisplay = "km"
