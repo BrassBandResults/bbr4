@@ -75,7 +75,7 @@ def map_script_search(request):
     if lLatitude and lLongitude and lDistance:
         # showing map searched from a given lat/lng
         lSearchPoint = Point(lLongitude, lLatitude)
-        lBands = Band.objects.select_related('region').order_by('distance')
+        lBands = Band.objects.select_related('region')
         if lType == 'km':
             lBands = lBands.filter(point__distance_lte=(lSearchPoint, D(km=lDistance))).exclude(status=0)
         else:
