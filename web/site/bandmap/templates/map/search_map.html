@@ -9,9 +9,6 @@
 {%block bands-mapsearch-selected%}class="selected"{%endblock%}
 
 {%block head %}
-<script src="{{ STATIC_URL }}map/js/infobubble-compiled.js"></script>
-<script src="/map/search/map_script.js?lat={{Latitude}}&lng={{Longitude}}&distance={{Distance}}&type={{Type}}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
 {% endblock %}
 
 {% block content %}
@@ -92,6 +89,9 @@
 {% endblock %}
 
 {%block scriptfooter%}
+<script src="{{ STATIC_URL }}map/js/infobubble-compiled.js"></script>
+<script src="/map/search/map_script.js?lat={{Latitude}}&lng={{Longitude}}&distance={{Distance}}&type={{Type}}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{GoogleMapsApiKey}}&callback=initialize&v=3"></script>
 <script>
   var gGeocoder = new google.maps.Geocoder();
   $('#search').click(function(){
