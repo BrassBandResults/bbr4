@@ -10,16 +10,16 @@
   <rehearsal2>{{Band.get_rehearsal_night_2_display}}</rehearsal2>
   {% if Band.first_parent %}<parent1 id="{{Band.first_parent.id}}" slug="{{Band.first_parent.slug}}">{{Band.first_parent.name}}</parent1>{% endif %}
   {% if Band.second_parent %}<parent2 id="{{Band.second_parent.id}}" slug="{{Band.second_parent.slug}}">{{Band.second_parent.name}}</parent2{% endif %}
-  <start>{{Band.start_date}}</start>
-  <end>{{Bad.end_date}}</end>
+  <start>{{Band.start_date|date:"Y-m-d"}}</start>
+  <end>{{Bad.end_date|date:"Y-m-d"}}</end>
   <status>{{Band.get_status_display}}</status>
   <grading>{{Band.national_grading}}</grading>
   <scratch_band>{{Band.scratch_band}}</scratch_band>
   <mapper>{{Band.mapper.username}}</mapper>
   <notes>{{Band.notes}}</notes>
 
-  <lastModified>{{Band.last_modified}}</lastModified>
-  <created>{{Band.created}}</created>
+  <lastModified>{{Band.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+  <created>{{Band.created|date:"Y-m-d H:i:s"}}</created>
   <owner>{{Band.owner.username}}</owner>
   <lastChangedBy>{{Band.lastChangedBy.username}}</lastChangedBy>
 
@@ -27,12 +27,12 @@
     {% for name in Band.previous_band_names %}
     <previousName id="{{name.id}}">
       <name>{{name.old_name}}</name>
-      <start>{{name.alias_start_date}}</start>
-      <end>{{name.alias_end_date}}</end>
+      <start>{{name.alias_start_date|date:"Y-m-d"}}</start>
+      <end>{{name.alias_end_date|date:"Y-m-d"}}</end>
       <hidden>{{name.hidden}}</hidden>
 
-      <lastModified>{{name.last_modified}}</lastModified>
-      <created>{{name.created}}</created>
+      <lastModified>{{name.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+      <created>{{name.created|date:"Y-m-d H:i:s"}}</created>
       <owner>{{name.owner.username}}</owner>
       <lastChangedBy>{{name.lastChangedBy.username}}</lastChangedBy>
     </previousName>
