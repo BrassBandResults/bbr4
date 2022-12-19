@@ -1,0 +1,31 @@
+<band id="{{Piece.id}}">
+  <name>{{Piece.name}}</name>
+  <slug>{{Piece.slug}}</slug>
+  <year>{{Piece.year}}</year>
+  <category>{{Piece.category}}</category>
+  <notes>{{Piece.notes}}</notes>
+  {% if Piece.arranger %}
+  <arranger id="{{Piece.arranger.id}}" slug="{{Piece.arranger.slug}}">{{Piece.arranger.name}}</arranger>
+  {% endif %}
+  {% if Piece.composer %}
+  <composer id="{{Piece.composer.id}}" slug="{{Piece.composer.slug}}">{{Piece.composer.name}}</arranger>
+  {% endif %}
+
+  <lastModified>{{Piece.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+  <created>{{Piece.created|date:"Y-m-d H:i:s"}}</created>
+  <owner>{{Piece.owner.username}}</owner>
+  <lastChangedBy>{{Piece.lastChangedBy.username}}</lastChangedBy>
+
+  <previous_names>
+    {% for name in Piece.testpiecealias_set.all %}
+    <previousName id="{{name.id}}">
+      <name>{{name.name}}</name>
+
+      <lastModified>{{name.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+      <created>{{name.created|date:"Y-m-d H:i:s"}}</created>
+      <owner>{{name.owner.username}}</owner>
+      <lastChangedBy>{{name.lastChangedBy.username}}</lastChangedBy>
+    </previousName>
+    {% endfor %}
+  </previous_names>
+</band>

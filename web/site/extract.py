@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 from contests.models import ContestEvent
 from bands.models import Band
 from people.models import Person
+from pieces.models import TestPiece
 
 HOME = expanduser("~/web/bbr-data")
 
@@ -69,3 +70,17 @@ for person in lAllPeople:
 	lPersonXml = render_to_string('extract/person.xml', { 'Person' : person, })
 	write_file(lFilepath, lFilename, lPersonXml)
 	time.sleep(0.1)
+
+print ("Extracting %d Pieces" % TestPiece.objects.count())
+lAllPieces = TestPiece.objects.all().order_by('name')
+for piece in lAllPieces:
+	print ("\t%s, %s" % (piece.name))
+	try:
+		lDir = piece.slug[0:1]
+	except IndexError:
+		lDir = "_"
+	lFilepath = "%s/Pieces/%s" % (HOME, lDir)
+	lFilename = "%s.xml" % person.slug
+	lPieceXml = render_to_string('extract/piece.xml', { 'Piece' : piece, })
+	write_file(lFilepath, lFilename, lPieceXml)
+	time.sleep(0.1)	
