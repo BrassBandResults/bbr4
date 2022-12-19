@@ -15,6 +15,7 @@ from django.template.loader import render_to_string
 
 from contests.models import ContestEvent
 from bands.models import Band
+from people.models import Person
 
 HOME = expanduser("~/web/bbr-data")
 
@@ -53,4 +54,18 @@ for band in lAllBands:
 	lFilename = "%s.xml" % band.slug
 	lBandXml = render_to_string('extract/band.xml', { 'Band' : band, })
 	write_file(lFilepath, lFilename, lBandXml)
+	time.sleep(0.1)
+
+print ("Extracting %d People" % Person.objects.count())
+lAllPeople = Person.objects.all().order_by('surname')
+for person in lAllPeople:
+	print ("\t%s, %s" % (person.surname, person.first_names))
+	try:
+		lDir = person.slug[0:1]
+	except IndexError:
+		lDir = "_"
+	lFilepath = "%s/People/%s" % (HOME, lDir)
+	lFilename = "%s.xml" % person.slug
+	lPersonXml = render_to_string('extract/person.xml', { 'Person' : person, })
+	write_file(lFilepath, lFilename, lPersonXml)
 	time.sleep(0.1)

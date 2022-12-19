@@ -1,0 +1,33 @@
+<band id="{{Person.id}}">
+  <name>{{Person.name}}</name>
+  <slug>{{Person.slug}}</slug>
+  <first_names>{{Person.first_names}}</first_names>
+  <surname>{{Person.surname}}</surname>
+  <suffix>{{Person.suffix}}</suffix>
+  <email>{{Person.email}}</email>
+  <bandname>{{Person.bandname}}</bandname>
+  <notes>{{Person.notes}}</notes>
+  <deceased>{{Person.deceased}}</deceased>
+  <start>{{Person.start_date|date:"Y-m-d"}}</start>
+  <end>{{Bad.end_date|date:"Y-m-d"}}</end>
+  <notes>{{Person.notes}}</notes>
+
+  <lastModified>{{Person.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+  <created>{{Person.created|date:"Y-m-d H:i:s"}}</created>
+  <owner>{{Person.owner.username}}</owner>
+  <lastChangedBy>{{Person.lastChangedBy.username}}</lastChangedBy>
+
+  <previous_names>
+    {% for name in Person.personalias_set.all %}
+    <previousName id="{{name.id}}">
+      <name>{{name.old_name}}</name>
+      <hidden>{{name.hidden}}</hidden>
+
+      <lastModified>{{name.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+      <created>{{name.created|date:"Y-m-d H:i:s"}}</created>
+      <owner>{{name.owner.username}}</owner>
+      <lastChangedBy>{{name.lastChangedBy.username}}</lastChangedBy>
+    </previousName>
+    {% endfor %}
+  </previous_names>
+</band>

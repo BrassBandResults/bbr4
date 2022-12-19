@@ -24,7 +24,7 @@
   <lastChangedBy>{{Band.lastChangedBy.username}}</lastChangedBy>
 
   <previous_names>
-    {% for name in Band.previous_band_names %}
+    {% for name in Band.previousbandname_set.all %}
     <previousName id="{{name.id}}">
       <name>{{name.old_name}}</name>
       <start>{{name.alias_start_date|date:"Y-m-d"}}</start>
