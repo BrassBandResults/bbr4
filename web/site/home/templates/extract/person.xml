@@ -20,7 +20,7 @@
   <previous_names>
     {% for name in Person.personalias_set.all %}
     <previousName id="{{name.id}}">
-      <name>{{name.old_name}}</name>
+      <name>{{name.name}}</name>
       <hidden>{{name.hidden}}</hidden>
 
       <lastModified>{{name.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
