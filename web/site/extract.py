@@ -74,7 +74,7 @@ for person in lAllPeople:
 print ("Extracting %d Pieces" % TestPiece.objects.count())
 lAllPieces = TestPiece.objects.all().order_by('name')
 for piece in lAllPieces:
-	print ("\t%s" % (piece.name))
+	print ("\t%s" % piece.name)
 	try:
 		lDir = piece.slug[0:1]
 	except IndexError:
