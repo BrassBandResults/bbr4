@@ -2,7 +2,7 @@
 mkdir -p ~/web/bbr-data
 cd ~/bbr4/web/site
 source ~/.venv/bbr4/bin/activate
-python extract.py $1
+python extract.py $1 $2
 cd ~/web/bbr-data
 git add .
 git commit -m "Autocommit"

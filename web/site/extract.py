@@ -2,7 +2,7 @@
 # (c) 2012, 2018 Tim Sawyer, All Rights Reserved
 
 import sys, os, re, time, shutil
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from os.path import expanduser
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settingslive'
@@ -47,10 +47,30 @@ def extract(list, dir, template, templateVar):
 typeToGenerate = sys.argv[1]
 print("Extracting with command line parameter" + typeToGenerate)
 
+era1 = datetime.date(2000, 1, 1)
+era2 = datetime.date(1970, 1, 1)
+era3 = datetime.date(1950, 1, 1)
+era4 = datetime.date(1900, 1, 1)
+
 if typeToGenerate == "results":
-	print ("Extracting %d Contest Events" % ContestEvent.objects.count())
+	era = sys.argv[2]
+	if era == "1":
+		events = ContestEvent.objects.filter(date_of_event__gte=era1)
+	elif era == "2":
+		events = ContestEvent.objects.filter(date_of_event__lt=era1).filter(date_of_event__gte=era2)
+	elif era == "3":
+		events = ContestEvent.objects.filter(date_of_event__lt=era2).filter(date_of_event__gte=era3)		
+	elif era == "4":
+		events = ContestEvent.objects.filter(date_of_event__lt=era3).filter(date_of_event__gte=era4)		
+	elif era == "5":
+		events = ContestEvent.objects.filter(date_of_event__lt=era4)
+	else:
+		print("Era only can be 1 to 5")
+		print("Usage: extract results 1")
+		events = None
+	print ("Extracting %d Contest Events" % events.count())
 	shutil.rmtree(HOME + "/Contest Events")
-	lAllEvents = ContestEvent.objects.all().order_by('-date_of_event')
+	lAllEvents = events.order_by('-date_of_event')
 	lYear = None
 	for event in lAllEvents:
 		if lYear != event.event_year:
@@ -58,7 +78,7 @@ if typeToGenerate == "results":
 			lYear = event.event_year
 		print ("\t%s - %s" % (event.date_of_event, event.name))
 
-		lFilepath = "%s/Contest Events/%d/%d/%d" % (HOME, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
+		lFilepath = "%s/Contest Events/%d/%d/%d/%d" % (HOME, era, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
 		lFilename = "%s.xml" % event.name
 		lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
 		write_file(lFilepath, lFilename, lContestXml)
