@@ -30,7 +30,7 @@ def write_file(filepath, filename, contents):
 
 def extract(list, dir, template, templateVar):
 	print ("Extracting %d %s" % (list.count(), dir))
-	shutil.rmtree(HOME + "/" + dir)
+	shutil.rmtree(HOME + "/" + dir, True)
 	lAllRows = list.all().order_by('name')
 	for each in lAllRows:
 		print ("\t%s" % each.name)
