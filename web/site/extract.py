@@ -47,10 +47,10 @@ def extract(list, dir, template, templateVar):
 typeToGenerate = sys.argv[1]
 print("Extracting with command line parameter" + typeToGenerate)
 
-era1 = datetime.date(2000, 1, 1)
-era2 = datetime.date(1970, 1, 1)
-era3 = datetime.date(1950, 1, 1)
-era4 = datetime.date(1900, 1, 1)
+era1 = date(2000, 1, 1)
+era2 = date(1970, 1, 1)
+era3 = date(1950, 1, 1)
+era4 = date(1900, 1, 1)
 
 if typeToGenerate == "results":
 	era = sys.argv[2]
@@ -69,7 +69,7 @@ if typeToGenerate == "results":
 		print("Usage: extract results 1")
 		events = None
 	print ("Extracting %d Contest Events" % events.count())
-	shutil.rmtree(HOME + "/Contest Events/%s" % era)
+	shutil.rmtree(HOME + "/Results/%s" % era)
 	lAllEvents = events.order_by('-date_of_event')
 	lYear = None
 	for event in lAllEvents:
@@ -78,7 +78,7 @@ if typeToGenerate == "results":
 			lYear = event.event_year
 		print ("\t%s - %s" % (event.date_of_event, event.name))
 
-		lFilepath = "%s/Contest Events/%d/%d/%d/%d" % (HOME, era, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
+		lFilepath = "%s/Results/%d/%d/%d/%d" % (HOME, era, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
 		lFilename = "%s.xml" % event.name
 		lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
 		write_file(lFilepath, lFilename, lContestXml)
