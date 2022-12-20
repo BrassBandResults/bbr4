@@ -1,11 +1,8 @@
 #!/bin/bash
 mkdir -p ~/web/bbr-data
-cd ~/web/bbr-data
-#rm -r "Contest Events"
-rm -r "Bands"
 cd ~/bbr4/web/site
 source ~/.venv/bbr4/bin/activate
-python extract.py
+python extract.py $1
 cd ~/web/bbr-data
 git add .
 git commit -m "Autocommit"
