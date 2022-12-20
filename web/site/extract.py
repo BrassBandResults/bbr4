@@ -72,7 +72,7 @@ if typeToGenerate == "results":
 	print ("Extracting %d Contest Events" % events.count())
 	path = HOME + "/Results/%s" % era
 	shutil.rmtree(path, True)
-	Path(path).mkdir(parents=True, exists_ok=True)
+	Path(path).mkdir(parents=True, exist_ok=True)
 	lAllEvents = events.order_by('-date_of_event')
 	lYear = None
 	for event in lAllEvents:
