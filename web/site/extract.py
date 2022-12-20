@@ -4,6 +4,7 @@
 import sys, os, re, time, shutil
 from datetime import datetime, timedelta, date
 from os.path import expanduser
+from pathlib import Path
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'bbr.settingslive'
 
@@ -69,7 +70,9 @@ if typeToGenerate == "results":
 		print("Usage: extract results 1")
 		events = None
 	print ("Extracting %d Contest Events" % events.count())
-	shutil.rmtree(HOME + "/Results/%s" % era)
+	path = HOME + "/Results/%s" % era
+	shutil.rmtree(path, True)
+	Path(path).mkdir(parents=True, exists_ok=True)
 	lAllEvents = events.order_by('-date_of_event')
 	lYear = None
 	for event in lAllEvents:
