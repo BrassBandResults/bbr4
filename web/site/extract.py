@@ -46,7 +46,7 @@ def extract(list, dir, template, templateVar):
 		time.sleep(0.1)
 
 typeToGenerate = sys.argv[1]
-print("Extracting with command line parameter" + typeToGenerate)
+print("Extracting with command line parameter " + typeToGenerate)
 
 era1 = date(2000, 1, 1)
 era2 = date(1970, 1, 1)

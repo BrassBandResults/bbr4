@@ -8,7 +8,7 @@
   <arranger id="{{Piece.arranger.id}}" slug="{{Piece.arranger.slug}}">{{Piece.arranger.name}}</arranger>
   {% endif %}
   {% if Piece.composer %}
-  <composer id="{{Piece.composer.id}}" slug="{{Piece.composer.slug}}">{{Piece.composer.name}}</arranger>
+  <composer id="{{Piece.composer.id}}" slug="{{Piece.composer.slug}}">{{Piece.composer.name}}</composer>
   {% endif %}
 
   <lastModified>{{Piece.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
