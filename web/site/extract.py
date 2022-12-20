@@ -69,7 +69,7 @@ if typeToGenerate == "results":
 		print("Usage: extract results 1")
 		events = None
 	print ("Extracting %d Contest Events" % events.count())
-	shutil.rmtree(HOME + "/Contest Events")
+	shutil.rmtree(HOME + "/Contest Events/%s" % era)
 	lAllEvents = events.order_by('-date_of_event')
 	lYear = None
 	for event in lAllEvents:
