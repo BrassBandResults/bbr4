@@ -14,7 +14,7 @@ django.setup()
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 
-from contests.models import ContestEvent, Venue, ContestGroup, ContestType
+from contests.models import ContestEvent, Venue, ContestGroup, ContestType, Contest
 from bands.models import Band
 from people.models import Person
 from pieces.models import TestPiece
@@ -108,6 +108,24 @@ elif typeToGenerate == "groups":
 
 elif typeToGenerate == "types":
 	extract(ContestType.objects, "Types", "contest_type", "ContestType")			
+	list = ContestType.objects
+	dir = "Types"
+	template = "contest_type"
+	templateVar = "ContestType"
+	print ("Extracting %d %s" % (list.count(), dir))
+	shutil.rmtree(HOME + "/" + dir, True)
+	lAllRows = list.all().order_by('name')
+	for each in lAllRows:
+		print ("\t%s" % each.name)
+		try:
+			lDir = each.id[0:1]
+		except IndexError:
+			lDir = "_"
+		lFilepath = "%s/%s/%s" % (HOME, dir, lDir)
+		lFilename = "%s.xml" % each.slug
+		lXml = render_to_string('extract/%s.xml' % template, { templateVar : each, })
+		write_file(lFilepath, lFilename, lXml)
+		time.sleep(0.1)
 
 elif typeToGenerate == "contests":
 	extract(Contest.objects, "Contests", "contest", "Contest")		
