@@ -116,12 +116,9 @@ elif typeToGenerate == "types":
 	lAllRows = list.all().order_by('name')
 	for each in lAllRows:
 		print ("\t%s" % each.name)
-		try:
-			lDir = each.id[0:1]
-		except IndexError:
-			lDir = "_"
-		lFilepath = "%s/%s/%s" % (HOME, dir, lDir)
-		lFilename = "%s.xml" % each.id
+		name = each.name.lower.replace(' ','-')
+		lFilepath = "%s/%s" % (HOME, dir)
+		lFilename = "%s.xml" % name
 		lXml = render_to_string('extract/%s.xml' % template, { templateVar : each, })
 		write_file(lFilepath, lFilename, lXml)
 		time.sleep(0.1)
