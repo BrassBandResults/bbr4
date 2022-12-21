@@ -18,7 +18,7 @@
     <prevent_future_bands>{{Contest.prevent_future_bands}}</prevent_future_bands>
     
     <tags>
-        {% for tag in Contest.tags %}
+        {% for tag in Contest.tags.order_by('name').all() %}
         <tag id="{{tag.id}}">{{tag.name}}</tag>
         {% endfor %}
     </tags>

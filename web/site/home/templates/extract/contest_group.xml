@@ -5,7 +5,7 @@
     <notes>{{ContestGroup.notes}}</notes>
 
     <tags>
-        {% for tag in ContestGroup.tags %}
+        {% for tag in ContestGroup.tags.order_by('name').all() %}
         <tag id="{{tag.id}}">{{tag.name}}</tag>
         {% endfor %}
     </tags>
