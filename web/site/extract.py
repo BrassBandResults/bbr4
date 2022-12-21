@@ -107,7 +107,6 @@ elif typeToGenerate == "groups":
 	extract(ContestGroup.objects, "Groups", "contest_group", "ContestGroup")		
 
 elif typeToGenerate == "types":
-	extract(ContestType.objects, "Types", "contest_type", "ContestType")			
 	list = ContestType.objects
 	dir = "Types"
 	template = "contest_type"
