@@ -1,0 +1,43 @@
+<contest-tag id="{{Contest.id}}">
+    <name>{{Contest.name}}</name>
+    <slug>{{Contest.slug}}</slug>
+
+    {% if Contest.group %}<group id="{{Contest.group.id}}" slug="{{Contest.group.slug}}">{{Contest.group.name}}</group>{% endif %}%
+    <description>{{Contest.description}}</description>
+    {% if Contest.region %}<region id="{{Contest.region.id}}" slug="{{Contest.region.slug}}">{{CContest.region.name}}</region>{% endif %}
+    {% if Contest.section %}<section id="{{Contest.section.id}}" slug="{{Contest.section.slug}}">{{Contest.section.name}}</section>{% endif %}
+    <ordering>{{Contest.ordering}}</ordering>
+    {% if Contest.contest_type_link %}<contest_type_link id="{{Contest.contest_type_link.id}}">{{Contest.contest_type_link}}</contest_type_link>{% endif %}
+    {% if Contest.qualifies_for %}<qualifies_for id="{{Contest.qualifies_for.id}}" slug="{{Contest.qualifies_for.slug}}">{{Contest.qualifies_for.name}}</qualifies_for>{% endif %}
+    <hashtag>{{Contest.hashtag}}</hashtag>
+    <notes>{{Contest.notes}}</notes>
+    <extinct>{{Contest.extinct}}</extinct>
+    <exclude_from_group_results>{{Contest.exclude_from_group_results}}</exclude_from_group_results>
+    <all_events_added>{{Contest.all_events_added}}</all_events_added>
+    <period>{{Contest.period}}</period>
+    <prevent_future_bands>{{Contest.prevent_future_bands}}</prevent_future_bands>
+    
+    <tags>
+        {% for tag in Contest.tags %}
+        <tag id="{{tag.id}}">{{tag.name}}</tag>
+        {% endfor %}
+    </tags>
+
+    <previous_names>
+        {% for name in Contest.contestalias_set.all %}
+        <previousName id="{{name.id}}">
+          <name>{{name.name}}</name>
+         
+          <lastModified>{{name.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+          <created>{{name.created|date:"Y-m-d H:i:s"}}</created>
+          <owner>{{name.owner.username}}</owner>
+          <lastChangedBy>{{name.lastChangedBy.username}}</lastChangedBy>
+        </previousName>
+        {% endfor %}
+      </previous_names>
+
+    <lastModified>{{Contest.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+    <created>{{Contest.created|date:"Y-m-d H:i:s"}}</created>
+    <owner>{{Contest.owner.username}}</owner>
+    <lastChangedBy>{{Contest.lastChangedBy.username}}</lastChangedBy>
+</contest-tag>

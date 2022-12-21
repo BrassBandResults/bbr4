@@ -14,10 +14,11 @@ django.setup()
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 
-from contests.models import ContestEvent, Venue
+from contests.models import ContestEvent, Venue, ContestGroup, ContestType
 from bands.models import Band
 from people.models import Person
 from pieces.models import TestPiece
+from tags.models import ContestTag
 
 HOME = expanduser("~/web/bbr-data")
 
@@ -98,3 +99,15 @@ elif typeToGenerate == "pieces":
 
 elif typeToGenerate == "venues":
 	extract(Venue.objects, "Venues", 'venue', 'Venue')
+
+elif typeToGenerate == "tags":
+	extract(ContestTag.objects, "Tags", "contest_tag", "ContestTag")	
+
+elif typeToGenerate == "groups":
+	extract(ContestGroup.objects, "Groups", "contest_group", "ContestGroup")		
+
+elif typeToGenerate == "types":
+	extract(ContestType.objects, "Types", "contest_type", "ContestType")			
+
+elif typeToGenerate == "contests":
+	extract(Contest.objects, "Contests", "contest", "Contest")		

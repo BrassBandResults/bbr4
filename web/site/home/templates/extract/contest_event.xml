@@ -2,36 +2,84 @@
   <event-date date="{{ContestEvent.date_of_event.year}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.day}}">{{ContestEvent.date_of_event}}<event-date>
   <event-date-resolution>{{ContestEvent.date_resolution}}</event-date-resolution>
   <name>{{ContestEvent.name}}</name>
-  <contest id="{{ContestEvent.contest.id}}">
+  <contest id="{{ContestEvent.contest.id}}" slug="{{ContestEvent.contest.slug}}">
     <name>{{ContestEvent.contest.name}}</name>
     <order>{{ContestEvent.contest.ordering}}</order>
     <contest-type id="{{ContestEvent.contest.contest_type_link.id}}">{{ContestEvent.contest.contest_type_link.name}}</contest-type>
-    <group id="{{ContestEvent.contest.group.id}}">{{ContestEvent.contest.group.name}}</group>
+    <group id="{{ContestEvent.contest.group.id}}" slug="{{ContestEvent.contest.group.slug}}">{{ContestEvent.contest.group.name}}</group>
     <slug>{{ContestEvent.contest.slug}}</slug>
-    {% if ContestEvent.contest.qualifies_for %}<qualifies-for id="{{ContestEvent.contest.qualifies_for.id}}">{{ContestEvent.contest.qualifies_for.name}}</qualifies-for>{% endif %}
+    {% if ContestEvent.contest.qualifies_for %}<qualifies-for id="{{ContestEvent.contest.qualifies_for.id}}" slug="{{ContestEvent.contest.qualifies_for.slug}}">{{ContestEvent.contest.qualifies_for.name}}</qualifies-for>{% endif %}
     <notes>{{ContestEvent.contest.notes}}</notes>
-    {% if ContestEvent.contest.region %}<region id="{{ContestEvent.contest.region.id}}">{{ContestEvent.contest.region.name}}</region>{% endif %}
-    {% if ContestEvent.contest.section %}<section id="{{ContestEvent.contest.section.id}}">{{ContestEvent.contest.section.name}}</section>{% endif %}
+    {% if ContestEvent.contest.region %}<region id="{{ContestEvent.contest.region.id}}" slug="{{ContestEvent.contest.region.slug}}">{{ContestEvent.contest.region.name}}</region>{% endif %}
+    {% if ContestEvent.contest.section %}<section id="{{ContestEvent.contest.section.id}}" slug="{{ContestEvent.contest.section.slug}}">{{ContestEvent.contest.section.name}}</section>{% endif %}
+
+    <lastModified>{{ontestEvent.contest.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+    <created>{{ontestEvent.contest.created|date:"Y-m-d H:i:s"}}</created>
+    <owner>{{ontestEvent.contest.owner.username}}</owner>
+    <lastChangedBy>{{ontestEvent.contest.lastChangedBy.username}}</lastChangedBy>
   </contest>
   {% if ContestEvent.contest_type_override_link %}<contest-type-override id="{{ContestEvent.contest_type_override_link.id}}">{{ContestEvent.contest_type_override_link.name}}</contest-type-override>{% endif %}
   <test-piece>
-    {% if ContestEvent.test_piece %}<test-piece id="{{ContestEvent.test_piece.id}}">{{ContestEvent.test_piece.name}}</test-piece>{%endif%}
+    {% if ContestEvent.test_piece %}<test-piece id="{{ContestEvent.test_piece.id}}" slug="{{ContestEvent.test_piece.slug}}">{{ContestEvent.test_piece.name}}</test-piece>{%endif%}
   </test-piece>
 
-  {% if ContestEvent.venue_link %}<venue id="{{ContestEvent.venue_link.id}}">{{ContestEvent.venue_link.name}}</venue>{% endif %}
+  {% if ContestEvent.venue_link %}<venue id="{{ContestEvent.venue_link.id}}" slug="{{ContestEvent.value_link.slug}}">{{ContestEvent.venue_link.name}}</venue>{% endif %}
   {% if ContestEvent.no_contest %}<no-contest>{{ContestEvent.notes}}</no-contest>{% else %}<notes>{{ContestEvent.notes}}</notes>{% endif %}
 
-  <created>{{ContestEvent.created}}</created>
-  <last-modified>{{ContestEvent.last_modified}}</last-modified>
+  <lastModified>{{ContestEvent.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+  <created>{{ContestEvent.created|date:"Y-m-d H:i:s"}}</created>
+  <owner>{{ContestEvent.owner.username}}</owner>
+  <lastChangedBy>{{ContestEvent.lastChangedBy.username}}</lastChangedBy>
+
+  <extra-test-pieces>
+    {% for piece in ContestEvent.contesttestpiece_set.all %}
+    <piece>
+      <test-piece id="{{piece.test_piece.id}}" slug="{{piece.test_piece.slug}}">{{piece.test_piece.name}}</test-piece>
+      <and_or>{{piece.and_or}}</and_or>
+    </piece>
+    {% endfor %}
+  </extra-test-pieces>
 
   <results>
     {% for result in ContestEvent.contestresult_set.all %}
     <result id="{{result.id}}">
       <result code="{{result.results_position_display}}">{{result.results_position_display_long}}</result>
-      <band id="{{result.band.id}}">{{result.band.name}}</band>
-      <conductor id="{{result.person_conducting.id}}">{{result.person_conducting.name}}</conductor>{% if result.second_person_conducting %}
-      <conductor id="{{result.second_person_conducting.id}}">{{result.second_person_conducting.name}}</conductor>{% endif %}{% if result.test_piece %}
-      <test-piece id="{{result.test_piece.id}}">{{result.test_piece.name}}</test-piece>{% endif %}
+      <band id="{{result.band.id}}" slug="{{result.band.slug}}">{{result.band.name}}</band>
+      <band_name>{{result.band_name}}</band_name>
+      <conductor id="{{result.person_conducting.id}}" slug="{{result.person_conducting.slug}}">{{result.person_conducting.name}}</conductor>{% if result.second_person_conducting %}
+      <conductor2 id="{{result.second_person_conducting.id}}" slug={{result.second_person_conducting.slug}}>{{result.second_person_conducting.name}}</conductor2>{% endif %}{% if result.test_piece %}
+      <conductor_name>{{result.conductor_name}}</conductor_name>
+      <test-piece id="{{result.test_piece.id}}" slug="{{result.test_piece.slug}}">{{result.test_piece.name}}</test-piece>{% endif %}
+
+      <results_position>{{result.results_position}}</results_position>
+      <draw>{{result.draw}}</draw>
+      <draw_second_part>{{result.draw_second_part}}</draw_second_part>
+      <points>{{result.points}}</points>
+      <points_first_part>{{result.points_first_part}}</points_first_part>
+      <points_second_part>{{result.points_second_part}}</points_second_part>
+      <points_third_part>{{result.points_third_part}}</points_third_part>
+      <points_fourth_part>{{result.points_fourth_part}}</points_fourth_part>
+      <penalty_points>{{result.penalty_points}}</penalty_points>
+      <notes>{{result.notes}}</notes>
+      
+      {% if result.original_owner %}<original-owner>{{result.original_owner.username}}</original-owner>{% endif %}
+
+      <extra-pieces>
+        <extra-test-pieces>
+          {% for extra_piece in result.resultpieceperformance_set.all %}
+          <piece>
+            <piece id="{{extra_piece.piece.id}}" slug="{{extra_piece.piece.slug}}">{{extra_piece.piece.name}}</test-piece>
+            <suffix>{{extra_piece.suffix}}</suffix>
+            <ordering>{{extra_piece.ordering}}</ordering>
+          </piece>
+          {% endfor %}
+        </extra-test-pieces>
+      </extra-pieces>
+
+      <lastModified>{{result.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+      <created>{{result.created|date:"Y-m-d H:i:s"}}</created>
+      <owner>{{result.owner.username}}</owner>
+      <lastChangedBy>{{result.lastChangedBy.username}}</lastChangedBy>
     </result>
     {% endfor %}
   </results>

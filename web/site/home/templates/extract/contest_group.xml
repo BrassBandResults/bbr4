@@ -1,0 +1,30 @@
+<contest-group id="{{ContestGroup.id}}">
+    <name>{{ContestGroup.name}}</name>
+    <slug>{{ContestGroup.slug}}</slug>
+    <group-type>{{ContestGroup.groupType}}</group-type>
+    <notes>{{ContestGroup.notes}}</notes>
+
+    <tags>
+        {% for tag in ContestGroup.tags %}
+        <tag id="{{tag.id}}">{{tag.name}}</tag>
+        {% endfor %}
+    </tags>
+
+    <lastModified>{{ContestGroup.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+    <created>{{ContestGroup.created|date:"Y-m-d H:i:s"}}</created>
+    <owner>{{ContestGroup.owner.username}}</owner>
+    <lastChangedBy>{{ContestGroup.lastChangedBy.username}}</lastChangedBy>
+
+    <previous_names>
+        {% for name in ContestGroup.contestgroupalias_set.all %}
+        <previousName id="{{name.id}}">
+          <name>{{name.name}}</name>
+         
+          <lastModified>{{name.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+          <created>{{name.created|date:"Y-m-d H:i:s"}}</created>
+          <owner>{{name.owner.username}}</owner>
+          <lastChangedBy>{{name.lastChangedBy.username}}</lastChangedBy>
+        </previousName>
+        {% endfor %}
+      </previous_names>
+</contest-group>

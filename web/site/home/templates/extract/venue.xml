@@ -4,8 +4,9 @@
   <country id="{{Venue.country.id}}" slug="{{Venue.country.slug}}">{{Venue.country.name}}</country>
   <latitude>{{Venue.latitude}}</latitude>
   <longitude>{{Venue.longitude}}</longitude>
-  <exact>{{Vemnue.exact}}</exact>
-  <parent id="{{Vemue.parent.id}}" slug="{{Venue.parent.slug}}">{{Venue.parent.name}}</parent>
+  <exact>{{Venue.exact}}</exact>
+  <parent id="{{Venue.parent.id}}" slug="{{Venue.parent.slug}}">{{Venue.parent.name}}</parent>
+  <mapper>{{Venue.mapper.username}}</mapper>
   <notes>{{Venue.notes}}</notes>
 
   <lastModified>{{Venue.last_modified|date:"Y-m-d H:i:s"}}</lastModified>

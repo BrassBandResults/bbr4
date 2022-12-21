@@ -1,0 +1,9 @@
+<contest-tag id="{{ContestTag.id}}">
+    <name>{{ContestTag.name}}</name>
+    <slug>{{ContestTag.slug}}</slug>
+
+    <lastModified>{{ContestTag.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+    <created>{{ContestTag.created|date:"Y-m-d H:i:s"}}</created>
+    <owner>{{ContestTag.owner.username}}</owner>
+    <lastChangedBy>{{ContestTag.lastChangedBy.username}}</lastChangedBy>
+</contest-tag>

@@ -1,0 +1,21 @@
+<contest-tag id="{{ContestType.id}}">
+    <name>{{ContestType.name}}</name>
+    <first_draw>{{ContestType.first_draw}}</first_draw>
+    <second_draw>{{ContestType.second_draw}}</second_draw>
+    <total_points>{{ContestType.total_points}}</total_points>
+    <points_one>{{ContestType.points_one}}</points_one>
+    <points_two>{{ContestType.points_two}}</points_two>
+    <points_three>{{ContestType.points_three}}</points_three>
+    <points_four>{{ContestType.points_four}}</points_four>
+    <penalty_points>{{ContestType.penalty_points}}</penalty_points>
+    <test_piece>{{ContestType.test_piece}}</test_piece>
+    <own_choice>{{ContestType.own_choice}}</own_choice>
+    <entertainments>{{ContestType.entertainments}}</entertainments>
+    <statistics>{{ContestType.statistics}}</statistics>
+    <statistics_limit>{{ContestType.statistics_limit}}</statistics_limit>
+
+    <lastModified>{{ContestType.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
+    <created>{{ContestType.created|date:"Y-m-d H:i:s"}}</created>
+    <owner>{{ContestType.owner.username}}</owner>
+    <lastChangedBy>{{ContestType.lastChangedBy.username}}</lastChangedBy>
+</contest-tag>
