@@ -116,7 +116,7 @@ elif typeToGenerate == "types":
 	lAllRows = list.all().order_by('name')
 	for each in lAllRows:
 		print ("\t%s" % each.name)
-		name = each.name.lower.replace(' ','-')
+		name = each.name.lower().replace(' ','-')
 		lFilepath = "%s/%s" % (HOME, dir)
 		lFilename = "%s.xml" % name
 		lXml = render_to_string('extract/%s.xml' % template, { templateVar : each, })
