@@ -306,7 +306,7 @@ def specific_contest_event_map_script(request, pContestEventId):
     lResults = lContestEvent.contestresult_set.all().select_related('band')
     for result in lResults:
         lBandIds.append(result.band_id)
-    lBands = Band.objects.filter(id__in=lBandIds).distance(lVenue.point).exclude(latitude__isnull=True, longitude__isnull=True).exclude(latitude='', longitude='')
+    lBands = Band.objects.filter(id__in=lBandIds).filter(point__distance__lte=lVenue.point).exclude(latitude__isnull=True, longitude__isnull=True).exclude(latitude='', longitude='')
     for lBand in lBands:
         if lBand.distance.mi > lMaxDistance:
             lMaxDistance = lBand.distance.mi

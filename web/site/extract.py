@@ -30,10 +30,10 @@ def write_file(filepath, filename, contents):
 	f.write(contents)
 	f.close()
 
-def extract(list, dir, template, templateVar):
+def extract(list, dir, template, templateVar ,orderBy):
 	print ("Extracting %d %s" % (list.count(), dir))
 	shutil.rmtree(HOME + "/" + dir, True)
-	lAllRows = list.all().order_by('name')
+	lAllRows = list.all().order_by(orderBy)
 	for each in lAllRows:
 		print ("\t%s" % each.name)
 		try:
@@ -89,22 +89,22 @@ if typeToGenerate == "results":
 		time.sleep(0.1)
 
 elif typeToGenerate == "bands":
-	extract(Band.objects, "Bands", 'band', 'Band')
+	extract(Band.objects, "Bands", 'band', 'Band', 'name')
 
 elif typeToGenerate == "people":
-	extract(Person.objects, "People", 'person', 'Person')
+	extract(Person.objects, "People", 'person', 'Person', 'surname, first_names')
 
 elif typeToGenerate == "pieces":
-	extract(TestPiece.objects, "Pieces", 'piece', 'Piece')
+	extract(TestPiece.objects, "Pieces", 'piece', 'Piece', 'name')
 
 elif typeToGenerate == "venues":
-	extract(Venue.objects, "Venues", 'venue', 'Venue')
+	extract(Venue.objects, "Venues", 'venue', 'Venue', 'name')
 
 elif typeToGenerate == "tags":
-	extract(ContestTag.objects, "Tags", "contest_tag", "ContestTag")	
+	extract(ContestTag.objects, "Tags", "contest_tag", "ContestTag", 'name')	
 
 elif typeToGenerate == "groups":
-	extract(ContestGroup.objects, "Groups", "contest_group", "ContestGroup")		
+	extract(ContestGroup.objects, "Groups", "contest_group", "ContestGroup", 'name')		
 
 elif typeToGenerate == "types":
 	list = ContestType.objects

@@ -2,7 +2,7 @@
     <name>{{Contest.name}}</name>
     <slug>{{Contest.slug}}</slug>
 
-    {% if Contest.group %}<group id="{{Contest.group.id}}" slug="{{Contest.group.slug}}">{{Contest.group.name}}</group>{% endif %}%
+    {% if Contest.group %}<group id="{{Contest.group.id}}" slug="{{Contest.group.slug}}">{{Contest.group.name}}</group>{% endif %}
     <description>{{Contest.description}}</description>
     {% if Contest.region %}<region id="{{Contest.region.id}}" slug="{{Contest.region.slug}}">{{CContest.region.name}}</region>{% endif %}
     {% if Contest.section %}<section id="{{Contest.section.id}}" slug="{{Contest.section.slug}}">{{Contest.section.name}}</section>{% endif %}
