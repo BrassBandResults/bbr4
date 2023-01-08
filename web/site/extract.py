@@ -92,7 +92,7 @@ elif typeToGenerate == "bands":
 	extract(Band.objects, "Bands", 'band', 'Band', 'name')
 
 elif typeToGenerate == "people":
-	extract(Person.objects, "People", 'person', 'Person', 'surname, first_names')
+	extract(Person.objects, "People", 'person', 'Person', 'surname')
 
 elif typeToGenerate == "pieces":
 	extract(TestPiece.objects, "Pieces", 'piece', 'Piece', 'name')
