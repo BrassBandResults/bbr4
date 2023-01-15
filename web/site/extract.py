@@ -124,4 +124,4 @@ elif typeToGenerate == "types":
 		time.sleep(0.1)
 
 elif typeToGenerate == "contests":
-	extract(Contest.objects, "Contests", "contest", "Contest")		
+	extract(Contest.objects, "Contests", "contest", "Contest", 'name')		

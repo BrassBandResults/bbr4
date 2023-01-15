@@ -1,7 +1,6 @@
 <contest-group id="{{ContestGroup.id}}">
     <name>{{ContestGroup.name}}</name>
     <slug>{{ContestGroup.slug}}</slug>
-    <group-type>{{ContestGroup.groupType}}</group-type>
     <notes>{{ContestGroup.notes}}</notes>
 
     <tags>
