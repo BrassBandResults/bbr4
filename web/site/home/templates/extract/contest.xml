@@ -9,7 +9,6 @@
     <ordering>{{Contest.ordering}}</ordering>
     {% if Contest.contest_type_link %}<contest_type_link id="{{Contest.contest_type_link.id}}">{{Contest.contest_type_link}}</contest_type_link>{% endif %}
     {% if Contest.qualifies_for %}<qualifies_for id="{{Contest.qualifies_for.id}}" slug="{{Contest.qualifies_for.slug}}">{{Contest.qualifies_for.name}}</qualifies_for>{% endif %}
-    <hashtag>{{Contest.hashtag}}</hashtag>
     <notes>{{Contest.notes}}</notes>
     <extinct>{{Contest.extinct}}</extinct>
     <exclude_from_group_results>{{Contest.exclude_from_group_results}}</exclude_from_group_results>

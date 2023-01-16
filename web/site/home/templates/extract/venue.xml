@@ -1,4 +1,4 @@
-<band id="{{Vennue.id}}">
+<venue id="{{Venue.id}}">
   <name>{{Venue.name}}</name>
   <slug>{{Venue.slug}}</slug>
   <country id="{{Venue.country.id}}" slug="{{Venue.country.slug}}">{{Venue.country.name}}</country>
@@ -29,4 +29,4 @@
     {% endfor %}
   </previous_names>
 
-</band>
+</venue>
