@@ -23,7 +23,7 @@
     {% if ContestEvent.test_piece %}<test-piece id="{{ContestEvent.test_piece.id}}" slug="{{ContestEvent.test_piece.slug}}">{{ContestEvent.test_piece.name}}</test-piece>{%endif%}
   </test-piece>
 
-  {% if ContestEvent.venue_link %}<venue id="{{ContestEvent.venue_link.id}}" slug="{{ContestEvent.value_link.slug}}">{{ContestEvent.venue_link.name}}</venue>{% endif %}
+  {% if ContestEvent.venue_link %}<venue id="{{ContestEvent.venue_link.id}}" slug="{{ContestEvent.venue_link.slug}}">{{ContestEvent.venue_link.name}}</venue>{% endif %}
   {% if ContestEvent.no_contest %}<no-contest>{{ContestEvent.notes}}</no-contest>{% else %}<notes>{{ContestEvent.notes}}</notes>{% endif %}
 
   <lastModified>{{ContestEvent.last_modified|date:"Y-m-d H:i:s"}}</lastModified>
