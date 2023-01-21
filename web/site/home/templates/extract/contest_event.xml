@@ -47,7 +47,7 @@
       <band id="{{result.band.id}}" slug="{{result.band.slug}}">{{result.band.name}}</band>
       <band_name>{{result.band_name}}</band_name>
       <conductor id="{{result.person_conducting.id}}" slug="{{result.person_conducting.slug}}">{{result.person_conducting.name}}</conductor>{% if result.second_person_conducting %}
-      <conductor2 id="{{result.second_person_conducting.id}}" slug={{result.second_person_conducting.slug}}>{{result.second_person_conducting.name}}</conductor2>{% endif %}{% if result.test_piece %}
+      <conductor2 id="{{result.second_person_conducting.id}}" slug="{{result.second_person_conducting.slug}}">{{result.second_person_conducting.name}}</conductor2>{% endif %}{% if result.test_piece %}
       <conductor_name>{{result.conductor_name}}</conductor_name>
       <test-piece id="{{result.test_piece.id}}" slug="{{result.test_piece.slug}}">{{result.test_piece.name}}</test-piece>{% endif %}
 
