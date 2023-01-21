@@ -1,5 +1,5 @@
 <contest-event id="{{ContestEvent.id}}">
-  <event-date date="{{ContestEvent.date_of_event.year}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.day}}">{{ContestEvent.date_of_event}}<event-date>
+  <event-date date="{{ContestEvent.date_of_event.year}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.day}}">{{ContestEvent.date_of_event}}</event-date>
   <event-date-resolution>{{ContestEvent.date_resolution}}</event-date-resolution>
   <name>{{ContestEvent.name}}</name>
   <contest id="{{ContestEvent.contest.id}}" slug="{{ContestEvent.contest.slug}}">
