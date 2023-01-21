@@ -68,7 +68,7 @@
         <extra-test-pieces>
           {% for extra_piece in result.resultpieceperformance_set.all %}
           <piece>
-            <piece id="{{extra_piece.piece.id}}" slug="{{extra_piece.piece.slug}}">{{extra_piece.piece.name}}</test-piece>
+            <test-piece id="{{extra_piece.piece.id}}" slug="{{extra_piece.piece.slug}}">{{extra_piece.piece.name}}</test-piece>
             <suffix>{{extra_piece.suffix}}</suffix>
             <ordering>{{extra_piece.ordering}}</ordering>
           </piece>
