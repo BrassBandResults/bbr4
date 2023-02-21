@@ -75,7 +75,7 @@ VALUES (
   (SELECT id FROM person WHERE old_id={{result.second_person_conducting.id}}),
   {% else %}
   null,
-  {%end if%}
+  {% endif %}
   {{result.notes}}
 );
 
