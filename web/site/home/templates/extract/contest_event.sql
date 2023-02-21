@@ -56,7 +56,7 @@ VALUES (
   CONVERT(datetime, '{{result.created|date:"Y-m-d H:i:s"}}', 20),
   (SELECT id FROM user WHERE usercode='{{result.owner.username}}'),
   (SELECT id FROM user WHERE usercode='{{result.lastChangedBy.username}}'),
-  (SELECT id FROM contest_event WHERE id={{CcontestEvent.id}}),
+  (SELECT id FROM contest_event WHERE old_id={{ContestEvent.id}}),
   {{result.band.id}},
   '{{result.band_name}}',
   '{{result.results_position_display}}',
