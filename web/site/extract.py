@@ -83,8 +83,8 @@ if typeToGenerate == "results":
 		print ("\t%s - %s" % (event.date_of_event, event.name))
 
 		lFilepath = "%s/Results/%s/%d/%d/%d" % (HOME, era, event.date_of_event.year, event.date_of_event.month, event.date_of_event.day)
-		lFilename = "%s.xml" % event.name
-		lContestXml = render_to_string('extract/contest_event.xml', { 'ContestEvent' : event, })
+		lFilename = "%s.sql" % event.name
+		lContestXml = render_to_string('extract/contest_event.sql', { 'ContestEvent' : event, })
 		write_file(lFilepath, lFilename, lContestXml)
 		time.sleep(0.1)
 
