@@ -66,7 +66,7 @@ VALUES (
   {{result.draw_second_part}},
 {% else %}
   null,
-{% end if %}
+{% endif %}
   '{{result.points}}',
   '{{result.points_first_part}}',
   '{{result.points_second_part}}',
