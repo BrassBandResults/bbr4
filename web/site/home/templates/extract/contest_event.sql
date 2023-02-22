@@ -61,18 +61,18 @@ VALUES (
   '{{result.band_name}}',
 {% if result.results_position_display == 'W' %}
   'W',
-{% else if result.results_position_display == 'D' %}  
+{% elif result.results_position_display == 'D' %}  
   'D',
-{% else if result.results_position_display == '' %}
+{% elif result.results_position_display == '' %}
   'U',
 {% else %}
   'R',
 {% endif %}
 {% if result.results_position_display == 'W' %}
   null,
-{% else if result.results_position_display == 'D' %}  
+{% elif result.results_position_display == 'D' %}  
   null,
-{% else if result.results_position_display == '' %}
+{% elif result.results_position_display == '' %}
   null,
 {% else %}
   {{result.results_position_display}},
