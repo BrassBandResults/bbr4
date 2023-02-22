@@ -59,8 +59,24 @@ VALUES (
   (SELECT id FROM contest_event WHERE old_id={{ContestEvent.id}}),
   {{result.band.id}},
   '{{result.band_name}}',
-  '{{result.results_position_display}}',
-  '{{result.results_position_display}}',
+{% if result.results_position_display == 'W' %}
+  'W',
+{% else if result.results_position_display == 'D' %}  
+  'D',
+{% else if result.results_position_display == '' %}
+  'U',
+{% else %}
+  'R',
+{% endif %}
+{% if result.results_position_display == 'W' %}
+  null,
+{% else if result.results_position_display == 'D' %}  
+  null,
+{% else if result.results_position_display == '' %}
+  null,
+{% else %}
+  {{result.results_position_display}},
+{% endif %}
   {{result.draw}},
 {% if result.draw_second_part %}
   {{result.draw_second_part}},
