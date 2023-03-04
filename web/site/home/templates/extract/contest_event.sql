@@ -5,11 +5,11 @@ INSERT INTO contest_event (old_id, updated, created, updated_by_id, owner_id, na
     CONVERT(datetime, '{{ContestEvent.created|date:"Y-m-d H:i:s"}}', 20),
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.owner.username}}'),
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.lastChangedBy.username}}'),
-    '{{ContestEvent.name}}',
+    '{{ContestEvent.name|safe}}',
     CONVERT(date, '{{ContestEvent.date_of_event.day}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.year}}', 110),
     '{{ContestEvent.date_resolution}}',
     {{ContestEvent.contest.id}},
-    '{{ContestEvent.notes}}',
+    '{{ContestEvent.notes|safe}}',
     {% if ContestEvent.venue_link %}(SELECT id FROM venue WHERE old_id={{ContestEvent.venue_link.id}}){% else %}null{% endif %},
     {% if ContestEvent.complete %}1{%else%}0{%endif%},
     {% if ContestEvent.no_contest %}1{%else%}0{%endif%},
@@ -64,7 +64,7 @@ VALUES (
   (SELECT id FROM site_user WHERE usercode='{{result.lastChangedBy.username}}'),
   (SELECT id FROM contest_event WHERE old_id={{ContestEvent.id}}),
   {{result.band.id}},
-  '{{result.band_name}}',
+  '{{result.band_name|safe}}',
 {% if result.results_position_display == 'W' %}
   'W',
 {% elif result.results_position_display == 'D' %}  
@@ -102,7 +102,7 @@ VALUES (
   {% else %}
   null,
   {% endif %}
-  '{{result.notes}}'
+  '{{result.notes|safe}}'
 );
 
 {% if result.test_piece %}
