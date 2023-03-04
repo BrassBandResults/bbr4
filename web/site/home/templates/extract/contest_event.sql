@@ -113,7 +113,7 @@ VALUES (
   (SELECT id FROM site_user WHERE usercode='{{result.owner.username}}'),
   (SELECT id FROM site_user WHERE usercode='{{result.lastChangedBy.username}}'),
   (SELECT id FROM contest_result WHERE old_id = {{result.id}}),
-  (SELECT id FROM piece WHERE old_id = {{test_piece.id}}),
+  (SELECT id FROM piece WHERE old_id = {{result.test_piece.id}}),
   0,
   null
 );
