@@ -45,7 +45,7 @@ VALUES (
     {{piece.test_piece.id}},
     {% if piece.and_or == 'and' %}
     'A'
-    {% else if piece.and_or == 'or' %}
+    {% elif piece.and_or == 'or' %}
     'O'
     {%% else %}
     null
