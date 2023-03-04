@@ -47,8 +47,9 @@ VALUES (
     'A'
     {% elif piece.and_or == 'or' %}
     'O'
-    {%% else %}
+    {% else %}
     null
+    {% endif %}
 );
 {% endfor %}
 
