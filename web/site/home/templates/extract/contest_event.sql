@@ -6,7 +6,7 @@ INSERT INTO contest_event (old_id, updated, created, updated_by_id, owner_id, na
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.owner.username}}'),
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.lastChangedBy.username}}'),
     '{{ContestEvent.name|safe}}',
-    CONVERT(date, '{{ContestEvent.date_of_event.day}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.year}}', 110),
+    CONVERT(date, '{{ContestEvent.date_of_event.day}}-{{ContestEvent.date_of_event.month}}-{{ContestEvent.date_of_event.year}}', 105),
     '{{ContestEvent.date_resolution}}',
     {{ContestEvent.contest.id}},
     '{{ContestEvent.notes|safe}}',
