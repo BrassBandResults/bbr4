@@ -14,11 +14,11 @@ INSERT INTO contest_event (old_id, updated, created, updated_by_id, owner_id, na
     {% if ContestEvent.complete %}1{%else%}0{%endif%},
     {% if ContestEvent.no_contest %}1{%else%}0{%endif%},
 {% if ContestEvent.contest_type_override_link %}
-  (SELECT id FROM contest WHERE old_id = {{ContestEvent.contest_type_override_link.id}}),
+  (SELECT id FROM contest_type WHERE old_id = {{ContestEvent.contest_type_override_link.id}}),
 {% else %}
-  (SELECT id FROM contest WHERE old_id = {{ContestEvent.contest.id}}),
+  (SELECT id FROM contest_type WHERE old_id = {{ContestEvent.contest.id}}),
 {% endif %}
-    {{ContestEvent.owner.username}}
+    '{{ContestEvent.owner.username}}'
   );
 
 {% if ContestEvent.test_piece %}
