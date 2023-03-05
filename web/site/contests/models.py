@@ -468,6 +468,16 @@ class ContestEvent(models.Model):
     def hashtag(self):
         return self.contest.hashtag
     
+    @property
+    def name_migrate(self):
+        return self.name.replace("'", "''")
+    
+    @property
+    def notes_migrate(self):
+        if self.notes == None:
+            return ''
+        return self.notes.replace("'", "''")    
+    
     def tag_list(self):
         return self.contest.tag_list()
     
@@ -757,6 +767,12 @@ class ContestResult(models.Model):
         if self.band_name == None:
             return ''
         return self.band_name.replace("'", "''")
+    
+    @property
+    def notes_migrate(self):
+        if self.notes == None:
+            return ''
+        return self.notes.replace("'", "''")    
     
     class Meta:
         ordering = ['-contest_event__date_of_event','results_position','draw','band__name']
