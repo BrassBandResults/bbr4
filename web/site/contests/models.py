@@ -476,7 +476,7 @@ class ContestEvent(models.Model):
     def notes_migrate(self):
         if self.notes == None:
             return ''
-        return self.notes.replace("'", "''")    
+        return self.notes.replace("'", "''").replace(";", ",")
     
     def tag_list(self):
         return self.contest.tag_list()
@@ -772,7 +772,7 @@ class ContestResult(models.Model):
     def notes_migrate(self):
         if self.notes == None:
             return ''
-        return self.notes.replace("'", "''")    
+        return self.notes.replace("'", "''").replace(";", ",")
     
     class Meta:
         ordering = ['-contest_event__date_of_event','results_position','draw','band__name']
