@@ -752,6 +752,12 @@ class ContestResult(models.Model):
             return self.contest_event.test_piece
         return None
     
+    @property
+    def band_name_export(self):
+        if self.band_name == None:
+            return ''
+        return self.band_name.replace("'", "''")
+    
     class Meta:
         ordering = ['-contest_event__date_of_event','results_position','draw','band__name']
         
