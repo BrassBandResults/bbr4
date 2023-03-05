@@ -63,7 +63,7 @@ VALUES (
   (SELECT id FROM site_user WHERE usercode='{{result.owner.username}}'),
   (SELECT id FROM site_user WHERE usercode='{{result.lastChangedBy.username}}'),
   (SELECT id FROM contest_event WHERE old_id={{ContestEvent.id}}),
-  {{result.band.id}},
+  (SELECT id FROM band WHERE old_id={{result.band.id}}),
   '{{result.band_name_export|safe}}',
 {% if result.results_position_display == 'W' %}
   'W',
