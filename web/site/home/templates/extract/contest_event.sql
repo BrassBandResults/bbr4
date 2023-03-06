@@ -42,7 +42,7 @@ VALUES (
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.owner.username}}'),
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.lastChangedBy.username}}'),
     (SELECT id FROM contest_event WHERE old_id = {{ContestEvent.id}}),
-    {{piece.test_piece.id}},
+    (SELECT id FROM piece WHERE old_id={{piece.test_piece.id}}),
     {% if piece.and_or == 'and' %}
     'A'
     {% elif piece.and_or == 'or' %}
