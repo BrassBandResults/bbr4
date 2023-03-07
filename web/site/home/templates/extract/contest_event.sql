@@ -29,7 +29,7 @@ VALUES (
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.owner.username}}'),
     (SELECT id FROM site_user WHERE usercode='{{ContestEvent.lastChangedBy.username}}'),
     (SELECT id FROM contest_event WHERE old_id = {{ContestEvent.id}}),
-    {{ContestEvent.test_piece.id}},
+    (SELECT id FROM piece WHERE old_id={{ContestEvent.test_piece.id}}),
     null
 );
 {%endif%}
