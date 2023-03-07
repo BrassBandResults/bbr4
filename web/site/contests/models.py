@@ -705,6 +705,12 @@ class ContestResult(models.Model):
         return lReturn
     
     @property
+    def conductor_name_export(self):
+        if self.conductor_name == None:
+            return ''
+        return self.conductor_name.replace("'", "''")
+    
+    @property
     def results_position_display(self):
         """
         Show position for display on page

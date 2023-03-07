@@ -95,7 +95,7 @@ VALUES (
   '{{result.points_third_part}}',
   '{{result.points_fourth_part}}',
   '{{result.penalty_points}}',
-  '{{result.conductor_name}}',
+  '{{result.conductor_name_export}}',
   (SELECT id FROM person WHERE old_id={{result.person_conducting.id}}),
   {% if result.second_person_conducting %}
   (SELECT id FROM person WHERE old_id={{result.second_person_conducting.id}}),
