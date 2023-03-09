@@ -365,8 +365,8 @@ def enter_venue(request, pContestSlug, pDate):
                                                               "Data" : lVenueNamesData,
                                                              })
         
-_CONDUCTOR_PREFIX = "<ul class=\"errorlist\"><li>Can't find conductor '"
-_BAND_PREFIX = "<ul class=\"errorlist\"><li>Can't find band '"
+_CONDUCTOR_PREFIX = '<ul class="errorlist"><li>Can&#x27;t find conductor &#x27;'
+_BAND_PREFIX = '<ul class="errorlist"><li>Can&#x27;t find band &#x27;'
             
 @login_required
 def enter_results(request, pContestSlug, pDate):
