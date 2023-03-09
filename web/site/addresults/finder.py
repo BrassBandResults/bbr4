@@ -124,7 +124,7 @@ def find_band(pBandName, pContestEvent, pRecurse=False):
             lBand = find_band(lNewBandName, pContestEvent, pRecurse=True) 
     
     if lBand == None and pRecurse == False:
-        raise forms.ValidationError("Can&#39;t find band '%s'" % pBandName)
+        raise forms.ValidationError("Can't find band '%s'" % pBandName)
     
     return lBand
 
@@ -230,6 +230,6 @@ def find_conductor(pConductorName, pBand, pContestEvent):
                     lConductor = None
         
     if lConductor == None:
-        raise forms.ValidationError("Can&#39;t find conductor '%s'" % lConductorName)
+        raise forms.ValidationError("Can't find conductor '%s'" % lConductorName)
     
     return lConductor

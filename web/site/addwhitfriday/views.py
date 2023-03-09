@@ -63,7 +63,7 @@ def enter_contest_date(request, pContestSlug):
     return render_auth(request, 'addwhitfriday/contestdate.html', {"ContestGroup" : lContestGroup,
                                                                    "form" : lForm})
         
-_BAND_PREFIX = '<ul class="errorlist"><li>Can&#39;t find band &#39;'
+_BAND_PREFIX = "<ul class=\"errorlist\"><li>Can't find band '"
             
 @login_required
 def enter_results(request, pContestSlug, pDate):
