@@ -13,15 +13,15 @@
 
 <form action="/accounts/paid/" method="POST">{% csrf_token %}
   <input type="hidden" name="usercode" value="{{user.usercode}}"/>
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="{{StripePublicCode}}"
-    data-amount="1999"
-    data-name="BrassBandResults"
-    data-description="Pro Member (£19.99/year)"
-    data-currency="GBP"
-    data-image="{{ STATIC_URL }}CornetLogo.jpg">
+  <script async
+  src="https://js.stripe.com/v3/buy-button.js">
   </script>
+
+  <stripe-buy-button
+    buy-button-id="buy_btn_1NF1fiKPYtGUto3eUCpZoxr0"
+    publishable-key="pk_live_K1lE47ecuI3aS2lBb3rAF5JN"
+  >
+  </stripe-buy-button>
 </form>
 
 
