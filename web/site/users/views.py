@@ -1082,8 +1082,8 @@ def pro_paid(request):
     """
     lCurrentUserProfile = request.user.profile
     lCurrentUserProfile.pro_member = True;
-    lCurrentUserProfile.stripe_token = request.POST.get('stripeToken')
-    lCurrentUserProfile.stripe_email = request.POST.get('stripeEmail')
+    #lCurrentUserProfile.stripe_token = request.POST.get('stripeToken')
+    #lCurrentUserProfile.stripe_email = request.POST.get('stripeEmail')
     lCurrentUserProfile.save()
     
     import stripe
