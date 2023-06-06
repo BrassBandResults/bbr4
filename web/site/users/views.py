@@ -245,9 +245,9 @@ def feedback_claim_from_queue(request, pUsercode, pFeedbackId):
     lFeedback.lastChangedBy = request.user
     lFeedback.claim_date = datetime.now()
     lFeedback.save("Feedback claimed from queue by %s" % request.user)
-    lProfile = request.user.profile
-    if lProfile.superuser:
-        notification(None, lFeedback, 'feedback', 'feedback', 'claim', request.user, browser_details(request))   
+    #lProfile = request.user.profile
+    #if lProfile.superuser:
+    #    notification(None, lFeedback, 'feedback', 'feedback', 'claim', request.user, browser_details(request))   
     return render_auth(request, 'users/blank.html')
 
 
