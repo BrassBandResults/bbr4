@@ -1085,43 +1085,43 @@ def pro_paid(request):
     #lCurrentUserProfile.stripe_token = request.POST.get('stripeToken')
     #lCurrentUserProfile.stripe_email = request.POST.get('stripeEmail')
     lCurrentUserProfile.save()
-    
-    import stripe
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    
-    try:
-        # Use Stripe's bindings...
-        lCustomer = stripe.Customer.create(description=request.user.username,
-                                           source=lCurrentUserProfile.stripe_token,
-                                           email=lCurrentUserProfile.stripe_email)
-        lCustomer.subscriptions.create(plan='BBRPRO')  
-        
-        lCurrentUserProfile.stripe_customer = lCustomer.id
-        lCurrentUserProfile.save()
-    except stripe.error.CardError as e:
-        # Since it's a decline, stripe.error.CardError will be caught
-        body = e.json_body
-        err  = body['error']
-    except stripe.error.InvalidRequestError as e:
-        # Invalid parameters were supplied to Stripe's API
-        pass
-    except stripe.error.AuthenticationError as e:
-        # Authentication with Stripe's API failed
-        # (maybe you changed API keys recently)
-        pass
-    except stripe.error.APIConnectionError as e:
-        # Network communication with Stripe failed
-        pass
-    except stripe.error.StripeError as e:
-        # Display a very generic error to the user, and maybe send
-        # yourself an email
-        pass
-    except Exception as e:
-        # Something else happened, completely unrelated to Stripe
-        pass
-    
-    
-    notification(request.user, None, 'users', 'pro_upgrade', 'paid', request.user, browser_details(request))
+
+    #import stripe
+    #stripe.api_key = settings.STRIPE_SECRET_KEY
+    # 
+    # try:
+    #     # Use Stripe's bindings...
+    #     lCustomer = stripe.Customer.create(description=request.user.username,
+    #                                        source=lCurrentUserProfile.stripe_token,
+    #                                        email=lCurrentUserProfile.stripe_email)
+    #     lCustomer.subscriptions.create(plan='BBRPRO')  
+    #     
+    #     lCurrentUserProfile.stripe_customer = lCustomer.id
+    #     lCurrentUserProfile.save()
+    # except stripe.error.CardError as e:
+    #     # Since it's a decline, stripe.error.CardError will be caught
+    #     body = e.json_body
+    #     err  = body['error']
+    # except stripe.error.InvalidRequestError as e:
+    #     # Invalid parameters were supplied to Stripe's API
+    #     pass
+    # except stripe.error.AuthenticationError as e:
+    #     # Authentication with Stripe's API failed
+    #     # (maybe you changed API keys recently)
+    #     pass
+    # except stripe.error.APIConnectionError as e:
+    #     # Network communication with Stripe failed
+    #     pass
+    # except stripe.error.StripeError as e:
+    #     # Display a very generic error to the user, and maybe send
+    #     # yourself an email
+    #     pass
+    # except Exception as e:
+    #     # Something else happened, completely unrelated to Stripe
+    #     pass
+    # 
+    # 
+    # notification(request.user, None, 'users', 'pro_upgrade', 'paid', request.user, browser_details(request))
     
     return HttpResponseRedirect('/accounts/pro/thanks/')
 
