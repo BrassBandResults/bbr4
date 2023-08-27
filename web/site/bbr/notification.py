@@ -25,4 +25,7 @@ def notification(pThingOld, pThingNew, pModule, pObjectType, pChangeType, pUser,
                              )
 
     client = boto3.client('sns', region_name=settings.AWS_REGION)
-    lMessage.send(client)
+    try:
+        lMessage.send(client)
+    except:
+        pass
